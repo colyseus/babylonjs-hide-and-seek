@@ -17,7 +17,7 @@
         "declaration": true,
         "inlineSources": false,
         "inlineSourceMap": false,
-        "outFile": "F:/Local/Unity Projects/Colyseus-Version-Check/BabylonJS-Test/Debug/BabylonJS-Test.js"
+        "outFile": "F:/Remote-Repos/Colyseus-Repos/BabylonJS-hide-and-seek/Erik-BabylonJS-Test/Debug/BabylonJS-Test.js"
     },
     "include": [
         "assets/**/*"

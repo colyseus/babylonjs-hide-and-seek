@@ -136,8 +136,8 @@ GameObject:
   - component: {fileID: 123293239}
   - component: {fileID: 123293238}
   - component: {fileID: 123293237}
-  - component: {fileID: 123293242}
   - component: {fileID: 123293243}
+  - component: {fileID: 123293242}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
@@ -250,7 +250,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BabylonClass: 
-  forceMultiplier: 1
 --- !u!114 &123293243
 MonoBehaviour:
   m_ObjectHideFlags: 0

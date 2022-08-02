@@ -1,0 +1,87 @@
+// @Raw.shader - Unity built-in shader source. Copyright (c) 2016 Unity Technologies. MIT license (see license.txt)
+
+Shader "Babylon/Custom/#NAME#" {
+    Properties {
+        _Color ("Main Color", Color) = (1,1,1,1)                                // diffuseColor
+        _MainTex ("Base (RGB)", 2D) = "white" {}                                // diffuseTexture
+
+        // Babylon Render Options
+        _LightmapIntensity("Lightmap Level", Range(0.0, 2.0)) = 1.0             // lightmapTexture.level
+        _DiffuseIntensity("Diffuse Intensity", Range(0.0, 2.0)) = 1.0           // diffuseTexture.level
+        _MaxLightCount("Simultaneous Lights", int) = 4                          // maxSimultaneousLights
+        [ToggleOff] _BackFaceCulling("Set Back Face Culling", Float) = 1.0
+        [ToggleOff] _UseWireframe("Use Wireframe Material", Float) = 0.0
+        [Enum(ADD,1, COMBINE,2, SUBTRACT,3, MULTIPLY,4)] _AlphaBlendMode("Alpha Blend Mode", Float) = 2
+
+        // Babylon Custom Properties
+        // testTexture("Test Texture", 2D) = "white" {}
+        // testVector("Test Vector", Vector) = (0,0,0,0)
+        // testColor("Test Color", Color) = (1,1,1)
+        // testRange("Test Range", Range(0.0, 1.0)) = 0.5
+        // testFloat("Test Float", Float) = 1.0
+        // testInt("Test Int", Int) = 1
+        // [ToggleOff] testBool("Test Bool", Int) = 1
+        // [Enum(Tester A,0,Tester B,1)] testEnum("Test Enum", Float) = 0
+    }
+
+    CGINCLUDE
+    #ifdef SHADER_CONTROLLER
+    Shader: "Diffuse"
+    Material: "#ROOTNAMESPACE#.#SHADERNAME#"
+    #endif //SHADER_CONTROLLER
+    ENDCG
+
+    SubShader {
+        Tags { "RenderType"="Opaque" }
+        LOD 100
+
+        Pass {
+            CGPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma target 2.0
+            #pragma multi_compile_fog
+
+            #include "UnityCG.cginc"
+
+            struct appdata_t {
+                float4 vertex : POSITION;
+                float2 texcoord : TEXCOORD0;
+                UNITY_VERTEX_INPUT_INSTANCE_ID
+            };
+
+            struct v2f {
+                float4 vertex : SV_POSITION;
+                float2 texcoord : TEXCOORD0;
+                UNITY_FOG_COORDS(1)
+                UNITY_VERTEX_OUTPUT_STEREO
+            };
+
+            sampler2D _MainTex;
+            float4 _MainTex_ST;
+            fixed4 _Color;
+
+            v2f vert (appdata_t v)
+            {
+                v2f o;
+                UNITY_SETUP_INSTANCE_ID(v);
+                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
+                o.vertex = UnityObjectToClipPos(v.vertex);
+                o.texcoord = TRANSFORM_TEX(v.texcoord, _MainTex);
+                UNITY_TRANSFER_FOG(o,o.vertex);
+                return o;
+            }
+
+            fixed4 frag (v2f i) : SV_Target
+            {
+                fixed4 col = tex2D(_MainTex, i.texcoord) * _Color;
+                UNITY_APPLY_FOG(i.fogCoord, col);
+                UNITY_OPAQUE_ALPHA(col.a);
+                return col;
+            }
+            ENDCG
+        }
+    }
+
+    Fallback "Unlit/Texture"
+}

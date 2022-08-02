@@ -1,0 +1,29 @@
+module #ROOTNAMESPACE# {
+    /**
+    * Babylon Node Material
+    * @class #SHADERNAME#
+    */
+    export class #SHADERNAME# extends BABYLON.UniversalNodeMaterial {
+        constructor(name: string, scene?: BABYLON.Scene, options?: Partial<BABYLON.INodeMaterialOptions>) {
+            super(name, scene, options);
+            this.enableTime = false;
+        }
+
+        ////////////////////////////////////////////////
+        // Node Material Life Cycle Functions         //
+        ////////////////////////////////////////////////
+
+        protected awake(): void {
+            /* Init material function */
+        }
+
+        protected after(): void {
+            /* After bind update function */
+        }
+
+        protected compile():void {
+            /** Insert Node Material Editor Generated Code Here */
+        }
+    }
+    BABYLON.RegisterClass("#ROOTNAMESPACE#.#SHADERNAME#", #SHADERNAME#);
+}

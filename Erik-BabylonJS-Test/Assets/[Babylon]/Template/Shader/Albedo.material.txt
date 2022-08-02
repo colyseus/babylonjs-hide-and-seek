@@ -1,0 +1,31 @@
+module #ROOTNAMESPACE# {
+    /**
+    * Babylon Shader Material
+    * @class #SHADERNAME#
+    */
+    export class #SHADERNAME# extends BABYLON.UniversalAlbedoMaterial {
+        public constructor(name: string, scene: BABYLON.Scene) {
+            super(name, scene);
+            this.enableTime = false;
+        }
+        public getShaderName(): string {
+            return "#SHADERFILE#";
+        }
+        public getCustomAttributes(): string[] {
+            return null; // Optional: Custom Attributes
+        }
+
+        ////////////////////////////////////////////////
+        // Albedo Material Life Cycle Functions       //
+        ////////////////////////////////////////////////
+
+        protected awake(): void {
+            /* Init material function */
+        }
+
+        protected after(): void {
+            /* After bind update function */
+        }
+    }
+    BABYLON.RegisterClass("#ROOTNAMESPACE#.#SHADERNAME#", #SHADERNAME#);
+}

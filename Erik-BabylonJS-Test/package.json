@@ -1,0 +1,9 @@
+{
+	"name": "com.babylontoolkit",
+	"version": "5.0.0",
+	"description": "Babylon Toolkit Project",
+	"license": "MIT",
+	"devDependencies": {
+		"typescript": "^4.4.2"
+	}
+}

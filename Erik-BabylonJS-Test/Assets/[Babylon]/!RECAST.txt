@@ -1,0 +1,28 @@
+Recast Navigation Mesh Settings
+================================
+
+First you should decide the size of your character "capsule". For example if you are using meters as units in your game world, a good size of human sized character might be r=0.4, h=2.0.
+
+Next the voxelization cell size cs will be derived from that. Usually good value for cs is r/2 or r/3. In ourdoor environments, r/2 might be enough, indoors you sometimes what the extra precision and you might choose to use r/3 or smaller.
+
+The voxelization cell height ch is defined separately in order to allow greater precision in height tests. Good starting point for ch is cs/2. If you get small holes where there are discontinuities in the height (steps), you may want to decrease cell height.
+
+Next up is the character definition values. First up is walkableHeight, which defines the height of the agent in voxels, that is ceil(h/ch).
+
+The walkableClimb defines how high steps the character can climb. In most levels I have encountered so far, this means almost weist height! Lazy level designers. If you use down projection+capsule for NPC collision detection you may derive a good value from that representation. Again this value is in voxels, remember to use ch instead of cs, ceil(maxClimb/ch).
+
+The parameter walkableRadius defines the agent radius in voxels, ceil(r/cs). If this value is greater than zero, the navmesh will be shrunken my the agent radius. The shrinking is done in voxel representation, so some precision is lost there. This step allows simpler checks at runtime. If you want to have tight fit navmesh, use zero radius.
+
+The parameter walkableSlopeAngle is used before voxelization to check if the slope of a triangle is too high and those polygons will be given non-walkable flag. You may tweak the triangle flags yourself too, for example if you wish to make certain objects or materials non-walkable. The parameter is in radians.
+
+In certain cases really long outer edges may decrease the triangulation results. Sometimes this can be remedied by just tesselating the long edges. The parameter maxEdgeLen defines the max
+edge length in voxel coordinates. A good value for maxEdgeLen is something like walkableRadius*8. A good way to tweak this value is to first set it really high and see if your data creates long edges. If so, then try to find as bif value as possible which happen to create those few extra vertices which makes the tesselation better.
+
+When the rasterized areas are converted back to vectorized representation the maxSimplificationError describes how loosely the simplification is done (the simplification is Douglas-Peucker, so this value describes the max deviation in voxels). Good values are between
+1.1-1.5 (1.3 usually yield good results). If the value is less, some strair-casing starts to appear at the edges and if it is more than that, the simplification starts to cut some corners.
+
+Watershed partitioning is really prone to noise in the input distance field. In order to get nicer ares, the ares are merged and small isolated areas are removed after the water shed partitioning. The parameter minRegionSize describes the minimum isolated region size that is still kept. A region is removed if the regionVoxelCount < minRegionSize*minRegionSize.
+
+The triangulation process greatly benefits from small local data. The parameter mergeRegionSize controls how large regions can be still merged. If regionVoxelCount > mergeRegionSize*mergeRegionSize the region is not allowed to be merged with another region anymore.
+
+Yeah, I know these last two values are a bit weirdly defined. If you are using tiled preprocess with relatively small tile size, the merge value can be really high. If you have followed the above steps, then I'd recommend using the demo values for minRegionSize and mergeRegionSize. If you see small patched missing here and there, you could lower the minRegionSize.

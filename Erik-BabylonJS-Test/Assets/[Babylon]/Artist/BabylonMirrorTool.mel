@@ -1,0 +1,221 @@
+global proc FirstPass(){
+    waitCursor -state 1;
+    string $selection[] = `ls -selection -type "joint"`;
+    
+    for($bone in $selection){
+        float $Ttx[];
+        $Ttx = `keyframe -attribute translateX -query $bone`;
+        $Rty = `keyframe -attribute rotateY -query $bone`;
+		$Rtz = `keyframe -attribute rotateZ -query $bone`;
+		
+		$Tvx = `keyframe -attribute translateX -query -valueChange $bone`;
+		$Rvy = `keyframe -attribute rotateY -query -valueChange $bone`;
+		$Rvz = `keyframe -attribute rotateZ -query -valueChange $bone`;
+		
+		int $size = size($Ttx);
+        if($size != 0){
+            for($i=0; $i<$size; ++$i){
+                $Tvx[$i] = -$Tvx[$i];
+				currentTime($Ttx[$i]);
+				setKeyframe -attribute translateX -v $Tvx[$i] $bone;
+            }
+				
+        }
+        
+        $size = size($Rty);
+        if($size != 0){
+            for($i=0; $i<$size; ++$i){
+                $Rvy[$i] = -$Rvy[$i];
+				currentTime($Rty[$i]);
+				setKeyframe -attribute rotateY -v $Rvy[$i] $bone;
+            }
+        }
+        $size = size($Rtz);
+        if($size != 0){
+            for($i=0; $i<$size; ++$i){
+                $Rvz[$i] = -$Rvz[$i];
+				currentTime($Rtz[$i]);
+				setKeyframe -attribute rotateZ -v $Rvz[$i] $bone;
+            }
+        }
+				
+    }
+    waitCursor -state 0;
+	print "First pass complete.";
+}
+
+global proc SecondPass(){
+    waitCursor -state 1;
+    string $selection[] = `ls -selection -type "joint"`;
+    
+    for($bone in $selection){
+        float $Ttx[];
+        $Ttx = `keyframe -attribute translateX -query $bone`;
+        $Rty = `keyframe -attribute rotateY -query $bone`;
+		$Rtz = `keyframe -attribute rotateZ -query $bone`;
+		
+		$Tvx = `keyframe -attribute translateX -query -valueChange $bone`;
+		$Rvy = `keyframe -attribute rotateY -query -valueChange $bone`;
+		$Rvz = `keyframe -attribute rotateZ -query -valueChange $bone`;
+	    	
+		
+		if( `match "Left" $bone` == "Left" ){
+		    $LeftTtx = `keyframe -attribute translateX -query $bone`;
+			$LeftTty = `keyframe -attribute translateY -query $bone`;
+			$LeftTtz = `keyframe -attribute translateZ -query $bone`;
+			$LeftRtx = `keyframe -attribute rotateX -query $bone`;
+			$LeftRty = `keyframe -attribute rotateY -query $bone`;
+			$LeftRtz = `keyframe -attribute rotateZ -query $bone`;
+			
+			$LeftTvx = `keyframe -attribute translateX -query -valueChange $bone`;
+			$LeftTvy = `keyframe -attribute translateY -query -valueChange $bone`;
+			$LeftTvz = `keyframe -attribute translateZ -query -valueChange $bone`;
+			$LeftRvx = `keyframe -attribute rotateX -query -valueChange $bone`;
+			$LeftRvy = `keyframe -attribute rotateY -query -valueChange $bone`;
+			$LeftRvz = `keyframe -attribute rotateZ -query -valueChange $bone`;
+			
+			
+			$bone = `substitute "Left" $bone "Right"`;
+			
+			$RightTtx = `keyframe -attribute translateX -query $bone`;
+			$RightTty = `keyframe -attribute translateY -query $bone`;
+			$RightTtz = `keyframe -attribute translateZ -query $bone`;
+			$RightRtx = `keyframe -attribute rotateX -query $bone`;
+			$RightRty = `keyframe -attribute rotateY -query $bone`;
+			$RightRtz = `keyframe -attribute rotateZ -query $bone`;
+			
+			$RightTvx = `keyframe -attribute translateX -query -valueChange $bone`;
+			$RightTvy = `keyframe -attribute translateY -query -valueChange $bone`;
+			$RightTvz = `keyframe -attribute translateZ -query -valueChange $bone`;
+			$RightRvx = `keyframe -attribute rotateX -query -valueChange $bone`;
+			$RightRvy = `keyframe -attribute rotateY -query -valueChange $bone`;
+			$RightRvz = `keyframe -attribute rotateZ -query -valueChange $bone`;
+			
+			//same transform but for oposite bone
+			int $size = size($LeftTty);
+            if($size != 0){
+                for($i=0; $i<$size; ++$i){
+				    currentTime($LeftTty[$i]);
+				    setKeyframe -attribute translateY -v $LeftTvy[$i] $bone;
+                }
+            }
+            
+		    $size = size($LeftTtz);
+			if($size != 0){
+			    for($i=0; $i<$size; ++$i){
+			        currentTime($LeftTtz[$i]);
+					setKeyframe -attribute translateZ -v $LeftTvz[$i] $bone;
+			    }	
+			}
+			
+			$size = size($LeftRtx);
+			if($size != 0){
+				for($i=0; $i<$size; ++$i){
+				    currentTime($LeftRtx[$i]);
+					setKeyframe -attribute rotateX -v $LeftRvx[$i] $bone;
+				}
+			}
+			
+			//mirrored transform but opposite bone
+			$size = size($LeftTtx);
+			if($size != 0){
+                for($i=0; $i<$size; ++$i){
+					$LeftTvx[$i] = -$LeftTvx[$i];
+					currentTime($LeftTtx[$i]);
+					setKeyframe -attribute translateX -v $LeftTvx[$i] $bone;
+				}
+			}
+				
+			$size = size($LeftRty);
+			if($size != 0){
+                for($i=0; $i<$size; ++$i){
+					$LeftRvy[$i] = -$LeftRvy[$i];
+					currentTime($LeftRty[$i]);
+					setKeyframe -attribute rotateY -v $LeftRvy[$i] $bone;
+				}
+			}
+			
+			$size = size($LeftRtz);
+			if($size != 0){
+                for($i=0; $i<$size; ++$i){
+					$LeftRvz[$i] = -$LeftRvz[$i];
+					currentTime($LeftRtz[$i]);
+					setKeyframe -attribute rotateZ -v $LeftRvz[$i] $bone;
+				}
+			}
+			
+			$bone = `substitute "Right" $bone "Left"`;
+			
+			//same transform but opposite bone
+			$size = size($RightTty);
+			if($size != 0){
+                for($i=0; $i<$size; ++$i){
+					currentTime($RightTty[$i]);
+					setKeyframe -attribute translateY -v $RightTvy[$i] $bone;
+				}
+			}
+			
+			$size = size($RightTtz);
+			if($size != 0){
+                for($i=0; $i<$size; ++$i){
+					currentTime($RightTtz[$i]);
+					setKeyframe -attribute translateZ -v $RightTvz[$i] $bone;
+				}
+			}
+			
+			$size = size($RightRtx);
+			if($size != 0){
+                for($i=0; $i<$size; ++$i){
+					currentTime($RightRtx[$i]);
+					setKeyframe -attribute rotateX -v $RightRvx[$i] $bone;
+				}
+			}
+			
+			//mirrored transform for opposite bone
+			$size = size($RightTtx);
+			if($size != 0){
+                for($i=0; $i<$size; ++$i){
+					$RightTvx[$i] = -$RightTvx[$i];
+					currentTime($RightTtx[$i]);
+					setKeyframe -attribute translateX -v $RightTvx[$i] $bone;
+				}
+			}
+			
+			$size = size($RightRty);
+			if($size != 0){
+                for($i=0; $i<$size; ++$i){
+					$RightRvy[$i] = -$RightRvy[$i];
+					currentTime($RightRty[$i]);
+					setKeyframe -attribute rotateY -v $RightRvy[$i] $bone;
+				}
+			}
+			
+			$size = size($RightRtz);
+			if($size != 0){
+                for($i=0; $i<$size; ++$i){
+					$RightRvz[$i] = -$RightRvz[$i];
+					currentTime($RightRtz[$i]);
+					setKeyframe -attribute rotateZ -v $RightRvz[$i] $bone;
+				}
+			}
+		}
+	}
+	waitCursor -state 0;
+	print "Second pass complete.";
+}
+
+global proc BabylonMirrorTool() {
+	if(`window -exists myWindow`) {
+		deleteUI myWindow;
+	}
+	window -title "Mirror Bones" -widthHeight 300 300 myWindow;
+	rowColumnLayout -numberOfColumns 1 -columnWidth 1 300 -columnOffset 1 "both" 50;
+	separator -style "none" -h 20;
+	text "Just mirror transformation\nfor a bone.\nSelect pelvis,spine,\nneck and head bones.\n";
+	button -l "First" -c "FirstPass()";
+	separator -style "none" -h 20;
+	text "Mirror transformation and\napply it on opposite bone\nSelect bones for arms and legs.\n";
+	button -l "Second" -c "SecondPass()";
+	separator -style "none" -h 20;
+	showWindow myWindow;
+}

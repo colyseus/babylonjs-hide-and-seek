@@ -1,0 +1,4 @@
+/**
+ * Babylon JavaScript File
+ * @script #SCRIPTNAME#
+ */

@@ -1,0 +1,104 @@
+/* Default StyleSheet */
+
+html, body {
+    position: absolute;
+    min-height: 100%;
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+    margin: 0px;
+    overflow: hidden;
+    touch-action: none;
+    font-family: "Segoe UI", "Segoe WP", "Verdana", "Arial";
+    background-color: #2A2342;
+}
+#panel {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 400px;
+    height: 100px;
+    min-width: 400px;
+    min-height: 100px;
+    margin-top: -50px;
+    margin-left: -200px;
+    z-index: 1000;
+}
+#proj {
+    margin: 0px;
+    padding: 0px;
+    padding-bottom: 14px;
+    z-index: 1001;
+    font-size: 14px;
+    text-align: center;
+    color: #F3F3F3;
+    outline: none;
+    overflow: hidden;
+}
+#status {
+    position: absolute;
+    top: 50%;
+    left:50%;
+    margin: 0px;
+    padding: 0px;
+    padding-top: 30px;
+    z-index: 1001;
+    width: 100px;
+    min-width: 100px;
+    margin-top: -10px;
+    margin-left: -50px;
+    font-size: 10px;
+    text-align: center;
+    color: #F3F3F3;
+    outline: none;
+    overflow: hidden;
+}
+#details {
+    margin: 0px;
+    padding: 0px;
+    padding-top: 14px;
+    z-index: 1001;
+    font-size: 12px;
+    text-align: center;
+    color: #F3F3F3;
+    outline: none;
+    overflow: hidden;
+}
+#cvs {
+    position: absolute;
+    min-height: 100%;
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+    margin: 0px;
+    z-index: 0;
+    opacity: 0;
+    outline: none;
+    overflow: hidden;
+}
+.load {
+    border: 4px solid #F3F3F3;
+    border-top: 4px solid #E0684B;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    z-index: 1001;
+    animation: spin 2s linear infinite;
+}
+.data {
+    border: 4px solid #F3F3F3;
+    border-top: 4px solid #00FF00;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    z-index: 1001;
+    animation: spin 2s linear infinite;
+}
+.hidden { display: none; }
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+#babylonUnmuteIconBtn {
+    display: block !important;
+}        

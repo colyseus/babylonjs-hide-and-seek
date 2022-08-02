@@ -1,0 +1,4 @@
+/**
+ * Babylon TypeScript File
+ * @script #SCRIPTNAME#
+ */

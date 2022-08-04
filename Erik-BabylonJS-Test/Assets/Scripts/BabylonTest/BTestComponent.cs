@@ -4,15 +4,18 @@ using UnityEngine;
 
 /**
 * Editor Script Component
-* @class BTestSphere
+* @class BTestComponent
 */
-[Babylon(Class="PROJECT.BTestSphere"), AddComponentMenu("Scripts/My Project/BTestSphere")]
-public class BTestSphere : EditorScriptComponent
+[Babylon(Class = "PROJECT.BTestComponent"), AddComponentMenu("Scripts/My Project/BTestComponent")]
+public class BTestComponent : EditorScriptComponent
 {
     /* Add Editor Properties To Script Component */
     // Example: [Tooltip("Example hello world property")]
     // Example: [Auto] public string helloWorld = "Hello World";
-    public float forceMultiplier = 1.0f;
+
+    public float testVal_1 = 1.0f;
+    public float testVal_2 = 2.0f;
+    public bool testVal_3 = true;
 
     /* [Serializable, HideInInspector] public string exportProperty = null; */
     public override void OnUpdateProperties(Transform transform, SceneExporterTool exporter)
@@ -22,12 +25,12 @@ public class BTestSphere : EditorScriptComponent
 }
 
 // Optional Script Component Custom Editor Class
-[CustomEditor(typeof(BTestSphere)), CanEditMultipleObjects]
-public class BTestSphereEditor : Editor
+[CustomEditor(typeof(BTestComponent)), CanEditMultipleObjects]
+public class BTestComponentEditor : Editor
 {
     public void OnEnable()
     {
-        BTestSphere owner = (BTestSphere)target;
+        BTestComponent owner = (BTestComponent)target;
     }
     public override void OnInspectorGUI()
     {

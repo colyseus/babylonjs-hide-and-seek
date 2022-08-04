@@ -1,3 +1,6 @@
 Erik-BabylonJS-Test/Library/
 Erik-BabylonJS-Test/Temp/
 Erik-BabylonJS-Test/obj/Debug/
+Erik-BabylonJS-Test/node_modules/
+Erik-BabylonJS-Test/.vs/
+*.sln

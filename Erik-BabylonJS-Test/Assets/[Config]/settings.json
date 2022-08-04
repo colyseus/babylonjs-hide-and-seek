@@ -104,7 +104,7 @@
   "DefaultFontsPath": "fonts",
   "DefaultScenePath": "scenes",
   "DefaultScriptPath": "scripts",
-  "DefaultServerPort": 8888,
+  "DefaultServerPort": 8000,
   "DefaultSecurePort": 4444,
   "EnableSecureSockets": false,
   "DefaultMetallicValue": 0.0,

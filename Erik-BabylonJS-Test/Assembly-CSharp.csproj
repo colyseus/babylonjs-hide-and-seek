@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace>PROJECT</RootNamespace>
-    <ProjectGuid>{E0C6A705-1FE8-4C6A-49EB-A52E275A82A7}</ProjectGuid>
+    <ProjectGuid>{E98F0C6D-B71C-DD67-ED70-801D079A05AF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -53,12 +53,17 @@
     <UnityVersion>2020.3.13f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Analyzer Include="F:\Local\Visual-Studio\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="Assets\[Babylon]\Shaders\UnityInterface.cs" />
+    <Compile Include="Assets\Scripts\UnityBaseTest\TestSphere.cs" />
     <Compile Include="Assets\[Babylon]\Normals\GeometryNormals.cs" />
     <Compile Include="Assets\[Babylon]\Plugins\Anim\AnimUnhideTool.cs" />
-    <Compile Include="Assets\Scripts\TestSphere.cs" />
-    <Compile Include="Assets\Scripts\VFXTrigger.cs" />
-    <Compile Include="Assets\Scripts\BTestSphere.cs" />
+    <Compile Include="Assets\Scripts\BabylonTest\BTestSphere.cs" />
+    <Compile Include="Assets\Scripts\UnityBaseTest\VFXTrigger.cs" />
+    <Compile Include="Assets\Scripts\BabylonTest\BTestComponent.cs" />
+    <Compile Include="Assets\Scripts\BabylonTest\BVFXSparks.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\[Babylon]\Template\Shader\Albedo.partial.shader.txt" />
@@ -66,11 +71,12 @@
     <None Include="Assets\[Babylon]\Template\Shader\Albedo.vertex.txt" />
     <None Include="Assets\[Babylon]\Template\System\JavaScript.txt" />
     <None Include="Assets\[Babylon]\Template\Scripts\Recast\256\recast.js" />
+    <None Include="Assets\Scripts\BabylonTest\BVFXSparks.ts" />
     <None Include="Assets\[Babylon]\Template\Shader\Albedo.partial.material.txt" />
     <None Include="Assets\[Babylon]\Template\Typings\ammo.d.ts" />
     <None Include="Assets\[Babylon]\Template\Typings\babylon.materials.d.ts" />
     <None Include="Assets\[Babylon]\Template\Scripts\Recast\1024\recast.wasm.js" />
-    <None Include="Assets\Scripts\BTestSphere.ts" />
+    <None Include="Assets\Scripts\BabylonTest\BTestSphere.ts" />
     <None Include="Assets\[Babylon]\Plugins\Utilities\FreeImage.License-fi.txt" />
     <None Include="Assets\[Babylon]\Template\Scripts\Ammo\128\ammo.js" />
     <None Include="Assets\[Babylon]\Template\Scripts\Ammo\64\ammo.wasm.js" />
@@ -188,6 +194,7 @@
     <None Include="Assets\[Babylon]\Template\Master\style.css" />
     <None Include="Assets\[Babylon]\Template\Shader\Albedo.material.txt" />
     <None Include="Assets\[Babylon]\Template\Typings\recast.d.ts" />
+    <None Include="Assets\Scripts\BabylonTest\BTestComponent.ts" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

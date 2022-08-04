@@ -4,17 +4,16 @@ using UnityEngine;
 
 /**
 * Editor Script Component
-* @class BTestSphere
+* @class BVFXSparks
 */
-[Babylon(Class="PROJECT.BTestSphere"), AddComponentMenu("Scripts/My Project/BTestSphere")]
-public class BTestSphere : EditorScriptComponent
+[Babylon(Class="PROJECT.BVFXSparks"), AddComponentMenu("Scripts/My Project/BVFXSparks")]
+public class BVFXSparks : EditorScriptComponent
 {
     /* Add Editor Properties To Script Component */
     // Example: [Tooltip("Example hello world property")]
     // Example: [Auto] public string helloWorld = "Hello World";
-    public float forceMultiplier = 1.0f;
 
-    /* [Serializable, HideInInspector] public string exportProperty = null; */
+	/* [Serializable, HideInInspector] public string exportProperty = null; */
     public override void OnUpdateProperties(Transform transform, SceneExporterTool exporter)
     {
         // Example: this.helloWorld = "Update Hello World";
@@ -22,12 +21,12 @@ public class BTestSphere : EditorScriptComponent
 }
 
 // Optional Script Component Custom Editor Class
-[CustomEditor(typeof(BTestSphere)), CanEditMultipleObjects]
-public class BTestSphereEditor : Editor
+[CustomEditor(typeof(BVFXSparks)), CanEditMultipleObjects]
+public class BVFXSparksEditor : Editor
 {
     public void OnEnable()
     {
-        BTestSphere owner = (BTestSphere)target;
+        BVFXSparks owner = (BVFXSparks)target;
     }
     public override void OnInspectorGUI()
     {

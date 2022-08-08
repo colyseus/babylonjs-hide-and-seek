@@ -164,6 +164,7 @@ var PROJECT;
             // Example: private helloWorld:string = "Hello World";
             var _this = _super !== null && _super.apply(this, arguments) || this;
             _this.rigidbody = null;
+            _this.unityParticles = null;
             _this.particles = null;
             return _this;
         }
@@ -173,9 +174,10 @@ var PROJECT;
         BVFXSparks.prototype.start = function () {
             /* Start render loop function */
             this.rigidbody = this.getComponent('BABYLON.RigidbodyPhysics');
-            this.particles = this.getComponent('BABYLON.ShurikenParticles');
+            this.unityParticles = this.getComponent('BABYLON.ShurikenParticles');
+            this.initializeParticles();
             console.log("VFX Sparks Metadata: %o", this.transform.metadata);
-            console.log("Particles: %o", this.particles);
+            console.log("Particles: %o", this.unityParticles);
             this.onCollisionEnter = this.onCollisionEnter.bind(this);
             this.onTriggerEnter = this.onTriggerEnter.bind(this);
             this.rigidbody.onCollisionEnterObservable.add(this.onCollisionEnter);
@@ -198,6 +200,11 @@ var PROJECT;
         };
         BVFXSparks.prototype.destroy = function () {
             /* Destroy component function */
+        };
+        BVFXSparks.prototype.initializeParticles = function () {
+            this.particles = new BABYLON.ParticleSystem('particles', 1000, this.scene);
+            this.particles.emitter = this.getTransformMesh();
+            this.particles.start();
         };
         BVFXSparks.prototype.onCollisionEnter = function (eventData, eventState) {
             console.log("VFX Collision Enter");

@@ -48,6 +48,7 @@ declare module PROJECT {
      */
     class BVFXSparks extends BABYLON.ScriptComponent {
         private rigidbody;
+        private unityParticles;
         private particles;
         protected awake(): void;
         protected start(): void;
@@ -57,6 +58,7 @@ declare module PROJECT {
         protected after(): void;
         protected fixed(): void;
         protected destroy(): void;
+        private initializeParticles;
         private onCollisionEnter;
         private onTriggerEnter;
     }

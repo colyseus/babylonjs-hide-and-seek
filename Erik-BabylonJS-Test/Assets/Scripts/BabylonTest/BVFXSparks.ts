@@ -8,6 +8,7 @@ module PROJECT {
 
 		private rigidbody: BABYLON.RigidbodyPhysics = null;
 		private unityParticles: BABYLON.ShurikenParticles = null;
+		private particles: BABYLON.ParticleSystem = null;
 
 		protected awake(): void {
 			/* Init component function */
@@ -18,6 +19,8 @@ module PROJECT {
 
 			this.rigidbody = this.getComponent<BABYLON.RigidbodyPhysics>('BABYLON.RigidbodyPhysics');
 			this.unityParticles = this.getComponent<BABYLON.ShurikenParticles>('BABYLON.ShurikenParticles');
+
+			this.initializeParticles();
 
 			console.log(`VFX Sparks Metadata: %o`, this.transform.metadata);
 			console.log(`Particles: %o`, this.unityParticles);
@@ -51,6 +54,14 @@ module PROJECT {
 
 		protected destroy(): void {
 			/* Destroy component function */
+		}
+
+		private initializeParticles() {
+			this.particles = new BABYLON.ParticleSystem('particles', 1000, this.scene);
+
+			this.particles.emitter = this.getTransformMesh();
+
+			this.particles.start();
 		}
 
 		private onCollisionEnter(eventData: BABYLON.AbstractMesh, eventState: BABYLON.EventState) {

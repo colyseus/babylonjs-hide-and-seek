@@ -57,7 +57,7 @@
 			"materialUniqueId": 5144,
 			"materialId": "b49d86f6-778c-4722-9d01-28aa710774c0",
 			"physicsMass": 1,
-			"physicsFriction": 0.05,
+			"physicsFriction": 0.5,
 			"physicsRestitution": 0.2,
 			"physicsImpostor": 1,
 			"metadata": {

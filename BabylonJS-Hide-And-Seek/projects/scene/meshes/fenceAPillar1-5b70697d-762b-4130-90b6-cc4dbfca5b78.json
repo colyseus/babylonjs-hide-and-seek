@@ -1,0 +1,157 @@
+{
+	"materials": [],
+	"meshes": [
+		{
+			"name": "fenceAPillar1",
+			"id": "5b70697d-762b-4130-90b6-cc4dbfca5b78",
+			"uniqueId": 1779,
+			"type": "Mesh",
+			"position": [
+				0,
+				0,
+				0
+			],
+			"rotationQuaternion": [
+				0,
+				0,
+				0,
+				1
+			],
+			"scaling": [
+				1,
+				1,
+				1
+			],
+			"localMatrix": {
+				"0": 1,
+				"1": 0,
+				"2": 0,
+				"3": 0,
+				"4": 0,
+				"5": 1,
+				"6": 0,
+				"7": 0,
+				"8": 0,
+				"9": 0,
+				"10": 1,
+				"11": 0,
+				"12": 0,
+				"13": 0,
+				"14": 0,
+				"15": 1
+			},
+			"isEnabled": true,
+			"isVisible": true,
+			"infiniteDistance": false,
+			"pickable": true,
+			"receiveShadows": false,
+			"billboardMode": 0,
+			"visibility": 1,
+			"checkCollisions": false,
+			"isBlocker": false,
+			"overrideMaterialSideOrientation": 0,
+			"parentId": "f683f32c-2132-4a04-9765-e0e44012943d",
+			"isUnIndexed": false,
+			"geometryUniqueId": 1780,
+			"geometryId": "d6a0e42c-b99e-412d-b448-7fcb3edd2334",
+			"subMeshes": null,
+			"materialUniqueId": 1781,
+			"materialId": "51530075-744e-4746-b5f2-f1fe0854f2d5",
+			"metadata": {
+				"gltf": {
+					"pointers": [
+						"/meshes/0/primitives/0",
+						"/nodes/0"
+					]
+				},
+				"basePoseMatrix": {
+					"0": -1,
+					"1": 0,
+					"2": 0,
+					"3": 0,
+					"4": 0,
+					"5": 1,
+					"6": 0,
+					"7": 0,
+					"8": 0,
+					"9": 0,
+					"10": 1,
+					"11": 0,
+					"12": 0,
+					"13": 0,
+					"14": 0,
+					"15": 1
+				},
+				"originalSourceFile": {
+					"id": "fenceAPillar1",
+					"name": "fenceAPillar1",
+					"sceneFileName": "models/BabylonJS Graveyard Assets/Assets-meshes-graveYardPack/fenceAPillar1/fenceAPillar1.glb"
+				},
+				"isPickable": true
+			},
+			"instances": [],
+			"animations": [],
+			"ranges": [],
+			"layerMask": 268435455,
+			"alphaIndex": 1.7976931348623157e+308,
+			"hasVertexAlpha": false,
+			"overlayAlpha": 0.3,
+			"overlayColor": [
+				1,
+				0,
+				0
+			],
+			"applyFog": true,
+			"delayLoadingFile": "geometries/d6a0e42c-b99e-412d-b448-7fcb3edd2334.babylonbinarymeshdata",
+			"boundingBoxMaximum": [
+				0.320329487323761,
+				2.0096120834350586,
+				0.40767985582351685
+			],
+			"boundingBoxMinimum": [
+				-0.320329487323761,
+				-0.06797407567501068,
+				-0.40767985582351685
+			],
+			"_binaryInfo": {
+				"positionsAttrDesc": {
+					"count": 396,
+					"stride": 3,
+					"offset": 0,
+					"dataType": 1
+				},
+				"normalsAttrDesc": {
+					"count": 396,
+					"stride": 3,
+					"offset": 1584,
+					"dataType": 1
+				},
+				"uvsAttrDesc": {
+					"count": 264,
+					"stride": 2,
+					"offset": 3168,
+					"dataType": 1
+				},
+				"indicesAttrDesc": {
+					"count": 228,
+					"stride": 1,
+					"offset": 4224,
+					"dataType": 0
+				},
+				"subMeshesAttrDesc": {
+					"count": 1,
+					"stride": 5,
+					"offset": 5136,
+					"dataType": 0
+				}
+			},
+			"positions": null,
+			"normals": null,
+			"uvs": null,
+			"hasUVs": true,
+			"indices": null
+		}
+	],
+	"multiMaterials": [],
+	"lods": []
+}

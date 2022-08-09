@@ -28,25 +28,25 @@ export default class NetworkManager extends Node {
      * @warn do not fill.
      */
     protected constructor();
-    get ColyseusServerAddress(): string;
-    set ColyseusServerAddress(value: string);
-    get ColyseusServerPort(): number;
-    set ColyseusServerPort(value: number);
+    getColyseusServerAddress(): string;
+    setColyseusServerAddress(value: string): void;
+    getColyseusServerPort(): number;
+    setColyseusServerPort(value: number): void;
     get ColyseusUseSecure(): boolean;
     set ColyseusUseSecure(value: boolean);
-    private get WebSocketEndPoint();
-    private get WebRequestEndPoint();
+    private WebSocketEndPoint;
+    private WebRequestEndPoint;
     get Room(): Colyseus.Room<HASRoomState>;
     private set Room(value);
     /**
      * Called on the node is being initialized.
      * This function is called immediatly after the constructor has been called.
      */
-    onInitialize(): Promise<void>;
+    onInitialize(): void;
     /**
      * Called on the scene starts.
      */
-    onStart(): void;
+    onStart(): Promise<void>;
     /**
      * Called each frame.
      */
@@ -63,4 +63,8 @@ export default class NetworkManager extends Node {
      * @param sender defines the reference to the graph class that sent the message.
      */
     onMessage(name: string, data: any, sender: any): void;
+    joinRoom(roomId?: string): Promise<void>;
+    private joinRoomWithId;
+    private registerRoomHandlers;
+    private unregisterRoomHandlers;
 }

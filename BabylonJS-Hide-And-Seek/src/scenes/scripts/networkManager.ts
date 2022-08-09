@@ -34,19 +34,19 @@ export default class NetworkManager extends Node {
 	// @ts-ignore ignoring the super call as we don't want to re-init
 	protected constructor() {}
 
-	public get ColyseusServerAddress(): string {
+	public getColyseusServerAddress(): string {
 		return this._serverSettings?.colyseusServerAddress || 'localhost';
 	}
 
-	public set ColyseusServerAddress(value: string) {
+	public setColyseusServerAddress(value: string) {
 		this._serverSettings.colyseusServerAddress = value;
 	}
 
-	public get ColyseusServerPort(): number {
+	public getColyseusServerPort(): number {
 		return this._serverSettings?.colyseusServerPort || 2567;
 	}
 
-	public set ColyseusServerPort(value: number) {
+	public setColyseusServerPort(value: number) {
 		this._serverSettings.colyseusServerPort = value;
 	}
 
@@ -58,12 +58,12 @@ export default class NetworkManager extends Node {
 		this._serverSettings.useSecureProtocol = value;
 	}
 
-	private get WebSocketEndPoint(): string {
-		return `${this.ColyseusUseSecure ? 'wss' : 'ws'}://${this.ColyseusServerAddress}:${this.ColyseusServerPort}`;
+	private WebSocketEndPoint(): string {
+		return `${this.ColyseusUseSecure ? 'wss' : 'ws'}://${this.getColyseusServerAddress()}:${this.getColyseusServerPort()}`;
 	}
 
-	private get WebRequestEndPoint(): string {
-		return `${this.ColyseusUseSecure ? 'https' : 'http'}://${this.ColyseusServerAddress}:${this.ColyseusServerPort}`;
+	private WebRequestEndPoint(): string {
+		return `${this.ColyseusUseSecure ? 'https' : 'http'}://${this.getColyseusServerAddress()}:${this.getColyseusServerPort()}`;
 	}
 
 	public get Room() {
@@ -78,19 +78,21 @@ export default class NetworkManager extends Node {
 	 * Called on the node is being initialized.
 	 * This function is called immediatly after the constructor has been called.
 	 */
-	public async onInitialize(): Promise<void> {
+	public onInitialize(): void {
 		// ...
-		// console.log(`Network Manager - On Initialize - Create Colyseus Client`);
-		// this._client = new Colyseus.Client('ws://localhost:2567');
-		// console.log(this._client);
-		// this.Room = await this._client.joinOrCreate('HAS_room');
 	}
 
 	/**
 	 * Called on the scene starts.
 	 */
-	public onStart(): void {
+	public async onStart(): Promise<void> {
 		// ...
+		console.log(`Network Manager - On Initialize - Create Colyseus Client with URL: ${this.WebSocketEndPoint()}`);
+		this._client = new Colyseus.Client(this.WebSocketEndPoint());
+
+		// await this.joinRoom();
+
+		// console.log(`Joined Room! - ${this.Room.id}`);
 	}
 
 	/**
@@ -119,6 +121,52 @@ export default class NetworkManager extends Node {
 			case 'myMessage':
 				// Do something...
 				break;
+		}
+	}
+
+	public async joinRoom(roomId: string = '') {
+		this.Room = await this.joinRoomWithId(roomId);
+
+		this.registerRoomHandlers();
+	}
+
+	private async joinRoomWithId(roomId: string = ''): Promise<Colyseus.Room<HASRoomState>> {
+		try {
+			if (roomId) {
+				return await this._client.joinById(roomId);
+			} else {
+				return await this._client.joinOrCreate('HAS_room');
+			}
+		} catch (error: any) {
+			console.error(error.stack);
+		}
+	}
+
+	private registerRoomHandlers() {
+		console.log(`Register Room Handlers`);
+
+		if (this.Room) {
+			// this.Room.onLeave.once(this.onLeaveGridRoom);
+			// this.Room.onStateChange.once(this.onRoomStateChange);
+			// this.Room.state.networkedUsers.onAdd = MMOManager.Instance.onAddNetworkedUser;
+			// this.Room.state.networkedUsers.onRemove = MMOManager.Instance.onRemoveNetworkedUser;
+			// this.Room.onMessage<ObjectUseMessage>('objectUsed', (msg) => {
+			// 	this.awaitObjectInteraction(msg.interactedObjectID, msg.interactingStateID);
+			// });
+			// this.Room.onMessage<MovedToGridMessage>('movedToGrid', (msg) => {
+			// 	this.onMovedToGrid(msg);
+			// });
+		} else {
+			console.error(`Cannot register room handlers; room is null!`);
+		}
+	}
+
+	private unregisterRoomHandlers() {
+		if (this.Room) {
+			// this.Room.onLeave.remove(this.onLeaveGridRoom);
+			// this.Room.onStateChange.remove(this.onRoomStateChange);
+			// this.Room.state.networkedUsers.onAdd = null;
+			// this.Room.state.networkedUsers.onRemove = null;
 		}
 	}
 }

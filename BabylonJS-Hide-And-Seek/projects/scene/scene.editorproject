@@ -7,13 +7,6 @@
 		{
 			"isMultiMaterial": false,
 			"bindedMeshes": [
-				"eee4645a-645f-4faf-b10b-868d396f01f0"
-			],
-			"json": "materials/ground.material"
-		},
-		{
-			"isMultiMaterial": false,
-			"bindedMeshes": [
 				"6a927ea7-51d9-4248-9b80-4d34b53b386e"
 			],
 			"json": "materials/sky.material"
@@ -24,6 +17,13 @@
 				"e22f3d3a-65b2-4993-8c52-cb05d2af8278"
 			],
 			"json": "materials/cube.material"
+		},
+		{
+			"isMultiMaterial": false,
+			"bindedMeshes": [
+				"eee4645a-645f-4faf-b10b-868d396f01f0"
+			],
+			"json": "materials/ground.material"
 		}
 	],
 	"textures": [],

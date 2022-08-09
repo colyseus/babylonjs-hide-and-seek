@@ -28,11 +28,13 @@
 	],
 	"textures": [],
 	"meshes": [
-		"sky-6a927ea7-51d9-4248-9b80-4d34b53b386e.json",
 		"cube-e22f3d3a-65b2-4993-8c52-cb05d2af8278.json",
+		"sky-6a927ea7-51d9-4248-9b80-4d34b53b386e.json",
 		"ground-eee4645a-645f-4faf-b10b-868d396f01f0.json"
 	],
-	"transformNodes": [],
+	"transformNodes": [
+		"Network Manager-ba162d8e-51c9-48ee-a26b-2d2e5e059c11.json"
+	],
 	"particleSystems": [],
 	"lights": [
 		{

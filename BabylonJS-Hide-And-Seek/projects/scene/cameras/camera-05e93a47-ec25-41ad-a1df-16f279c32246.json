@@ -45,7 +45,7 @@
 			"name": "None"
 		}
 	},
-	"uniqueId": 28,
+	"uniqueId": 27,
 	"type": "UniversalCamera",
 	"inputsmgr": {
 		"FreeCameraKeyboardMoveInput": {

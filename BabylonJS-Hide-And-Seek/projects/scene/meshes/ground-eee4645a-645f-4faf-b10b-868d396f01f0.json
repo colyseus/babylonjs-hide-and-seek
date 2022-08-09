@@ -4,7 +4,7 @@
 		{
 			"name": "ground",
 			"id": "eee4645a-645f-4faf-b10b-868d396f01f0",
-			"uniqueId": 16,
+			"uniqueId": 17,
 			"type": "GroundMesh",
 			"position": [
 				0,
@@ -50,7 +50,7 @@
 			"isBlocker": false,
 			"overrideMaterialSideOrientation": null,
 			"isUnIndexed": false,
-			"geometryUniqueId": 19,
+			"geometryUniqueId": 20,
 			"geometryId": "ad6b245c-2a92-47da-89e7-d0e71d6f2cc7",
 			"subMeshes": null,
 			"materialUniqueId": 22,

@@ -4,7 +4,7 @@
 		{
 			"name": "cube",
 			"id": "e22f3d3a-65b2-4993-8c52-cb05d2af8278",
-			"uniqueId": 17,
+			"uniqueId": 15,
 			"type": "Mesh",
 			"tags": "modified",
 			"position": [
@@ -51,7 +51,7 @@
 			"isBlocker": false,
 			"overrideMaterialSideOrientation": null,
 			"isUnIndexed": false,
-			"geometryUniqueId": 21,
+			"geometryUniqueId": 18,
 			"geometryId": "0a6933b0-9cd4-4243-a7a6-fec39bd16cea",
 			"subMeshes": null,
 			"materialUniqueId": 24,

@@ -1,0 +1,90 @@
+{
+	"tags": null,
+	"ellipsoid": [
+		0.5,
+		1,
+		0.5
+	],
+	"ellipsoidOffset": [
+		0,
+		0,
+		0
+	],
+	"checkCollisions": false,
+	"applyGravity": false,
+	"rotation": [
+		1.164615681546368,
+		-6.99999913490936e-11,
+		0
+	],
+	"speed": 0,
+	"position": [
+		0,
+		22.660938262939453,
+		-8.484463691711426
+	],
+	"upVector": [
+		0,
+		1,
+		0
+	],
+	"fov": 0.85,
+	"projectionPlaneTilt": 0,
+	"minZ": 1,
+	"maxZ": 170859.375,
+	"inertia": 0.9,
+	"mode": 0,
+	"layerMask": 268435455,
+	"fovMode": 0,
+	"cameraRigMode": 0,
+	"name": "Player Camera",
+	"id": "8c0c88fd-dd40-4df4-b9ca-570c53d2f7d1",
+	"state": "",
+	"metadata": {
+		"script": {
+			"name": "None"
+		},
+		"doNotExport": false
+	},
+	"uniqueId": 506,
+	"type": "FreeCamera",
+	"parentId": "0d678227-09f8-4d4a-851d-cfc27f03900f",
+	"inputsmgr": {
+		"FreeCameraKeyboardMoveInput": {
+			"tags": null,
+			"keysUp": [
+				38
+			],
+			"keysUpward": [
+				33
+			],
+			"keysDown": [
+				40
+			],
+			"keysDownward": [
+				34
+			],
+			"keysLeft": [
+				37
+			],
+			"keysRight": [
+				39
+			],
+			"rotationSpeed": 0.5,
+			"keysRotateLeft": [],
+			"keysRotateRight": []
+		},
+		"FreeCameraMouseInput": {
+			"tags": null,
+			"buttons": [
+				0,
+				1,
+				2
+			],
+			"angularSensibility": 2000000000000
+		}
+	},
+	"animations": [],
+	"ranges": [],
+	"isEnabled": true
+}

@@ -87,7 +87,12 @@
 					"name": "fenceACorner1",
 					"sceneFileName": "models/BabylonJS Graveyard Assets/Assets-meshes-graveYardPack/fenceACorner1/fenceACorner1.glb"
 				},
-				"isPickable": true
+				"isPickable": true,
+				"script": {
+					"name": "None"
+				},
+				"renderingGroupId": 0,
+				"doNotExport": false
 			},
 			"instances": [],
 			"animations": [],

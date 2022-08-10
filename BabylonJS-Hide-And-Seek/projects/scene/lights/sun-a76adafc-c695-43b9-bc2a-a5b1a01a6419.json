@@ -29,14 +29,14 @@
 	"includeOnlyWithLayerMask": 0,
 	"lightmapMode": 0,
 	"position": [
+		0,
 		100,
-		100,
-		100
+		0
 	],
 	"direction": [
-		-1,
-		-2,
-		-1
+		0.00034880407858107527,
+		-0.9963214534389371,
+		0.08569387231907945
 	],
 	"name": "sun",
 	"id": "a76adafc-c695-43b9-bc2a-a5b1a01a6419",

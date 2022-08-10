@@ -87,7 +87,8 @@
 					"name": "fenceAPillar1",
 					"sceneFileName": "models/BabylonJS Graveyard Assets/Assets-meshes-graveYardPack/fenceAPillar1/fenceAPillar1.glb"
 				},
-				"isPickable": true
+				"isPickable": true,
+				"doNotExport": false
 			},
 			"instances": [],
 			"animations": [],

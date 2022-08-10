@@ -11,10 +11,11 @@
 				-0.32231569290161133,
 				3.5635476112365723
 			],
-			"rotation": [
+			"rotationQuaternion": [
 				0,
-				1.5707963267948963,
-				0
+				0.7071067811865475,
+				0,
+				0.7071067811865477
 			],
 			"scaling": [
 				6,
@@ -56,6 +57,10 @@
 			"subMeshes": null,
 			"materialUniqueId": 18,
 			"materialId": "default material",
+			"physicsMass": 0,
+			"physicsFriction": 0.2,
+			"physicsRestitution": 0.2,
+			"physicsImpostor": 2,
 			"metadata": {
 				"editorGeometry": {
 					"type": "Cube",

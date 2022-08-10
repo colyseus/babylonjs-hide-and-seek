@@ -13,7 +13,7 @@
 			],
 			"rotationQuaternion": [
 				0,
-				0,
+				4.779160400758542e-11,
 				0,
 				1
 			],
@@ -57,6 +57,10 @@
 			"subMeshes": null,
 			"materialUniqueId": 2104,
 			"materialId": "b42b7615-f043-41c5-87c5-f24e8f61be85",
+			"physicsMass": 1,
+			"physicsFriction": 0.2,
+			"physicsRestitution": 0.2,
+			"physicsImpostor": 0,
 			"metadata": {
 				"gltf": {
 					"pointers": [

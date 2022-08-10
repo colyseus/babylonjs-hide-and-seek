@@ -1,0 +1,157 @@
+{
+	"materials": [],
+	"meshes": [
+		{
+			"name": "signboard2",
+			"id": "b77b2c40-3853-4be2-b30c-5aadda528908",
+			"uniqueId": 2150,
+			"type": "Mesh",
+			"position": [
+				0,
+				0,
+				0
+			],
+			"rotationQuaternion": [
+				0,
+				0,
+				0,
+				1
+			],
+			"scaling": [
+				1,
+				1,
+				1
+			],
+			"localMatrix": {
+				"0": 1,
+				"1": 0,
+				"2": 0,
+				"3": 0,
+				"4": 0,
+				"5": 1,
+				"6": 0,
+				"7": 0,
+				"8": 0,
+				"9": 0,
+				"10": 1,
+				"11": 0,
+				"12": 0,
+				"13": 0,
+				"14": 0,
+				"15": 1
+			},
+			"isEnabled": true,
+			"isVisible": true,
+			"infiniteDistance": false,
+			"pickable": true,
+			"receiveShadows": false,
+			"billboardMode": 0,
+			"visibility": 1,
+			"checkCollisions": false,
+			"isBlocker": false,
+			"overrideMaterialSideOrientation": 0,
+			"parentId": "2598a1e6-6272-40e3-a595-784d6165696c",
+			"isUnIndexed": false,
+			"geometryUniqueId": 2151,
+			"geometryId": "66c7383a-243a-4ce0-b64b-900679128c84",
+			"subMeshes": null,
+			"materialUniqueId": 2152,
+			"materialId": "de00d547-e2d2-42c7-bec5-a6e790566235",
+			"metadata": {
+				"gltf": {
+					"pointers": [
+						"/meshes/0/primitives/0",
+						"/nodes/0"
+					]
+				},
+				"basePoseMatrix": {
+					"0": -1,
+					"1": 0,
+					"2": 0,
+					"3": 0,
+					"4": 0,
+					"5": 1,
+					"6": 0,
+					"7": 0,
+					"8": 0,
+					"9": 0,
+					"10": 1,
+					"11": 0,
+					"12": 0,
+					"13": 0,
+					"14": 0,
+					"15": 1
+				},
+				"originalSourceFile": {
+					"id": "signboard2",
+					"name": "signboard2",
+					"sceneFileName": "models/BabylonJS Graveyard Assets/Assets-meshes-graveYardPack/signboard2/signboard2.glb"
+				},
+				"isPickable": true
+			},
+			"instances": [],
+			"animations": [],
+			"ranges": [],
+			"layerMask": 268435455,
+			"alphaIndex": 1.7976931348623157e+308,
+			"hasVertexAlpha": false,
+			"overlayAlpha": 0.3,
+			"overlayColor": [
+				1,
+				0,
+				0
+			],
+			"applyFog": true,
+			"delayLoadingFile": "geometries/66c7383a-243a-4ce0-b64b-900679128c84.babylonbinarymeshdata",
+			"boundingBoxMaximum": [
+				0.43298354744911194,
+				1.50446617603302,
+				0.37634462118148804
+			],
+			"boundingBoxMinimum": [
+				-0.5113370418548584,
+				-0.06797407567501068,
+				-0.3097708821296692
+			],
+			"_binaryInfo": {
+				"positionsAttrDesc": {
+					"count": 636,
+					"stride": 3,
+					"offset": 0,
+					"dataType": 1
+				},
+				"normalsAttrDesc": {
+					"count": 636,
+					"stride": 3,
+					"offset": 2544,
+					"dataType": 1
+				},
+				"uvsAttrDesc": {
+					"count": 424,
+					"stride": 2,
+					"offset": 5088,
+					"dataType": 1
+				},
+				"indicesAttrDesc": {
+					"count": 348,
+					"stride": 1,
+					"offset": 6784,
+					"dataType": 0
+				},
+				"subMeshesAttrDesc": {
+					"count": 1,
+					"stride": 5,
+					"offset": 8176,
+					"dataType": 0
+				}
+			},
+			"positions": null,
+			"normals": null,
+			"uvs": null,
+			"hasUVs": true,
+			"indices": null
+		}
+	],
+	"multiMaterials": [],
+	"lods": []
+}

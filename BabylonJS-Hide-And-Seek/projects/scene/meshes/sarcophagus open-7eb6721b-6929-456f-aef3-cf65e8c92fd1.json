@@ -1,0 +1,104 @@
+{
+	"materials": [],
+	"meshes": [
+		{
+			"name": "sarcophagus open",
+			"id": "7eb6721b-6929-456f-aef3-cf65e8c92fd1",
+			"uniqueId": 2137,
+			"type": "Mesh",
+			"position": [
+				-55,
+				0,
+				-3
+			],
+			"rotationQuaternion": [
+				0,
+				1,
+				0,
+				0
+			],
+			"scaling": [
+				1,
+				1,
+				-1
+			],
+			"localMatrix": {
+				"0": 1,
+				"1": 0,
+				"2": 0,
+				"3": 0,
+				"4": 0,
+				"5": 1,
+				"6": 0,
+				"7": 0,
+				"8": 0,
+				"9": 0,
+				"10": 1,
+				"11": 0,
+				"12": 0,
+				"13": 0,
+				"14": 0,
+				"15": 1
+			},
+			"isEnabled": true,
+			"isVisible": true,
+			"infiniteDistance": false,
+			"pickable": true,
+			"receiveShadows": false,
+			"billboardMode": 0,
+			"visibility": 1,
+			"checkCollisions": false,
+			"isBlocker": false,
+			"overrideMaterialSideOrientation": null,
+			"parentId": "a42ec12a-7f0a-4d92-bb09-c5a43e5c9ca6",
+			"isUnIndexed": false,
+			"materialUniqueId": 18,
+			"materialId": "default material",
+			"metadata": {
+				"basePoseMatrix": {
+					"0": -1,
+					"1": 0,
+					"2": 0,
+					"3": 0,
+					"4": 0,
+					"5": 1,
+					"6": 0,
+					"7": 0,
+					"8": 0,
+					"9": 0,
+					"10": 1,
+					"11": 0,
+					"12": 0,
+					"13": 0,
+					"14": 0,
+					"15": 1
+				},
+				"originalSourceFile": {
+					"id": "__root__",
+					"name": "__root__",
+					"sceneFileName": "models/BabylonJS Graveyard Assets/Assets-meshes-graveYardPack/sarcophagusOpen/sarcophagusOpen.glb"
+				},
+				"isPickable": true,
+				"script": {
+					"name": "None"
+				},
+				"renderingGroupId": 0
+			},
+			"instances": [],
+			"animations": [],
+			"ranges": [],
+			"layerMask": 268435455,
+			"alphaIndex": 1.7976931348623157e+308,
+			"hasVertexAlpha": false,
+			"overlayAlpha": 0.5,
+			"overlayColor": [
+				1,
+				0,
+				0
+			],
+			"applyFog": true
+		}
+	],
+	"multiMaterials": [],
+	"lods": []
+}

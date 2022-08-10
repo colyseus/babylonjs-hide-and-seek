@@ -60,6 +60,6 @@
 		"mask": 255,
 		"enabled": false
 	},
-	"uniqueId": 23,
+	"uniqueId": 21,
 	"customType": "BABYLON.SkyMaterial"
 }

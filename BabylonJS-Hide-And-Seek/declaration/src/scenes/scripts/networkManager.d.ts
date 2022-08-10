@@ -1,4 +1,6 @@
 import { Node } from '@babylonjs/core/node';
+import * as Colyseus from 'colyseus.js';
+import type { HASRoomState } from '../../../../Server/hide-and-seek/src/rooms/HASRoom';
 /**
  * This represents a script that is attached to a node in the editor.
  * Available nodes are:
@@ -18,12 +20,24 @@ import { Node } from '@babylonjs/core/node';
  * The functions "onStart" and "onUpdate" are called automatically.
  */
 export default class NetworkManager extends Node {
+    private _serverSettings;
     private _client;
+    private _room;
     /**
      * Override constructor.
      * @warn do not fill.
      */
     protected constructor();
+    getColyseusServerAddress(): string;
+    setColyseusServerAddress(value: string): void;
+    getColyseusServerPort(): number;
+    setColyseusServerPort(value: number): void;
+    get ColyseusUseSecure(): boolean;
+    set ColyseusUseSecure(value: boolean);
+    private WebSocketEndPoint;
+    private WebRequestEndPoint;
+    get Room(): Colyseus.Room<HASRoomState>;
+    private set Room(value);
     /**
      * Called on the node is being initialized.
      * This function is called immediatly after the constructor has been called.
@@ -32,7 +46,7 @@ export default class NetworkManager extends Node {
     /**
      * Called on the scene starts.
      */
-    onStart(): void;
+    onStart(): Promise<void>;
     /**
      * Called each frame.
      */
@@ -49,4 +63,8 @@ export default class NetworkManager extends Node {
      * @param sender defines the reference to the graph class that sent the message.
      */
     onMessage(name: string, data: any, sender: any): void;
+    joinRoom(roomId?: string): Promise<void>;
+    private joinRoomWithId;
+    private registerRoomHandlers;
+    private unregisterRoomHandlers;
 }

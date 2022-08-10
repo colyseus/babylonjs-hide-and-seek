@@ -51,10 +51,10 @@
 			"isBlocker": false,
 			"overrideMaterialSideOrientation": null,
 			"isUnIndexed": false,
-			"geometryUniqueId": 19,
+			"geometryUniqueId": 17,
 			"geometryId": "1048e812-0cc0-4d4c-86fa-842b9be9ca48",
 			"subMeshes": null,
-			"materialUniqueId": 23,
+			"materialUniqueId": 21,
 			"materialId": "b2346078-7465-4c63-8877-44b542584898",
 			"metadata": {
 				"isPickable": true,
@@ -62,7 +62,9 @@
 					"name": "None"
 				},
 				"renderingGroupId": 0,
-				"_waitingParentId": null
+				"_waitingParentId": null,
+				"doNotExport": false,
+				"isLocked": true
 			},
 			"instances": [],
 			"animations": [],

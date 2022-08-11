@@ -23,16 +23,36 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.HASRoomState = void 0;
 var schema_1 = require("@colyseus/schema");
+var PlayerState_1 = require("./PlayerState");
 var HASRoomState = /** @class */ (function (_super) {
     __extends(HASRoomState, _super);
     function HASRoomState() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.mySynchronizedProperty = 'Hello world';
+        _this.players = new schema_1.MapSchema();
+        _this.serverTime = 0.0;
+        _this.deltaTime = 0.0;
         return _this;
     }
+    HASRoomState.prototype.update = function (deltaTime) {
+        // logger.debug(`Room State Update - DT: ${deltaTime}`);
+        this.deltaTime = deltaTime;
+        this.updatePlayers();
+    };
+    HASRoomState.prototype.updatePlayers = function () {
+        var _this = this;
+        this.players.forEach(function (player) {
+            player.update(_this.deltaTime);
+        });
+    };
     __decorate([
-        (0, schema_1.type)('string')
-    ], HASRoomState.prototype, "mySynchronizedProperty", void 0);
+        (0, schema_1.type)({ map: PlayerState_1.PlayerState })
+    ], HASRoomState.prototype, "players", void 0);
+    __decorate([
+        (0, schema_1.type)('number')
+    ], HASRoomState.prototype, "serverTime", void 0);
+    __decorate([
+        (0, schema_1.type)('number')
+    ], HASRoomState.prototype, "deltaTime", void 0);
     return HASRoomState;
 }(schema_1.Schema));
 exports.HASRoomState = HASRoomState;

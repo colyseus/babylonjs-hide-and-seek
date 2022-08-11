@@ -67,6 +67,13 @@ var NetworkManager = /** @class */ (function (_super) {
         _this._room = null;
         return _this;
     }
+    Object.defineProperty(NetworkManager, "Instance", {
+        get: function () {
+            return NetworkManager._instance;
+        },
+        enumerable: false,
+        configurable: true
+    });
     NetworkManager.prototype.getColyseusServerAddress = function () {
         var _a;
         return ((_a = this._serverSettings) === null || _a === void 0 ? void 0 : _a.colyseusServerAddress) || 'localhost';
@@ -114,6 +121,14 @@ var NetworkManager = /** @class */ (function (_super) {
      */
     NetworkManager.prototype.onInitialize = function () {
         // ...
+        NetworkManager._instance = this;
+        console.log("Network Manager - On Initialize - Create Colyseus Client with URL: ".concat(this.WebSocketEndPoint()));
+        this._client = new Colyseus.Client(this.WebSocketEndPoint());
+        this.bindHandlers();
+    };
+    NetworkManager.prototype.bindHandlers = function () {
+        // this.onPlayerAdded = this.onPlayerAdded.bind(this);
+        this.handleMessages = this.handleMessages.bind(this);
     };
     /**
      * Called on the scene starts.
@@ -121,9 +136,6 @@ var NetworkManager = /** @class */ (function (_super) {
     NetworkManager.prototype.onStart = function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                // ...
-                console.log("Network Manager - On Initialize - Create Colyseus Client with URL: ".concat(this.WebSocketEndPoint()));
-                this._client = new Colyseus.Client(this.WebSocketEndPoint());
                 return [2 /*return*/];
             });
         });
@@ -165,6 +177,9 @@ var NetworkManager = /** @class */ (function (_super) {
                         return [4 /*yield*/, this.joinRoomWithId(roomId)];
                     case 1:
                         _a.Room = _b.sent();
+                        if (this.Room) {
+                            console.log("Joined Room: ".concat(this.Room.id));
+                        }
                         this.registerRoomHandlers();
                         return [2 /*return*/];
                 }
@@ -180,9 +195,12 @@ var NetworkManager = /** @class */ (function (_super) {
                     case 0:
                         _a.trys.push([0, 5, , 6]);
                         if (!roomId) return [3 /*break*/, 2];
+                        console.log("Join room with id: ".concat(roomId));
                         return [4 /*yield*/, this._client.joinById(roomId)];
                     case 1: return [2 /*return*/, _a.sent()];
-                    case 2: return [4 /*yield*/, this._client.joinOrCreate('HAS_room')];
+                    case 2:
+                        console.log("Join or create room");
+                        return [4 /*yield*/, this._client.joinOrCreate('HAS_room')];
                     case 3: return [2 /*return*/, _a.sent()];
                     case 4: return [3 /*break*/, 6];
                     case 5:
@@ -207,6 +225,8 @@ var NetworkManager = /** @class */ (function (_super) {
             // this.Room.onMessage<MovedToGridMessage>('movedToGrid', (msg) => {
             // 	this.onMovedToGrid(msg);
             // });
+            this.Room.state.players.onAdd = this.onPlayerAdded;
+            this.Room.onMessage('*', this.handleMessages);
         }
         else {
             console.error("Cannot register room handlers; room is null!");
@@ -214,12 +234,32 @@ var NetworkManager = /** @class */ (function (_super) {
     };
     NetworkManager.prototype.unregisterRoomHandlers = function () {
         if (this.Room) {
+            this.Room.state.players.onAdd = null;
             // this.Room.onLeave.remove(this.onLeaveGridRoom);
             // this.Room.onStateChange.remove(this.onRoomStateChange);
             // this.Room.state.networkedUsers.onAdd = null;
             // this.Room.state.networkedUsers.onRemove = null;
         }
     };
+    NetworkManager.prototype.sendPlayerDirectionInput = function (direction) {
+        if (!this.Room) {
+            return;
+        }
+        this.Room.send('playerInput', [direction.x, direction.y, direction.z]);
+    };
+    // private playerAdded(item: PlayerState, key: string) {
+    // 	//
+    // 	if (this.onPlayerAdded) {
+    // 		this.onPlayerAdded(item, key);
+    // 	}
+    // }
+    NetworkManager.prototype.handleMessages = function (name, message) {
+        // switch (name) {
+        // 	case 'velocityChange':
+        // 		this.handleVelocityChange(message);
+        // }
+    };
+    NetworkManager._instance = null;
     return NetworkManager;
 }(node_1.Node));
 exports.default = NetworkManager;

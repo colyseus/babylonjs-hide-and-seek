@@ -4,7 +4,7 @@
 		{
 			"name": "tombstone 2 weathered",
 			"id": "4585aaea-8def-4cac-bfc5-ac05f90ed69a",
-			"uniqueId": 2253,
+			"uniqueId": 59,
 			"type": "Mesh",
 			"position": [
 				-66,
@@ -52,7 +52,7 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "c52ac2f9-ca0a-4c23-90eb-c020aa791dca",
 			"isUnIndexed": false,
-			"materialUniqueId": 18,
+			"materialUniqueId": 226,
 			"materialId": "default material",
 			"metadata": {
 				"basePoseMatrix": {

@@ -4,7 +4,7 @@
 		{
 			"name": "obelisk1",
 			"id": "4b9516b7-0099-4c6e-95c8-274034a1c4d7",
-			"uniqueId": 2120,
+			"uniqueId": 103,
 			"type": "Mesh",
 			"position": [
 				0,
@@ -52,10 +52,10 @@
 			"overrideMaterialSideOrientation": 0,
 			"parentId": "8f8cfa42-db2b-42b6-bd2f-fcd28ea45501",
 			"isUnIndexed": false,
-			"geometryUniqueId": 2121,
+			"geometryUniqueId": 182,
 			"geometryId": "d3fbd45c-106f-4e95-9dfd-e6267e4644d2",
 			"subMeshes": null,
-			"materialUniqueId": 2122,
+			"materialUniqueId": 311,
 			"materialId": "f656d564-5412-4529-a907-a8b57779202e",
 			"metadata": {
 				"gltf": {

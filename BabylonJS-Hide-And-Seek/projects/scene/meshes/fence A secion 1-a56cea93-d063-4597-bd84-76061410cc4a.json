@@ -4,7 +4,7 @@
 		{
 			"name": "fence A secion 1",
 			"id": "a56cea93-d063-4597-bd84-76061410cc4a",
-			"uniqueId": 1869,
+			"uniqueId": 36,
 			"type": "Mesh",
 			"position": [
 				-17,
@@ -52,7 +52,7 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "ba3b2da1-f56d-4fb6-acc2-662170015851",
 			"isUnIndexed": false,
-			"materialUniqueId": 18,
+			"materialUniqueId": 226,
 			"materialId": "default material",
 			"metadata": {
 				"basePoseMatrix": {

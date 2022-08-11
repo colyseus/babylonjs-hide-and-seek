@@ -25,6 +25,7 @@ var core_1 = require("@babylonjs/core");
 var decorators_1 = require("../../decorators");
 var gameManager_1 = require("../managers/gameManager");
 var inputManager_1 = require("../managers/inputManager");
+var networkManager_1 = require("../managers/networkManager");
 /**
  * This represents a script that is attached to a node in the editor.
  * Available nodes are:
@@ -54,6 +55,11 @@ var Player = /** @class */ (function (_super) {
         var _this = this;
         _this._movementSpeed = 1;
         _this._rigidbody = null;
+        _this._xDirection = 0;
+        _this._zDirection = 0;
+        _this._lastXDirection = 0;
+        _this._lastZDirection = 0;
+        _this._state = null;
         return _this;
     }
     /**
@@ -70,28 +76,49 @@ var Player = /** @class */ (function (_super) {
         // ...
         this._rigidbody = this.getPhysicsImpostor();
     };
+    Player.prototype.setPlayerState = function (state) {
+        console.log("Player - Set Player State");
+        this._state = state;
+        // state.onChange = (changes: any[]) => {
+        // 	console.log(`Player State Changed: %o`, changes);
+        // };
+    };
     /**
      * Called each frame.
      */
     Player.prototype.onUpdate = function () {
         this.updatePlayerMovement();
+        this.updateVelocityFromState();
+    };
+    Player.prototype.updateVelocityFromState = function () {
+        if (!this._state) {
+            return;
+        }
+        this._rigidbody.setLinearVelocity(new core_1.Vector3(this._state.xVel, this._state.yVel, this._state.zVel));
     };
     Player.prototype.updatePlayerMovement = function () {
         var direction = new core_1.Vector3();
-        var z = 0;
-        var x = 0;
         // W + -S (1/0 + -1/0)
-        z = (inputManager_1.default.getKey(87) ? 1 : 0) + (inputManager_1.default.getKey(83) ? -1 : 0);
+        this._zDirection = (inputManager_1.default.getKey(87) ? 1 : 0) + (inputManager_1.default.getKey(83) ? -1 : 0);
         // -A + D (-1/0 + 1/0)
-        x = (inputManager_1.default.getKey(65) ? -1 : 0) + (inputManager_1.default.getKey(68) ? 1 : 0);
+        this._xDirection = (inputManager_1.default.getKey(65) ? -1 : 0) + (inputManager_1.default.getKey(68) ? 1 : 0);
         // Prevent the player from moving faster than it should in a diagonal direction
-        if (z !== 0 && x !== 0) {
-            x *= 0.75;
-            z *= 0.75;
+        if (this._zDirection !== 0 && this._xDirection !== 0) {
+            this._xDirection *= 0.75;
+            this._zDirection *= 0.75;
         }
-        direction.x = x * this._movementSpeed * gameManager_1.default.DeltaTime;
-        direction.z = z * this._movementSpeed * gameManager_1.default.DeltaTime;
-        this._rigidbody.setLinearVelocity(direction);
+        direction.x = this._xDirection;
+        direction.z = this._zDirection;
+        // Only send the direction input if it has changed
+        if (this._lastXDirection !== this._xDirection || this._lastZDirection !== this._zDirection) {
+            // Send direction update message to the server
+            networkManager_1.default.Instance.sendPlayerDirectionInput(direction);
+        }
+        this._lastXDirection = this._xDirection;
+        this._lastZDirection = this._zDirection;
+        direction.x *= this._movementSpeed * gameManager_1.default.DeltaTime;
+        direction.z *= this._movementSpeed * gameManager_1.default.DeltaTime;
+        // this._rigidbody.setLinearVelocity(direction);
         this._rigidbody.setAngularVelocity(core_1.Vector3.Zero());
         this.position.y = 0.5;
     };

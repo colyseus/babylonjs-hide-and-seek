@@ -4,7 +4,7 @@
 		{
 			"name": "S wall",
 			"id": "40a2dbf4-6a39-4b28-9c88-6278be783d41",
-			"uniqueId": 3114,
+			"uniqueId": 140,
 			"type": "Mesh",
 			"position": [
 				0,
@@ -52,10 +52,10 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "547168ac-7bf2-4f23-872c-3ff4f2ef9dfb",
 			"isUnIndexed": false,
-			"geometryUniqueId": 3115,
+			"geometryUniqueId": 214,
 			"geometryId": "3c0924a2-fb46-4ad2-822e-35ae05e0653b",
 			"subMeshes": null,
-			"materialUniqueId": 18,
+			"materialUniqueId": 226,
 			"materialId": "default material",
 			"physicsMass": 0,
 			"physicsFriction": 0.2,

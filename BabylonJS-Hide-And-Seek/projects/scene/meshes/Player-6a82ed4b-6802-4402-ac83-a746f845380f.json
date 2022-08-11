@@ -4,7 +4,7 @@
 		{
 			"name": "Player",
 			"id": "6a82ed4b-6802-4402-ac83-a746f845380f",
-			"uniqueId": 9161,
+			"uniqueId": 163,
 			"type": "Mesh",
 			"position": [
 				0,
@@ -51,10 +51,10 @@
 			"isBlocker": false,
 			"overrideMaterialSideOrientation": null,
 			"isUnIndexed": false,
-			"geometryUniqueId": 9162,
+			"geometryUniqueId": 244,
 			"geometryId": "1d916d74-511b-480f-9a49-fe94c8f0dce6",
 			"subMeshes": null,
-			"materialUniqueId": 18,
+			"materialUniqueId": 226,
 			"materialId": "default material",
 			"physicsMass": 1,
 			"physicsFriction": 0.2,
@@ -78,7 +78,8 @@
 						}
 					}
 				},
-				"renderingGroupId": 0
+				"renderingGroupId": 0,
+				"_waitingParentId": null
 			},
 			"instances": [],
 			"animations": [],

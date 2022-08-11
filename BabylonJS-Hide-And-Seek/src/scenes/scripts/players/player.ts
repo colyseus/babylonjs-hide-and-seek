@@ -3,6 +3,8 @@ import { Node } from '@babylonjs/core/node';
 import { visibleInInspector } from '../../decorators';
 import GameManager from '../managers/gameManager';
 import InputManager from '../managers/inputManager';
+import NetworkManager from '../managers/networkManager';
+import type { PlayerState } from '../../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
 
 /**
  * This represents a script that is attached to a node in the editor.
@@ -28,6 +30,13 @@ export default class Player extends Mesh {
 
 	private _rigidbody: PhysicsImpostor = null;
 
+	private _xDirection: number = 0;
+	private _zDirection: number = 0;
+	private _lastXDirection: number = 0;
+	private _lastZDirection: number = 0;
+
+	private _state: PlayerState = null;
+
 	/**
 	 * Override constructor.
 	 * @warn do not fill.
@@ -51,33 +60,62 @@ export default class Player extends Mesh {
 		this._rigidbody = this.getPhysicsImpostor();
 	}
 
+	public setPlayerState(state: PlayerState) {
+		console.log(`Player - Set Player State`);
+
+		this._state = state;
+
+		// state.onChange = (changes: any[]) => {
+		// 	console.log(`Player State Changed: %o`, changes);
+		// };
+	}
+
 	/**
 	 * Called each frame.
 	 */
 	public onUpdate(): void {
 		this.updatePlayerMovement();
+		this.updateVelocityFromState();
+	}
+
+	private updateVelocityFromState() {
+		if (!this._state) {
+			return;
+		}
+
+		this._rigidbody.setLinearVelocity(new Vector3(this._state.xVel, this._state.yVel, this._state.zVel));
 	}
 
 	private updatePlayerMovement() {
 		let direction: Vector3 = new Vector3();
-		let z: number = 0;
-		let x: number = 0;
 
 		// W + -S (1/0 + -1/0)
-		z = (InputManager.getKey(87) ? 1 : 0) + (InputManager.getKey(83) ? -1 : 0);
+		this._zDirection = (InputManager.getKey(87) ? 1 : 0) + (InputManager.getKey(83) ? -1 : 0);
 		// -A + D (-1/0 + 1/0)
-		x = (InputManager.getKey(65) ? -1 : 0) + (InputManager.getKey(68) ? 1 : 0);
+		this._xDirection = (InputManager.getKey(65) ? -1 : 0) + (InputManager.getKey(68) ? 1 : 0);
 
 		// Prevent the player from moving faster than it should in a diagonal direction
-		if (z !== 0 && x !== 0) {
-			x *= 0.75;
-			z *= 0.75;
+		if (this._zDirection !== 0 && this._xDirection !== 0) {
+			this._xDirection *= 0.75;
+			this._zDirection *= 0.75;
 		}
 
-		direction.x = x * this._movementSpeed * GameManager.DeltaTime;
-		direction.z = z * this._movementSpeed * GameManager.DeltaTime;
+		direction.x = this._xDirection;
+		direction.z = this._zDirection;
 
-		this._rigidbody.setLinearVelocity(direction);
+		// Only send the direction input if it has changed
+		if (this._lastXDirection !== this._xDirection || this._lastZDirection !== this._zDirection) {
+			// Send direction update message to the server
+			NetworkManager.Instance.sendPlayerDirectionInput(direction);
+		}
+
+		this._lastXDirection = this._xDirection;
+		this._lastZDirection = this._zDirection;
+
+		direction.x *= this._movementSpeed * GameManager.DeltaTime;
+		direction.z *= this._movementSpeed * GameManager.DeltaTime;
+
+		// this._rigidbody.setLinearVelocity(direction);
 		this._rigidbody.setAngularVelocity(Vector3.Zero());
 
 		this.position.y = 0.5;

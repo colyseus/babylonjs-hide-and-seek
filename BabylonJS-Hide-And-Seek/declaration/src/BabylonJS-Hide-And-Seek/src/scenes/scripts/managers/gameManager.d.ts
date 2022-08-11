@@ -19,6 +19,8 @@ export default class GameManager extends Node {
      * Called on the scene starts.
      */
     onStart(): void;
+    private onPlayerAdded;
+    private setLocalPlayerState;
     /**
      * Called each frame.
      */

@@ -1,7 +1,11 @@
+import { Vector3 } from '@babylonjs/core';
 import { Node } from '@babylonjs/core/node';
 import * as Colyseus from 'colyseus.js';
-import type { HASRoomState } from '../../../../Server/hide-and-seek/src/rooms/HASRoom';
+import type { HASRoomState } from '../../../../../Server/hide-and-seek/src/rooms/schema/HASRoomState';
+import { PlayerState } from '../../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
 export default class NetworkManager extends Node {
+    onPlayerAdded: (state: PlayerState, sesstionId: string) => void;
+    private static _instance;
     private _serverSettings;
     private _client;
     private _room;
@@ -10,6 +14,7 @@ export default class NetworkManager extends Node {
      * @warn do not fill.
      */
     protected constructor();
+    static get Instance(): NetworkManager;
     getColyseusServerAddress(): string;
     setColyseusServerAddress(value: string): void;
     getColyseusServerPort(): number;
@@ -25,6 +30,7 @@ export default class NetworkManager extends Node {
      * This function is called immediatly after the constructor has been called.
      */
     onInitialize(): void;
+    private bindHandlers;
     /**
      * Called on the scene starts.
      */
@@ -49,4 +55,6 @@ export default class NetworkManager extends Node {
     private joinRoomWithId;
     private registerRoomHandlers;
     private unregisterRoomHandlers;
+    sendPlayerDirectionInput(direction: Vector3): void;
+    private handleMessages;
 }

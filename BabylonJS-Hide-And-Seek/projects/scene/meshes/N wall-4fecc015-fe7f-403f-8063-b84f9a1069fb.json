@@ -4,7 +4,7 @@
 		{
 			"name": "N wall",
 			"id": "4fecc015-fe7f-403f-8063-b84f9a1069fb",
-			"uniqueId": 3108,
+			"uniqueId": 134,
 			"type": "Mesh",
 			"position": [
 				0,
@@ -52,10 +52,10 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "547168ac-7bf2-4f23-872c-3ff4f2ef9dfb",
 			"isUnIndexed": false,
-			"geometryUniqueId": 3109,
+			"geometryUniqueId": 208,
 			"geometryId": "67108e09-a303-426c-b5e5-7468037a377a",
 			"subMeshes": null,
-			"materialUniqueId": 18,
+			"materialUniqueId": 226,
 			"materialId": "default material",
 			"physicsMass": 0,
 			"physicsFriction": 0.2,

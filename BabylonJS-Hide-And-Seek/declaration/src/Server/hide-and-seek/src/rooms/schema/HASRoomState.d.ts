@@ -1,4 +1,9 @@
-import { Schema } from '@colyseus/schema';
+import { Schema, MapSchema } from '@colyseus/schema';
+import { PlayerState } from './PlayerState';
 export declare class HASRoomState extends Schema {
-    mySynchronizedProperty: string;
+    players: MapSchema<PlayerState, string>;
+    serverTime: number;
+    deltaTime: number;
+    update(deltaTime: number): void;
+    private updatePlayers;
 }

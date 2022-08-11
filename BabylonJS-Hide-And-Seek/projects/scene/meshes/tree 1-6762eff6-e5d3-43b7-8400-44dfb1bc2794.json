@@ -4,7 +4,7 @@
 		{
 			"name": "tree 1",
 			"id": "6762eff6-e5d3-43b7-8400-44dfb1bc2794",
-			"uniqueId": 2326,
+			"uniqueId": 72,
 			"type": "Mesh",
 			"position": [
 				-75,
@@ -52,7 +52,7 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "e614b9d2-7471-40e3-835f-63484158584a",
 			"isUnIndexed": false,
-			"materialUniqueId": 18,
+			"materialUniqueId": 226,
 			"materialId": "default material",
 			"metadata": {
 				"basePoseMatrix": {

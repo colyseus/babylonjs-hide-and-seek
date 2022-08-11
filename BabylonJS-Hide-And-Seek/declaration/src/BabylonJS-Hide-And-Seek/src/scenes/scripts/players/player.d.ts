@@ -1,4 +1,5 @@
 import { Mesh } from '@babylonjs/core';
+import type { PlayerState } from '../../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
 /**
  * This represents a script that is attached to a node in the editor.
  * Available nodes are:
@@ -20,6 +21,11 @@ import { Mesh } from '@babylonjs/core';
 export default class Player extends Mesh {
     private _movementSpeed;
     private _rigidbody;
+    private _xDirection;
+    private _zDirection;
+    private _lastXDirection;
+    private _lastZDirection;
+    private _state;
     /**
      * Override constructor.
      * @warn do not fill.
@@ -34,10 +40,12 @@ export default class Player extends Mesh {
      * Called on the scene starts.
      */
     onStart(): void;
+    setPlayerState(state: PlayerState): void;
     /**
      * Called each frame.
      */
     onUpdate(): void;
+    private updateVelocityFromState;
     private updatePlayerMovement;
     /**
      * Called on the object has been disposed.

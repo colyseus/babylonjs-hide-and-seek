@@ -23,6 +23,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 var node_1 = require("@babylonjs/core/node");
 var decorators_1 = require("../../decorators");
+var networkManager_1 = require("./networkManager");
 var GameManager = /** @class */ (function (_super) {
     __extends(GameManager, _super);
     /**
@@ -55,6 +56,7 @@ var GameManager = /** @class */ (function (_super) {
     GameManager.prototype.onInitialize = function () {
         // ...
         GameManager._instance = this;
+        this.onPlayerAdded = this.onPlayerAdded.bind(this);
     };
     /**
      * Called on the scene starts.
@@ -62,6 +64,17 @@ var GameManager = /** @class */ (function (_super) {
     GameManager.prototype.onStart = function () {
         // ...
         this._cameraHolder.setTarget(this._player);
+        networkManager_1.default.Instance.onPlayerAdded = this.onPlayerAdded;
+        networkManager_1.default.Instance.joinRoom();
+    };
+    GameManager.prototype.onPlayerAdded = function (state, sessionId) {
+        if (networkManager_1.default.Instance.Room.sessionId === sessionId) {
+            console.log("Got local player state!");
+            this.setLocalPlayerState(state);
+        }
+    };
+    GameManager.prototype.setLocalPlayerState = function (state) {
+        this._player.setPlayerState(state);
     };
     /**
      * Called each frame.

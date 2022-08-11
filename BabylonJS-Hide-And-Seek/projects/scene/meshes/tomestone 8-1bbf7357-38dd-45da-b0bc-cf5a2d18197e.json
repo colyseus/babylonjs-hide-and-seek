@@ -4,7 +4,7 @@
 		{
 			"name": "tomestone 8",
 			"id": "1bbf7357-38dd-45da-b0bc-cf5a2d18197e",
-			"uniqueId": 2295,
+			"uniqueId": 66,
 			"type": "Mesh",
 			"position": [
 				-72,
@@ -52,7 +52,7 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "c52ac2f9-ca0a-4c23-90eb-c020aa791dca",
 			"isUnIndexed": false,
-			"materialUniqueId": 18,
+			"materialUniqueId": 226,
 			"materialId": "default material",
 			"metadata": {
 				"basePoseMatrix": {

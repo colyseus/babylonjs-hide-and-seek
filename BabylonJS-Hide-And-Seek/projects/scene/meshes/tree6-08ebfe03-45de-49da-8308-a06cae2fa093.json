@@ -4,7 +4,7 @@
 		{
 			"name": "tree6",
 			"id": "08ebfe03-45de-49da-8308-a06cae2fa093",
-			"uniqueId": 2351,
+			"uniqueId": 129,
 			"type": "Mesh",
 			"position": [
 				0,
@@ -52,10 +52,10 @@
 			"overrideMaterialSideOrientation": 0,
 			"parentId": "28be10b8-1360-4af1-9a1b-141ce9d980bc",
 			"isUnIndexed": false,
-			"geometryUniqueId": 2352,
+			"geometryUniqueId": 205,
 			"geometryId": "a95de4ac-8649-4ca1-9b84-9f4c9aee5f19",
 			"subMeshes": null,
-			"materialUniqueId": 2353,
+			"materialUniqueId": 343,
 			"materialId": "9b006944-73d2-495f-a582-592049e73ed2",
 			"metadata": {
 				"gltf": {

@@ -57,7 +57,7 @@
 		"animations": [],
 		"invertY": false,
 		"samplingMode": 3,
-		"_useSRGBBuffer": true
+		"_useSRGBBuffer": false
 	},
 	"ambientTextureStrength": 1,
 	"ambientTextureImpactOnAnalyticalLights": 0,
@@ -218,7 +218,7 @@
 		"mask": 255,
 		"enabled": false
 	},
-	"uniqueId": 1969,
+	"uniqueId": 275,
 	"customType": "BABYLON.PBRMaterial",
 	"clearCoat": {
 		"tags": null,

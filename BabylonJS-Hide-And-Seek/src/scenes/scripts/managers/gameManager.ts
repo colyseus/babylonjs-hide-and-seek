@@ -1,7 +1,9 @@
 import { Node } from '@babylonjs/core/node';
+import { PlayerState } from '../../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
 import { fromScene } from '../../decorators';
 import CameraHolder from '../players/cameraHolder';
 import Player from '../players/player';
+import NetworkManager from './networkManager';
 
 export default class GameManager extends Node {
 	private static _instance: GameManager = null;
@@ -33,6 +35,8 @@ export default class GameManager extends Node {
 	public onInitialize(): void {
 		// ...
 		GameManager._instance = this;
+
+		this.onPlayerAdded = this.onPlayerAdded.bind(this);
 	}
 
 	/**
@@ -42,6 +46,22 @@ export default class GameManager extends Node {
 		// ...
 
 		this._cameraHolder.setTarget(this._player);
+
+		NetworkManager.Instance.onPlayerAdded = this.onPlayerAdded;
+
+		NetworkManager.Instance.joinRoom();
+	}
+
+	private onPlayerAdded(state: PlayerState, sessionId: string) {
+		if (NetworkManager.Instance.Room.sessionId === sessionId) {
+			console.log(`Got local player state!`);
+
+			this.setLocalPlayerState(state);
+		}
+	}
+
+	private setLocalPlayerState(state: PlayerState) {
+		this._player.setPlayerState(state);
 	}
 
 	/**

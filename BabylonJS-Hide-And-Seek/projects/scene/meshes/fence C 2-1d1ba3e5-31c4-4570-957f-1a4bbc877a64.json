@@ -4,7 +4,7 @@
 		{
 			"name": "fence C 2",
 			"id": "1d1ba3e5-31c4-4570-957f-1a4bbc877a64",
-			"uniqueId": 2089,
+			"uniqueId": 45,
 			"type": "Mesh",
 			"position": [
 				-17,
@@ -52,7 +52,7 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "822bcff4-fbc3-4355-9333-e5994c447188",
 			"isUnIndexed": false,
-			"materialUniqueId": 18,
+			"materialUniqueId": 226,
 			"materialId": "default material",
 			"metadata": {
 				"basePoseMatrix": {

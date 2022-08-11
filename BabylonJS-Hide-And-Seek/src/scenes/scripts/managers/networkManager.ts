@@ -1,10 +1,18 @@
+import { Vector3 } from '@babylonjs/core';
 import { Node } from '@babylonjs/core/node';
 import * as Colyseus from 'colyseus.js';
-// @ts-ignore 2459
-import type { HASRoomState } from '../../../../Server/hide-and-seek/src/rooms/HASRoom';
+import type { HASRoomState } from '../../../../../Server/hide-and-seek/src/rooms/schema/HASRoomState';
+import { VelocityChangeMessage } from '../../../../../Server/hide-and-seek/src/models/VelocityChangeMessage';
 import ColyseusSettings from '../colyseusSettings';
+import { PlayerState } from '../../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
+import GameManager from './gameManager';
+import { EventEmitter } from 'stream';
 
 export default class NetworkManager extends Node {
+	public onPlayerAdded: (state: PlayerState, sesstionId: string) => void;
+
+	private static _instance: NetworkManager = null;
+
 	private _serverSettings: ColyseusSettings = null;
 	private _client: Colyseus.Client = null;
 	private _room: Colyseus.Room<HASRoomState> = null;
@@ -15,6 +23,10 @@ export default class NetworkManager extends Node {
 	 */
 	// @ts-ignore ignoring the super call as we don't want to re-init
 	protected constructor() {}
+
+	public static get Instance(): NetworkManager {
+		return NetworkManager._instance;
+	}
 
 	public getColyseusServerAddress(): string {
 		return this._serverSettings?.colyseusServerAddress || 'localhost';
@@ -62,18 +74,27 @@ export default class NetworkManager extends Node {
 	 */
 	public onInitialize(): void {
 		// ...
+		NetworkManager._instance = this;
+
+		console.log(`Network Manager - On Initialize - Create Colyseus Client with URL: ${this.WebSocketEndPoint()}`);
+		this._client = new Colyseus.Client(this.WebSocketEndPoint());
+
+		this.bindHandlers();
+	}
+
+	private bindHandlers() {
+		// this.onPlayerAdded = this.onPlayerAdded.bind(this);
+		this.handleMessages = this.handleMessages.bind(this);
 	}
 
 	/**
 	 * Called on the scene starts.
 	 */
 	public async onStart(): Promise<void> {
-		// ...
-		console.log(`Network Manager - On Initialize - Create Colyseus Client with URL: ${this.WebSocketEndPoint()}`);
-		this._client = new Colyseus.Client(this.WebSocketEndPoint());
-
+		// // ...
+		// console.log(`Network Manager - On Initialize - Create Colyseus Client with URL: ${this.WebSocketEndPoint()}`);
+		// this._client = new Colyseus.Client(this.WebSocketEndPoint());
 		// await this.joinRoom();
-
 		// console.log(`Joined Room! - ${this.Room.id}`);
 	}
 
@@ -109,14 +130,20 @@ export default class NetworkManager extends Node {
 	public async joinRoom(roomId: string = '') {
 		this.Room = await this.joinRoomWithId(roomId);
 
+		if (this.Room) {
+			console.log(`Joined Room: ${this.Room.id}`);
+		}
+
 		this.registerRoomHandlers();
 	}
 
 	private async joinRoomWithId(roomId: string = ''): Promise<Colyseus.Room<HASRoomState>> {
 		try {
 			if (roomId) {
+				console.log(`Join room with id: ${roomId}`);
 				return await this._client.joinById(roomId);
 			} else {
+				console.log(`Join or create room`);
 				return await this._client.joinOrCreate('HAS_room');
 			}
 		} catch (error: any) {
@@ -138,6 +165,10 @@ export default class NetworkManager extends Node {
 			// this.Room.onMessage<MovedToGridMessage>('movedToGrid', (msg) => {
 			// 	this.onMovedToGrid(msg);
 			// });
+
+			this.Room.state.players.onAdd = this.onPlayerAdded;
+
+			this.Room.onMessage('*', this.handleMessages);
 		} else {
 			console.error(`Cannot register room handlers; room is null!`);
 		}
@@ -145,10 +176,43 @@ export default class NetworkManager extends Node {
 
 	private unregisterRoomHandlers() {
 		if (this.Room) {
+			this.Room.state.players.onAdd = null;
 			// this.Room.onLeave.remove(this.onLeaveGridRoom);
 			// this.Room.onStateChange.remove(this.onRoomStateChange);
 			// this.Room.state.networkedUsers.onAdd = null;
 			// this.Room.state.networkedUsers.onRemove = null;
 		}
 	}
+
+	public sendPlayerDirectionInput(direction: Vector3) {
+		if (!this.Room) {
+			return;
+		}
+
+		this.Room.send('playerInput', [direction.x, direction.y, direction.z]);
+	}
+
+	// private playerAdded(item: PlayerState, key: string) {
+	// 	//
+
+	// 	if (this.onPlayerAdded) {
+	// 		this.onPlayerAdded(item, key);
+	// 	}
+	// }
+
+	private handleMessages(name: string, message: any) {
+		// switch (name) {
+		// 	case 'velocityChange':
+		// 		this.handleVelocityChange(message);
+		// }
+	}
+
+	// public handleVelocityChange(velocityChange: VelocityChangeMessage) {
+	// 	if (!velocityChange || velocityChange.velocity.length < 3) {
+	// 		console.error(`Handle Velocity Change - Invalid message`);
+	// 		return;
+	// 	}
+
+	// 	console.log(`${velocityChange.clientId} Velocity Changed: (${velocityChange.velocity[0]}, ${velocityChange.velocity[1]}, ${velocityChange.velocity[2]})`);
+	// }
 }

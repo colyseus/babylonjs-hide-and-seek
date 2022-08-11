@@ -4,7 +4,7 @@
 		{
 			"name": "Obstacle B.New Cube",
 			"id": "8250e507-8cdc-4054-b5b6-a2a03cef258b",
-			"uniqueId": 150,
+			"uniqueId": 145,
 			"type": "Mesh",
 			"position": [
 				-18.452425003051758,
@@ -55,7 +55,7 @@
 			"geometryUniqueId": 224,
 			"geometryId": "3385bfc4-83bf-443d-951b-b50ef8a41b49",
 			"subMeshes": null,
-			"materialUniqueId": 226,
+			"materialUniqueId": 202,
 			"materialId": "default material",
 			"physicsMass": 0,
 			"physicsFriction": 0.2,

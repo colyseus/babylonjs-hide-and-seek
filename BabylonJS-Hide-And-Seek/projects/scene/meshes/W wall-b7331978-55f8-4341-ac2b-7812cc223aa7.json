@@ -4,7 +4,7 @@
 		{
 			"name": "W wall",
 			"id": "b7331978-55f8-4341-ac2b-7812cc223aa7",
-			"uniqueId": 137,
+			"uniqueId": 134,
 			"type": "Mesh",
 			"position": [
 				-25,
@@ -52,10 +52,10 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "547168ac-7bf2-4f23-872c-3ff4f2ef9dfb",
 			"isUnIndexed": false,
-			"geometryUniqueId": 211,
+			"geometryUniqueId": 213,
 			"geometryId": "7d3066dc-4ca1-4889-8e76-568ff0f4ccd5",
 			"subMeshes": null,
-			"materialUniqueId": 226,
+			"materialUniqueId": 202,
 			"materialId": "default material",
 			"physicsMass": 0,
 			"physicsFriction": 0.2,

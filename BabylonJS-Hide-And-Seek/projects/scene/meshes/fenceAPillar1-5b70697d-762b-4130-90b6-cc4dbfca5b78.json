@@ -4,7 +4,7 @@
 		{
 			"name": "fenceAPillar1",
 			"id": "5b70697d-762b-4130-90b6-cc4dbfca5b78",
-			"uniqueId": 91,
+			"uniqueId": 96,
 			"type": "Mesh",
 			"position": [
 				0,
@@ -52,10 +52,10 @@
 			"overrideMaterialSideOrientation": 0,
 			"parentId": "f683f32c-2132-4a04-9765-e0e44012943d",
 			"isUnIndexed": false,
-			"geometryUniqueId": 172,
+			"geometryUniqueId": 179,
 			"geometryId": "d6a0e42c-b99e-412d-b448-7fcb3edd2334",
 			"subMeshes": null,
-			"materialUniqueId": 265,
+			"materialUniqueId": 262,
 			"materialId": "51530075-744e-4746-b5f2-f1fe0854f2d5",
 			"metadata": {
 				"gltf": {

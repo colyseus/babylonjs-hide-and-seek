@@ -30,7 +30,7 @@
 		"doNotExport": false
 	},
 	"type": "TransformNode",
-	"uniqueId": 26,
+	"uniqueId": 24,
 	"parentId": "1f2689f7-75cb-4dc5-aed5-7d20d28457da",
 	"localMatrix": {
 		"0": 1,

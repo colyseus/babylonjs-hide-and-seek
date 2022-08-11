@@ -87,7 +87,7 @@ export class HASRoom extends Room<HASRoomState> {
 			return;
 		}
 
-		logger.debug(`Player (${client.sessionId}) Input: (${directions[0]}, ${directions[1]}, ${directions[2]})`);
+		// logger.debug(`Player (${client.sessionId}) Input: (${directions[0]}, ${directions[1]}, ${directions[2]})`);
 
 		// Calculate the player's velocity and send back to the client
 		// let velocity: number[] = [directions[0], directions[1], directions[2]];

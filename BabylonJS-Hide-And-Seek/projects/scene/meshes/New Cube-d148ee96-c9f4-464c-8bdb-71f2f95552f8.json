@@ -4,7 +4,7 @@
 		{
 			"name": "New Cube",
 			"id": "d148ee96-c9f4-464c-8bdb-71f2f95552f8",
-			"uniqueId": 146,
+			"uniqueId": 143,
 			"type": "Mesh",
 			"position": [
 				16.43699836730957,
@@ -52,10 +52,10 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "1f2689f7-75cb-4dc5-aed5-7d20d28457da",
 			"isUnIndexed": false,
-			"geometryUniqueId": 220,
+			"geometryUniqueId": 222,
 			"geometryId": "3385bfc4-83bf-443d-951b-b50ef8a41b49",
 			"subMeshes": null,
-			"materialUniqueId": 226,
+			"materialUniqueId": 202,
 			"materialId": "default material",
 			"physicsMass": 0,
 			"physicsFriction": 0.2,

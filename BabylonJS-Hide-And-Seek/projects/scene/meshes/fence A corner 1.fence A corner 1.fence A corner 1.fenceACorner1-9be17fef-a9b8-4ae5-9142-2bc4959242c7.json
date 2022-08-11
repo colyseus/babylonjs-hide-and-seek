@@ -4,7 +4,7 @@
 		{
 			"name": "fence A corner 1.fence A corner 1.fence A corner 1.fenceACorner1",
 			"id": "9be17fef-a9b8-4ae5-9142-2bc4959242c7",
-			"uniqueId": 138,
+			"uniqueId": 142,
 			"type": "Mesh",
 			"position": [
 				0,
@@ -52,10 +52,10 @@
 			"overrideMaterialSideOrientation": 0,
 			"parentId": "f0d2613a-875e-481a-983c-eddae0f10e7e",
 			"isUnIndexed": false,
-			"geometryUniqueId": 212,
+			"geometryUniqueId": 221,
 			"geometryId": "1e57396a-4162-4bcc-91ae-564591d39680",
 			"subMeshes": null,
-			"materialUniqueId": 256,
+			"materialUniqueId": 260,
 			"materialId": "0965856f-fd98-4ac7-9187-825eea2286f4",
 			"metadata": {
 				"gltf": {

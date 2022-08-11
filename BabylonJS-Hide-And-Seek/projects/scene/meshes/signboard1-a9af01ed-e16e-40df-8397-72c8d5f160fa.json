@@ -4,7 +4,7 @@
 		{
 			"name": "signboard1",
 			"id": "a9af01ed-e16e-40df-8397-72c8d5f160fa",
-			"uniqueId": 106,
+			"uniqueId": 115,
 			"type": "Mesh",
 			"position": [
 				0,
@@ -52,10 +52,10 @@
 			"overrideMaterialSideOrientation": 0,
 			"parentId": "9f3187c1-a9e7-4d13-8d31-37e5583e450d",
 			"isUnIndexed": false,
-			"geometryUniqueId": 185,
+			"geometryUniqueId": 198,
 			"geometryId": "9ccdf286-76af-486b-b88b-af264046d009",
 			"subMeshes": null,
-			"materialUniqueId": 299,
+			"materialUniqueId": 290,
 			"materialId": "03fb801a-226c-4df6-96f2-1e3611c29f50",
 			"metadata": {
 				"gltf": {

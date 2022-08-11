@@ -4,7 +4,7 @@
 		{
 			"name": "fenceASection3",
 			"id": "5b931794-8c06-4469-bddf-e1a7c965a5d0",
-			"uniqueId": 95,
+			"uniqueId": 92,
 			"type": "Mesh",
 			"position": [
 				0,
@@ -55,7 +55,7 @@
 			"geometryUniqueId": 176,
 			"geometryId": "46f74b46-e5f0-4f4e-aecb-08faa2c4efe5",
 			"subMeshes": null,
-			"materialUniqueId": 271,
+			"materialUniqueId": 266,
 			"materialId": "2375523d-b4de-4341-9aa6-a023aea73141",
 			"metadata": {
 				"gltf": {

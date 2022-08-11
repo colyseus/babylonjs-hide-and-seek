@@ -4,7 +4,7 @@
 		{
 			"name": "sarcophagus",
 			"id": "e34dcf9a-7724-41ad-af7e-ade91c79c2cb",
-			"uniqueId": 53,
+			"uniqueId": 50,
 			"type": "Mesh",
 			"position": [
 				-55,
@@ -52,7 +52,7 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "a42ec12a-7f0a-4d92-bb09-c5a43e5c9ca6",
 			"isUnIndexed": false,
-			"materialUniqueId": 226,
+			"materialUniqueId": 202,
 			"materialId": "default material",
 			"metadata": {
 				"basePoseMatrix": {

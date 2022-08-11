@@ -63,6 +63,7 @@ var GameManager = /** @class */ (function (_super) {
      */
     GameManager.prototype.onStart = function () {
         // ...
+        this._player.setParent(null);
         this._cameraHolder.setTarget(this._player);
         networkManager_1.default.Instance.onPlayerAdded = this.onPlayerAdded;
         networkManager_1.default.Instance.joinRoom();

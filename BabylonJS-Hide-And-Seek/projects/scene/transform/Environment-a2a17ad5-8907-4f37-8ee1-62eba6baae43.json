@@ -30,7 +30,7 @@
 		"doNotExport": false
 	},
 	"type": "TransformNode",
-	"uniqueId": 30,
+	"uniqueId": 32,
 	"localMatrix": {
 		"0": 1,
 		"1": 0,

@@ -26,24 +26,6 @@ var decorators_1 = require("../../decorators");
 var gameManager_1 = require("../managers/gameManager");
 var inputManager_1 = require("../managers/inputManager");
 var networkManager_1 = require("../managers/networkManager");
-/**
- * This represents a script that is attached to a node in the editor.
- * Available nodes are:
- *      - Meshes
- *      - Lights
- *      - Cameas
- *      - Transform nodes
- *
- * You can extend the desired class according to the node type.
- * Example:
- *      export default class MyMesh extends Mesh {
- *          public onUpdate(): void {
- *              this.rotation.y += 0.04;
- *          }
- *      }
- * The function "onInitialize" is called immediately after the constructor is called.
- * The functions "onStart" and "onUpdate" are called automatically.
- */
 var Player = /** @class */ (function (_super) {
     __extends(Player, _super);
     /**
@@ -53,6 +35,7 @@ var Player = /** @class */ (function (_super) {
     // @ts-ignore ignoring the super call as we don't want to re-init
     function Player() {
         var _this = this;
+        _this._isLocalPlayer = false;
         _this._movementSpeed = 1;
         _this._rigidbody = null;
         _this._xDirection = 0;
@@ -75,6 +58,9 @@ var Player = /** @class */ (function (_super) {
     Player.prototype.onStart = function () {
         // ...
         this._rigidbody = this.getPhysicsImpostor();
+        // Workaround to the inspector failing to load the "visibleInInspector" tagged properties
+        this._isLocalPlayer = !this.name.includes('Remote Player') ? true : false;
+        console.log("Player - On Start - Is Local: ".concat(this._isLocalPlayer));
     };
     Player.prototype.setPlayerState = function (state) {
         console.log("Player - Set Player State");
@@ -97,6 +83,9 @@ var Player = /** @class */ (function (_super) {
         this._rigidbody.setLinearVelocity(new core_1.Vector3(this._state.xVel, this._state.yVel, this._state.zVel));
     };
     Player.prototype.updatePlayerMovement = function () {
+        if (!this._isLocalPlayer) {
+            return;
+        }
         var direction = new core_1.Vector3();
         // W + -S (1/0 + -1/0)
         this._zDirection = (inputManager_1.default.getKey(87) ? 1 : 0) + (inputManager_1.default.getKey(83) ? -1 : 0);
@@ -142,6 +131,9 @@ var Player = /** @class */ (function (_super) {
                 break;
         }
     };
+    __decorate([
+        (0, decorators_1.visibleInInspector)('boolean', 'Is Local', false)
+    ], Player.prototype, "_isLocalPlayer", void 0);
     __decorate([
         (0, decorators_1.visibleInInspector)('number', 'Movement Speed', 1)
     ], Player.prototype, "_movementSpeed", void 0);

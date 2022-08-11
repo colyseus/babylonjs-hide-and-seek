@@ -4,7 +4,7 @@
 		{
 			"name": "fence A pillar",
 			"id": "f683f32c-2132-4a04-9765-e0e44012943d",
-			"uniqueId": 40,
+			"uniqueId": 38,
 			"type": "Mesh",
 			"position": [
 				-28,
@@ -52,7 +52,7 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "ba3b2da1-f56d-4fb6-acc2-662170015851",
 			"isUnIndexed": false,
-			"materialUniqueId": 226,
+			"materialUniqueId": 202,
 			"materialId": "default material",
 			"metadata": {
 				"basePoseMatrix": {

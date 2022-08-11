@@ -4,7 +4,7 @@
 		{
 			"name": "tombstone5Weathered",
 			"id": "fa63ae4d-d1fb-49f5-893a-e10f5d0a7fb6",
-			"uniqueId": 116,
+			"uniqueId": 117,
 			"type": "Mesh",
 			"position": [
 				0,
@@ -52,10 +52,10 @@
 			"overrideMaterialSideOrientation": 0,
 			"parentId": "c7e78de6-c26a-4020-afaf-7d92b630e9fc",
 			"isUnIndexed": false,
-			"geometryUniqueId": 195,
+			"geometryUniqueId": 200,
 			"geometryId": "3017a8f9-87ba-4367-a9b5-f12839d159ff",
 			"subMeshes": null,
-			"materialUniqueId": 319,
+			"materialUniqueId": 311,
 			"materialId": "abacacc2-0cc7-4672-8163-b1b3f2c9ace7",
 			"metadata": {
 				"gltf": {

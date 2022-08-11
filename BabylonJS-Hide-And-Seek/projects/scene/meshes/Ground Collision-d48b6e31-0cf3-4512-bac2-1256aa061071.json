@@ -4,7 +4,7 @@
 		{
 			"name": "Ground Collision",
 			"id": "d48b6e31-0cf3-4512-bac2-1256aa061071",
-			"uniqueId": 155,
+			"uniqueId": 162,
 			"type": "GroundMesh",
 			"position": [
 				0,
@@ -52,10 +52,10 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "423c55f0-bbbf-4722-a36a-d6c295a5a734",
 			"isUnIndexed": false,
-			"geometryUniqueId": 230,
+			"geometryUniqueId": 240,
 			"geometryId": "db7ab581-266b-46ad-8d40-2f2edbb538bc",
 			"subMeshes": null,
-			"materialUniqueId": 226,
+			"materialUniqueId": 202,
 			"materialId": "default material",
 			"physicsMass": 0,
 			"physicsFriction": 0.2,

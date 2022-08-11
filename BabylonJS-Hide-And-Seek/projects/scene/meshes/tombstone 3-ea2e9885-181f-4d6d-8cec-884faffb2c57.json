@@ -4,7 +4,7 @@
 		{
 			"name": "tombstone 3",
 			"id": "ea2e9885-181f-4d6d-8cec-884faffb2c57",
-			"uniqueId": 62,
+			"uniqueId": 58,
 			"type": "Mesh",
 			"position": [
 				-67,
@@ -52,7 +52,7 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "c52ac2f9-ca0a-4c23-90eb-c020aa791dca",
 			"isUnIndexed": false,
-			"materialUniqueId": 226,
+			"materialUniqueId": 202,
 			"materialId": "default material",
 			"metadata": {
 				"basePoseMatrix": {

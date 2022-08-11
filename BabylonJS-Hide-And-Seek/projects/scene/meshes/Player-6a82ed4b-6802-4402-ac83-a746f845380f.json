@@ -4,7 +4,7 @@
 		{
 			"name": "Player",
 			"id": "6a82ed4b-6802-4402-ac83-a746f845380f",
-			"uniqueId": 163,
+			"uniqueId": 164,
 			"type": "Mesh",
 			"position": [
 				0,
@@ -50,11 +50,12 @@
 			"checkCollisions": false,
 			"isBlocker": false,
 			"overrideMaterialSideOrientation": null,
+			"parentId": "fd7a4725-539b-4020-9b6f-3032264f3ad4",
 			"isUnIndexed": false,
-			"geometryUniqueId": 244,
+			"geometryUniqueId": 251,
 			"geometryId": "1d916d74-511b-480f-9a49-fe94c8f0dce6",
 			"subMeshes": null,
-			"materialUniqueId": 226,
+			"materialUniqueId": 202,
 			"materialId": "default material",
 			"physicsMass": 1,
 			"physicsFriction": 0.2,
@@ -75,11 +76,23 @@
 						"_movementSpeed": {
 							"type": "number",
 							"value": 600
+						},
+						"colyseusServerAddress": {
+							"type": "string",
+							"value": "localhost"
+						},
+						"colyseusServerPort": {
+							"type": "number",
+							"value": 2567
+						},
+						"useSecureProtocol": {
+							"type": "boolean",
+							"value": false
 						}
 					}
 				},
 				"renderingGroupId": 0,
-				"_waitingParentId": null
+				"doNotExport": false
 			},
 			"instances": [],
 			"animations": [],
@@ -94,7 +107,6 @@
 				0
 			],
 			"applyFog": true,
-			"parentId": null,
 			"delayLoadingFile": "geometries/1d916d74-511b-480f-9a49-fe94c8f0dce6.babylonbinarymeshdata",
 			"boundingBoxMaximum": [
 				0.5,

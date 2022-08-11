@@ -29,7 +29,7 @@
 		}
 	},
 	"type": "TransformNode",
-	"uniqueId": 32,
+	"uniqueId": 30,
 	"localMatrix": {
 		"0": 1,
 		"1": 0,

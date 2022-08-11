@@ -4,7 +4,7 @@
 		{
 			"name": "sarcophagus",
 			"id": "f0f8ff41-1b20-42d8-8e6f-0711de0098c9",
-			"uniqueId": 108,
+			"uniqueId": 105,
 			"type": "Mesh",
 			"position": [
 				0,
@@ -52,10 +52,10 @@
 			"overrideMaterialSideOrientation": 0,
 			"parentId": "e34dcf9a-7724-41ad-af7e-ade91c79c2cb",
 			"isUnIndexed": false,
-			"geometryUniqueId": 186,
+			"geometryUniqueId": 188,
 			"geometryId": "ac71f6ee-2c5e-441a-be68-224046a369f4",
 			"subMeshes": null,
-			"materialUniqueId": 297,
+			"materialUniqueId": 347,
 			"materialId": "ae54d5a5-a990-4031-94e1-c3c0ca5fdce9",
 			"metadata": {
 				"gltf": {

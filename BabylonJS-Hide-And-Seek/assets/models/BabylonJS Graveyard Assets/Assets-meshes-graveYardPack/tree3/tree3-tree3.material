@@ -218,7 +218,7 @@
 		"mask": 255,
 		"enabled": false
 	},
-	"uniqueId": 333,
+	"uniqueId": 323,
 	"customType": "BABYLON.PBRMaterial",
 	"clearCoat": {
 		"tags": null,

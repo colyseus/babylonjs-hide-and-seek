@@ -45,6 +45,8 @@ export default class GameManager extends Node {
 	public onStart(): void {
 		// ...
 
+		this._player.setParent(null);
+
 		this._cameraHolder.setTarget(this._player);
 
 		NetworkManager.Instance.onPlayerAdded = this.onPlayerAdded;

@@ -4,7 +4,7 @@
 		{
 			"name": "stump 2",
 			"id": "9320a1f6-2a6c-47b5-a6dc-8ae78035e87b",
-			"uniqueId": 70,
+			"uniqueId": 67,
 			"type": "Mesh",
 			"position": [
 				-75,
@@ -52,7 +52,7 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "e614b9d2-7471-40e3-835f-63484158584a",
 			"isUnIndexed": false,
-			"materialUniqueId": 226,
+			"materialUniqueId": 202,
 			"materialId": "default material",
 			"metadata": {
 				"basePoseMatrix": {

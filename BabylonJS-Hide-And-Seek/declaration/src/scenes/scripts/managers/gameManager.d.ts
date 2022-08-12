@@ -1,8 +1,18 @@
 import { Node } from '@babylonjs/core/node';
 export default class GameManager extends Node {
     private static _instance;
-    private _player;
     private _cameraHolder;
+    private _spawnPointsRoot;
+    private _player;
+    private _remotePlayer1;
+    private _remotePlayer2;
+    private _remotePlayer3;
+    private _remotePlayer4;
+    private _remotePlayer5;
+    private _remotePlayer6;
+    private _remotePlayer7;
+    private _remotePlayers;
+    private _spawnPoints;
     static get Instance(): GameManager;
     static get DeltaTime(): number;
     /**
@@ -19,8 +29,9 @@ export default class GameManager extends Node {
      * Called on the scene starts.
      */
     onStart(): void;
+    private initializeSpawnPoints;
     private onPlayerAdded;
-    private setLocalPlayerState;
+    private onPlayerRemoved;
     /**
      * Called each frame.
      */

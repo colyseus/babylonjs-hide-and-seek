@@ -226,6 +226,7 @@ var NetworkManager = /** @class */ (function (_super) {
             // 	this.onMovedToGrid(msg);
             // });
             this.Room.state.players.onAdd = this.onPlayerAdded;
+            this.Room.state.players.onRemove = this.onPlayerRemoved;
             this.Room.onMessage('*', this.handleMessages);
         }
         else {

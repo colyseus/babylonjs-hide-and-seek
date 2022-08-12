@@ -4,7 +4,7 @@
 		{
 			"name": "fenceACorner3",
 			"id": "817288ab-5cad-4eef-bcf2-e5f34ded7f7f",
-			"uniqueId": 93,
+			"uniqueId": 96,
 			"type": "Mesh",
 			"position": [
 				0,
@@ -52,10 +52,10 @@
 			"overrideMaterialSideOrientation": 0,
 			"parentId": "243e92f7-239f-4e58-9d5c-8ce717881f35",
 			"isUnIndexed": false,
-			"geometryUniqueId": 177,
+			"geometryUniqueId": 183,
 			"geometryId": "c5433a7d-089a-4ba0-8219-5f1f715ed4f8",
 			"subMeshes": null,
-			"materialUniqueId": 315,
+			"materialUniqueId": 325,
 			"materialId": "9e549a85-4bc7-4e4f-b7c9-13cd5773360d",
 			"metadata": {
 				"gltf": {

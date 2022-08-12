@@ -10,6 +10,7 @@ import { EventEmitter } from 'stream';
 
 export default class NetworkManager extends Node {
 	public onPlayerAdded: (state: PlayerState, sesstionId: string) => void;
+	public onPlayerRemoved: (state: PlayerState, sessionId: string) => void;
 
 	private static _instance: NetworkManager = null;
 
@@ -167,6 +168,7 @@ export default class NetworkManager extends Node {
 			// });
 
 			this.Room.state.players.onAdd = this.onPlayerAdded;
+			this.Room.state.players.onRemove = this.onPlayerRemoved;
 
 			this.Room.onMessage('*', this.handleMessages);
 		} else {

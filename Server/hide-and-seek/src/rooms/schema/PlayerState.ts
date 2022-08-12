@@ -15,7 +15,9 @@ export class PlayerState extends Schema {
 	// @type('number') timestamp: number = 0.0;
 
 	@type('string') username: string = '';
-
+	@type('boolean') isSeeker: boolean = false;
+	/** The index of the spawn point on the client */
+	@type('number') spawnPoint: number = -1;
 	@type('number') xVel: number = 0.0;
 	@type('number') yVel: number = 0.0;
 	@type('number') zVel: number = 0.0;

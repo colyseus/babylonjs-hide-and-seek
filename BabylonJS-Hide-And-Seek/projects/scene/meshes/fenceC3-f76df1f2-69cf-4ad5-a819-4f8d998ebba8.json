@@ -4,7 +4,7 @@
 		{
 			"name": "fenceC3",
 			"id": "f76df1f2-69cf-4ad5-a819-4f8d998ebba8",
-			"uniqueId": 101,
+			"uniqueId": 104,
 			"type": "Mesh",
 			"position": [
 				0,
@@ -52,10 +52,10 @@
 			"overrideMaterialSideOrientation": 0,
 			"parentId": "7da5c49e-ce33-4269-a0bd-ffa503a9d90a",
 			"isUnIndexed": false,
-			"geometryUniqueId": 184,
+			"geometryUniqueId": 189,
 			"geometryId": "06b9ca89-96d3-457d-8ace-eab720567ee1",
 			"subMeshes": null,
-			"materialUniqueId": 283,
+			"materialUniqueId": 291,
 			"materialId": "b74e01ce-d0e8-40da-805b-2d79f4d398f1",
 			"metadata": {
 				"gltf": {

@@ -2,9 +2,9 @@
 	"materials": [],
 	"meshes": [
 		{
-			"name": "Remote Player",
-			"id": "a8364b14-c772-4118-94e6-a4bd17e2a123",
-			"uniqueId": 167,
+			"name": "Remote Player 4",
+			"id": "4dc5055a-3da6-4bfa-9a0b-d8f654d3cc73",
+			"uniqueId": 175,
 			"type": "Mesh",
 			"position": [
 				2.790640115737915,
@@ -52,10 +52,10 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "fd7a4725-539b-4020-9b6f-3032264f3ad4",
 			"isUnIndexed": false,
-			"geometryUniqueId": 252,
+			"geometryUniqueId": 259,
 			"geometryId": "1d916d74-511b-480f-9a49-fe94c8f0dce6",
 			"subMeshes": null,
-			"materialUniqueId": 202,
+			"materialUniqueId": 108,
 			"materialId": "default material",
 			"physicsMass": 1,
 			"physicsFriction": 0.2,

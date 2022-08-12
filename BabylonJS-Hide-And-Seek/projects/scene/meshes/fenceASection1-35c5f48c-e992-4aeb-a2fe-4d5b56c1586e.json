@@ -4,7 +4,7 @@
 		{
 			"name": "fenceASection1",
 			"id": "35c5f48c-e992-4aeb-a2fe-4d5b56c1586e",
-			"uniqueId": 94,
+			"uniqueId": 97,
 			"type": "Mesh",
 			"position": [
 				0,
@@ -52,10 +52,10 @@
 			"overrideMaterialSideOrientation": 0,
 			"parentId": "a56cea93-d063-4597-bd84-76061410cc4a",
 			"isUnIndexed": false,
-			"geometryUniqueId": 178,
+			"geometryUniqueId": 184,
 			"geometryId": "2d624473-9c34-4b70-af36-56a5fcdd4d5b",
 			"subMeshes": null,
-			"materialUniqueId": 264,
+			"materialUniqueId": 272,
 			"materialId": "3c685458-e773-4fe2-9189-b1d0143f3140",
 			"metadata": {
 				"gltf": {

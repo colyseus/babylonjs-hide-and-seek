@@ -1,5 +1,4 @@
 import { Mesh, PhysicsImpostor, Space, Vector3 } from '@babylonjs/core';
-import { Node } from '@babylonjs/core/node';
 import { visibleInInspector } from '../../decorators';
 import GameManager from '../managers/gameManager';
 import InputManager from '../managers/inputManager';
@@ -7,10 +6,10 @@ import NetworkManager from '../managers/networkManager';
 import type { PlayerState } from '../../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
 
 export default class Player extends Mesh {
-	@visibleInInspector('boolean', 'Is Local', false)
-	private _isLocalPlayer: boolean = false;
 	@visibleInInspector('number', 'Movement Speed', 1)
 	private _movementSpeed: number = 1;
+
+	public isLocalPlayer: boolean = false;
 
 	private _rigidbody: PhysicsImpostor = null;
 
@@ -26,7 +25,7 @@ export default class Player extends Mesh {
 	 * @warn do not fill.
 	 */
 	// @ts-ignore ignoring the super call as we don't want to re-init
-	protected constructor() {}
+	constructor() {}
 
 	/**
 	 * Called on the node is being initialized.
@@ -44,9 +43,9 @@ export default class Player extends Mesh {
 		this._rigidbody = this.getPhysicsImpostor();
 
 		// Workaround to the inspector failing to load the "visibleInInspector" tagged properties
-		this._isLocalPlayer = !this.name.includes('Remote Player') ? true : false;
+		this.isLocalPlayer = !this.name.includes('Remote Player') ? true : false;
 
-		console.log(`Player - On Start - Is Local: ${this._isLocalPlayer}`);
+		console.log(`Player - On Start - Is Local: ${this.isLocalPlayer}`);
 	}
 
 	public setPlayerState(state: PlayerState) {
@@ -76,7 +75,7 @@ export default class Player extends Mesh {
 	}
 
 	private updatePlayerMovement() {
-		if (!this._isLocalPlayer) {
+		if (!this.isLocalPlayer) {
 			return;
 		}
 

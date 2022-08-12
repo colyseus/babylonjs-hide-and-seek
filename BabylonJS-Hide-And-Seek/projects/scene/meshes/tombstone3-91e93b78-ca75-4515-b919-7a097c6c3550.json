@@ -4,7 +4,7 @@
 		{
 			"name": "tombstone3",
 			"id": "91e93b78-ca75-4515-b919-7a097c6c3550",
-			"uniqueId": 110,
+			"uniqueId": 114,
 			"type": "Mesh",
 			"position": [
 				0,
@@ -52,10 +52,10 @@
 			"overrideMaterialSideOrientation": 0,
 			"parentId": "ea2e9885-181f-4d6d-8cec-884faffb2c57",
 			"isUnIndexed": false,
-			"geometryUniqueId": 193,
+			"geometryUniqueId": 198,
 			"geometryId": "8780f3a0-ab7d-4201-a8cf-1354d75ca566",
 			"subMeshes": null,
-			"materialUniqueId": 307,
+			"materialUniqueId": 317,
 			"materialId": "89614afb-60d4-41ce-8ce5-cb2dfb4156aa",
 			"metadata": {
 				"gltf": {

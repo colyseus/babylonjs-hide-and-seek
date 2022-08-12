@@ -4,7 +4,7 @@
 		{
 			"name": "tombstone 6",
 			"id": "b6bcb4dc-720b-47ab-9221-8f7bfe349a6b",
-			"uniqueId": 65,
+			"uniqueId": 63,
 			"type": "Mesh",
 			"position": [
 				-70,
@@ -52,7 +52,7 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "c52ac2f9-ca0a-4c23-90eb-c020aa791dca",
 			"isUnIndexed": false,
-			"materialUniqueId": 202,
+			"materialUniqueId": 108,
 			"materialId": "default material",
 			"metadata": {
 				"basePoseMatrix": {

@@ -4,7 +4,7 @@
 		{
 			"name": "stump2",
 			"id": "86cadc10-7069-4bbe-9aab-935f50208ac9",
-			"uniqueId": 127,
+			"uniqueId": 131,
 			"type": "Mesh",
 			"position": [
 				0,
@@ -52,10 +52,10 @@
 			"overrideMaterialSideOrientation": 0,
 			"parentId": "9320a1f6-2a6c-47b5-a6dc-8ae78035e87b",
 			"isUnIndexed": false,
-			"geometryUniqueId": 209,
+			"geometryUniqueId": 211,
 			"geometryId": "b3b37697-624a-4b01-9a30-89c2b150c16a",
 			"subMeshes": null,
-			"materialUniqueId": 321,
+			"materialUniqueId": 333,
 			"materialId": "9ab142fd-89c0-4b57-b0b7-e411965d6ac4",
 			"metadata": {
 				"gltf": {

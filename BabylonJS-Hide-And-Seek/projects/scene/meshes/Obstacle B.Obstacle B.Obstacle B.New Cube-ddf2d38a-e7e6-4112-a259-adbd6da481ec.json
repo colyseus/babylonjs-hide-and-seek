@@ -4,7 +4,7 @@
 		{
 			"name": "Obstacle B.Obstacle B.Obstacle B.New Cube",
 			"id": "ddf2d38a-e7e6-4112-a259-adbd6da481ec",
-			"uniqueId": 156,
+			"uniqueId": 160,
 			"type": "Mesh",
 			"position": [
 				-20.957136154174805,
@@ -52,10 +52,10 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "c214a492-0310-4803-ba5d-6fc624970379",
 			"isUnIndexed": false,
-			"geometryUniqueId": 235,
+			"geometryUniqueId": 239,
 			"geometryId": "3385bfc4-83bf-443d-951b-b50ef8a41b49",
 			"subMeshes": null,
-			"materialUniqueId": 202,
+			"materialUniqueId": 108,
 			"materialId": "default material",
 			"physicsMass": 0,
 			"physicsFriction": 0.2,

@@ -35,8 +35,8 @@ var Player = /** @class */ (function (_super) {
     // @ts-ignore ignoring the super call as we don't want to re-init
     function Player() {
         var _this = this;
-        _this._isLocalPlayer = false;
         _this._movementSpeed = 1;
+        _this.isLocalPlayer = false;
         _this._rigidbody = null;
         _this._xDirection = 0;
         _this._zDirection = 0;
@@ -59,8 +59,8 @@ var Player = /** @class */ (function (_super) {
         // ...
         this._rigidbody = this.getPhysicsImpostor();
         // Workaround to the inspector failing to load the "visibleInInspector" tagged properties
-        this._isLocalPlayer = !this.name.includes('Remote Player') ? true : false;
-        console.log("Player - On Start - Is Local: ".concat(this._isLocalPlayer));
+        this.isLocalPlayer = !this.name.includes('Remote Player') ? true : false;
+        console.log("Player - On Start - Is Local: ".concat(this.isLocalPlayer));
     };
     Player.prototype.setPlayerState = function (state) {
         console.log("Player - Set Player State");
@@ -83,7 +83,7 @@ var Player = /** @class */ (function (_super) {
         this._rigidbody.setLinearVelocity(new core_1.Vector3(this._state.xVel, this._state.yVel, this._state.zVel));
     };
     Player.prototype.updatePlayerMovement = function () {
-        if (!this._isLocalPlayer) {
+        if (!this.isLocalPlayer) {
             return;
         }
         var direction = new core_1.Vector3();
@@ -131,9 +131,6 @@ var Player = /** @class */ (function (_super) {
                 break;
         }
     };
-    __decorate([
-        (0, decorators_1.visibleInInspector)('boolean', 'Is Local', false)
-    ], Player.prototype, "_isLocalPlayer", void 0);
     __decorate([
         (0, decorators_1.visibleInInspector)('number', 'Movement Speed', 1)
     ], Player.prototype, "_movementSpeed", void 0);

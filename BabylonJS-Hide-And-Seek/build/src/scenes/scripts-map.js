@@ -11,5 +11,6 @@ exports.scriptsMap = {
     "src/scenes/scripts/managers/networkManager.ts": require("./scripts/managers/networkManager"),
     "src/scenes/scripts/players/cameraHolder.ts": require("./scripts/players/cameraHolder"),
     "src/scenes/scripts/players/player.ts": require("./scripts/players/player"),
+    "src/scenes/scripts/spawnPoints.ts": require("./scripts/spawnPoints"),
 };
 //# sourceMappingURL=scripts-map.js.map

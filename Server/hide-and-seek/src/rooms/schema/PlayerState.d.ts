@@ -3,6 +3,9 @@ import { HASRoom } from '../HASRoom';
 export declare class PlayerState extends Schema {
     id: string;
     username: string;
+    isSeeker: boolean;
+    /** The index of the spawn point on the client */
+    spawnPoint: number;
     xVel: number;
     yVel: number;
     zVel: number;

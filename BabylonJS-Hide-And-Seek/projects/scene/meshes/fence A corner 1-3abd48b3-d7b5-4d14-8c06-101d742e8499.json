@@ -4,7 +4,7 @@
 		{
 			"name": "fence A corner 1",
 			"id": "3abd48b3-d7b5-4d14-8c06-101d742e8499",
-			"uniqueId": 84,
+			"uniqueId": 81,
 			"type": "Mesh",
 			"position": [
 				-25,
@@ -52,7 +52,7 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "547168ac-7bf2-4f23-872c-3ff4f2ef9dfb",
 			"isUnIndexed": false,
-			"materialUniqueId": 202,
+			"materialUniqueId": 108,
 			"materialId": "default material",
 			"metadata": {
 				"basePoseMatrix": {

@@ -1,8 +1,8 @@
 import { Mesh } from '@babylonjs/core';
 import type { PlayerState } from '../../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
 export default class Player extends Mesh {
-    private _isLocalPlayer;
     private _movementSpeed;
+    isLocalPlayer: boolean;
     private _rigidbody;
     private _xDirection;
     private _zDirection;
@@ -13,7 +13,7 @@ export default class Player extends Mesh {
      * Override constructor.
      * @warn do not fill.
      */
-    protected constructor();
+    constructor();
     /**
      * Called on the node is being initialized.
      * This function is called immediatly after the constructor has been called.

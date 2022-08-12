@@ -4,7 +4,7 @@
 		{
 			"name": "tombstone4",
 			"id": "7140d913-fcae-497f-a8e7-040e11f22d16",
-			"uniqueId": 113,
+			"uniqueId": 120,
 			"type": "Mesh",
 			"position": [
 				0,
@@ -52,10 +52,10 @@
 			"overrideMaterialSideOrientation": 0,
 			"parentId": "f36124fb-304e-4315-8fc8-5ba08c9ae761",
 			"isUnIndexed": false,
-			"geometryUniqueId": 196,
+			"geometryUniqueId": 204,
 			"geometryId": "57f71cf9-0c23-4ebb-867d-2f043b6b699a",
 			"subMeshes": null,
-			"materialUniqueId": 351,
+			"materialUniqueId": 359,
 			"materialId": "dbdd4f94-9789-45f2-a15c-e19ad1f102d0",
 			"metadata": {
 				"gltf": {

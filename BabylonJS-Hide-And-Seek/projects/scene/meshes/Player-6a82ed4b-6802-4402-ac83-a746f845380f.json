@@ -4,12 +4,12 @@
 		{
 			"name": "Player",
 			"id": "6a82ed4b-6802-4402-ac83-a746f845380f",
-			"uniqueId": 164,
+			"uniqueId": 168,
 			"type": "Mesh",
 			"position": [
 				0,
 				0.5,
-				-9.114859580993652
+				-8.30514907836914
 			],
 			"rotationQuaternion": [
 				0,
@@ -52,10 +52,10 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "fd7a4725-539b-4020-9b6f-3032264f3ad4",
 			"isUnIndexed": false,
-			"geometryUniqueId": 251,
+			"geometryUniqueId": 255,
 			"geometryId": "1d916d74-511b-480f-9a49-fe94c8f0dce6",
 			"subMeshes": null,
-			"materialUniqueId": 202,
+			"materialUniqueId": 108,
 			"materialId": "default material",
 			"physicsMass": 1,
 			"physicsFriction": 0.2,

@@ -4,7 +4,7 @@
 		{
 			"name": "mausoleum small",
 			"id": "2d55ef17-d24c-464f-8d2c-488f2a10107e",
-			"uniqueId": 49,
+			"uniqueId": 84,
 			"type": "Mesh",
 			"position": [
 				-40,
@@ -52,7 +52,7 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "a42ec12a-7f0a-4d92-bb09-c5a43e5c9ca6",
 			"isUnIndexed": false,
-			"materialUniqueId": 202,
+			"materialUniqueId": 108,
 			"materialId": "default material",
 			"metadata": {
 				"basePoseMatrix": {

@@ -18,13 +18,13 @@ export class HASRoom extends Room<HASRoomState> {
 	}
 
 	onCreate(options: any) {
-		this.setState(new HASRoomState());
+		this.maxClients = 8;
+
+		this.setState(new HASRoomState(this));
 
 		logger.info(`*********************** HIDE AND SEEK ROOM (${this.roomId}) CREATED ***********************`);
 		logger.info(`Options: %o`, options);
 		logger.info('**************************************************************************');
-
-		this.maxClients = 8;
 
 		this.registerMessageHandlers();
 
@@ -40,11 +40,18 @@ export class HASRoom extends Room<HASRoomState> {
 	onJoin(client: Client, options: any) {
 		logger.silly(`*** On Client Join - ${client.sessionId} ***`);
 
+		const isSeeker: boolean = this.state.players.size === 0;
+
+		let spawnIndex: number = isSeeker ? -1 : this.state.getSpawnPointIndex();
+
+		logger.info(`${client.sessionId} spawn index: ${spawnIndex}`);
+
 		// Create a new instance of NetworkedEntityState for this client and assign initial state values
 		const player = new PlayerState(this).assign({
 			id: client.id,
-			// timestamp: this.state.serverTime,
 			username: options.username,
+			spawnPoint: spawnIndex,
+			isSeeker: isSeeker,
 		});
 
 		// Add the player to the collection;
@@ -60,13 +67,16 @@ export class HASRoom extends Room<HASRoomState> {
 			}
 
 			logger.info("let's wait for reconnection for client: " + client.sessionId);
-			const newClient = await this.allowReconnection(client, 3);
+			const newClient: Client = await this.allowReconnection(client, 3);
 			logger.info('reconnected! client: ' + newClient.sessionId);
 
 			// TODO: Replace the client in the players map on reconnect?
 		} catch (e) {
 			logger.info('disconnected! client: ' + client.sessionId);
 			logger.silly(`*** Removing player ${client.sessionId} ***`);
+
+			// Make the spawn point index available again
+			this.state.freeUpSpawnPointIndex(this.state.players.get(client.sessionId));
 
 			//remove user
 			this.state.players.delete(client.sessionId);
@@ -86,21 +96,6 @@ export class HASRoom extends Room<HASRoomState> {
 			logger.error(`Handle Player Input - Invalid length (${directions.length}) for 'directions': %o`, directions);
 			return;
 		}
-
-		// logger.debug(`Player (${client.sessionId}) Input: (${directions[0]}, ${directions[1]}, ${directions[2]})`);
-
-		// Calculate the player's velocity and send back to the client
-		// let velocity: number[] = [directions[0], directions[1], directions[2]];
-
-		// const deltaTime: number = this.state.deltaTime;
-
-		// velocity[0] *= this.movementSpeed * deltaTime;
-		// velocity[1] *= this.movementSpeed * deltaTime;
-		// velocity[2] *= this.movementSpeed * deltaTime;
-
-		// const velocityChange: VelocityChangeMessage = new VelocityChangeMessage(client.sessionId, velocity);
-
-		// client.send('velocityChange', velocityChange);
 
 		const playerState: PlayerState = this.state.players.get(client.sessionId);
 

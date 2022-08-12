@@ -5,6 +5,7 @@ import type { HASRoomState } from '../../../../../Server/hide-and-seek/src/rooms
 import { PlayerState } from '../../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
 export default class NetworkManager extends Node {
     onPlayerAdded: (state: PlayerState, sesstionId: string) => void;
+    onPlayerRemoved: (state: PlayerState, sessionId: string) => void;
     private static _instance;
     private _serverSettings;
     private _client;

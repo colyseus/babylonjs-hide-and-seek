@@ -127,7 +127,6 @@ var NetworkManager = /** @class */ (function (_super) {
         this.bindHandlers();
     };
     NetworkManager.prototype.bindHandlers = function () {
-        // this.onPlayerAdded = this.onPlayerAdded.bind(this);
         this.handleMessages = this.handleMessages.bind(this);
     };
     /**

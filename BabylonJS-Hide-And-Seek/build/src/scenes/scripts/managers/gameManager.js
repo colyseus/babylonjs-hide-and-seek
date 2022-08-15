@@ -34,8 +34,10 @@ var GameManager = /** @class */ (function (_super) {
     // @ts-ignore ignoring the super call as we don't want to re-init
     function GameManager() {
         var _this = this;
-        _this._remotePlayers = null;
+        _this._availableRemotePlayers = null;
         _this._spawnPoints = null;
+        _this._spawnedRemotes = null;
+        _this.lastChange = 0;
         return _this;
     }
     Object.defineProperty(GameManager, "Instance", {
@@ -59,7 +61,8 @@ var GameManager = /** @class */ (function (_super) {
     GameManager.prototype.onInitialize = function () {
         // ...
         GameManager._instance = this;
-        this._remotePlayers = [];
+        this._availableRemotePlayers = [];
+        this._spawnedRemotes = new Map();
         this.onPlayerAdded = this.onPlayerAdded.bind(this);
         this.onPlayerRemoved = this.onPlayerRemoved.bind(this);
     };
@@ -70,13 +73,13 @@ var GameManager = /** @class */ (function (_super) {
         // ...
         this.initializeSpawnPoints();
         // Add remote player references to the array
-        this._remotePlayers.push(this._remotePlayer1);
-        this._remotePlayers.push(this._remotePlayer2);
-        this._remotePlayers.push(this._remotePlayer3);
-        this._remotePlayers.push(this._remotePlayer4);
-        this._remotePlayers.push(this._remotePlayer5);
-        this._remotePlayers.push(this._remotePlayer6);
-        this._remotePlayers.push(this._remotePlayer7);
+        this._availableRemotePlayers.push(this._remotePlayer1);
+        this._availableRemotePlayers.push(this._remotePlayer2);
+        this._availableRemotePlayers.push(this._remotePlayer3);
+        this._availableRemotePlayers.push(this._remotePlayer4);
+        this._availableRemotePlayers.push(this._remotePlayer5);
+        this._availableRemotePlayers.push(this._remotePlayer6);
+        this._availableRemotePlayers.push(this._remotePlayer7);
         this._player.setParent(null);
         this._cameraHolder.setTarget(this._player);
         networkManager_1.default.Instance.onPlayerAdded = this.onPlayerAdded;
@@ -94,12 +97,15 @@ var GameManager = /** @class */ (function (_super) {
             player = this._player;
         }
         else {
-            if (this._remotePlayers.length === 0) {
+            // Player is remote
+            if (this._availableRemotePlayers.length === 0) {
                 console.error("On Player Added - No more remote player objects to assign!");
                 return;
             }
             // Retrieve a remote player object
-            player = this._remotePlayers.splice(0, 1)[0];
+            player = this._availableRemotePlayers.splice(0, 1)[0];
+            // Add the player to the map of remote players
+            this._spawnedRemotes.set(sessionId, player);
         }
         var point = this._spawnPoints.getSpawnPoint(state);
         player.setParent(null);
@@ -109,13 +115,38 @@ var GameManager = /** @class */ (function (_super) {
         player.setPlayerState(state);
     };
     GameManager.prototype.onPlayerRemoved = function (state, sessionId) {
-        // TODO: get reference to player object using sessionId; return player object back to the remote players array; set it's state to null
+        console.log("On Player Removed: ".concat(sessionId));
+        // Reset remote player
+        var player = this._spawnedRemotes.get(sessionId);
+        if (player) {
+            this._spawnPoints.freeUpSpawnPoint(state);
+            this.resetPlayer(player);
+            this._spawnedRemotes.delete(sessionId);
+        }
+        else {
+            console.error("No spawned remote player object linked to client \"".concat(sessionId, "\""));
+        }
+    };
+    GameManager.prototype.resetPlayer = function (player) {
+        player.setPlayerState(null);
+        player.setEnabled(false);
+        player.setParent(this);
+        this._availableRemotePlayers.push(player); //
     };
     /**
      * Called each frame.
      */
     GameManager.prototype.onUpdate = function () {
         // ...
+        // if (InputManager.getKey(32)) {
+        // 	if (Date.now() - this.lastChange > 500) {
+        // 		this.lastChange = Date.now();
+        // 		const enabled: boolean = !this._player.isEnabled();
+        // 		console.log(`Toggle player ${enabled ? 'on' : 'off'} %o`, this._player);
+        // 		this._player.setEnabled(enabled);
+        // 		this._player.setParent(enabled ? null : this);
+        // 	}
+        // }
     };
     /**
      * Called on the object has been disposed.

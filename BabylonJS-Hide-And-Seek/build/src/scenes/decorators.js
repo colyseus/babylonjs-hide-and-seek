@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.onEngineResize = exports.onKeyboardEvent = exports.onPointerEvent = exports.fromMaterials = exports.fromSounds = exports.fromAnimationGroups = exports.fromParticleSystems = exports.fromScene = exports.fromChildren = exports.visibleInInspector = void 0;
+exports.onControlPointerOut = exports.onControlPointerEnter = exports.onControlClick = exports.fromControls = exports.guiComponent = exports.onEngineResize = exports.onKeyboardEvent = exports.onPointerEvent = exports.fromMaterials = exports.fromSounds = exports.fromAnimationGroups = exports.fromParticleSystems = exports.fromScene = exports.fromChildren = exports.visibleInInspector = void 0;
 /**
  * Sets the decorated member visible in the inspector.
  * @param type the property type.
@@ -183,4 +183,74 @@ function onEngineResize() {
     };
 }
 exports.onEngineResize = onEngineResize;
+/**
+ * Sets the component as a GUI component. Loads the GUI data located at the given path
+ * and allows to use the @fromControls decorator.
+ * @param path defines the path to the GUI data to load and parse.
+ */
+function guiComponent(path) {
+    return function (target) {
+        target._GuiPath = path;
+    };
+}
+exports.guiComponent = guiComponent;
+/**
+ * Sets the decorated member linked to a GUI control.
+ * Handled only if the component is tagged @guiComponent
+ * @param controlName defines the name of the control to retrieve.
+ */
+function fromControls(controlName) {
+    return function (target, propertyKey) {
+        var _a;
+        var ctor = target.constructor;
+        ctor._ControlsValues = (_a = ctor._ControlsValues) !== null && _a !== void 0 ? _a : [];
+        ctor._ControlsValues.push({
+            propertyKey: propertyKey.toString(),
+            controlName: controlName !== null && controlName !== void 0 ? controlName : propertyKey.toString(),
+        });
+    };
+}
+exports.fromControls = fromControls;
+function onControlEvent(controlName, type) {
+    return function (target, propertyKey) {
+        var _a;
+        if (typeof (target[propertyKey]) !== "function") {
+            throw new Error("Decorated propery \"".concat(propertyKey.toString(), "\" in class \"").concat(target.constructor.name, "\" must be a function."));
+        }
+        var ctor = target.constructor;
+        ctor._ControlsClickValues = (_a = ctor._ControlsClickValues) !== null && _a !== void 0 ? _a : [];
+        ctor._ControlsClickValues.push({
+            type: type,
+            controlName: controlName,
+            propertyKey: propertyKey.toString(),
+        });
+    };
+}
+/**
+ * Sets the decorated member function to be called on the control identified by the given name is clicked.
+ * Handled only if the component is tagged @guiComponent
+ * @param controlName defines the name of the control to listen the click event.
+ */
+function onControlClick(controlName) {
+    return onControlEvent(controlName, "onPointerClickObservable");
+}
+exports.onControlClick = onControlClick;
+/**
+ * Sets the decorated member function to be called on the pointer enters the control identified by the given name.
+ * Handled only if the component is tagged @guiComponent
+ * @param controlName defines the name of the control to listen the pointer enter event.
+ */
+function onControlPointerEnter(controlName) {
+    return onControlEvent(controlName, "onPointerEnterObservable");
+}
+exports.onControlPointerEnter = onControlPointerEnter;
+/**
+ * Sets the decorated member function to be called on the pointer is out of the control identified by the given name.
+ * Handled only if the component is tagged @guiComponent
+ * @param controlName defines the name of the control to listen the pointer out event.
+ */
+function onControlPointerOut(controlName) {
+    return onControlEvent(controlName, "onPointerOutObservable");
+}
+exports.onControlPointerOut = onControlPointerOut;
 //# sourceMappingURL=decorators.js.map

@@ -11,8 +11,9 @@ export default class GameManager extends Node {
     private _remotePlayer5;
     private _remotePlayer6;
     private _remotePlayer7;
-    private _remotePlayers;
+    private _availableRemotePlayers;
     private _spawnPoints;
+    private _spawnedRemotes;
     static get Instance(): GameManager;
     static get DeltaTime(): number;
     /**
@@ -32,6 +33,8 @@ export default class GameManager extends Node {
     private initializeSpawnPoints;
     private onPlayerAdded;
     private onPlayerRemoved;
+    private resetPlayer;
+    private lastChange;
     /**
      * Called each frame.
      */

@@ -84,7 +84,6 @@ export default class NetworkManager extends Node {
 	}
 
 	private bindHandlers() {
-		// this.onPlayerAdded = this.onPlayerAdded.bind(this);
 		this.handleMessages = this.handleMessages.bind(this);
 	}
 

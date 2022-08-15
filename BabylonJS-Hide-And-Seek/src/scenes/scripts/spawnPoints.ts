@@ -7,6 +7,7 @@ export class SpawnPoints {
 	private _seekerPoint: TransformNode = null;
 
 	private _availablePoints: TransformNode[] = null;
+	private _usedPoints: Map<string, TransformNode> = null;
 
 	constructor(spawnPoints: TransformNode[]) {
 		this._spawnPoints = spawnPoints;
@@ -16,6 +17,7 @@ export class SpawnPoints {
 
 	private initializeSpawnPoints() {
 		this._availablePoints = [];
+		this._usedPoints = new Map<string, TransformNode>();
 
 		this._spawnPoints.forEach((point: TransformNode) => {
 			if (point.name.includes('Seeker')) {
@@ -29,21 +31,51 @@ export class SpawnPoints {
 	}
 
 	public getSpawnPoint(playerState: PlayerState): TransformNode {
-		if (playerState.isSeeker) {
-			return this._seekerPoint;
-		}
-
+		let point: TransformNode = null;
 		const index: number = playerState.spawnPoint;
 
-		if (index < 0 || index > this._availablePoints.length - 1 || !this._availablePoints[index]) {
-			console.error(`Spawn point index ${index} is not valid: %o`, this._availablePoints);
-			return null;
+		if (playerState.isSeeker) {
+			if (!this._seekerPoint) {
+				console.error(`Seeker spawn point has already been used!`);
+				return null;
+			}
+
+			point = this._seekerPoint;
+
+			this._seekerPoint = null;
+		} else {
+			if (index < 0 || index > this._availablePoints.length - 1 || !this._availablePoints[index]) {
+				console.error(`Hider spawn point index ${index} is not valid: %o`, this._availablePoints);
+				return null;
+			}
+
+			point = this._availablePoints[index];
+
+			this._availablePoints[index] = null;
 		}
 
-		const point: TransformNode = this._availablePoints[index];
-
-		this._availablePoints[index] = null;
+		// Add the point to the used collection
+		this._usedPoints.set(playerState.id, point);
 
 		return point;
+	}
+
+	public freeUpSpawnPoint(playerState: PlayerState) {
+		const spawnPointIndex: number = playerState.spawnPoint;
+		let spawnPoint: TransformNode = null;
+
+		if (playerState.isSeeker) {
+			// Restore the seeker spawn point
+			spawnPoint = this._seekerPoint = this._usedPoints.get(playerState.id);
+		} else {
+			// Restore the hider spawn point
+			spawnPoint = this._availablePoints[spawnPointIndex] = this._usedPoints.get(playerState.id);
+		}
+
+		if (!spawnPoint) {
+			console.error(`Spawn Points - freeUpSpawnPoint() - Something went wrong, the spawn point was not restored`);
+		} else {
+			this._usedPoints.delete(playerState.id);
+		}
 	}
 }

@@ -21,6 +21,6 @@
         "./node_modules",
         "./build",
         "./declaration",
-        "./Server"
+        "../Server"
     ]
 }

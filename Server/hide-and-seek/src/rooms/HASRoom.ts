@@ -48,7 +48,7 @@ export class HASRoom extends Room<HASRoomState> {
 
 		// Create a new instance of NetworkedEntityState for this client and assign initial state values
 		const player = new PlayerState(this).assign({
-			id: client.id,
+			id: client.sessionId,
 			username: options.username,
 			spawnPoint: spawnIndex,
 			isSeeker: isSeeker,
@@ -65,6 +65,8 @@ export class HASRoom extends Room<HASRoomState> {
 			if (consented) {
 				throw new Error('consented leave!');
 			}
+
+			throw new Error('DEBUG force no reconnection check');
 
 			logger.info("let's wait for reconnection for client: " + client.sessionId);
 			const newClient: Client = await this.allowReconnection(client, 3);

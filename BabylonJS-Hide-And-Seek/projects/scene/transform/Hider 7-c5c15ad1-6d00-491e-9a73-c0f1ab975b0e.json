@@ -1,0 +1,54 @@
+{
+	"tags": null,
+	"position": [
+		4.045587062835693,
+		0.5,
+		-6.007132053375244
+	],
+	"rotation": [
+		0,
+		-1.5793768873033762,
+		0
+	],
+	"scaling": [
+		1.0000002157343135,
+		1,
+		1.0000002157343135
+	],
+	"billboardMode": 0,
+	"scalingDeterminant": 1,
+	"infiniteDistance": false,
+	"ignoreNonUniformScaling": false,
+	"reIntegrateRotationIntoRotationQuaternion": false,
+	"name": "Hider 7",
+	"id": "c5c15ad1-6d00-491e-9a73-c0f1ab975b0e",
+	"state": "",
+	"metadata": {
+		"script": {
+			"name": "None"
+		},
+		"doNotExport": false
+	},
+	"type": "TransformNode",
+	"uniqueId": 1199,
+	"parentId": "df1b3bc6-a376-4967-bc0a-3e2688e6362f",
+	"localMatrix": {
+		"0": 1,
+		"1": 0,
+		"2": 0,
+		"3": 0,
+		"4": 0,
+		"5": 1,
+		"6": 0,
+		"7": 0,
+		"8": 0,
+		"9": 0,
+		"10": 1,
+		"11": 0,
+		"12": 0,
+		"13": 0,
+		"14": 0,
+		"15": 1
+	},
+	"isEnabled": true
+}

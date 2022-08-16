@@ -6,6 +6,9 @@ module.exports = (_, argv) => {
 	const entryPath = path.join(__dirname, "src/index.ts");
 	const package = require("./package.json");
 
+	
+	console.log(`********* WEBPACK Dir Path: "${__dirname}" *********`);
+
 	return {
 		// we output both a minified version & a non minified version on production build
 		entry: { "bundle": entryPath },
@@ -25,6 +28,7 @@ module.exports = (_, argv) => {
 						path.join(__dirname, "dist"),
 						path.join(__dirname, "projects"),
 						path.join(__dirname, "scenes"),
+						// path.join(__dirname)
 					],
 				},
 				{
@@ -49,6 +53,6 @@ module.exports = (_, argv) => {
 			minimize: false,
 			usedExports: true,
 		},
-		devtool: "source-map",
+		devtool: "source-map"
 	};
 };

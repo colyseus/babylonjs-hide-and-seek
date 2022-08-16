@@ -4,17 +4,18 @@
 		{
 			"name": "New Cube",
 			"id": "719bd2a5-35c7-41ef-8c06-baf49b8f8403",
-			"uniqueId": 4890,
+			"uniqueId": 135,
 			"type": "Mesh",
 			"position": [
 				-20.957136154174805,
 				-0.32231569290161133,
 				3.5635476112365723
 			],
-			"rotation": [
+			"rotationQuaternion": [
 				0,
-				1.5707963267948963,
-				0
+				0.7071067811865475,
+				0,
+				0.7071067811865477
 			],
 			"scaling": [
 				6,
@@ -51,11 +52,15 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "d21fe0a0-fbbd-40f0-a426-4ca36949cee4",
 			"isUnIndexed": false,
-			"geometryUniqueId": 4889,
+			"geometryUniqueId": 214,
 			"geometryId": "3385bfc4-83bf-443d-951b-b50ef8a41b49",
 			"subMeshes": null,
-			"materialUniqueId": 18,
+			"materialUniqueId": 108,
 			"materialId": "default material",
+			"physicsMass": 0,
+			"physicsFriction": 0.2,
+			"physicsRestitution": 0.2,
+			"physicsImpostor": 2,
 			"metadata": {
 				"editorGeometry": {
 					"type": "Cube",

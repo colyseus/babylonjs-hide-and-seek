@@ -4,7 +4,7 @@
 		{
 			"name": "mausoleum large.mausoleumLarge",
 			"id": "da54d96e-246a-4442-a8b1-096ca15bc1bc",
-			"uniqueId": 3198,
+			"uniqueId": 171,
 			"type": "Mesh",
 			"position": [
 				0,
@@ -13,7 +13,7 @@
 			],
 			"rotationQuaternion": [
 				0,
-				0,
+				4.779160400758542e-11,
 				0,
 				1
 			],
@@ -52,10 +52,10 @@
 			"overrideMaterialSideOrientation": 0,
 			"parentId": "8cc43371-c89d-4761-9470-a7e93d4ad83a",
 			"isUnIndexed": false,
-			"geometryUniqueId": 2103,
+			"geometryUniqueId": 264,
 			"geometryId": "d9151cc9-71ef-484e-b968-090491d2c83f",
 			"subMeshes": null,
-			"materialUniqueId": 2104,
+			"materialUniqueId": 296,
 			"materialId": "b42b7615-f043-41c5-87c5-f24e8f61be85",
 			"metadata": {
 				"gltf": {

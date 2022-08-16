@@ -76,3 +76,33 @@ export declare function onKeyboardEvent(key: number | number[] | string | string
  *  - height: number defines the new height
  */
 export declare function onEngineResize(): any;
+/**
+ * Sets the component as a GUI component. Loads the GUI data located at the given path
+ * and allows to use the @fromControls decorator.
+ * @param path defines the path to the GUI data to load and parse.
+ */
+export declare function guiComponent(path: string): any;
+/**
+ * Sets the decorated member linked to a GUI control.
+ * Handled only if the component is tagged @guiComponent
+ * @param controlName defines the name of the control to retrieve.
+ */
+export declare function fromControls(controlName?: string): any;
+/**
+ * Sets the decorated member function to be called on the control identified by the given name is clicked.
+ * Handled only if the component is tagged @guiComponent
+ * @param controlName defines the name of the control to listen the click event.
+ */
+export declare function onControlClick(controlName: string): any;
+/**
+ * Sets the decorated member function to be called on the pointer enters the control identified by the given name.
+ * Handled only if the component is tagged @guiComponent
+ * @param controlName defines the name of the control to listen the pointer enter event.
+ */
+export declare function onControlPointerEnter(controlName: string): any;
+/**
+ * Sets the decorated member function to be called on the pointer is out of the control identified by the given name.
+ * Handled only if the component is tagged @guiComponent
+ * @param controlName defines the name of the control to listen the pointer out event.
+ */
+export declare function onControlPointerOut(controlName: string): any;

@@ -4,7 +4,7 @@
 		{
 			"name": "mausoleumSmall",
 			"id": "c6077ab6-d69e-469a-93fa-1d48d0c34d8f",
-			"uniqueId": 2114,
+			"uniqueId": 98,
 			"type": "Mesh",
 			"position": [
 				0,
@@ -52,10 +52,10 @@
 			"overrideMaterialSideOrientation": 0,
 			"parentId": "2d55ef17-d24c-464f-8d2c-488f2a10107e",
 			"isUnIndexed": false,
-			"geometryUniqueId": 2115,
+			"geometryUniqueId": 249,
 			"geometryId": "49be2d02-5771-42da-bd28-91c0966a588e",
 			"subMeshes": null,
-			"materialUniqueId": 2116,
+			"materialUniqueId": 345,
 			"materialId": "e712389f-b98f-4945-9dd4-d999872ba7da",
 			"metadata": {
 				"gltf": {

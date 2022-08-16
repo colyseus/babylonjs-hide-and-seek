@@ -4,7 +4,7 @@
 		{
 			"name": "mausoleum large",
 			"id": "8cc43371-c89d-4761-9470-a7e93d4ad83a",
-			"uniqueId": 3197,
+			"uniqueId": 78,
 			"type": "Mesh",
 			"position": [
 				0,
@@ -18,9 +18,9 @@
 				0
 			],
 			"scaling": [
-				0.9999995036484277,
-				-0.9999998807907104,
-				0.9999998612811455
+				1,
+				-1,
+				1
 			],
 			"pivotMatrix": {
 				"0": 1,
@@ -52,7 +52,7 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "a2a17ad5-8907-4f37-8ee1-62eba6baae43",
 			"isUnIndexed": false,
-			"materialUniqueId": 18,
+			"materialUniqueId": 108,
 			"materialId": "default material",
 			"metadata": {
 				"basePoseMatrix": {

@@ -4,7 +4,7 @@
 		{
 			"name": "fence A gate",
 			"id": "b2c4ed5f-50d1-41ac-9b28-e0f6f50814d1",
-			"uniqueId": 1772,
+			"uniqueId": 40,
 			"type": "Mesh",
 			"position": [
 				-23.392162322998047,
@@ -52,7 +52,7 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "ba3b2da1-f56d-4fb6-acc2-662170015851",
 			"isUnIndexed": false,
-			"materialUniqueId": 18,
+			"materialUniqueId": 108,
 			"materialId": "default material",
 			"metadata": {
 				"basePoseMatrix": {

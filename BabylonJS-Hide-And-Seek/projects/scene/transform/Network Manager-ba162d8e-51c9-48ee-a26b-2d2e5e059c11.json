@@ -25,11 +25,12 @@
 	"state": "",
 	"metadata": {
 		"script": {
-			"name": "src/scenes/scripts/networkManager.ts"
+			"name": "src/scenes/scripts/managers/networkManager.ts"
 		}
 	},
 	"type": "TransformNode",
-	"uniqueId": 15,
+	"uniqueId": 28,
+	"parentId": "3f214c3d-9490-4a21-bc93-dd265924c268",
 	"localMatrix": {
 		"0": 1,
 		"1": 0,

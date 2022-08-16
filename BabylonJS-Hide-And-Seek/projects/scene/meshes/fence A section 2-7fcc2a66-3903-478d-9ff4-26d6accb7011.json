@@ -4,7 +4,7 @@
 		{
 			"name": "fence A section 2",
 			"id": "7fcc2a66-3903-478d-9ff4-26d6accb7011",
-			"uniqueId": 1954,
+			"uniqueId": 33,
 			"type": "Mesh",
 			"position": [
 				-17,
@@ -52,7 +52,7 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "ba3b2da1-f56d-4fb6-acc2-662170015851",
 			"isUnIndexed": false,
-			"materialUniqueId": 18,
+			"materialUniqueId": 108,
 			"materialId": "default material",
 			"metadata": {
 				"basePoseMatrix": {

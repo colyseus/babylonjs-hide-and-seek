@@ -4,7 +4,7 @@
 		{
 			"name": "sarcophagusOpen",
 			"id": "b9d1c77d-df66-4f0d-97cd-6e1afc336aa0",
-			"uniqueId": 2138,
+			"uniqueId": 121,
 			"type": "Mesh",
 			"position": [
 				0,
@@ -52,10 +52,10 @@
 			"overrideMaterialSideOrientation": 0,
 			"parentId": "7eb6721b-6929-456f-aef3-cf65e8c92fd1",
 			"isUnIndexed": false,
-			"geometryUniqueId": 2139,
+			"geometryUniqueId": 205,
 			"geometryId": "2f5e5a31-243d-4a86-a6c1-461984e56fd2",
 			"subMeshes": null,
-			"materialUniqueId": 2140,
+			"materialUniqueId": 349,
 			"materialId": "6c86111a-b864-4b57-b63b-4f1675568e95",
 			"metadata": {
 				"gltf": {

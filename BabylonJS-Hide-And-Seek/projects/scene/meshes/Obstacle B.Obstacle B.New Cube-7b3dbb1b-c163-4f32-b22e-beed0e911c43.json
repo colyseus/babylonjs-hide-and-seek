@@ -4,17 +4,18 @@
 		{
 			"name": "Obstacle B.Obstacle B.New Cube",
 			"id": "7b3dbb1b-c163-4f32-b22e-beed0e911c43",
-			"uniqueId": 5579,
+			"uniqueId": 158,
 			"type": "Mesh",
 			"position": [
 				-18.452425003051758,
 				-0.32231569290161133,
 				6.065021991729736
 			],
-			"rotation": [
+			"rotationQuaternion": [
 				0,
 				0,
-				0
+				0,
+				1
 			],
 			"scaling": [
 				6,
@@ -51,11 +52,15 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "b4f96f29-feee-44a0-804b-76f300a9ddec",
 			"isUnIndexed": false,
-			"geometryUniqueId": 4889,
+			"geometryUniqueId": 237,
 			"geometryId": "3385bfc4-83bf-443d-951b-b50ef8a41b49",
 			"subMeshes": null,
-			"materialUniqueId": 18,
+			"materialUniqueId": 108,
 			"materialId": "default material",
+			"physicsMass": 0,
+			"physicsFriction": 0.2,
+			"physicsRestitution": 0.2,
+			"physicsImpostor": 2,
 			"metadata": {
 				"editorGeometry": {
 					"type": "Cube",

@@ -4,7 +4,7 @@
 		{
 			"name": "Ground",
 			"id": "423c55f0-bbbf-4722-a36a-d6c295a5a734",
-			"uniqueId": 2454,
+			"uniqueId": 87,
 			"type": "GroundMesh",
 			"position": [
 				0,
@@ -52,15 +52,11 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "a2a17ad5-8907-4f37-8ee1-62eba6baae43",
 			"isUnIndexed": false,
-			"geometryUniqueId": 2455,
+			"geometryUniqueId": 176,
 			"geometryId": "3d5379f5-6962-413c-85e0-dbff6f73e054",
 			"subMeshes": null,
-			"materialUniqueId": 73,
+			"materialUniqueId": 280,
 			"materialId": "bff3cbf9-346d-4541-b2f1-498ffddc4323",
-			"physicsMass": 1,
-			"physicsFriction": 0.2,
-			"physicsRestitution": 0.2,
-			"physicsImpostor": 0,
 			"metadata": {
 				"isPickable": true,
 				"script": {

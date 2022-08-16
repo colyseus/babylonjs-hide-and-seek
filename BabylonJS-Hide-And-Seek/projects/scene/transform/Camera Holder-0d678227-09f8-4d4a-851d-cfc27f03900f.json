@@ -26,12 +26,11 @@
 	"metadata": {
 		"doNotExport": false,
 		"script": {
-			"name": "None"
+			"name": "src/scenes/scripts/players/cameraHolder.ts"
 		}
 	},
 	"type": "TransformNode",
-	"uniqueId": 5798,
-	"parentId": "a1d28baa-e6bd-49aa-bb33-e38ef30bbd5b",
+	"uniqueId": 17,
 	"localMatrix": {
 		"0": 1,
 		"1": 0,

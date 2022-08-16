@@ -4,7 +4,7 @@
 		{
 			"name": "tombstone 2",
 			"id": "9a571de8-40b6-42eb-ac8b-126469f48ca5",
-			"uniqueId": 2247,
+			"uniqueId": 58,
 			"type": "Mesh",
 			"position": [
 				-66,
@@ -52,7 +52,7 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "c52ac2f9-ca0a-4c23-90eb-c020aa791dca",
 			"isUnIndexed": false,
-			"materialUniqueId": 18,
+			"materialUniqueId": 108,
 			"materialId": "default material",
 			"metadata": {
 				"basePoseMatrix": {

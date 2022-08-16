@@ -6,6 +6,11 @@ exports.scriptsMap = void 0;
  */
 exports.scriptsMap = {
     "src/scenes/scripts/colyseusSettings.ts": require("./scripts/colyseusSettings"),
-    "src/scenes/scripts/networkManager.ts": require("./scripts/networkManager"),
+    "src/scenes/scripts/managers/gameManager.ts": require("./scripts/managers/gameManager"),
+    "src/scenes/scripts/managers/inputManager.ts": require("./scripts/managers/inputManager"),
+    "src/scenes/scripts/managers/networkManager.ts": require("./scripts/managers/networkManager"),
+    "src/scenes/scripts/players/cameraHolder.ts": require("./scripts/players/cameraHolder"),
+    "src/scenes/scripts/players/player.ts": require("./scripts/players/player"),
+    "src/scenes/scripts/spawnPoints.ts": require("./scripts/spawnPoints"),
 };
 //# sourceMappingURL=scripts-map.js.map

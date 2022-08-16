@@ -9,6 +9,10 @@ export declare class PlayerState extends Schema {
     xVel: number;
     yVel: number;
     zVel: number;
+    xPos: number;
+    yPos: number;
+    zPos: number;
+    positionTimestamp: number;
     private roomRef;
     private xDir;
     private yDir;
@@ -17,5 +21,6 @@ export declare class PlayerState extends Schema {
     setMovementDirection(direction: number[]): void;
     update(deltaTime: number): void;
     private calculateVelocityWithDirection;
-    private setVelocity;
+    setVelocity(velocity: number[]): void;
+    setPosition(position: number[], positionTimestamp: number): void;
 }

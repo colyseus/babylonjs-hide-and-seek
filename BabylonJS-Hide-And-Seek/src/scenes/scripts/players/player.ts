@@ -1,9 +1,10 @@
-import { Mesh, PhysicsImpostor, Space, Vector3 } from '@babylonjs/core';
+import { Mesh, PhysicsEngine, PhysicsImpostor, Space, Vector3 } from '@babylonjs/core';
 import { visibleInInspector } from '../../decorators';
 import GameManager from '../managers/gameManager';
 import InputManager from '../managers/inputManager';
 import NetworkManager from '../managers/networkManager';
 import type { PlayerState } from '../../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
+import { PlayerInputMessage } from '../../../../../Server/hide-and-seek/src/models/PlayerInputMessage';
 
 export default class Player extends Mesh {
 	@visibleInInspector('number', 'Movement Speed', 1)
@@ -15,8 +16,8 @@ export default class Player extends Mesh {
 
 	private _xDirection: number = 0;
 	private _zDirection: number = 0;
-	private _lastXDirection: number = 0;
-	private _lastZDirection: number = 0;
+	private _lastPosition: Vector3;
+	private _previousMovements: PlayerInputMessage[] = null;
 
 	private _state: PlayerState = null;
 
@@ -33,6 +34,7 @@ export default class Player extends Mesh {
 	 */
 	public onInitialize(): void {
 		// ...
+		this._previousMovements = [];
 	}
 
 	/**
@@ -46,6 +48,8 @@ export default class Player extends Mesh {
 		this.isLocalPlayer = !this.name.includes('Remote Player') ? true : false;
 
 		console.log(`Player - On Start - Is Local: ${this.isLocalPlayer}`);
+
+		this._lastPosition = this.position;
 	}
 
 	public setPlayerState(state: PlayerState) {
@@ -63,15 +67,31 @@ export default class Player extends Mesh {
 	 */
 	public onUpdate(): void {
 		this.updatePlayerMovement();
-		this.updateVelocityFromState();
+		this.updatePositionFromState();
 	}
 
-	private updateVelocityFromState() {
+	private updatePositionFromState() {
 		if (!this._state) {
 			return;
 		}
 
-		this._rigidbody.setLinearVelocity(new Vector3(this._state.xVel, this._state.yVel, this._state.zVel));
+		// Remove up to and out of date movements from the collection//
+		for (let i = this._previousMovements.length - 1; i >= 0; i--) {
+			const timestamp: number = this._previousMovements[i].timestamp;
+			if (timestamp <= this._state.positionTimestamp || Date.now() - timestamp > 200) {
+				this._previousMovements.splice(i, 1);
+			}
+		}
+
+		if (this.isLocalPlayer) {
+			// Update from the state received from the server if we don't have any other previous movements
+			if (this._previousMovements.length === 0) {
+				this.position.copyFrom(new Vector3(this._state.xPos, 0.5, this._state.zPos));
+			}
+		} else {
+			// Lerp the remote player object to their position
+			this.position.copyFrom(Vector3.Lerp(this.position, new Vector3(this._state.xPos, 0.5, this._state.zPos), GameManager.DeltaTime * 35));
+		}
 	}
 
 	private updatePlayerMovement() {
@@ -95,22 +115,27 @@ export default class Player extends Mesh {
 		direction.x = this._xDirection;
 		direction.z = this._zDirection;
 
-		// Only send the direction input if it has changed
-		if (this._lastXDirection !== this._xDirection || this._lastZDirection !== this._zDirection) {
-			// Send direction update message to the server
-			NetworkManager.Instance.sendPlayerDirectionInput(direction);
-		}
-
-		this._lastXDirection = this._xDirection;
-		this._lastZDirection = this._zDirection;
-
 		direction.x *= this._movementSpeed * GameManager.DeltaTime;
 		direction.z *= this._movementSpeed * GameManager.DeltaTime;
 
-		// this._rigidbody.setLinearVelocity(direction);
+		this._rigidbody.setLinearVelocity(direction);
 		this._rigidbody.setAngularVelocity(Vector3.Zero());
 
 		this.position.y = 0.5;
+
+		if (!this.position.equals(this._lastPosition)) {
+			this._lastPosition.copyFrom(this.position);
+			// Position has changed; send position to the server
+			this.sendPositionUpdateToServer();
+		}
+	}
+
+	private sendPositionUpdateToServer() {
+		const inputMsg: PlayerInputMessage = new PlayerInputMessage([this.position.x, 0.5, this.position.z]);
+
+		this._previousMovements.push(inputMsg);
+
+		NetworkManager.Instance.sendPlayerPosition(inputMsg);
 	}
 
 	/**

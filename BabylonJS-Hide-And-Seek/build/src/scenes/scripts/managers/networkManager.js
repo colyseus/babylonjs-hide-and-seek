@@ -235,17 +235,22 @@ var NetworkManager = /** @class */ (function (_super) {
     NetworkManager.prototype.unregisterRoomHandlers = function () {
         if (this.Room) {
             this.Room.state.players.onAdd = null;
+            this.Room.state.players.onRemove = null;
             // this.Room.onLeave.remove(this.onLeaveGridRoom);
             // this.Room.onStateChange.remove(this.onRoomStateChange);
             // this.Room.state.networkedUsers.onAdd = null;
             // this.Room.state.networkedUsers.onRemove = null;
         }
     };
-    NetworkManager.prototype.sendPlayerDirectionInput = function (direction) {
-        if (!this.Room) {
-            return;
-        }
-        this.Room.send('playerInput', [direction.x, direction.y, direction.z]);
+    // public sendPlayerDirectionInput(velocity: Vector3, position: Vector3) {
+    // 	if (!this.Room) {
+    // 		return;
+    // 	}
+    // 	const inputMsg: PlayerInputMessage = new PlayerInputMessage(this.Room.sessionId, [velocity.x, velocity.y, velocity.z], [position.x, position.y, position.z]);
+    // 	this.Room.send('playerInput', inputMsg);
+    // }
+    NetworkManager.prototype.sendPlayerPosition = function (positionMsg) {
+        this.Room.send('playerInput', positionMsg);
     };
     // private playerAdded(item: PlayerState, key: string) {
     // 	//

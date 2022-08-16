@@ -1,5 +1,5 @@
 import { Room, Client, Presence } from 'colyseus';
-import { VelocityChangeMessage } from '../models/VelocityChangeMessage';
+import { PlayerInputMessage } from '../models/PlayerInputMessage';
 import { HASRoomState } from './schema/HASRoomState';
 import { PlayerState } from './schema/PlayerState';
 const logger = require('../helpers/logger');
@@ -93,16 +93,17 @@ export class HASRoom extends Room<HASRoomState> {
 		this.onMessage('playerInput', this.handlePlayerInput);
 	}
 
-	private handlePlayerInput(client: Client, directions: number[]) {
-		if (directions.length < 3) {
-			logger.error(`Handle Player Input - Invalid length (${directions.length}) for 'directions': %o`, directions);
-			return;
-		}
+	private handlePlayerInput(client: Client, playerInput: PlayerInputMessage) {
+		// if (directions.length < 3) {
+		// 	logger.error(`Handle Player Input - Invalid length (${directions.length}) for 'directions': %o`, directions);
+		// 	return;
+		// }
 
 		const playerState: PlayerState = this.state.players.get(client.sessionId);
 
 		if (playerState) {
-			playerState.setMovementDirection(directions);
+			// playerState.setMovementDirection(directions);
+			playerState.setPosition(playerInput.position, playerInput.timestamp);
 		} else {
 			logger.error(`Failed to retrieve Player State for ${client.sessionId}`);
 		}

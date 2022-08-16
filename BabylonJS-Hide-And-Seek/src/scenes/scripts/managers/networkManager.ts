@@ -2,7 +2,7 @@ import { Vector3 } from '@babylonjs/core';
 import { Node } from '@babylonjs/core/node';
 import * as Colyseus from 'colyseus.js';
 import type { HASRoomState } from '../../../../../Server/hide-and-seek/src/rooms/schema/HASRoomState';
-import { VelocityChangeMessage } from '../../../../../Server/hide-and-seek/src/models/VelocityChangeMessage';
+import { PlayerInputMessage } from '../../../../../Server/hide-and-seek/src/models/PlayerInputMessage';
 import ColyseusSettings from '../colyseusSettings';
 import { PlayerState } from '../../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
 import GameManager from './gameManager';
@@ -178,6 +178,7 @@ export default class NetworkManager extends Node {
 	private unregisterRoomHandlers() {
 		if (this.Room) {
 			this.Room.state.players.onAdd = null;
+			this.Room.state.players.onRemove = null;
 			// this.Room.onLeave.remove(this.onLeaveGridRoom);
 			// this.Room.onStateChange.remove(this.onRoomStateChange);
 			// this.Room.state.networkedUsers.onAdd = null;
@@ -185,12 +186,18 @@ export default class NetworkManager extends Node {
 		}
 	}
 
-	public sendPlayerDirectionInput(direction: Vector3) {
-		if (!this.Room) {
-			return;
-		}
+	// public sendPlayerDirectionInput(velocity: Vector3, position: Vector3) {
+	// 	if (!this.Room) {
+	// 		return;
+	// 	}
 
-		this.Room.send('playerInput', [direction.x, direction.y, direction.z]);
+	// 	const inputMsg: PlayerInputMessage = new PlayerInputMessage(this.Room.sessionId, [velocity.x, velocity.y, velocity.z], [position.x, position.y, position.z]);
+
+	// 	this.Room.send('playerInput', inputMsg);
+	// }
+
+	public sendPlayerPosition(positionMsg: PlayerInputMessage) {
+		this.Room.send('playerInput', positionMsg);
 	}
 
 	// private playerAdded(item: PlayerState, key: string) {

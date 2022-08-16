@@ -6,10 +6,6 @@ import { HASRoomState } from './HASRoomState';
 
 export class PlayerState extends Schema {
 	@type('string') id: string = 'ID';
-	// //Position
-	// @type('number') xPos: number = 0.0;
-	// @type('number') yPos: number = 0.0;
-	// @type('number') zPos: number = 0.0;
 
 	// //Interpolation values
 	// @type('number') timestamp: number = 0.0;
@@ -21,6 +17,12 @@ export class PlayerState extends Schema {
 	@type('number') xVel: number = 0.0;
 	@type('number') yVel: number = 0.0;
 	@type('number') zVel: number = 0.0;
+
+	//Position
+	@type('number') xPos: number = 0.0;
+	@type('number') yPos: number = 0.0;
+	@type('number') zPos: number = 0.0;
+	@type('number') positionTimestamp: number = 0.0;
 
 	private roomRef: HASRoom = null;
 
@@ -42,7 +44,7 @@ export class PlayerState extends Schema {
 
 	public update(deltaTime: number) {
 		//
-		this.calculateVelocityWithDirection(deltaTime);
+		// this.calculateVelocityWithDirection(deltaTime);
 	}
 
 	private calculateVelocityWithDirection(deltaTime: number) {
@@ -57,11 +59,19 @@ export class PlayerState extends Schema {
 		this.setVelocity(velocity);
 	}
 
-	private setVelocity(velocity: number[]) {
+	public setVelocity(velocity: number[]) {
 		this.xVel = velocity[0];
 		this.yVel = velocity[1];
 		this.zVel = velocity[2];
 
 		// logger.debug(`Player State - Set Velocity: (${velocity[0]}, ${velocity[1]}, ${velocity[2]})`);
+	}
+
+	public setPosition(position: number[], positionTimestamp: number) {
+		this.xPos = position[0];
+		this.yPos = position[1];
+		this.zPos = position[2];
+
+		this.positionTimestamp = positionTimestamp;
 	}
 }

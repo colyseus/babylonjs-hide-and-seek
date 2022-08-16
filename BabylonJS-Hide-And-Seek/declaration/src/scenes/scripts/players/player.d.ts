@@ -6,8 +6,8 @@ export default class Player extends Mesh {
     private _rigidbody;
     private _xDirection;
     private _zDirection;
-    private _lastXDirection;
-    private _lastZDirection;
+    private _lastPosition;
+    private _previousMovements;
     private _state;
     /**
      * Override constructor.
@@ -28,8 +28,9 @@ export default class Player extends Mesh {
      * Called each frame.
      */
     onUpdate(): void;
-    private updateVelocityFromState;
+    private updatePositionFromState;
     private updatePlayerMovement;
+    private sendPositionUpdateToServer;
     /**
      * Called on the object has been disposed.
      * Object can be disposed manually or when the editor stops running the scene.

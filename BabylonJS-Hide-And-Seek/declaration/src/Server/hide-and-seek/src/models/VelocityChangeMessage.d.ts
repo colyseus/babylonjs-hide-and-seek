@@ -1,5 +1,6 @@
-export declare class VelocityChangeMessage {
+export declare class PlayerInputMessage {
     readonly clientId: string;
-    readonly velocity: number[];
-    constructor(clientId: string, velocity: number[]);
+    readonly direction: number[];
+    readonly position: number[];
+    constructor(clientId: string, direction: number[], position: number[]);
 }

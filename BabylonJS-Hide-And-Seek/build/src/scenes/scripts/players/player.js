@@ -26,6 +26,7 @@ var decorators_1 = require("../../decorators");
 var gameManager_1 = require("../managers/gameManager");
 var inputManager_1 = require("../managers/inputManager");
 var networkManager_1 = require("../managers/networkManager");
+var PlayerInputMessage_1 = require("../../../../../Server/hide-and-seek/src/models/PlayerInputMessage");
 var Player = /** @class */ (function (_super) {
     __extends(Player, _super);
     /**
@@ -40,8 +41,7 @@ var Player = /** @class */ (function (_super) {
         _this._rigidbody = null;
         _this._xDirection = 0;
         _this._zDirection = 0;
-        _this._lastXDirection = 0;
-        _this._lastZDirection = 0;
+        _this._previousMovements = null;
         _this._state = null;
         return _this;
     }
@@ -51,6 +51,7 @@ var Player = /** @class */ (function (_super) {
      */
     Player.prototype.onInitialize = function () {
         // ...
+        this._previousMovements = [];
     };
     /**
      * Called on the scene starts.
@@ -61,6 +62,7 @@ var Player = /** @class */ (function (_super) {
         // Workaround to the inspector failing to load the "visibleInInspector" tagged properties
         this.isLocalPlayer = !this.name.includes('Remote Player') ? true : false;
         console.log("Player - On Start - Is Local: ".concat(this.isLocalPlayer));
+        this._lastPosition = this.position;
     };
     Player.prototype.setPlayerState = function (state) {
         console.log("Player - Set Player State");
@@ -74,13 +76,29 @@ var Player = /** @class */ (function (_super) {
      */
     Player.prototype.onUpdate = function () {
         this.updatePlayerMovement();
-        this.updateVelocityFromState();
+        this.updatePositionFromState();
     };
-    Player.prototype.updateVelocityFromState = function () {
+    Player.prototype.updatePositionFromState = function () {
         if (!this._state) {
             return;
         }
-        this._rigidbody.setLinearVelocity(new core_1.Vector3(this._state.xVel, this._state.yVel, this._state.zVel));
+        // Remove up to and out of date movements from the collection//
+        for (var i = this._previousMovements.length - 1; i >= 0; i--) {
+            var timestamp = this._previousMovements[i].timestamp;
+            if (timestamp <= this._state.positionTimestamp || Date.now() - timestamp > 200) {
+                this._previousMovements.splice(i, 1);
+            }
+        }
+        if (this.isLocalPlayer) {
+            // Update from the state received from the server if we don't have any other previous movements
+            if (this._previousMovements.length === 0) {
+                this.position.copyFrom(new core_1.Vector3(this._state.xPos, 0.5, this._state.zPos));
+            }
+        }
+        else {
+            // Lerp the remote player object to their position
+            this.position.copyFrom(core_1.Vector3.Lerp(this.position, new core_1.Vector3(this._state.xPos, 0.5, this._state.zPos), gameManager_1.default.DeltaTime * 35));
+        }
     };
     Player.prototype.updatePlayerMovement = function () {
         if (!this.isLocalPlayer) {
@@ -98,18 +116,21 @@ var Player = /** @class */ (function (_super) {
         }
         direction.x = this._xDirection;
         direction.z = this._zDirection;
-        // Only send the direction input if it has changed
-        if (this._lastXDirection !== this._xDirection || this._lastZDirection !== this._zDirection) {
-            // Send direction update message to the server
-            networkManager_1.default.Instance.sendPlayerDirectionInput(direction);
-        }
-        this._lastXDirection = this._xDirection;
-        this._lastZDirection = this._zDirection;
         direction.x *= this._movementSpeed * gameManager_1.default.DeltaTime;
         direction.z *= this._movementSpeed * gameManager_1.default.DeltaTime;
-        // this._rigidbody.setLinearVelocity(direction);
+        this._rigidbody.setLinearVelocity(direction);
         this._rigidbody.setAngularVelocity(core_1.Vector3.Zero());
         this.position.y = 0.5;
+        if (!this.position.equals(this._lastPosition)) {
+            this._lastPosition.copyFrom(this.position);
+            // Position has changed; send position to the server
+            this.sendPositionUpdateToServer();
+        }
+    };
+    Player.prototype.sendPositionUpdateToServer = function () {
+        var inputMsg = new PlayerInputMessage_1.PlayerInputMessage([this.position.x, 0.5, this.position.z]);
+        this._previousMovements.push(inputMsg);
+        networkManager_1.default.Instance.sendPlayerPosition(inputMsg);
     };
     /**
      * Called on the object has been disposed.

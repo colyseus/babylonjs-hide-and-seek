@@ -37,7 +37,6 @@ var GameManager = /** @class */ (function (_super) {
         _this._availableRemotePlayers = null;
         _this._spawnPoints = null;
         _this._spawnedRemotes = null;
-        _this.lastChange = 0;
         return _this;
     }
     Object.defineProperty(GameManager, "Instance", {
@@ -138,15 +137,6 @@ var GameManager = /** @class */ (function (_super) {
      */
     GameManager.prototype.onUpdate = function () {
         // ...
-        // if (InputManager.getKey(32)) {
-        // 	if (Date.now() - this.lastChange > 500) {
-        // 		this.lastChange = Date.now();
-        // 		const enabled: boolean = !this._player.isEnabled();
-        // 		console.log(`Toggle player ${enabled ? 'on' : 'off'} %o`, this._player);
-        // 		this._player.setEnabled(enabled);
-        // 		this._player.setParent(enabled ? null : this);
-        // 	}
-        // }
     };
     /**
      * Called on the object has been disposed.

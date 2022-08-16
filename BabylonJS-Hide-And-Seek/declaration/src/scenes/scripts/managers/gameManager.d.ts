@@ -34,7 +34,6 @@ export default class GameManager extends Node {
     private onPlayerAdded;
     private onPlayerRemoved;
     private resetPlayer;
-    private lastChange;
     /**
      * Called each frame.
      */

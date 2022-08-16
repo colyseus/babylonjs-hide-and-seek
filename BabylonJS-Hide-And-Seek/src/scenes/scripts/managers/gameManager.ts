@@ -156,22 +156,11 @@ export default class GameManager extends Node {
 		this._availableRemotePlayers.push(player); //
 	}
 
-	private lastChange: number = 0;
-
 	/**
 	 * Called each frame.
 	 */
 	public onUpdate(): void {
 		// ...
-		// if (InputManager.getKey(32)) {
-		// 	if (Date.now() - this.lastChange > 500) {
-		// 		this.lastChange = Date.now();
-		// 		const enabled: boolean = !this._player.isEnabled();
-		// 		console.log(`Toggle player ${enabled ? 'on' : 'off'} %o`, this._player);
-		// 		this._player.setEnabled(enabled);
-		// 		this._player.setParent(enabled ? null : this);
-		// 	}
-		// }
 	}
 
 	/**

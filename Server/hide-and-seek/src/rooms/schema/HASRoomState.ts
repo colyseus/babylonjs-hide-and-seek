@@ -3,14 +3,17 @@ import logger from '../../helpers/logger';
 import { HASRoom } from '../HASRoom';
 import { PlayerState } from './PlayerState';
 import { random } from '../../helpers/Utility';
+import { HASGameLoop } from '../HASGameLoop';
+import { GameConfig } from '../../models/GameConfig';
 
 export class HASRoomState extends Schema {
 	@type({ map: PlayerState }) players = new MapSchema<PlayerState>();
-	@type('number') serverTime: number = 0.0;
-	@type('number') deltaTime: number = 0.0;
+	@type('number') countdown: number = 0;
+	@type('boolean') seekerWon: boolean = false;
 
 	private _room: HASRoom = null;
 	private _availableSpawnPoints: number[] = null;
+	private _gameLoop: HASGameLoop = null;
 
 	constructor(room: HASRoom, ...args: any[]) {
 		super(...args);
@@ -18,6 +21,8 @@ export class HASRoomState extends Schema {
 		this._room = room;
 
 		this.initializeSpawnPoints();
+
+		this._gameLoop = new HASGameLoop(room, new GameConfig(3));
 	}
 
 	private initializeSpawnPoints() {
@@ -33,9 +38,14 @@ export class HASRoomState extends Schema {
 			this._availableSpawnPoints.push(i);
 		}
 
-		logger.info(`Spawn Points: %o`, this._availableSpawnPoints);
+		// logger.info(`Spawn Points: %o`, this._availableSpawnPoints);
 	}
 
+	/**
+	 * Get a number representing the inces of the spawn point client-side
+	 * @param isRandom should the spawn point be chosen randomly? Default is true
+	 * @returns Number representing the index of the spawn point client-side
+	 */
 	public getSpawnPointIndex(isRandom: boolean = true): number {
 		if (this._availableSpawnPoints.length === 0) {
 			logger.error(`No more available spawn point indexes!`);
@@ -70,15 +80,24 @@ export class HASRoomState extends Schema {
 	}
 
 	public update(deltaTime: number) {
-		// logger.debug(`Room State Update - DT: ${deltaTime}`);
-		this.deltaTime = deltaTime;
+		// this.updatePlayers(deltaTime);
 
-		this.updatePlayers();
+		this._gameLoop.update(deltaTime);
 	}
 
-	private updatePlayers() {
+	public resetForPlay() {
+		this.countdown = 0;
+		this.seekerWon = false;
+		this.initializeSpawnPoints();
+
 		this.players.forEach((player: PlayerState) => {
-			player.update(this.deltaTime);
+			player.resetPlayer();
 		});
 	}
+
+	// private updatePlayers(deltaTime: number) {
+	// 	this.players.forEach((player: PlayerState) => {
+	// 		player.update(deltaTime);
+	// 	});
+	// }
 }

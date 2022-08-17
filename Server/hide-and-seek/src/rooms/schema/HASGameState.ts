@@ -1,8 +1,9 @@
-import logger from '../helpers/logger';
-import { clamp, random } from '../helpers/Utility';
-import { GameConfig } from '../models/GameConfig';
-import { HASRoom } from './HASRoom';
-import { PlayerState } from './schema/PlayerState';
+import { Schema, MapSchema, Context, type } from '@colyseus/schema';
+import logger from '../../helpers/logger';
+import { clamp, random } from '../../helpers/Utility';
+import { GameConfig } from '../../models/GameConfig';
+import { HASRoom } from '../HASRoom';
+import { PlayerState } from './PlayerState';
 
 export enum GameState {
 	NONE = 'none',
@@ -15,15 +16,20 @@ export enum GameState {
 	GAME_OVER = 'gameOver',
 }
 
-export class HASGameLoop {
+export class HASGameState extends Schema {
+	@type('string') currentState: GameState = GameState.NONE;
+	@type('boolean') seekerWon: boolean = false;
+	@type('number') countdown: number = 0;
+
 	private _room: HASRoom = null;
-	private _currentState: GameState = GameState.NONE;
 	private _lastState: GameState = GameState.NONE;
 	private _config: GameConfig = null;
 	private _stateTimestamp: number = 0;
 	private _capturedPlayers: Map<string, PlayerState> = null;
 
-	constructor(room: HASRoom, config: GameConfig) {
+	constructor(room: HASRoom, config: GameConfig, ...args: any[]) {
+		super(args);
+
 		this._room = room;
 		this._config = config;
 
@@ -33,7 +39,7 @@ export class HASGameLoop {
 	/** Update the game loop */
 	public update(deltaTime: number) {
 		//
-		switch (this._currentState) {
+		switch (this.currentState) {
 			case GameState.NONE:
 				this.moveToState(GameState.WAIT_FOR_MINIMUM);
 				break;
@@ -64,16 +70,18 @@ export class HASGameLoop {
 	}
 
 	private moveToState(state: GameState) {
-		this._lastState = this._currentState;
-		this._currentState = state;
+		this._lastState = this.currentState;
+		this.currentState = state;
 
-		logger.info(`Move state from "${this._lastState}" to "${this._currentState}"`);
+		logger.info(`Move state from "${this._lastState}" to "${this.currentState}"`);
 
 		// Anything that needs doing at the beginning of the state entry do here
 		switch (state) {
 			case GameState.NONE:
 				// Reset the timestamp
 				this._stateTimestamp = 0;
+				this.countdown = 0;
+				this.seekerWon = false;
 				this._room.state.resetForPlay();
 				break;
 			case GameState.CLOSE_COUNTDOWN:
@@ -107,7 +115,7 @@ export class HASGameLoop {
 
 					seeker.canMove = true;
 				} catch (error: any) {
-					logger.error(`Error allowing Seeker to move: ${error.stack}`);
+					//logger.error(`Error allowing Seeker to move: ${error.stack}`);
 				}
 
 				// Reset the timestamp for the duration of the hunt stage
@@ -116,7 +124,7 @@ export class HASGameLoop {
 				break;
 			case GameState.GAME_OVER:
 				// Determine if the Seeker has won
-				this._room.state.seekerWon = this._capturedPlayers.size === this._config.SeekerWinCondition;
+				this.seekerWon = this._capturedPlayers.size === this._config.SeekerWinCondition;
 
 				// Reset the timestamp for the duration of the game over stage
 				this._stateTimestamp = Date.now();
@@ -151,12 +159,12 @@ export class HASGameLoop {
 		}
 
 		if (elapsedTime < countdown) {
-			this._room.state.countdown = clamp(Math.ceil(countdown - elapsedTime), 0, countdown);
+			this.setCountdown(countdown - elapsedTime, countdown);
 
 			return;
 		}
 
-		this._room.state.countdown = 0;
+		this.countdown = 0;
 
 		this.moveToState(GameState.INITIALIZE);
 	}
@@ -184,10 +192,10 @@ export class HASGameLoop {
 
 	private prologue() {
 		let elapsedTime: number = Date.now() - this._stateTimestamp;
-		const countdown: number = this._config.PrologueCountdown - this._config.PlayStartCountdown;
+		const countdown: number = this._config.PrologueCountdown;
 
-		if (elapsedTime < countdown) {
-			this._room.state.countdown = clamp(Math.ceil(countdown - elapsedTime), 0, countdown);
+		if (elapsedTime < countdown - this._config.PlayStartCountdown) {
+			this.setCountdown(countdown - elapsedTime, countdown);
 
 			return;
 		}
@@ -201,7 +209,7 @@ export class HASGameLoop {
 		const countdown: number = this._config.PrologueCountdown;
 
 		if (elapsedTime < countdown) {
-			this._room.state.countdown = clamp(Math.ceil(countdown - elapsedTime), 0, countdown);
+			this.setCountdown(countdown - elapsedTime, countdown);
 
 			return;
 		}
@@ -213,7 +221,7 @@ export class HASGameLoop {
 		let elapsedTime: number = Date.now() - this._stateTimestamp;
 		const countdown: number = this._config.HuntCountdown;
 
-		this._room.state.countdown = clamp(Math.ceil(countdown - elapsedTime), 0, countdown);
+		this.setCountdown(countdown - elapsedTime, countdown);
 
 		// Check Seeker win condition
 		if (this._capturedPlayers.size !== this._config.SeekerWinCondition && elapsedTime < countdown) {
@@ -239,12 +247,16 @@ export class HASGameLoop {
 		}
 
 		if (elapsedTime < countdown) {
-			this._room.state.countdown = clamp(Math.ceil(countdown - elapsedTime), 0, countdown);
+			this.setCountdown(countdown - elapsedTime, countdown);
 
 			return;
 		}
 
 		// Not enough players wanted to play again so close the room
 		this._room.disconnect();
+	}
+
+	private setCountdown(timeMs: number, maxMs: number) {
+		this.countdown = Math.ceil(clamp(timeMs, 0, maxMs) / 1000);
 	}
 }

@@ -28,6 +28,7 @@ var InputManager = /** @class */ (function (_super) {
         var _this = this;
         _this.dsm = null;
         _this._inputSource = null;
+        _this._keyUp = null;
         return _this;
     }
     /**
@@ -38,6 +39,9 @@ var InputManager = /** @class */ (function (_super) {
         // ...
         InputManager._instance = this;
         this.dsm = new core_1.DeviceSourceManager(this.getScene().getEngine());
+        this.handleKeyboardEvent = this.handleKeyboardEvent.bind(this);
+        this._keyUp = new Map();
+        this.getScene().onKeyboardObservable.add(this.handleKeyboardEvent);
     };
     /**
      * Called on the scene starts.
@@ -50,6 +54,14 @@ var InputManager = /** @class */ (function (_super) {
      */
     InputManager.prototype.onUpdate = function () {
         // ...
+        // return;
+        var frame = this.getScene().getFrameId();
+        this._keyUp.forEach(function (keyInfo, keyCode) {
+            // console.log(`Key Code: ${keyCode} - Up: ${keyInfo.value}  Up Frame: ${keyInfo.frame}  Current Frame: ${frame}`);
+            if (keyInfo.value && keyInfo.frame < frame) {
+                keyInfo.value = false;
+            }
+        });
     };
     /**
      * Called on the object has been disposed.
@@ -71,6 +83,12 @@ var InputManager = /** @class */ (function (_super) {
                 break;
         }
     };
+    InputManager.prototype.handleKeyboardEvent = function (eventData, eventState) {
+        // console.log(`Keyboard Event`);
+        if (eventData.type === core_1.KeyboardEventTypes.KEYUP) {
+            this._keyUp.set(eventData.event.keyCode, { value: true, frame: this.getScene().getFrameId() });
+        }
+    };
     InputManager.getKey = function (key) {
         if (!this._instance._inputSource) {
             this._instance._inputSource = this._instance.dsm.getDeviceSource(core_1.DeviceType.Keyboard);
@@ -79,6 +97,10 @@ var InputManager = /** @class */ (function (_super) {
             return false;
         }
         return this._instance._inputSource.getInput(key) === 1;
+    };
+    InputManager.getKeyUp = function (key) {
+        var _a;
+        return ((_a = this._instance._keyUp.get(key)) === null || _a === void 0 ? void 0 : _a.value) || false;
     };
     return InputManager;
 }(node_1.Node));

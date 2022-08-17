@@ -1,4 +1,5 @@
 import { Node } from '@babylonjs/core/node';
+import { GameState } from '../GameState';
 export default class GameManager extends Node {
     private static _instance;
     private _cameraHolder;
@@ -11,9 +12,14 @@ export default class GameManager extends Node {
     private _remotePlayer5;
     private _remotePlayer6;
     private _remotePlayer7;
-    private _availableRemotePlayers;
+    private _availableRemotePlayerObjects;
     private _spawnPoints;
     private _spawnedRemotes;
+    private _players;
+    private _currentGameState;
+    private _joiningRoom;
+    get CurrentGameState(): GameState;
+    private set CurrentGameState(value);
     static get Instance(): GameManager;
     static get DeltaTime(): number;
     /**
@@ -31,9 +37,14 @@ export default class GameManager extends Node {
      */
     onStart(): void;
     private initializeSpawnPoints;
+    private onJoinedRoom;
+    private onLeftRoom;
     private onPlayerAdded;
     private onPlayerRemoved;
-    private resetPlayer;
+    private resetPlayerObject;
+    private onGameStateChange;
+    private handleGameStateChange;
+    private handleCountdownChange;
     /**
      * Called each frame.
      */

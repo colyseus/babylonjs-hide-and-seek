@@ -1,13 +1,12 @@
 import { Schema, MapSchema } from '@colyseus/schema';
 import { HASRoom } from '../HASRoom';
 import { PlayerState } from './PlayerState';
+import { HASGameState } from '../schema/HASGameState';
 export declare class HASRoomState extends Schema {
     players: MapSchema<PlayerState, string>;
-    countdown: number;
-    seekerWon: boolean;
+    gameState: HASGameState;
     private _room;
     private _availableSpawnPoints;
-    private _gameLoop;
     constructor(room: HASRoom, ...args: any[]);
     private initializeSpawnPoints;
     /**

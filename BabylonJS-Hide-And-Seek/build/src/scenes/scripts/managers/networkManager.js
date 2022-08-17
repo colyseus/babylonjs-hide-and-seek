@@ -178,6 +178,7 @@ var NetworkManager = /** @class */ (function (_super) {
                         _a.Room = _b.sent();
                         if (this.Room) {
                             console.log("Joined Room: ".concat(this.Room.id));
+                            this.onJoinedRoom(this.Room.id);
                         }
                         this.registerRoomHandlers();
                         return [2 /*return*/];
@@ -212,6 +213,7 @@ var NetworkManager = /** @class */ (function (_super) {
         });
     };
     NetworkManager.prototype.registerRoomHandlers = function () {
+        var _this = this;
         console.log("Register Room Handlers");
         if (this.Room) {
             // this.Room.onLeave.once(this.onLeaveGridRoom);
@@ -224,8 +226,13 @@ var NetworkManager = /** @class */ (function (_super) {
             // this.Room.onMessage<MovedToGridMessage>('movedToGrid', (msg) => {
             // 	this.onMovedToGrid(msg);
             // });
+            this.Room.onLeave.once(function (code) {
+                _this.Room = null;
+                _this.onLeftRoom(code);
+            });
             this.Room.state.players.onAdd = this.onPlayerAdded;
             this.Room.state.players.onRemove = this.onPlayerRemoved;
+            this.Room.state.gameState.onChange = this.onGameStateChange;
             this.Room.onMessage('*', this.handleMessages);
         }
         else {
@@ -236,10 +243,7 @@ var NetworkManager = /** @class */ (function (_super) {
         if (this.Room) {
             this.Room.state.players.onAdd = null;
             this.Room.state.players.onRemove = null;
-            // this.Room.onLeave.remove(this.onLeaveGridRoom);
-            // this.Room.onStateChange.remove(this.onRoomStateChange);
-            // this.Room.state.networkedUsers.onAdd = null;
-            // this.Room.state.networkedUsers.onRemove = null;
+            this.Room.state.gameState.onChange = null;
         }
     };
     // public sendPlayerDirectionInput(velocity: Vector3, position: Vector3) {

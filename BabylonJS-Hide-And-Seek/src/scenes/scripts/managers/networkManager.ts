@@ -2,15 +2,18 @@ import { Vector3 } from '@babylonjs/core';
 import { Node } from '@babylonjs/core/node';
 import * as Colyseus from 'colyseus.js';
 import type { HASRoomState } from '../../../../../Server/hide-and-seek/src/rooms/schema/HASRoomState';
-import { PlayerInputMessage } from '../../../../../Server/hide-and-seek/src/models/PlayerInputMessage';
+import type { PlayerInputMessage } from '../../../../../Server/hide-and-seek/src/models/PlayerInputMessage';
 import ColyseusSettings from '../colyseusSettings';
-import { PlayerState } from '../../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
+import type { PlayerState } from '../../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
 import GameManager from './gameManager';
 import { EventEmitter } from 'stream';
 
 export default class NetworkManager extends Node {
+	public onJoinedRoom: (roomId: string) => void;
 	public onPlayerAdded: (state: PlayerState, sesstionId: string) => void;
 	public onPlayerRemoved: (state: PlayerState, sessionId: string) => void;
+	public onGameStateChange: (changes: any[]) => void;
+	public onLeftRoom: (code: number) => void;
 
 	private static _instance: NetworkManager = null;
 
@@ -132,6 +135,7 @@ export default class NetworkManager extends Node {
 
 		if (this.Room) {
 			console.log(`Joined Room: ${this.Room.id}`);
+			this.onJoinedRoom(this.Room.id);
 		}
 
 		this.registerRoomHandlers();
@@ -166,8 +170,13 @@ export default class NetworkManager extends Node {
 			// 	this.onMovedToGrid(msg);
 			// });
 
+			this.Room.onLeave.once((code: number) => {
+				this.Room = null;
+				this.onLeftRoom(code);
+			});
 			this.Room.state.players.onAdd = this.onPlayerAdded;
 			this.Room.state.players.onRemove = this.onPlayerRemoved;
+			this.Room.state.gameState.onChange = this.onGameStateChange;
 
 			this.Room.onMessage('*', this.handleMessages);
 		} else {
@@ -179,10 +188,7 @@ export default class NetworkManager extends Node {
 		if (this.Room) {
 			this.Room.state.players.onAdd = null;
 			this.Room.state.players.onRemove = null;
-			// this.Room.onLeave.remove(this.onLeaveGridRoom);
-			// this.Room.onStateChange.remove(this.onRoomStateChange);
-			// this.Room.state.networkedUsers.onAdd = null;
-			// this.Room.state.networkedUsers.onRemove = null;
+			this.Room.state.gameState.onChange = null;
 		}
 	}
 

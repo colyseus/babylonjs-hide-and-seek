@@ -22,8 +22,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var node_1 = require("@babylonjs/core/node");
+var GameState_1 = require("../GameState");
 var decorators_1 = require("../../decorators");
 var spawnPoints_1 = require("../spawnPoints");
+var inputManager_1 = require("./inputManager");
 var networkManager_1 = require("./networkManager");
 var GameManager = /** @class */ (function (_super) {
     __extends(GameManager, _super);
@@ -34,11 +36,24 @@ var GameManager = /** @class */ (function (_super) {
     // @ts-ignore ignoring the super call as we don't want to re-init
     function GameManager() {
         var _this = this;
-        _this._availableRemotePlayers = null;
+        _this._availableRemotePlayerObjects = null;
         _this._spawnPoints = null;
         _this._spawnedRemotes = null;
+        _this._players = null;
+        _this._currentGameState = GameState_1.GameState.NONE;
+        _this._joiningRoom = false;
         return _this;
     }
+    Object.defineProperty(GameManager.prototype, "CurrentGameState", {
+        get: function () {
+            return GameManager.Instance._currentGameState;
+        },
+        set: function (gameState) {
+            GameManager.Instance._currentGameState = gameState;
+        },
+        enumerable: false,
+        configurable: true
+    });
     Object.defineProperty(GameManager, "Instance", {
         get: function () {
             return GameManager._instance;
@@ -60,10 +75,14 @@ var GameManager = /** @class */ (function (_super) {
     GameManager.prototype.onInitialize = function () {
         // ...
         GameManager._instance = this;
-        this._availableRemotePlayers = [];
+        this._availableRemotePlayerObjects = [];
         this._spawnedRemotes = new Map();
+        this._players = new Map();
+        this.onJoinedRoom = this.onJoinedRoom.bind(this);
+        this.onLeftRoom = this.onLeftRoom.bind(this);
         this.onPlayerAdded = this.onPlayerAdded.bind(this);
         this.onPlayerRemoved = this.onPlayerRemoved.bind(this);
+        this.onGameStateChange = this.onGameStateChange.bind(this);
     };
     /**
      * Called on the scene starts.
@@ -72,71 +91,128 @@ var GameManager = /** @class */ (function (_super) {
         // ...
         this.initializeSpawnPoints();
         // Add remote player references to the array
-        this._availableRemotePlayers.push(this._remotePlayer1);
-        this._availableRemotePlayers.push(this._remotePlayer2);
-        this._availableRemotePlayers.push(this._remotePlayer3);
-        this._availableRemotePlayers.push(this._remotePlayer4);
-        this._availableRemotePlayers.push(this._remotePlayer5);
-        this._availableRemotePlayers.push(this._remotePlayer6);
-        this._availableRemotePlayers.push(this._remotePlayer7);
+        this._availableRemotePlayerObjects.push(this._remotePlayer1);
+        this._availableRemotePlayerObjects.push(this._remotePlayer2);
+        this._availableRemotePlayerObjects.push(this._remotePlayer3);
+        this._availableRemotePlayerObjects.push(this._remotePlayer4);
+        this._availableRemotePlayerObjects.push(this._remotePlayer5);
+        this._availableRemotePlayerObjects.push(this._remotePlayer6);
+        this._availableRemotePlayerObjects.push(this._remotePlayer7);
         this._player.setParent(null);
         this._cameraHolder.setTarget(this._player);
+        networkManager_1.default.Instance.onJoinedRoom = this.onJoinedRoom;
+        networkManager_1.default.Instance.onLeftRoom = this.onLeftRoom;
         networkManager_1.default.Instance.onPlayerAdded = this.onPlayerAdded;
         networkManager_1.default.Instance.onPlayerRemoved = this.onPlayerRemoved;
-        networkManager_1.default.Instance.joinRoom();
+        networkManager_1.default.Instance.onGameStateChange = this.onGameStateChange;
+        // NetworkManager.Instance.joinRoom();
     };
     GameManager.prototype.initializeSpawnPoints = function () {
         var spawnPoints = this._spawnPointsRoot.getChildren();
         this._spawnPoints = new spawnPoints_1.SpawnPoints(spawnPoints);
     };
+    GameManager.prototype.onJoinedRoom = function (roomId) {
+        this._joiningRoom = false;
+    };
+    GameManager.prototype.onLeftRoom = function (code) {
+        console.log("Left room: ".concat(code));
+    };
     GameManager.prototype.onPlayerAdded = function (state, sessionId) {
-        var player = null;
-        if (networkManager_1.default.Instance.Room.sessionId === sessionId) {
-            // console.log(`Got local player state!`);
-            player = this._player;
-        }
-        else {
-            // Player is remote
-            if (this._availableRemotePlayers.length === 0) {
-                console.error("On Player Added - No more remote player objects to assign!");
-                return;
-            }
-            // Retrieve a remote player object
-            player = this._availableRemotePlayers.splice(0, 1)[0];
-            // Add the player to the map of remote players
-            this._spawnedRemotes.set(sessionId, player);
-        }
-        var point = this._spawnPoints.getSpawnPoint(state);
-        player.setParent(null);
-        player.position.copyFrom(point.position);
-        player.rotation.copyFrom(point.rotation);
-        player.setEnabled(true);
-        player.setPlayerState(state);
+        console.log("On Player Added: ".concat(sessionId));
+        this._players.set(sessionId, state);
+        // let player: Player = null;
+        // if (NetworkManager.Instance.Room.sessionId === sessionId) {
+        // 	// console.log(`Got local player state!`);
+        // 	player = this._player;
+        // } else {
+        // 	// Player is remote
+        // 	if (this._availableRemotePlayerObjects.length === 0) {
+        // 		console.error(`On Player Added - No more remote player objects to assign!`);
+        // 		return;
+        // 	}
+        // 	// Retrieve a remote player object
+        // 	player = this._availableRemotePlayerObjects.splice(0, 1)[0];
+        // 	// Add the player to the map of remote players
+        // 	this._spawnedRemotes.set(sessionId, player);
+        // }
+        // const point: TransformNode = this._spawnPoints.getSpawnPoint(state);
+        // player.setParent(null);
+        // player.position.copyFrom(point.position);
+        // player.rotation.copyFrom(point.rotation);
+        // player.setEnabled(true);
+        // player.setPlayerState(state);
     };
     GameManager.prototype.onPlayerRemoved = function (state, sessionId) {
         console.log("On Player Removed: ".concat(sessionId));
-        // Reset remote player
+        // Reset the remote player object if it has been spawned
         var player = this._spawnedRemotes.get(sessionId);
         if (player) {
             this._spawnPoints.freeUpSpawnPoint(state);
-            this.resetPlayer(player);
+            this.resetPlayerObject(player);
             this._spawnedRemotes.delete(sessionId);
         }
-        else {
-            console.error("No spawned remote player object linked to client \"".concat(sessionId, "\""));
-        }
     };
-    GameManager.prototype.resetPlayer = function (player) {
+    GameManager.prototype.resetPlayerObject = function (player) {
         player.setPlayerState(null);
         player.setEnabled(false);
         player.setParent(this);
-        this._availableRemotePlayers.push(player); //
+        this._availableRemotePlayerObjects.push(player);
+    };
+    GameManager.prototype.onGameStateChange = function (changes) {
+        // console.log(`Game Manager - On Game State Change: %o`, changes);
+        var change = null;
+        for (var i = 0; i < changes.length; i++) {
+            change = changes[i];
+            if (!change) {
+                continue;
+            }
+            switch (change.field) {
+                case 'currentState':
+                    this.handleGameStateChange(change.value);
+                    break;
+                case 'countdown':
+                    this.handleCountdownChange(change.value);
+                    break;
+            }
+        }
+    };
+    GameManager.prototype.handleGameStateChange = function (gameState) {
+        console.log("Game Manager - Game State Changed: ".concat(gameState));
+        this.CurrentGameState = gameState;
+        switch (gameState) {
+            case GameState_1.GameState.NONE:
+                break;
+            case GameState_1.GameState.WAIT_FOR_MINIMUM:
+                break;
+            case GameState_1.GameState.CLOSE_COUNTDOWN:
+                break;
+            case GameState_1.GameState.INITIALIZE:
+                break;
+            case GameState_1.GameState.PROLOGUE:
+                break;
+            case GameState_1.GameState.SCATTER:
+                break;
+            case GameState_1.GameState.HUNT:
+                break;
+            case GameState_1.GameState.GAME_OVER:
+                break;
+            default:
+                break;
+        }
+    };
+    GameManager.prototype.handleCountdownChange = function (countdown) {
+        console.log("Countdown: ".concat(countdown));
     };
     /**
      * Called each frame.
      */
     GameManager.prototype.onUpdate = function () {
         // ...
+        if (!networkManager_1.default.Instance.Room && inputManager_1.default.getKeyUp(32) && !this._joiningRoom) {
+            console.log('Join Room');
+            this._joiningRoom = true;
+            networkManager_1.default.Instance.joinRoom();
+        }
     };
     /**
      * Called on the object has been disposed.

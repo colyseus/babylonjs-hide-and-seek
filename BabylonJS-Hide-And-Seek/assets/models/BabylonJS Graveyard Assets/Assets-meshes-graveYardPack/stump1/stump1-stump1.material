@@ -311,5 +311,16 @@
 		"name": "PBRSubSurface",
 		"priority": 130,
 		"registerForExtraEvents": true
+	},
+	"iridescence": {
+		"tags": null,
+		"isEnabled": false,
+		"intensity": 1,
+		"minimumThickness": 100,
+		"maximumThickness": 400,
+		"indexOfRefraction": 1.3,
+		"name": "PBRIridescence",
+		"priority": 110,
+		"registerForExtraEvents": false
 	}
 }

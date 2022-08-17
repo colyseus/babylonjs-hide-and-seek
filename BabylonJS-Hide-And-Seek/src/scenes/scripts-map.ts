@@ -5,6 +5,7 @@ import { ScriptMap } from "./tools";
  */
 export interface ISceneScriptMap {
 	"src/scenes/scripts/colyseusSettings.ts": ScriptMap;
+	"src/scenes/scripts/GameState.ts": ScriptMap;
 	"src/scenes/scripts/managers/gameManager.ts": ScriptMap;
 	"src/scenes/scripts/managers/inputManager.ts": ScriptMap;
 	"src/scenes/scripts/managers/networkManager.ts": ScriptMap;
@@ -18,6 +19,7 @@ export interface ISceneScriptMap {
  */
 export const scriptsMap: ISceneScriptMap = {
 	"src/scenes/scripts/colyseusSettings.ts": require("./scripts/colyseusSettings"),
+	"src/scenes/scripts/GameState.ts": require("./scripts/GameState"),
 	"src/scenes/scripts/managers/gameManager.ts": require("./scripts/managers/gameManager"),
 	"src/scenes/scripts/managers/inputManager.ts": require("./scripts/managers/inputManager"),
 	"src/scenes/scripts/managers/networkManager.ts": require("./scripts/managers/networkManager"),

@@ -66,6 +66,10 @@ export default class Player extends Mesh {
 	 * Called each frame.
 	 */
 	public onUpdate(): void {
+		if (!this.isEnabled(false)) {
+			return;
+		}
+
 		this.updatePlayerMovement();
 		this.updatePositionFromState();
 	}

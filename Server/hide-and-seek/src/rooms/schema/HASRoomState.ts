@@ -3,17 +3,17 @@ import logger from '../../helpers/logger';
 import { HASRoom } from '../HASRoom';
 import { PlayerState } from './PlayerState';
 import { random } from '../../helpers/Utility';
-import { HASGameLoop } from '../HASGameLoop';
+import { HASGameState } from '../schema/HASGameState';
 import { GameConfig } from '../../models/GameConfig';
+import gameConfig from '../../gameConfig';
 
 export class HASRoomState extends Schema {
 	@type({ map: PlayerState }) players = new MapSchema<PlayerState>();
-	@type('number') countdown: number = 0;
-	@type('boolean') seekerWon: boolean = false;
+	@type(HASGameState) gameState: HASGameState;
 
 	private _room: HASRoom = null;
 	private _availableSpawnPoints: number[] = null;
-	private _gameLoop: HASGameLoop = null;
+	// private _gameLoop: HASGameState = null;
 
 	constructor(room: HASRoom, ...args: any[]) {
 		super(...args);
@@ -22,7 +22,9 @@ export class HASRoomState extends Schema {
 
 		this.initializeSpawnPoints();
 
-		this._gameLoop = new HASGameLoop(room, new GameConfig(3));
+		logger.info(`Game Config: %o`, gameConfig);
+
+		this.gameState = new HASGameState(room, new GameConfig(gameConfig));
 	}
 
 	private initializeSpawnPoints() {
@@ -38,7 +40,7 @@ export class HASRoomState extends Schema {
 			this._availableSpawnPoints.push(i);
 		}
 
-		// logger.info(`Spawn Points: %o`, this._availableSpawnPoints);
+		// //logger.info(`Spawn Points: %o`, this._availableSpawnPoints);
 	}
 
 	/**
@@ -82,12 +84,10 @@ export class HASRoomState extends Schema {
 	public update(deltaTime: number) {
 		// this.updatePlayers(deltaTime);
 
-		this._gameLoop.update(deltaTime);
+		this.gameState.update(deltaTime);
 	}
 
 	public resetForPlay() {
-		this.countdown = 0;
-		this.seekerWon = false;
 		this.initializeSpawnPoints();
 
 		this.players.forEach((player: PlayerState) => {

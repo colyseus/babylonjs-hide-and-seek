@@ -75,6 +75,9 @@ var Player = /** @class */ (function (_super) {
      * Called each frame.
      */
     Player.prototype.onUpdate = function () {
+        if (!this.isEnabled(false)) {
+            return;
+        }
         this.updatePlayerMovement();
         this.updatePositionFromState();
     };

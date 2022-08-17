@@ -6,6 +6,7 @@ exports.scriptsMap = void 0;
  */
 exports.scriptsMap = {
     "src/scenes/scripts/colyseusSettings.ts": require("./scripts/colyseusSettings"),
+    "src/scenes/scripts/GameState.ts": require("./scripts/GameState"),
     "src/scenes/scripts/managers/gameManager.ts": require("./scripts/managers/gameManager"),
     "src/scenes/scripts/managers/inputManager.ts": require("./scripts/managers/inputManager"),
     "src/scenes/scripts/managers/networkManager.ts": require("./scripts/managers/networkManager"),

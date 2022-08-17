@@ -1,6 +1,7 @@
 import { TransformNode, Vector3 } from '@babylonjs/core';
 import { Node } from '@babylonjs/core/node';
-import { PlayerState } from '../../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
+import { GameState } from '../GameState';
+import type { PlayerState } from '../../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
 import { fromChildren, fromScene } from '../../decorators';
 import CameraHolder from '../players/cameraHolder';
 import Player from '../players/player';
@@ -33,9 +34,20 @@ export default class GameManager extends Node {
 	@fromChildren('Remote Player 7')
 	private _remotePlayer7: Player;
 
-	private _availableRemotePlayers: Player[] = null;
+	private _availableRemotePlayerObjects: Player[] = null;
 	private _spawnPoints: SpawnPoints = null;
 	private _spawnedRemotes: Map<string, Player> = null;
+	private _players: Map<string, PlayerState> = null;
+	private _currentGameState: GameState = GameState.NONE;
+	private _joiningRoom: boolean = false;
+
+	public get CurrentGameState(): GameState {
+		return GameManager.Instance._currentGameState;
+	}
+
+	private set CurrentGameState(gameState: GameState) {
+		GameManager.Instance._currentGameState = gameState;
+	}
 
 	public static get Instance(): GameManager {
 		return GameManager._instance;
@@ -60,11 +72,15 @@ export default class GameManager extends Node {
 		// ...
 		GameManager._instance = this;
 
-		this._availableRemotePlayers = [];
+		this._availableRemotePlayerObjects = [];
 		this._spawnedRemotes = new Map<string, Player>();
+		this._players = new Map<string, PlayerState>();
 
+		this.onJoinedRoom = this.onJoinedRoom.bind(this);
+		this.onLeftRoom = this.onLeftRoom.bind(this);
 		this.onPlayerAdded = this.onPlayerAdded.bind(this);
 		this.onPlayerRemoved = this.onPlayerRemoved.bind(this);
+		this.onGameStateChange = this.onGameStateChange.bind(this);
 	}
 
 	/**
@@ -76,22 +92,25 @@ export default class GameManager extends Node {
 		this.initializeSpawnPoints();
 
 		// Add remote player references to the array
-		this._availableRemotePlayers.push(this._remotePlayer1);
-		this._availableRemotePlayers.push(this._remotePlayer2);
-		this._availableRemotePlayers.push(this._remotePlayer3);
-		this._availableRemotePlayers.push(this._remotePlayer4);
-		this._availableRemotePlayers.push(this._remotePlayer5);
-		this._availableRemotePlayers.push(this._remotePlayer6);
-		this._availableRemotePlayers.push(this._remotePlayer7);
+		this._availableRemotePlayerObjects.push(this._remotePlayer1);
+		this._availableRemotePlayerObjects.push(this._remotePlayer2);
+		this._availableRemotePlayerObjects.push(this._remotePlayer3);
+		this._availableRemotePlayerObjects.push(this._remotePlayer4);
+		this._availableRemotePlayerObjects.push(this._remotePlayer5);
+		this._availableRemotePlayerObjects.push(this._remotePlayer6);
+		this._availableRemotePlayerObjects.push(this._remotePlayer7);
 
 		this._player.setParent(null);
 
 		this._cameraHolder.setTarget(this._player);
 
+		NetworkManager.Instance.onJoinedRoom = this.onJoinedRoom;
+		NetworkManager.Instance.onLeftRoom = this.onLeftRoom;
 		NetworkManager.Instance.onPlayerAdded = this.onPlayerAdded;
 		NetworkManager.Instance.onPlayerRemoved = this.onPlayerRemoved;
+		NetworkManager.Instance.onGameStateChange = this.onGameStateChange;
 
-		NetworkManager.Instance.joinRoom();
+		// NetworkManager.Instance.joinRoom();
 	}
 
 	private initializeSpawnPoints() {
@@ -99,61 +118,124 @@ export default class GameManager extends Node {
 		this._spawnPoints = new SpawnPoints(spawnPoints);
 	}
 
+	private onJoinedRoom(roomId: string) {
+		this._joiningRoom = false;
+	}
+
+	private onLeftRoom(code: number) {
+		console.log(`Left room: ${code}`);
+	}
+
 	private onPlayerAdded(state: PlayerState, sessionId: string) {
-		let player: Player = null;
+		console.log(`On Player Added: ${sessionId}`);
 
-		if (NetworkManager.Instance.Room.sessionId === sessionId) {
-			// console.log(`Got local player state!`);
+		this._players.set(sessionId, state);
 
-			player = this._player;
-		} else {
-			// Player is remote
-			if (this._availableRemotePlayers.length === 0) {
-				console.error(`On Player Added - No more remote player objects to assign!`);
-				return;
-			}
+		// let player: Player = null;
 
-			// Retrieve a remote player object
-			player = this._availableRemotePlayers.splice(0, 1)[0];
+		// if (NetworkManager.Instance.Room.sessionId === sessionId) {
+		// 	// console.log(`Got local player state!`);
 
-			// Add the player to the map of remote players
-			this._spawnedRemotes.set(sessionId, player);
-		}
+		// 	player = this._player;
+		// } else {
+		// 	// Player is remote
+		// 	if (this._availableRemotePlayerObjects.length === 0) {
+		// 		console.error(`On Player Added - No more remote player objects to assign!`);
+		// 		return;
+		// 	}
 
-		const point: TransformNode = this._spawnPoints.getSpawnPoint(state);
+		// 	// Retrieve a remote player object
+		// 	player = this._availableRemotePlayerObjects.splice(0, 1)[0];
 
-		player.setParent(null);
+		// 	// Add the player to the map of remote players
+		// 	this._spawnedRemotes.set(sessionId, player);
+		// }
 
-		player.position.copyFrom(point.position);
-		player.rotation.copyFrom(point.rotation);
+		// const point: TransformNode = this._spawnPoints.getSpawnPoint(state);
 
-		player.setEnabled(true);
-		player.setPlayerState(state);
+		// player.setParent(null);
+
+		// player.position.copyFrom(point.position);
+		// player.rotation.copyFrom(point.rotation);
+
+		// player.setEnabled(true);
+		// player.setPlayerState(state);
 	}
 
 	private onPlayerRemoved(state: PlayerState, sessionId: string) {
 		console.log(`On Player Removed: ${sessionId}`);
 
-		// Reset remote player
+		// Reset the remote player object if it has been spawned
 		const player: Player = this._spawnedRemotes.get(sessionId);
 
 		if (player) {
 			this._spawnPoints.freeUpSpawnPoint(state);
-			this.resetPlayer(player);
+			this.resetPlayerObject(player);
 			this._spawnedRemotes.delete(sessionId);
-		} else {
-			console.error(`No spawned remote player object linked to client "${sessionId}"`);
 		}
 	}
 
-	private resetPlayer(player: Player) {
+	private resetPlayerObject(player: Player) {
 		player.setPlayerState(null);
 
 		player.setEnabled(false);
 
 		player.setParent(this);
 
-		this._availableRemotePlayers.push(player); //
+		this._availableRemotePlayerObjects.push(player);
+	}
+
+	private onGameStateChange(changes: any[]) {
+		// console.log(`Game Manager - On Game State Change: %o`, changes);
+
+		let change: any = null;
+		for (let i = 0; i < changes.length; i++) {
+			change = changes[i];
+
+			if (!change) {
+				continue;
+			}
+
+			switch (change.field) {
+				case 'currentState':
+					this.handleGameStateChange(change.value);
+					break;
+				case 'countdown':
+					this.handleCountdownChange(change.value);
+					break;
+			}
+		}
+	}
+
+	private handleGameStateChange(gameState: GameState) {
+		console.log(`Game Manager - Game State Changed: ${gameState}`);
+
+		this.CurrentGameState = gameState;
+
+		switch (gameState) {
+			case GameState.NONE:
+				break;
+			case GameState.WAIT_FOR_MINIMUM:
+				break;
+			case GameState.CLOSE_COUNTDOWN:
+				break;
+			case GameState.INITIALIZE:
+				break;
+			case GameState.PROLOGUE:
+				break;
+			case GameState.SCATTER:
+				break;
+			case GameState.HUNT:
+				break;
+			case GameState.GAME_OVER:
+				break;
+			default:
+				break;
+		}
+	}
+
+	private handleCountdownChange(countdown: number) {
+		console.log(`Countdown: ${countdown}`);
 	}
 
 	/**
@@ -161,6 +243,12 @@ export default class GameManager extends Node {
 	 */
 	public onUpdate(): void {
 		// ...
+
+		if (!NetworkManager.Instance.Room && InputManager.getKeyUp(32) && !this._joiningRoom) {
+			console.log('Join Room');
+			this._joiningRoom = true;
+			NetworkManager.Instance.joinRoom();
+		}
 	}
 
 	/**

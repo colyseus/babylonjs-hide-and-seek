@@ -2,7 +2,7 @@ import { Room, Client, Presence } from 'colyseus';
 import { PlayerInputMessage } from '../models/PlayerInputMessage';
 import { HASRoomState } from './schema/HASRoomState';
 import { PlayerState } from './schema/PlayerState';
-const logger = require('../helpers/logger');
+import logger from '../helpers/logger';
 
 export class HASRoom extends Room<HASRoomState> {
 	public movementSpeed: number = 600;
@@ -44,7 +44,7 @@ export class HASRoom extends Room<HASRoomState> {
 
 		let spawnIndex: number = isSeeker ? -1 : this.state.getSpawnPointIndex();
 
-		logger.info(`${client.sessionId} spawn index: ${spawnIndex}`);
+		//logger.info(`${client.sessionId} spawn index: ${spawnIndex}`);
 
 		// Create a new instance of NetworkedEntityState for this client and assign initial state values
 		const player = new PlayerState(this).assign({

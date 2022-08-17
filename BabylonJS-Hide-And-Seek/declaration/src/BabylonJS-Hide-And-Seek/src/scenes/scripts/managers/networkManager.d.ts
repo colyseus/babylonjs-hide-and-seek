@@ -1,11 +1,14 @@
 import { Node } from '@babylonjs/core/node';
 import * as Colyseus from 'colyseus.js';
 import type { HASRoomState } from '../../../../../Server/hide-and-seek/src/rooms/schema/HASRoomState';
-import { PlayerInputMessage } from '../../../../../Server/hide-and-seek/src/models/PlayerInputMessage';
-import { PlayerState } from '../../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
+import type { PlayerInputMessage } from '../../../../../Server/hide-and-seek/src/models/PlayerInputMessage';
+import type { PlayerState } from '../../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
 export default class NetworkManager extends Node {
+    onJoinedRoom: (roomId: string) => void;
     onPlayerAdded: (state: PlayerState, sesstionId: string) => void;
     onPlayerRemoved: (state: PlayerState, sessionId: string) => void;
+    onGameStateChange: (changes: any[]) => void;
+    onLeftRoom: (code: number) => void;
     private static _instance;
     private _serverSettings;
     private _client;

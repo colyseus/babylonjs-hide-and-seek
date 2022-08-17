@@ -1,3 +1,4 @@
+import { Schema } from '@colyseus/schema';
 import { GameConfig } from '../models/GameConfig';
 import { HASRoom } from './HASRoom';
 export declare enum GameState {
@@ -10,14 +11,15 @@ export declare enum GameState {
     HUNT = "hunt",
     GAME_OVER = "gameOver"
 }
-export declare class HASGameLoop {
+export declare class HASGameState extends Schema {
+    currentState: GameState;
+    seekerWon: boolean;
     private _room;
-    private _currentState;
     private _lastState;
     private _config;
     private _stateTimestamp;
     private _capturedPlayers;
-    constructor(room: HASRoom, config: GameConfig);
+    constructor(room: HASRoom, config: GameConfig, ...args: any[]);
     /** Update the game loop */
     update(deltaTime: number): void;
     private moveToState;

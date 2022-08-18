@@ -7,6 +7,7 @@ export declare class SpawnPoints {
     private _usedPoints;
     constructor(spawnPoints: TransformNode[]);
     private initializeSpawnPoints;
+    reset(): void;
     getSpawnPoint(playerState: PlayerState): TransformNode;
     freeUpSpawnPoint(playerState: PlayerState): void;
 }

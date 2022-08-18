@@ -254,6 +254,9 @@ var NetworkManager = /** @class */ (function (_super) {
     // 	this.Room.send('playerInput', inputMsg);
     // }
     NetworkManager.prototype.sendPlayerPosition = function (positionMsg) {
+        if (!this.Room) {
+            return;
+        }
         this.Room.send('playerInput', positionMsg);
     };
     // private playerAdded(item: PlayerState, key: string) {

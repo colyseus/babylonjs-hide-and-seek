@@ -203,6 +203,10 @@ export default class NetworkManager extends Node {
 	// }
 
 	public sendPlayerPosition(positionMsg: PlayerInputMessage) {
+		if (!this.Room) {
+			return;
+		}
+
 		this.Room.send('playerInput', positionMsg);
 	}
 

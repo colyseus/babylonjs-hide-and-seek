@@ -81,6 +81,39 @@ var Player = /** @class */ (function (_super) {
         this.updatePlayerMovement();
         this.updatePositionFromState();
     };
+    Player.prototype.setVelocity = function (vel) {
+        this._rigidbody.setLinearVelocity(vel);
+    };
+    Player.prototype.updatePlayerMovement = function () {
+        if (!this.isLocalPlayer || !this._state.canMove) {
+            if (this._rigidbody.getLinearVelocity().length() > 0) {
+                this._rigidbody.setLinearVelocity(core_1.Vector3.Zero());
+            }
+            return;
+        }
+        var direction = new core_1.Vector3();
+        // W + -S (1/0 + -1/0)
+        this._zDirection = (inputManager_1.default.getKey(87) ? 1 : 0) + (inputManager_1.default.getKey(83) ? -1 : 0);
+        // -A + D (-1/0 + 1/0)
+        this._xDirection = (inputManager_1.default.getKey(65) ? -1 : 0) + (inputManager_1.default.getKey(68) ? 1 : 0);
+        // Prevent the player from moving faster than it should in a diagonal direction
+        if (this._zDirection !== 0 && this._xDirection !== 0) {
+            this._xDirection *= 0.75;
+            this._zDirection *= 0.75;
+        }
+        direction.x = this._xDirection;
+        direction.z = this._zDirection;
+        direction.x *= this._movementSpeed * gameManager_1.default.DeltaTime;
+        direction.z *= this._movementSpeed * gameManager_1.default.DeltaTime;
+        this.setVelocity(direction);
+        this._rigidbody.setAngularVelocity(core_1.Vector3.Zero());
+        this.position.y = 0.5;
+        if (!this.position.equals(this._lastPosition)) {
+            this._lastPosition.copyFrom(this.position);
+            // Position has changed; send position to the server
+            this.sendPositionUpdateToServer();
+        }
+    };
     Player.prototype.updatePositionFromState = function () {
         if (!this._state) {
             return;
@@ -101,33 +134,6 @@ var Player = /** @class */ (function (_super) {
         else {
             // Lerp the remote player object to their position
             this.position.copyFrom(core_1.Vector3.Lerp(this.position, new core_1.Vector3(this._state.xPos, 0.5, this._state.zPos), gameManager_1.default.DeltaTime * 35));
-        }
-    };
-    Player.prototype.updatePlayerMovement = function () {
-        if (!this.isLocalPlayer) {
-            return;
-        }
-        var direction = new core_1.Vector3();
-        // W + -S (1/0 + -1/0)
-        this._zDirection = (inputManager_1.default.getKey(87) ? 1 : 0) + (inputManager_1.default.getKey(83) ? -1 : 0);
-        // -A + D (-1/0 + 1/0)
-        this._xDirection = (inputManager_1.default.getKey(65) ? -1 : 0) + (inputManager_1.default.getKey(68) ? 1 : 0);
-        // Prevent the player from moving faster than it should in a diagonal direction
-        if (this._zDirection !== 0 && this._xDirection !== 0) {
-            this._xDirection *= 0.75;
-            this._zDirection *= 0.75;
-        }
-        direction.x = this._xDirection;
-        direction.z = this._zDirection;
-        direction.x *= this._movementSpeed * gameManager_1.default.DeltaTime;
-        direction.z *= this._movementSpeed * gameManager_1.default.DeltaTime;
-        this._rigidbody.setLinearVelocity(direction);
-        this._rigidbody.setAngularVelocity(core_1.Vector3.Zero());
-        this.position.y = 0.5;
-        if (!this.position.equals(this._lastPosition)) {
-            this._lastPosition.copyFrom(this.position);
-            // Position has changed; send position to the server
-            this.sendPositionUpdateToServer();
         }
     };
     Player.prototype.sendPositionUpdateToServer = function () {

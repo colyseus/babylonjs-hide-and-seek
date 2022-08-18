@@ -27,7 +27,11 @@ export class SpawnPoints {
 			}
 		});
 
-		console.log(`Found Seeker Point: ${this._seekerPoint !== null} - Found ${this._availablePoints.length} Hider Points`);
+		// console.log(`Found Seeker Point: ${this._seekerPoint !== null} - Found ${this._availablePoints.length} Hider Points`);
+	}
+
+	public reset() {
+		this.initializeSpawnPoints();
 	}
 
 	public getSpawnPoint(playerState: PlayerState): TransformNode {
@@ -61,20 +65,24 @@ export class SpawnPoints {
 	}
 
 	public freeUpSpawnPoint(playerState: PlayerState) {
+		console.log(`Free Spawn Point: %o`, playerState);
+
 		const spawnPointIndex: number = playerState.spawnPoint;
 		let spawnPoint: TransformNode = null;
 
 		if (playerState.isSeeker) {
 			// Restore the seeker spawn point
-			spawnPoint = this._seekerPoint = this._usedPoints.get(playerState.id);
+			spawnPoint = this._usedPoints.get(playerState.id);
+
+			if (spawnPoint) {
+				this._seekerPoint = spawnPoint;
+			}
 		} else {
 			// Restore the hider spawn point
 			spawnPoint = this._availablePoints[spawnPointIndex] = this._usedPoints.get(playerState.id);
 		}
 
-		if (!spawnPoint) {
-			console.error(`Spawn Points - freeUpSpawnPoint() - Something went wrong, the spawn point was not restored`);
-		} else {
+		if (spawnPoint) {
 			this._usedPoints.delete(playerState.id);
 		}
 	}

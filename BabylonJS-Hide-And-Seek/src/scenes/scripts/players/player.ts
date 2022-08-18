@@ -74,32 +74,15 @@ export default class Player extends Mesh {
 		this.updatePositionFromState();
 	}
 
-	private updatePositionFromState() {
-		if (!this._state) {
-			return;
-		}
-
-		// Remove up to and out of date movements from the collection//
-		for (let i = this._previousMovements.length - 1; i >= 0; i--) {
-			const timestamp: number = this._previousMovements[i].timestamp;
-			if (timestamp <= this._state.positionTimestamp || Date.now() - timestamp > 200) {
-				this._previousMovements.splice(i, 1);
-			}
-		}
-
-		if (this.isLocalPlayer) {
-			// Update from the state received from the server if we don't have any other previous movements
-			if (this._previousMovements.length === 0) {
-				this.position.copyFrom(new Vector3(this._state.xPos, 0.5, this._state.zPos));
-			}
-		} else {
-			// Lerp the remote player object to their position
-			this.position.copyFrom(Vector3.Lerp(this.position, new Vector3(this._state.xPos, 0.5, this._state.zPos), GameManager.DeltaTime * 35));
-		}
+	public setVelocity(vel: Vector3) {
+		this._rigidbody.setLinearVelocity(vel);
 	}
 
 	private updatePlayerMovement() {
-		if (!this.isLocalPlayer) {
+		if (!this.isLocalPlayer || !this._state.canMove) {
+			if (this._rigidbody.getLinearVelocity().length() > 0) {
+				this._rigidbody.setLinearVelocity(Vector3.Zero());
+			}
 			return;
 		}
 
@@ -122,7 +105,7 @@ export default class Player extends Mesh {
 		direction.x *= this._movementSpeed * GameManager.DeltaTime;
 		direction.z *= this._movementSpeed * GameManager.DeltaTime;
 
-		this._rigidbody.setLinearVelocity(direction);
+		this.setVelocity(direction);
 		this._rigidbody.setAngularVelocity(Vector3.Zero());
 
 		this.position.y = 0.5;
@@ -131,6 +114,30 @@ export default class Player extends Mesh {
 			this._lastPosition.copyFrom(this.position);
 			// Position has changed; send position to the server
 			this.sendPositionUpdateToServer();
+		}
+	}
+
+	private updatePositionFromState() {
+		if (!this._state) {
+			return;
+		}
+
+		// Remove up to and out of date movements from the collection//
+		for (let i = this._previousMovements.length - 1; i >= 0; i--) {
+			const timestamp: number = this._previousMovements[i].timestamp;
+			if (timestamp <= this._state.positionTimestamp || Date.now() - timestamp > 200) {
+				this._previousMovements.splice(i, 1);
+			}
+		}
+
+		if (this.isLocalPlayer) {
+			// Update from the state received from the server if we don't have any other previous movements
+			if (this._previousMovements.length === 0) {
+				this.position.copyFrom(new Vector3(this._state.xPos, 0.5, this._state.zPos));
+			}
+		} else {
+			// Lerp the remote player object to their position
+			this.position.copyFrom(Vector3.Lerp(this.position, new Vector3(this._state.xPos, 0.5, this._state.zPos), GameManager.DeltaTime * 35));
 		}
 	}
 

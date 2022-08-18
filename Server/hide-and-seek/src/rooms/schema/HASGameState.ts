@@ -115,7 +115,7 @@ export class HASGameState extends Schema {
 
 					seeker.canMove = true;
 				} catch (error: any) {
-					//logger.error(`Error allowing Seeker to move: ${error.stack}`);
+					logger.error(`Error allowing Seeker to move: ${error.stack}`);
 				}
 
 				// Reset the timestamp for the duration of the hunt stage
@@ -125,6 +125,11 @@ export class HASGameState extends Schema {
 			case GameState.GAME_OVER:
 				// Determine if the Seeker has won
 				this.seekerWon = this._capturedPlayers.size === this._config.SeekerWinCondition;
+
+				// Disable player movement
+				this._room.state.players.forEach((player: PlayerState) => {
+					player.canMove = false;
+				});
 
 				// Reset the timestamp for the duration of the game over stage
 				this._stateTimestamp = Date.now();

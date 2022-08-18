@@ -130,53 +130,20 @@ export default class GameManager extends Node {
 		console.log(`On Player Added: ${sessionId}`);
 
 		this._players.set(sessionId, state);
-
-		// let player: Player = null;
-
-		// if (NetworkManager.Instance.Room.sessionId === sessionId) {
-		// 	// console.log(`Got local player state!`);
-
-		// 	player = this._player;
-		// } else {
-		// 	// Player is remote
-		// 	if (this._availableRemotePlayerObjects.length === 0) {
-		// 		console.error(`On Player Added - No more remote player objects to assign!`);
-		// 		return;
-		// 	}
-
-		// 	// Retrieve a remote player object
-		// 	player = this._availableRemotePlayerObjects.splice(0, 1)[0];
-
-		// 	// Add the player to the map of remote players
-		// 	this._spawnedRemotes.set(sessionId, player);
-		// }
-
-		// const point: TransformNode = this._spawnPoints.getSpawnPoint(state);
-
-		// player.setParent(null);
-
-		// player.position.copyFrom(point.position);
-		// player.rotation.copyFrom(point.rotation);
-
-		// player.setEnabled(true);
-		// player.setPlayerState(state);
 	}
 
 	private onPlayerRemoved(state: PlayerState, sessionId: string) {
 		console.log(`On Player Removed: ${sessionId}`);
 
-		// Reset the remote player object if it has been spawned
-		const player: Player = this._spawnedRemotes.get(sessionId);
+		this.despawnPlayer(state);
 
-		if (player) {
-			this._spawnPoints.freeUpSpawnPoint(state);
-			this.resetPlayerObject(player);
-			this._spawnedRemotes.delete(sessionId);
-		}
+		this._players.delete(sessionId);
 	}
 
 	private resetPlayerObject(player: Player) {
 		player.setPlayerState(null);
+
+		player.setVelocity(Vector3.Zero());
 
 		player.setEnabled(false);
 
@@ -216,12 +183,15 @@ export default class GameManager extends Node {
 			case GameState.NONE:
 				break;
 			case GameState.WAIT_FOR_MINIMUM:
+				this.despawnPlayers();
+				this._spawnPoints.reset();
 				break;
 			case GameState.CLOSE_COUNTDOWN:
 				break;
 			case GameState.INITIALIZE:
 				break;
 			case GameState.PROLOGUE:
+				this.spawnPlayers();
 				break;
 			case GameState.SCATTER:
 				break;
@@ -238,6 +208,70 @@ export default class GameManager extends Node {
 		console.log(`Countdown: ${countdown}`);
 	}
 
+	private spawnPlayers() {
+		NetworkManager.Instance.Room.state.players.forEach((player: PlayerState, sessionId: string) => {
+			this.spawnPlayer(player, sessionId);
+		});
+	}
+
+	private spawnPlayer(playerState: PlayerState, sessionId: string) {
+		let player: Player = null;
+
+		if (NetworkManager.Instance.Room.sessionId === sessionId) {
+			// Assign the local player object
+			player = this._player;
+		} else {
+			// Player is remote
+			if (this._availableRemotePlayerObjects.length === 0) {
+				console.error(`On Player Added - No more remote player objects to assign!`);
+				return;
+			}
+
+			// Retrieve a remote player object
+			player = this._availableRemotePlayerObjects.splice(0, 1)[0];
+
+			// Add the player to the map of remote players
+			this._spawnedRemotes.set(sessionId, player);
+		}
+
+		const point: TransformNode = this._spawnPoints.getSpawnPoint(playerState);
+
+		player.setEnabled(true);
+
+		player.setParent(null);
+
+		player.position.copyFrom(point.position);
+		player.rotation.copyFrom(point.rotation);
+
+		player.setPlayerState(playerState);
+	}
+
+	private despawnPlayers() {
+		NetworkManager.Instance.Room.state.players.forEach((player: PlayerState, sessionId: string) => {
+			this.despawnPlayer(player);
+		});
+	}
+
+	private despawnPlayer(player: PlayerState) {
+		// Reset the player object if it has been spawned
+		let playerObject: Player;
+
+		console.log(`Despawn Player: %o`, player);
+
+		if (player.id === NetworkManager.Instance.Room.sessionId) {
+			playerObject = this._player;
+		} else {
+			playerObject = this._spawnedRemotes.get(player.id);
+			this._spawnedRemotes.delete(player.id);
+		}
+
+		if (playerObject) {
+			this.resetPlayerObject(playerObject);
+		}
+
+		this._spawnPoints.freeUpSpawnPoint(player);
+	}
+
 	/**
 	 * Called each frame.
 	 */
@@ -248,6 +282,8 @@ export default class GameManager extends Node {
 			console.log('Join Room');
 			this._joiningRoom = true;
 			NetworkManager.Instance.joinRoom();
+		} else {
+			//
 		}
 	}
 

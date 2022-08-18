@@ -1,4 +1,4 @@
-import { Mesh } from '@babylonjs/core';
+import { Mesh, Vector3 } from '@babylonjs/core';
 import type { PlayerState } from '../../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
 export default class Player extends Mesh {
     private _movementSpeed;
@@ -28,8 +28,9 @@ export default class Player extends Mesh {
      * Called each frame.
      */
     onUpdate(): void;
-    private updatePositionFromState;
+    setVelocity(vel: Vector3): void;
     private updatePlayerMovement;
+    private updatePositionFromState;
     private sendPositionUpdateToServer;
     /**
      * Called on the object has been disposed.

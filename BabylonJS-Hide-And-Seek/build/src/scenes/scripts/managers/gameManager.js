@@ -21,6 +21,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = require("@babylonjs/core");
 var node_1 = require("@babylonjs/core/node");
 var GameState_1 = require("../GameState");
 var decorators_1 = require("../../decorators");
@@ -120,40 +121,15 @@ var GameManager = /** @class */ (function (_super) {
     GameManager.prototype.onPlayerAdded = function (state, sessionId) {
         console.log("On Player Added: ".concat(sessionId));
         this._players.set(sessionId, state);
-        // let player: Player = null;
-        // if (NetworkManager.Instance.Room.sessionId === sessionId) {
-        // 	// console.log(`Got local player state!`);
-        // 	player = this._player;
-        // } else {
-        // 	// Player is remote
-        // 	if (this._availableRemotePlayerObjects.length === 0) {
-        // 		console.error(`On Player Added - No more remote player objects to assign!`);
-        // 		return;
-        // 	}
-        // 	// Retrieve a remote player object
-        // 	player = this._availableRemotePlayerObjects.splice(0, 1)[0];
-        // 	// Add the player to the map of remote players
-        // 	this._spawnedRemotes.set(sessionId, player);
-        // }
-        // const point: TransformNode = this._spawnPoints.getSpawnPoint(state);
-        // player.setParent(null);
-        // player.position.copyFrom(point.position);
-        // player.rotation.copyFrom(point.rotation);
-        // player.setEnabled(true);
-        // player.setPlayerState(state);
     };
     GameManager.prototype.onPlayerRemoved = function (state, sessionId) {
         console.log("On Player Removed: ".concat(sessionId));
-        // Reset the remote player object if it has been spawned
-        var player = this._spawnedRemotes.get(sessionId);
-        if (player) {
-            this._spawnPoints.freeUpSpawnPoint(state);
-            this.resetPlayerObject(player);
-            this._spawnedRemotes.delete(sessionId);
-        }
+        this.despawnPlayer(state);
+        this._players.delete(sessionId);
     };
     GameManager.prototype.resetPlayerObject = function (player) {
         player.setPlayerState(null);
+        player.setVelocity(core_1.Vector3.Zero());
         player.setEnabled(false);
         player.setParent(this);
         this._availableRemotePlayerObjects.push(player);
@@ -183,12 +159,15 @@ var GameManager = /** @class */ (function (_super) {
             case GameState_1.GameState.NONE:
                 break;
             case GameState_1.GameState.WAIT_FOR_MINIMUM:
+                this.despawnPlayers();
+                this._spawnPoints.reset();
                 break;
             case GameState_1.GameState.CLOSE_COUNTDOWN:
                 break;
             case GameState_1.GameState.INITIALIZE:
                 break;
             case GameState_1.GameState.PROLOGUE:
+                this.spawnPlayers();
                 break;
             case GameState_1.GameState.SCATTER:
                 break;
@@ -203,6 +182,58 @@ var GameManager = /** @class */ (function (_super) {
     GameManager.prototype.handleCountdownChange = function (countdown) {
         console.log("Countdown: ".concat(countdown));
     };
+    GameManager.prototype.spawnPlayers = function () {
+        var _this = this;
+        networkManager_1.default.Instance.Room.state.players.forEach(function (player, sessionId) {
+            _this.spawnPlayer(player, sessionId);
+        });
+    };
+    GameManager.prototype.spawnPlayer = function (playerState, sessionId) {
+        var player = null;
+        if (networkManager_1.default.Instance.Room.sessionId === sessionId) {
+            // Assign the local player object
+            player = this._player;
+        }
+        else {
+            // Player is remote
+            if (this._availableRemotePlayerObjects.length === 0) {
+                console.error("On Player Added - No more remote player objects to assign!");
+                return;
+            }
+            // Retrieve a remote player object
+            player = this._availableRemotePlayerObjects.splice(0, 1)[0];
+            // Add the player to the map of remote players
+            this._spawnedRemotes.set(sessionId, player);
+        }
+        var point = this._spawnPoints.getSpawnPoint(playerState);
+        player.setEnabled(true);
+        player.setParent(null);
+        player.position.copyFrom(point.position);
+        player.rotation.copyFrom(point.rotation);
+        player.setPlayerState(playerState);
+    };
+    GameManager.prototype.despawnPlayers = function () {
+        var _this = this;
+        networkManager_1.default.Instance.Room.state.players.forEach(function (player, sessionId) {
+            _this.despawnPlayer(player);
+        });
+    };
+    GameManager.prototype.despawnPlayer = function (player) {
+        // Reset the player object if it has been spawned
+        var playerObject;
+        console.log("Despawn Player: %o", player);
+        if (player.id === networkManager_1.default.Instance.Room.sessionId) {
+            playerObject = this._player;
+        }
+        else {
+            playerObject = this._spawnedRemotes.get(player.id);
+            this._spawnedRemotes.delete(player.id);
+        }
+        if (playerObject) {
+            this.resetPlayerObject(playerObject);
+        }
+        this._spawnPoints.freeUpSpawnPoint(player);
+    };
     /**
      * Called each frame.
      */
@@ -212,6 +243,9 @@ var GameManager = /** @class */ (function (_super) {
             console.log('Join Room');
             this._joiningRoom = true;
             networkManager_1.default.Instance.joinRoom();
+        }
+        else {
+            //
         }
     };
     /**

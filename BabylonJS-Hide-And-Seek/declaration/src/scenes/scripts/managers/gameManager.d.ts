@@ -45,6 +45,10 @@ export default class GameManager extends Node {
     private onGameStateChange;
     private handleGameStateChange;
     private handleCountdownChange;
+    private spawnPlayers;
+    private spawnPlayer;
+    private despawnPlayers;
+    private despawnPlayer;
     /**
      * Called each frame.
      */

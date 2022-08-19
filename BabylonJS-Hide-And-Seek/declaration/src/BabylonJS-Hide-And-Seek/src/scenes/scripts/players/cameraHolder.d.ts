@@ -1,6 +1,8 @@
-import { Mesh } from '@babylonjs/core';
+import { Mesh, TransformNode, Vector3 } from '@babylonjs/core';
 export default class CameraHolder extends Mesh {
     private _target;
+    private _targetPosition;
+    private _chaseSpeed;
     /**
      * Override constructor.
      * @warn do not fill.
@@ -31,5 +33,6 @@ export default class CameraHolder extends Mesh {
      * @param sender defines the reference to the graph class that sent the message.
      */
     onMessage(name: string, data: any, sender: any): void;
-    setTarget(mesh: Mesh): void;
+    setTarget(transform: TransformNode, chaseSpeed: number): void;
+    setTargetPosition(position: Vector3, chaseSpeed: number): void;
 }

@@ -249,6 +249,7 @@ export class HASGameState extends Schema {
 		// Check if there are enough players to play again
 		if (playAgain === this._config.MinPlayers) {
 			this.moveToState(GameState.NONE);
+			return;
 		}
 
 		if (elapsedTime < countdown) {

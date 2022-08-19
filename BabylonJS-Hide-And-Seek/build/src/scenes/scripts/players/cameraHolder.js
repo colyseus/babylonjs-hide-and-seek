@@ -16,6 +16,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@babylonjs/core");
+var gameManager_1 = require("../managers/gameManager");
 var CameraHolder = /** @class */ (function (_super) {
     __extends(CameraHolder, _super);
     /**
@@ -25,6 +26,9 @@ var CameraHolder = /** @class */ (function (_super) {
     // @ts-ignore ignoring the super call as we don't want to re-init
     function CameraHolder() {
         var _this = this;
+        _this._target = null;
+        _this._targetPosition = null;
+        _this._chaseSpeed = 1;
         return _this;
     }
     /**
@@ -45,12 +49,14 @@ var CameraHolder = /** @class */ (function (_super) {
      * Called each frame.
      */
     CameraHolder.prototype.onUpdate = function () {
-        // ...
-        // this.lookAt(Vector3.Forward(), 0, 0, 0, Space.WORLD);
-        if (!this._target) {
+        if (this._target) {
+            this._targetPosition.copyFrom(this._target.position);
+        }
+        if (!this._targetPosition) {
             return;
         }
-        this.position = this._target.position;
+        // TODO: rather than just use a straight up lerp, have option to use an easing value to feed the lerp
+        this.position.copyFrom(core_1.Vector3.Lerp(this.position, this._targetPosition, gameManager_1.default.DeltaTime * this._chaseSpeed));
     };
     /**
      * Called on the object has been disposed.
@@ -72,9 +78,16 @@ var CameraHolder = /** @class */ (function (_super) {
                 break;
         }
     };
-    CameraHolder.prototype.setTarget = function (mesh) {
-        console.log("Camera Holder - Set Target to %o", mesh);
-        this._target = mesh;
+    CameraHolder.prototype.setTarget = function (transform, chaseSpeed) {
+        console.log("Camera Holder - Set Target to %o", transform);
+        this._target = transform;
+        this._chaseSpeed = chaseSpeed;
+        this._targetPosition = new core_1.Vector3(transform.position.x, transform.position.y, transform.position.z);
+    };
+    CameraHolder.prototype.setTargetPosition = function (position, chaseSpeed) {
+        this._targetPosition = new core_1.Vector3(position.x, position.y, position.z);
+        this._chaseSpeed = chaseSpeed;
+        this._target = null;
     };
     return CameraHolder;
 }(core_1.Mesh));

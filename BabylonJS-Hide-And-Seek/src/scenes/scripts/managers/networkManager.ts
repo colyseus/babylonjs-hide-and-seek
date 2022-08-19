@@ -192,16 +192,6 @@ export default class NetworkManager extends Node {
 		}
 	}
 
-	// public sendPlayerDirectionInput(velocity: Vector3, position: Vector3) {
-	// 	if (!this.Room) {
-	// 		return;
-	// 	}
-
-	// 	const inputMsg: PlayerInputMessage = new PlayerInputMessage(this.Room.sessionId, [velocity.x, velocity.y, velocity.z], [position.x, position.y, position.z]);
-
-	// 	this.Room.send('playerInput', inputMsg);
-	// }
-
 	public sendPlayerPosition(positionMsg: PlayerInputMessage) {
 		if (!this.Room) {
 			return;
@@ -210,13 +200,13 @@ export default class NetworkManager extends Node {
 		this.Room.send('playerInput', positionMsg);
 	}
 
-	// private playerAdded(item: PlayerState, key: string) {
-	// 	//
+	public sendPlayAgain() {
+		if (!this.Room) {
+			return;
+		}
 
-	// 	if (this.onPlayerAdded) {
-	// 		this.onPlayerAdded(item, key);
-	// 	}
-	// }
+		this.Room.send('playAgain');
+	}
 
 	private handleMessages(name: string, message: any) {
 		// switch (name) {
@@ -224,13 +214,4 @@ export default class NetworkManager extends Node {
 		// 		this.handleVelocityChange(message);
 		// }
 	}
-
-	// public handleVelocityChange(velocityChange: VelocityChangeMessage) {
-	// 	if (!velocityChange || velocityChange.velocity.length < 3) {
-	// 		console.error(`Handle Velocity Change - Invalid message`);
-	// 		return;
-	// 	}
-
-	// 	console.log(`${velocityChange.clientId} Velocity Changed: (${velocityChange.velocity[0]}, ${velocityChange.velocity[1]}, ${velocityChange.velocity[2]})`);
-	// }
 }

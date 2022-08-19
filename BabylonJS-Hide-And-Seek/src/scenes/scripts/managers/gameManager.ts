@@ -8,12 +8,15 @@ import Player from '../players/player';
 import { SpawnPoints } from '../spawnPoints';
 import InputManager from './inputManager';
 import NetworkManager from './networkManager';
+import { PlayerInputMessage } from '../../../../../Server/hide-and-seek/src/models/PlayerInputMessage';
 
 export default class GameManager extends Node {
 	private static _instance: GameManager = null;
 
 	@fromScene('Camera Holder')
 	private _cameraHolder: CameraHolder;
+	@fromScene('CameraStartPos')
+	private _cameraStartPos: TransformNode;
 	@fromScene('Spawn Points')
 	private _spawnPointsRoot: Node;
 
@@ -40,6 +43,10 @@ export default class GameManager extends Node {
 	private _players: Map<string, PlayerState> = null;
 	private _currentGameState: GameState = GameState.NONE;
 	private _joiningRoom: boolean = false;
+	private _playAgain: boolean = false;
+
+	private _playerChaseSpeed: number = 25;
+	private _startChaseSpeed: number = 3;
 
 	public get CurrentGameState(): GameState {
 		return GameManager.Instance._currentGameState;
@@ -102,15 +109,13 @@ export default class GameManager extends Node {
 
 		this._player.setParent(null);
 
-		this._cameraHolder.setTarget(this._player);
-
 		NetworkManager.Instance.onJoinedRoom = this.onJoinedRoom;
 		NetworkManager.Instance.onLeftRoom = this.onLeftRoom;
 		NetworkManager.Instance.onPlayerAdded = this.onPlayerAdded;
 		NetworkManager.Instance.onPlayerRemoved = this.onPlayerRemoved;
 		NetworkManager.Instance.onGameStateChange = this.onGameStateChange;
 
-		// NetworkManager.Instance.joinRoom();
+		this._cameraHolder.setTarget(this._cameraStartPos, this._startChaseSpeed);
 	}
 
 	private initializeSpawnPoints() {
@@ -124,6 +129,7 @@ export default class GameManager extends Node {
 
 	private onLeftRoom(code: number) {
 		console.log(`Left room: ${code}`);
+		this._cameraHolder.setTarget(this._cameraStartPos, this._startChaseSpeed);
 	}
 
 	private onPlayerAdded(state: PlayerState, sessionId: string) {
@@ -185,15 +191,23 @@ export default class GameManager extends Node {
 			case GameState.WAIT_FOR_MINIMUM:
 				this.despawnPlayers();
 				this._spawnPoints.reset();
+				this._playAgain = false;
 				break;
 			case GameState.CLOSE_COUNTDOWN:
 				break;
 			case GameState.INITIALIZE:
 				break;
 			case GameState.PROLOGUE:
+				// Set up player objects for the local player as well as all remote players
 				this.spawnPlayers();
+
+				// Send the initial position of the player to the server
+				NetworkManager.Instance.sendPlayerPosition(new PlayerInputMessage(this._player.position.asArray()));
+
+				this._cameraHolder.setTargetPosition(this._player.position, this._startChaseSpeed);
 				break;
 			case GameState.SCATTER:
+				this._cameraHolder.setTarget(this._player, this._playerChaseSpeed);
 				break;
 			case GameState.HUNT:
 				break;
@@ -236,12 +250,15 @@ export default class GameManager extends Node {
 
 		const point: TransformNode = this._spawnPoints.getSpawnPoint(playerState);
 
-		player.setEnabled(true);
-
 		player.setParent(null);
 
 		player.position.copyFrom(point.position);
 		player.rotation.copyFrom(point.rotation);
+
+		// Delay enabling player object to avoid visual briefly appearing somewhere else before getting moved to its spawn position
+		setTimeout(() => {
+			player.setEnabled(true);
+		}, 100);
 
 		player.setPlayerState(playerState);
 	}
@@ -283,7 +300,11 @@ export default class GameManager extends Node {
 			this._joiningRoom = true;
 			NetworkManager.Instance.joinRoom();
 		} else {
-			//
+			if (NetworkManager.Instance.Room && this.CurrentGameState === GameState.GAME_OVER && !this._playAgain && InputManager.getKeyUp(32)) {
+				this._playAgain = true;
+				this._cameraHolder.setTarget(this._cameraStartPos, this._startChaseSpeed);
+				NetworkManager.Instance.sendPlayAgain();
+			}
 		}
 	}
 

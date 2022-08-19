@@ -10,4 +10,5 @@ export declare class HASRoom extends Room<HASRoomState> {
     onDispose(): void;
     private registerMessageHandlers;
     private handlePlayerInput;
+    private handlePlayAgain;
 }

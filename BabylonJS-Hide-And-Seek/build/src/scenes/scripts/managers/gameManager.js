@@ -28,6 +28,7 @@ var decorators_1 = require("../../decorators");
 var spawnPoints_1 = require("../spawnPoints");
 var inputManager_1 = require("./inputManager");
 var networkManager_1 = require("./networkManager");
+var PlayerInputMessage_1 = require("../../../../../Server/hide-and-seek/src/models/PlayerInputMessage");
 var GameManager = /** @class */ (function (_super) {
     __extends(GameManager, _super);
     /**
@@ -43,6 +44,9 @@ var GameManager = /** @class */ (function (_super) {
         _this._players = null;
         _this._currentGameState = GameState_1.GameState.NONE;
         _this._joiningRoom = false;
+        _this._playAgain = false;
+        _this._playerChaseSpeed = 25;
+        _this._startChaseSpeed = 3;
         return _this;
     }
     Object.defineProperty(GameManager.prototype, "CurrentGameState", {
@@ -100,13 +104,12 @@ var GameManager = /** @class */ (function (_super) {
         this._availableRemotePlayerObjects.push(this._remotePlayer6);
         this._availableRemotePlayerObjects.push(this._remotePlayer7);
         this._player.setParent(null);
-        this._cameraHolder.setTarget(this._player);
         networkManager_1.default.Instance.onJoinedRoom = this.onJoinedRoom;
         networkManager_1.default.Instance.onLeftRoom = this.onLeftRoom;
         networkManager_1.default.Instance.onPlayerAdded = this.onPlayerAdded;
         networkManager_1.default.Instance.onPlayerRemoved = this.onPlayerRemoved;
         networkManager_1.default.Instance.onGameStateChange = this.onGameStateChange;
-        // NetworkManager.Instance.joinRoom();
+        this._cameraHolder.setTarget(this._cameraStartPos, this._startChaseSpeed);
     };
     GameManager.prototype.initializeSpawnPoints = function () {
         var spawnPoints = this._spawnPointsRoot.getChildren();
@@ -117,6 +120,7 @@ var GameManager = /** @class */ (function (_super) {
     };
     GameManager.prototype.onLeftRoom = function (code) {
         console.log("Left room: ".concat(code));
+        this._cameraHolder.setTarget(this._cameraStartPos, this._startChaseSpeed);
     };
     GameManager.prototype.onPlayerAdded = function (state, sessionId) {
         console.log("On Player Added: ".concat(sessionId));
@@ -161,15 +165,21 @@ var GameManager = /** @class */ (function (_super) {
             case GameState_1.GameState.WAIT_FOR_MINIMUM:
                 this.despawnPlayers();
                 this._spawnPoints.reset();
+                this._playAgain = false;
                 break;
             case GameState_1.GameState.CLOSE_COUNTDOWN:
                 break;
             case GameState_1.GameState.INITIALIZE:
                 break;
             case GameState_1.GameState.PROLOGUE:
+                // Set up player objects for the local player as well as all remote players
                 this.spawnPlayers();
+                // Send the initial position of the player to the server
+                networkManager_1.default.Instance.sendPlayerPosition(new PlayerInputMessage_1.PlayerInputMessage(this._player.position.asArray()));
+                this._cameraHolder.setTargetPosition(this._player.position, this._startChaseSpeed);
                 break;
             case GameState_1.GameState.SCATTER:
+                this._cameraHolder.setTarget(this._player, this._playerChaseSpeed);
                 break;
             case GameState_1.GameState.HUNT:
                 break;
@@ -206,10 +216,13 @@ var GameManager = /** @class */ (function (_super) {
             this._spawnedRemotes.set(sessionId, player);
         }
         var point = this._spawnPoints.getSpawnPoint(playerState);
-        player.setEnabled(true);
         player.setParent(null);
         player.position.copyFrom(point.position);
         player.rotation.copyFrom(point.rotation);
+        // Delay enabling player object to avoid visual briefly appearing somewhere else before getting moved to its spawn position
+        setTimeout(function () {
+            player.setEnabled(true);
+        }, 100);
         player.setPlayerState(playerState);
     };
     GameManager.prototype.despawnPlayers = function () {
@@ -245,7 +258,11 @@ var GameManager = /** @class */ (function (_super) {
             networkManager_1.default.Instance.joinRoom();
         }
         else {
-            //
+            if (networkManager_1.default.Instance.Room && this.CurrentGameState === GameState_1.GameState.GAME_OVER && !this._playAgain && inputManager_1.default.getKeyUp(32)) {
+                this._playAgain = true;
+                this._cameraHolder.setTarget(this._cameraStartPos, this._startChaseSpeed);
+                networkManager_1.default.Instance.sendPlayAgain();
+            }
         }
     };
     /**
@@ -272,6 +289,9 @@ var GameManager = /** @class */ (function (_super) {
     __decorate([
         (0, decorators_1.fromScene)('Camera Holder')
     ], GameManager.prototype, "_cameraHolder", void 0);
+    __decorate([
+        (0, decorators_1.fromScene)('CameraStartPos')
+    ], GameManager.prototype, "_cameraStartPos", void 0);
     __decorate([
         (0, decorators_1.fromScene)('Spawn Points')
     ], GameManager.prototype, "_spawnPointsRoot", void 0);

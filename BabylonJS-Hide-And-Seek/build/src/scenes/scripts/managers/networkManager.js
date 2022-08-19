@@ -246,25 +246,18 @@ var NetworkManager = /** @class */ (function (_super) {
             this.Room.state.gameState.onChange = null;
         }
     };
-    // public sendPlayerDirectionInput(velocity: Vector3, position: Vector3) {
-    // 	if (!this.Room) {
-    // 		return;
-    // 	}
-    // 	const inputMsg: PlayerInputMessage = new PlayerInputMessage(this.Room.sessionId, [velocity.x, velocity.y, velocity.z], [position.x, position.y, position.z]);
-    // 	this.Room.send('playerInput', inputMsg);
-    // }
     NetworkManager.prototype.sendPlayerPosition = function (positionMsg) {
         if (!this.Room) {
             return;
         }
         this.Room.send('playerInput', positionMsg);
     };
-    // private playerAdded(item: PlayerState, key: string) {
-    // 	//
-    // 	if (this.onPlayerAdded) {
-    // 		this.onPlayerAdded(item, key);
-    // 	}
-    // }
+    NetworkManager.prototype.sendPlayAgain = function () {
+        if (!this.Room) {
+            return;
+        }
+        this.Room.send('playAgain');
+    };
     NetworkManager.prototype.handleMessages = function (name, message) {
         // switch (name) {
         // 	case 'velocityChange':

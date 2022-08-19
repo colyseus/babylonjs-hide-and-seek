@@ -3,6 +3,7 @@ import { GameState } from '../GameState';
 export default class GameManager extends Node {
     private static _instance;
     private _cameraHolder;
+    private _cameraStartPos;
     private _spawnPointsRoot;
     private _player;
     private _remotePlayer1;
@@ -18,6 +19,9 @@ export default class GameManager extends Node {
     private _players;
     private _currentGameState;
     private _joiningRoom;
+    private _playAgain;
+    private _playerChaseSpeed;
+    private _startChaseSpeed;
     get CurrentGameState(): GameState;
     private set CurrentGameState(value);
     static get Instance(): GameManager;

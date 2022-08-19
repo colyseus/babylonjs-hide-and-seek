@@ -15,6 +15,7 @@ export class HASRoom extends Room<HASRoomState> {
 
 	private bindHandlers() {
 		this.handlePlayerInput = this.handlePlayerInput.bind(this);
+		this.handlePlayAgain = this.handlePlayAgain.bind(this);
 	}
 
 	onCreate(options: any) {
@@ -91,21 +92,24 @@ export class HASRoom extends Room<HASRoomState> {
 
 	private registerMessageHandlers() {
 		this.onMessage('playerInput', this.handlePlayerInput);
+		this.onMessage('playAgain', this.handlePlayAgain);
 	}
 
 	private handlePlayerInput(client: Client, playerInput: PlayerInputMessage) {
-		// if (directions.length < 3) {
-		// 	logger.error(`Handle Player Input - Invalid length (${directions.length}) for 'directions': %o`, directions);
-		// 	return;
-		// }
-
 		const playerState: PlayerState = this.state.players.get(client.sessionId);
 
 		if (playerState) {
-			// playerState.setMovementDirection(directions);
 			playerState.setPosition(playerInput.position, playerInput.timestamp);
 		} else {
 			logger.error(`Failed to retrieve Player State for ${client.sessionId}`);
+		}
+	}
+
+	private handlePlayAgain(client: Client) {
+		const playerState: PlayerState = this.state.players.get(client.sessionId);
+
+		if (playerState) {
+			playerState.playAgain = true;
 		}
 	}
 }

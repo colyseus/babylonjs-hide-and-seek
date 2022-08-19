@@ -1,10 +1,12 @@
-import { Mesh, Space, Vector3 } from '@babylonjs/core';
+import { Mesh, Space, TransformNode, Vector3 } from '@babylonjs/core';
 import { Node } from '@babylonjs/core/node';
 import { fromScene, visibleInInspector } from '../../decorators';
+import GameManager from '../managers/gameManager';
 
 export default class CameraHolder extends Mesh {
-	// @fromScene('Player')
-	private _target: Mesh;
+	private _target: TransformNode = null;
+	private _targetPosition: Vector3 = null;
+	private _chaseSpeed: number = 1;
 
 	/**
 	 * Override constructor.
@@ -33,14 +35,16 @@ export default class CameraHolder extends Mesh {
 	 * Called each frame.
 	 */
 	public onUpdate(): void {
-		// ...
-		// this.lookAt(Vector3.Forward(), 0, 0, 0, Space.WORLD);
+		if (this._target) {
+			this._targetPosition.copyFrom(this._target.position);
+		}
 
-		if (!this._target) {
+		if (!this._targetPosition) {
 			return;
 		}
 
-		this.position = this._target.position;
+		// TODO: rather than just use a straight up lerp, have option to use an easing value to feed the lerp
+		this.position.copyFrom(Vector3.Lerp(this.position, this._targetPosition, GameManager.DeltaTime * this._chaseSpeed));
 	}
 
 	/**
@@ -65,9 +69,17 @@ export default class CameraHolder extends Mesh {
 		}
 	}
 
-	public setTarget(mesh: Mesh) {
-		console.log(`Camera Holder - Set Target to %o`, mesh);
+	public setTarget(transform: TransformNode, chaseSpeed: number) {
+		console.log(`Camera Holder - Set Target to %o`, transform);
 
-		this._target = mesh;
+		this._target = transform;
+		this._chaseSpeed = chaseSpeed;
+		this._targetPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+	}
+
+	public setTargetPosition(position: Vector3, chaseSpeed: number) {
+		this._targetPosition = new Vector3(position.x, position.y, position.z);
+		this._chaseSpeed = chaseSpeed;
+		this._target = null;
 	}
 }

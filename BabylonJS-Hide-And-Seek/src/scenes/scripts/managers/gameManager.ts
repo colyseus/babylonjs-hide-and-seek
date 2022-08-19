@@ -130,6 +130,7 @@ export default class GameManager extends Node {
 	private onLeftRoom(code: number) {
 		console.log(`Left room: ${code}`);
 		this._cameraHolder.setTarget(this._cameraStartPos, this._startChaseSpeed);
+		this.despawnPlayers();
 	}
 
 	private onPlayerAdded(state: PlayerState, sessionId: string) {
@@ -264,9 +265,17 @@ export default class GameManager extends Node {
 	}
 
 	private despawnPlayers() {
-		NetworkManager.Instance.Room.state.players.forEach((player: PlayerState, sessionId: string) => {
-			this.despawnPlayer(player);
-		});
+		if (NetworkManager.Instance.Room) {
+			NetworkManager.Instance.Room.state.players.forEach((player: PlayerState, sessionId: string) => {
+				this.despawnPlayer(player);
+			});
+		} else {
+			this.resetPlayerObject(this._player);
+
+			this._spawnedRemotes.forEach((playerObject: Player) => {
+				this.resetPlayerObject(playerObject);
+			});
+		}
 	}
 
 	private despawnPlayer(player: PlayerState) {

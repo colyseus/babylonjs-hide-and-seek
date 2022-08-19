@@ -121,6 +121,7 @@ var GameManager = /** @class */ (function (_super) {
     GameManager.prototype.onLeftRoom = function (code) {
         console.log("Left room: ".concat(code));
         this._cameraHolder.setTarget(this._cameraStartPos, this._startChaseSpeed);
+        this.despawnPlayers();
     };
     GameManager.prototype.onPlayerAdded = function (state, sessionId) {
         console.log("On Player Added: ".concat(sessionId));
@@ -227,9 +228,17 @@ var GameManager = /** @class */ (function (_super) {
     };
     GameManager.prototype.despawnPlayers = function () {
         var _this = this;
-        networkManager_1.default.Instance.Room.state.players.forEach(function (player, sessionId) {
-            _this.despawnPlayer(player);
-        });
+        if (networkManager_1.default.Instance.Room) {
+            networkManager_1.default.Instance.Room.state.players.forEach(function (player, sessionId) {
+                _this.despawnPlayer(player);
+            });
+        }
+        else {
+            this.resetPlayerObject(this._player);
+            this._spawnedRemotes.forEach(function (playerObject) {
+                _this.resetPlayerObject(playerObject);
+            });
+        }
     };
     GameManager.prototype.despawnPlayer = function (player) {
         // Reset the player object if it has been spawned

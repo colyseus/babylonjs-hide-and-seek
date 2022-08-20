@@ -7,15 +7,15 @@
 			"uniqueId": 168,
 			"type": "Mesh",
 			"position": [
-				0,
+				-8.590700149536133,
 				0.5,
-				-8.30514907836914
+				-0.27796852588653564
 			],
 			"rotationQuaternion": [
 				0,
+				0.7071067811865475,
 				0,
-				0,
-				1
+				0.7071067811865476
 			],
 			"scaling": [
 				1,
@@ -41,7 +41,7 @@
 				"15": 1
 			},
 			"isEnabled": false,
-			"isVisible": true,
+			"isVisible": false,
 			"infiniteDistance": false,
 			"pickable": true,
 			"receiveShadows": false,

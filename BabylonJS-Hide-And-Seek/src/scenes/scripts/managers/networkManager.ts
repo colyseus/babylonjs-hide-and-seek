@@ -159,17 +159,6 @@ export default class NetworkManager extends Node {
 		console.log(`Register Room Handlers`);
 
 		if (this.Room) {
-			// this.Room.onLeave.once(this.onLeaveGridRoom);
-			// this.Room.onStateChange.once(this.onRoomStateChange);
-			// this.Room.state.networkedUsers.onAdd = MMOManager.Instance.onAddNetworkedUser;
-			// this.Room.state.networkedUsers.onRemove = MMOManager.Instance.onRemoveNetworkedUser;
-			// this.Room.onMessage<ObjectUseMessage>('objectUsed', (msg) => {
-			// 	this.awaitObjectInteraction(msg.interactedObjectID, msg.interactingStateID);
-			// });
-			// this.Room.onMessage<MovedToGridMessage>('movedToGrid', (msg) => {
-			// 	this.onMovedToGrid(msg);
-			// });
-
 			this.Room.onLeave.once((code: number) => {
 				this.Room = null;
 				this.onLeftRoom(code);

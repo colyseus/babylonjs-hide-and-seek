@@ -10,6 +10,7 @@ export interface ISceneScriptMap {
     "src/scenes/scripts/managers/networkManager.ts": ScriptMap;
     "src/scenes/scripts/players/cameraHolder.ts": ScriptMap;
     "src/scenes/scripts/players/player.ts": ScriptMap;
+    "src/scenes/scripts/players/playerVisual.ts": ScriptMap;
     "src/scenes/scripts/spawnPoints.ts": ScriptMap;
 }
 /**

@@ -1,14 +1,18 @@
-import { Mesh, PhysicsEngine, PhysicsImpostor, Space, Vector3 } from '@babylonjs/core';
-import { visibleInInspector } from '../../decorators';
+import { AxesViewer, Axis, Color4, Gizmo, IPhysicsEngine, LinesMesh, Mesh, MeshBuilder, PhysicsEngine, PhysicsImpostor, Quaternion, Space, TransformNode, UtilityLayerRenderer, Vector3 } from '@babylonjs/core';
+import { fromChildren, visibleInInspector } from '../../decorators';
 import GameManager from '../managers/gameManager';
 import InputManager from '../managers/inputManager';
 import NetworkManager from '../managers/networkManager';
 import type { PlayerState } from '../../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
 import { PlayerInputMessage } from '../../../../../Server/hide-and-seek/src/models/PlayerInputMessage';
+import PlayerVisual from './playerVisual';
 
 export default class Player extends Mesh {
 	@visibleInInspector('number', 'Movement Speed', 1)
 	private _movementSpeed: number = 1;
+
+	@fromChildren('PlayerBody')
+	private _visual: PlayerVisual;
 
 	public isLocalPlayer: boolean = false;
 
@@ -18,8 +22,11 @@ export default class Player extends Mesh {
 	private _zDirection: number = 0;
 	private _lastPosition: Vector3;
 	private _previousMovements: PlayerInputMessage[] = null;
+	private _physics: IPhysicsEngine;
 
 	private _state: PlayerState = null;
+
+	private _lineOptions: any = null;
 
 	/**
 	 * Override constructor.
@@ -47,20 +54,44 @@ export default class Player extends Mesh {
 		// Workaround to the inspector failing to load the "visibleInInspector" tagged properties
 		this.isLocalPlayer = !this.name.includes('Remote Player') ? true : false;
 
-		console.log(`Player - On Start - Is Local: ${this.isLocalPlayer}`);
-
 		this._lastPosition = this.position;
+		this._physics = this.getScene()._physicsEngine;
+
+		if (this.isLocalPlayer) {
+			console.log(`Player Visual: %o`, this._visual);
+		}
+
+		if (this._visual) {
+			this._visual.setTarget(this);
+			this._visual.setParent(null);
+		}
+
+		if (this.isLocalPlayer) {
+			this._lineOptions = {
+				points: [this.position, this.position],
+				colors: [new Color4(0, 0, 1), new Color4(0, 0, 1)],
+				updatable: true,
+				instance: null,
+			};
+
+			let lines: LinesMesh = MeshBuilder.CreateLines('lines', this._lineOptions, UtilityLayerRenderer.DefaultUtilityLayer.utilityLayerScene);
+
+			this._lineOptions.instance = lines;
+		}
+	}
+
+	public toggleEnabled(enabled: boolean) {
+		this.setEnabled(enabled);
+		this._visual?.setEnabled(enabled);
 	}
 
 	public setPlayerState(state: PlayerState) {
 		console.log(`Player - Set Player State`);
 
 		this._state = state;
-
-		// state.onChange = (changes: any[]) => {
-		// 	console.log(`Player State Changed: %o`, changes);
-		// };
 	}
+
+	public setBodyRotation(rot: Vector3) {}
 
 	/**
 	 * Called each frame.
@@ -70,12 +101,25 @@ export default class Player extends Mesh {
 			return;
 		}
 
+		// console.log(`Player Rotation: %o`, this.rotation);
+
 		this.updatePlayerMovement();
 		this.updatePositionFromState();
+		this.updateOrientation();
+
+		// Seeker detection of Hider players
+		if (this._state.isSeeker) {
+			this.checkForHiders();
+		}
+
+		if (this.isLocalPlayer) {
+			this.updateDebugLines();
+		}
 	}
 
 	public setVelocity(vel: Vector3) {
 		this._rigidbody.setLinearVelocity(vel);
+		this._visual.setLookTargetDirection(vel);
 	}
 
 	private updatePlayerMovement() {
@@ -141,12 +185,35 @@ export default class Player extends Mesh {
 		}
 	}
 
+	private updateOrientation() {}
+
 	private sendPositionUpdateToServer() {
 		const inputMsg: PlayerInputMessage = new PlayerInputMessage([this.position.x, 0.5, this.position.z]);
 
 		this._previousMovements.push(inputMsg);
 
 		NetworkManager.Instance.sendPlayerPosition(inputMsg);
+	}
+
+	private checkForHiders() {
+		// When all nearby Hiders have been collected we can do a raycast check from the Seeker to each of the Hiders to determine if they are within line of sight
+		// Send a message to the server with the Ids of all the Hiders that are within line of sight.
+
+		const hiders: Player[] = GameManager.Instance.getOverlappingHiders();
+
+		if (hiders && hiders.length > 0) {
+			hiders.forEach((hider: Player) => {
+				// console.log(`Hider: %o`, hider);
+				this._physics.raycast(this.position, this.forward.scale(100));
+			});
+		}
+	}
+
+	private updateDebugLines() {
+		this._lineOptions.points[0] = this.position;
+		this._lineOptions.points[1] = this.position.add(this.forward.scale(2));
+
+		MeshBuilder.CreateLines('lines', this._lineOptions, UtilityLayerRenderer.DefaultUtilityLayer.utilityLayerScene);
 	}
 
 	/**

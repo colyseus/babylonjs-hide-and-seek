@@ -2,13 +2,16 @@ import { Mesh, Vector3 } from '@babylonjs/core';
 import type { PlayerState } from '../../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
 export default class Player extends Mesh {
     private _movementSpeed;
+    private _visual;
     isLocalPlayer: boolean;
     private _rigidbody;
     private _xDirection;
     private _zDirection;
     private _lastPosition;
     private _previousMovements;
+    private _physics;
     private _state;
+    private _lineOptions;
     /**
      * Override constructor.
      * @warn do not fill.
@@ -23,7 +26,9 @@ export default class Player extends Mesh {
      * Called on the scene starts.
      */
     onStart(): void;
+    toggleEnabled(enabled: boolean): void;
     setPlayerState(state: PlayerState): void;
+    setBodyRotation(rot: Vector3): void;
     /**
      * Called each frame.
      */
@@ -31,7 +36,10 @@ export default class Player extends Mesh {
     setVelocity(vel: Vector3): void;
     private updatePlayerMovement;
     private updatePositionFromState;
+    private updateOrientation;
     private sendPositionUpdateToServer;
+    private checkForHiders;
+    private updateDebugLines;
     /**
      * Called on the object has been disposed.
      * Object can be disposed manually or when the editor stops running the scene.

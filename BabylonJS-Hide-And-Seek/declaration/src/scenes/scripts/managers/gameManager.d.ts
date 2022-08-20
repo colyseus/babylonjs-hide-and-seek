@@ -1,5 +1,6 @@
 import { Node } from '@babylonjs/core/node';
 import { GameState } from '../GameState';
+import Player from '../players/player';
 export default class GameManager extends Node {
     private static _instance;
     private _cameraHolder;
@@ -22,6 +23,7 @@ export default class GameManager extends Node {
     private _playAgain;
     private _playerChaseSpeed;
     private _startChaseSpeed;
+    private _hiderCheckDistance;
     get CurrentGameState(): GameState;
     private set CurrentGameState(value);
     static get Instance(): GameManager;
@@ -53,6 +55,11 @@ export default class GameManager extends Node {
     private spawnPlayer;
     private despawnPlayers;
     private despawnPlayer;
+    /**
+     * Used only when the local player is the Seeker to retrieve any Hider
+     * player objects within distance to the Seeker player.
+     */
+    getOverlappingHiders(): Player[];
     /**
      * Called each frame.
      */

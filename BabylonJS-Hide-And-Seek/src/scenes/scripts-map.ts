@@ -11,6 +11,7 @@ export interface ISceneScriptMap {
 	"src/scenes/scripts/managers/networkManager.ts": ScriptMap;
 	"src/scenes/scripts/players/cameraHolder.ts": ScriptMap;
 	"src/scenes/scripts/players/player.ts": ScriptMap;
+	"src/scenes/scripts/players/playerVisual.ts": ScriptMap;
 	"src/scenes/scripts/spawnPoints.ts": ScriptMap;
 }
 
@@ -25,5 +26,6 @@ export const scriptsMap: ISceneScriptMap = {
 	"src/scenes/scripts/managers/networkManager.ts": require("./scripts/managers/networkManager"),
 	"src/scenes/scripts/players/cameraHolder.ts": require("./scripts/players/cameraHolder"),
 	"src/scenes/scripts/players/player.ts": require("./scripts/players/player"),
+	"src/scenes/scripts/players/playerVisual.ts": require("./scripts/players/playerVisual"),
 	"src/scenes/scripts/spawnPoints.ts": require("./scripts/spawnPoints"),
 }

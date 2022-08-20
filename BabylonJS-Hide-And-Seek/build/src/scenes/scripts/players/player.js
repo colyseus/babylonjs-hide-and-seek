@@ -43,6 +43,7 @@ var Player = /** @class */ (function (_super) {
         _this._zDirection = 0;
         _this._previousMovements = null;
         _this._state = null;
+        _this._lineOptions = null;
         return _this;
     }
     /**
@@ -61,16 +62,36 @@ var Player = /** @class */ (function (_super) {
         this._rigidbody = this.getPhysicsImpostor();
         // Workaround to the inspector failing to load the "visibleInInspector" tagged properties
         this.isLocalPlayer = !this.name.includes('Remote Player') ? true : false;
-        console.log("Player - On Start - Is Local: ".concat(this.isLocalPlayer));
         this._lastPosition = this.position;
+        this._physics = this.getScene()._physicsEngine;
+        if (this.isLocalPlayer) {
+            console.log("Player Visual: %o", this._visual);
+        }
+        if (this._visual) {
+            this._visual.setTarget(this);
+            this._visual.setParent(null);
+        }
+        if (this.isLocalPlayer) {
+            this._lineOptions = {
+                points: [this.position, this.position],
+                colors: [new core_1.Color4(0, 0, 1), new core_1.Color4(0, 0, 1)],
+                updatable: true,
+                instance: null,
+            };
+            var lines = core_1.MeshBuilder.CreateLines('lines', this._lineOptions, core_1.UtilityLayerRenderer.DefaultUtilityLayer.utilityLayerScene);
+            this._lineOptions.instance = lines;
+        }
+    };
+    Player.prototype.toggleEnabled = function (enabled) {
+        var _a;
+        this.setEnabled(enabled);
+        (_a = this._visual) === null || _a === void 0 ? void 0 : _a.setEnabled(enabled);
     };
     Player.prototype.setPlayerState = function (state) {
         console.log("Player - Set Player State");
         this._state = state;
-        // state.onChange = (changes: any[]) => {
-        // 	console.log(`Player State Changed: %o`, changes);
-        // };
     };
+    Player.prototype.setBodyRotation = function (rot) { };
     /**
      * Called each frame.
      */
@@ -78,11 +99,21 @@ var Player = /** @class */ (function (_super) {
         if (!this.isEnabled(false)) {
             return;
         }
+        // console.log(`Player Rotation: %o`, this.rotation);
         this.updatePlayerMovement();
         this.updatePositionFromState();
+        this.updateOrientation();
+        // Seeker detection of Hider players
+        if (this._state.isSeeker) {
+            this.checkForHiders();
+        }
+        if (this.isLocalPlayer) {
+            this.updateDebugLines();
+        }
     };
     Player.prototype.setVelocity = function (vel) {
         this._rigidbody.setLinearVelocity(vel);
+        this._visual.setLookTargetDirection(vel);
     };
     Player.prototype.updatePlayerMovement = function () {
         if (!this.isLocalPlayer || !this._state.canMove) {
@@ -136,10 +167,28 @@ var Player = /** @class */ (function (_super) {
             this.position.copyFrom(core_1.Vector3.Lerp(this.position, new core_1.Vector3(this._state.xPos, 0.5, this._state.zPos), gameManager_1.default.DeltaTime * 35));
         }
     };
+    Player.prototype.updateOrientation = function () { };
     Player.prototype.sendPositionUpdateToServer = function () {
         var inputMsg = new PlayerInputMessage_1.PlayerInputMessage([this.position.x, 0.5, this.position.z]);
         this._previousMovements.push(inputMsg);
         networkManager_1.default.Instance.sendPlayerPosition(inputMsg);
+    };
+    Player.prototype.checkForHiders = function () {
+        // When all nearby Hiders have been collected we can do a raycast check from the Seeker to each of the Hiders to determine if they are within line of sight
+        // Send a message to the server with the Ids of all the Hiders that are within line of sight.
+        var _this = this;
+        var hiders = gameManager_1.default.Instance.getOverlappingHiders();
+        if (hiders && hiders.length > 0) {
+            hiders.forEach(function (hider) {
+                // console.log(`Hider: %o`, hider);
+                _this._physics.raycast(_this.position, _this.forward.scale(100));
+            });
+        }
+    };
+    Player.prototype.updateDebugLines = function () {
+        this._lineOptions.points[0] = this.position;
+        this._lineOptions.points[1] = this.position.add(this.forward.scale(2));
+        core_1.MeshBuilder.CreateLines('lines', this._lineOptions, core_1.UtilityLayerRenderer.DefaultUtilityLayer.utilityLayerScene);
     };
     /**
      * Called on the object has been disposed.
@@ -164,6 +213,9 @@ var Player = /** @class */ (function (_super) {
     __decorate([
         (0, decorators_1.visibleInInspector)('number', 'Movement Speed', 1)
     ], Player.prototype, "_movementSpeed", void 0);
+    __decorate([
+        (0, decorators_1.fromChildren)('PlayerBody')
+    ], Player.prototype, "_visual", void 0);
     return Player;
 }(core_1.Mesh));
 exports.default = Player;

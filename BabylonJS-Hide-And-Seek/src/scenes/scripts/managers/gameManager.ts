@@ -1,4 +1,4 @@
-import { TransformNode, Vector3 } from '@babylonjs/core';
+import { Quaternion, TransformNode, Vector3 } from '@babylonjs/core';
 import { Node } from '@babylonjs/core/node';
 import { GameState } from '../GameState';
 import type { PlayerState } from '../../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
@@ -47,6 +47,7 @@ export default class GameManager extends Node {
 
 	private _playerChaseSpeed: number = 25;
 	private _startChaseSpeed: number = 3;
+	private _hiderCheckDistance: number = 6;
 
 	public get CurrentGameState(): GameState {
 		return GameManager.Instance._currentGameState;
@@ -152,7 +153,7 @@ export default class GameManager extends Node {
 
 		player.setVelocity(Vector3.Zero());
 
-		player.setEnabled(false);
+		player.toggleEnabled(false);
 
 		player.setParent(this);
 
@@ -253,12 +254,15 @@ export default class GameManager extends Node {
 
 		player.setParent(null);
 
+		console.log(`Spawn Point Rotation: %o`, point.rotation);
+
 		player.position.copyFrom(point.position);
-		player.rotation.copyFrom(point.rotation);
+
+		console.log(`Player Rotation: %o`, player.rotationQuaternion);
 
 		// Delay enabling player object to avoid visual briefly appearing somewhere else before getting moved to its spawn position
 		setTimeout(() => {
-			player.setEnabled(true);
+			player.toggleEnabled(true);
 		}, 100);
 
 		player.setPlayerState(playerState);
@@ -296,6 +300,30 @@ export default class GameManager extends Node {
 		}
 
 		this._spawnPoints.freeUpSpawnPoint(player);
+	}
+
+	/**
+	 * Used only when the local player is the Seeker to retrieve any Hider
+	 * player objects within distance to the Seeker player.
+	 */
+	public getOverlappingHiders(): Player[] {
+		const overlappingHiders: Player[] = [];
+
+		this._spawnedRemotes.forEach((hider: Player) => {
+			// TODO change from a spherical check to a pie-slice check
+
+			// Check for Hiders within the field of view of the Seeker
+			const angle: number = Vector3.GetAngleBetweenVectors(this._player.position, hider.position, this._player.forward);
+
+			console.log(`Hider Angle: ${angle}`);
+
+			// Of those within the FOV check if they're in range
+			// if (Vector3.Distance(this._player.position, hider.position) <= this._hiderCheckDistance) {
+			// 	// overlappingHiders.push(hider);
+			// }
+		});
+
+		return overlappingHiders;
 	}
 
 	/**

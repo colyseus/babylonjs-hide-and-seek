@@ -216,16 +216,6 @@ var NetworkManager = /** @class */ (function (_super) {
         var _this = this;
         console.log("Register Room Handlers");
         if (this.Room) {
-            // this.Room.onLeave.once(this.onLeaveGridRoom);
-            // this.Room.onStateChange.once(this.onRoomStateChange);
-            // this.Room.state.networkedUsers.onAdd = MMOManager.Instance.onAddNetworkedUser;
-            // this.Room.state.networkedUsers.onRemove = MMOManager.Instance.onRemoveNetworkedUser;
-            // this.Room.onMessage<ObjectUseMessage>('objectUsed', (msg) => {
-            // 	this.awaitObjectInteraction(msg.interactedObjectID, msg.interactingStateID);
-            // });
-            // this.Room.onMessage<MovedToGridMessage>('movedToGrid', (msg) => {
-            // 	this.onMovedToGrid(msg);
-            // });
             this.Room.onLeave.once(function (code) {
                 _this.Room = null;
                 _this.onLeftRoom(code);

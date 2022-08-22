@@ -11,12 +11,13 @@ export default class Player extends Mesh {
     private _previousMovements;
     private _physics;
     private _state;
-    private _lineOptions;
+    private _rayHelper;
     /**
      * Override constructor.
      * @warn do not fill.
      */
     constructor();
+    sessionId(): string;
     /**
      * Called on the node is being initialized.
      * This function is called immediatly after the constructor has been called.
@@ -26,6 +27,7 @@ export default class Player extends Mesh {
      * Called on the scene starts.
      */
     onStart(): void;
+    visualForward(): Vector3;
     toggleEnabled(enabled: boolean): void;
     setPlayerState(state: PlayerState): void;
     setBodyRotation(rot: Vector3): void;
@@ -34,12 +36,13 @@ export default class Player extends Mesh {
      */
     onUpdate(): void;
     setVelocity(vel: Vector3): void;
+    setVisualLookDirection(dir: Vector3): void;
     private updatePlayerMovement;
     private updatePositionFromState;
     private updateOrientation;
     private sendPositionUpdateToServer;
     private checkForHiders;
-    private updateDebugLines;
+    private checkPredicate;
     /**
      * Called on the object has been disposed.
      * Object can be disposed manually or when the editor stops running the scene.

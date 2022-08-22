@@ -43,9 +43,12 @@ var Player = /** @class */ (function (_super) {
         _this._zDirection = 0;
         _this._previousMovements = null;
         _this._state = null;
-        _this._lineOptions = null;
+        _this._rayHelper = null;
         return _this;
     }
+    Player.prototype.sessionId = function () {
+        return this._state ? this._state.id : 'N/A';
+    };
     /**
      * Called on the node is being initialized.
      * This function is called immediatly after the constructor has been called.
@@ -58,6 +61,7 @@ var Player = /** @class */ (function (_super) {
      * Called on the scene starts.
      */
     Player.prototype.onStart = function () {
+        var _a;
         // ...
         this._rigidbody = this.getPhysicsImpostor();
         // Workaround to the inspector failing to load the "visibleInInspector" tagged properties
@@ -66,21 +70,16 @@ var Player = /** @class */ (function (_super) {
         this._physics = this.getScene()._physicsEngine;
         if (this.isLocalPlayer) {
             console.log("Player Visual: %o", this._visual);
+            this.isPickable = false;
+            (_a = this._visual) === null || _a === void 0 ? void 0 : _a.setPickable(false);
         }
         if (this._visual) {
             this._visual.setTarget(this);
             this._visual.setParent(null);
         }
-        if (this.isLocalPlayer) {
-            this._lineOptions = {
-                points: [this.position, this.position],
-                colors: [new core_1.Color4(0, 0, 1), new core_1.Color4(0, 0, 1)],
-                updatable: true,
-                instance: null,
-            };
-            var lines = core_1.MeshBuilder.CreateLines('lines', this._lineOptions, core_1.UtilityLayerRenderer.DefaultUtilityLayer.utilityLayerScene);
-            this._lineOptions.instance = lines;
-        }
+    };
+    Player.prototype.visualForward = function () {
+        return this._visual.forward;
     };
     Player.prototype.toggleEnabled = function (enabled) {
         var _a;
@@ -107,13 +106,14 @@ var Player = /** @class */ (function (_super) {
         if (this._state.isSeeker) {
             this.checkForHiders();
         }
-        if (this.isLocalPlayer) {
-            this.updateDebugLines();
-        }
     };
     Player.prototype.setVelocity = function (vel) {
         this._rigidbody.setLinearVelocity(vel);
-        this._visual.setLookTargetDirection(vel);
+    };
+    Player.prototype.setVisualLookDirection = function (dir) {
+        if (this._visual && dir.length() > 0) {
+            this._visual.setLookTargetDirection(dir);
+        }
     };
     Player.prototype.updatePlayerMovement = function () {
         if (!this.isLocalPlayer || !this._state.canMove) {
@@ -122,7 +122,7 @@ var Player = /** @class */ (function (_super) {
             }
             return;
         }
-        var direction = new core_1.Vector3();
+        var velocity = new core_1.Vector3();
         // W + -S (1/0 + -1/0)
         this._zDirection = (inputManager_1.default.getKey(87) ? 1 : 0) + (inputManager_1.default.getKey(83) ? -1 : 0);
         // -A + D (-1/0 + 1/0)
@@ -132,11 +132,11 @@ var Player = /** @class */ (function (_super) {
             this._xDirection *= 0.75;
             this._zDirection *= 0.75;
         }
-        direction.x = this._xDirection;
-        direction.z = this._zDirection;
-        direction.x *= this._movementSpeed * gameManager_1.default.DeltaTime;
-        direction.z *= this._movementSpeed * gameManager_1.default.DeltaTime;
-        this.setVelocity(direction);
+        velocity.x = this._xDirection;
+        velocity.z = this._zDirection;
+        velocity.x *= this._movementSpeed * gameManager_1.default.DeltaTime;
+        velocity.z *= this._movementSpeed * gameManager_1.default.DeltaTime;
+        this.setVelocity(velocity);
         this._rigidbody.setAngularVelocity(core_1.Vector3.Zero());
         this.position.y = 0.5;
         if (!this.position.equals(this._lastPosition)) {
@@ -144,6 +144,7 @@ var Player = /** @class */ (function (_super) {
             // Position has changed; send position to the server
             this.sendPositionUpdateToServer();
         }
+        this.setVisualLookDirection(velocity);
     };
     Player.prototype.updatePositionFromState = function () {
         if (!this._state) {
@@ -179,16 +180,50 @@ var Player = /** @class */ (function (_super) {
         var _this = this;
         var hiders = gameManager_1.default.Instance.getOverlappingHiders();
         if (hiders && hiders.length > 0) {
+            // Raycast to each hider to determine if an obstacle is between them and the Seeker
             hiders.forEach(function (hider) {
-                // console.log(`Hider: %o`, hider);
-                _this._physics.raycast(_this.position, _this.forward.scale(100));
+                var ray = new core_1.Ray(_this.position, hider.position.subtract(_this.position).normalize(), gameManager_1.default.Instance.seekerCheckDistance + 1);
+                // Draw debug ray visual
+                //============================================
+                if (_this._rayHelper) {
+                    _this._rayHelper.dispose();
+                }
+                _this._rayHelper = new core_1.RayHelper(ray);
+                _this._rayHelper.show(_this._scene, core_1.Color3.Green());
+                //============================================
+                var info = _this._scene.multiPickWithRay(ray, _this.checkPredicate);
+                console.log("Raycast Hits: %o", info);
+                /** Flag for if the hider is obscurred by another mesh */
+                var viewBlocked = false;
+                /** Flag for if we've found the hider in the list of raycast hits */
+                var foundHider = false;
+                for (var i = 0; i < info.length && !foundHider && !viewBlocked; i++) {
+                    var mesh = info[i].pickedMesh;
+                    if (mesh.name === 'ray') {
+                        continue;
+                    }
+                    // Starting from the first raycast hit info
+                    // if we hit an obstacle before we've hit the hider
+                    // then the hider will be considered obscurred from the Seeker's view
+                    if (!mesh.name.includes('Remote') && !foundHider) {
+                        viewBlocked = true;
+                        // console.log(`Seeker's view blocked by "${mesh.name}"`);
+                    }
+                    if (mesh === hider._visual || mesh === hider) {
+                        foundHider = true;
+                    }
+                }
+                if (!viewBlocked) {
+                    gameManager_1.default.Instance.seekerFoundHider(hider);
+                }
             });
         }
     };
-    Player.prototype.updateDebugLines = function () {
-        this._lineOptions.points[0] = this.position;
-        this._lineOptions.points[1] = this.position.add(this.forward.scale(2));
-        core_1.MeshBuilder.CreateLines('lines', this._lineOptions, core_1.UtilityLayerRenderer.DefaultUtilityLayer.utilityLayerScene);
+    Player.prototype.checkPredicate = function (mesh) {
+        if (mesh === this || mesh === this._visual) {
+            return false;
+        }
+        return true;
     };
     /**
      * Called on the object has been disposed.

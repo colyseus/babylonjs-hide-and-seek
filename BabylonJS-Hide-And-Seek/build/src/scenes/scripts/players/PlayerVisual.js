@@ -26,6 +26,8 @@ var PlayerVisual = /** @class */ (function (_super) {
     function PlayerVisual() {
         var _this = this;
         _this._target = null;
+        _this._lerpSpeed = 1;
+        _this._lastLookDir = new core_1.Vector3();
         return _this;
     }
     /**
@@ -47,12 +49,19 @@ var PlayerVisual = /** @class */ (function (_super) {
     PlayerVisual.prototype.onStart = function () {
         // ...
         this.setEnabled(false);
+        this._lastLookDir = this.forward;
     };
     PlayerVisual.prototype.setTarget = function (player) {
         this._target = player;
     };
     PlayerVisual.prototype.setLookTargetDirection = function (direction) {
-        this._targetLookDirection = direction;
+        this._targetLookDirection = core_1.Vector3.Normalize(direction);
+    };
+    PlayerVisual.prototype.setPickable = function (isPickable) {
+        this.isPickable = isPickable;
+        this.getChildMeshes().forEach(function (mesh) {
+            mesh.isPickable = isPickable;
+        });
     };
     /**
      * Called each frame.
@@ -64,7 +73,7 @@ var PlayerVisual = /** @class */ (function (_super) {
             this.setAbsolutePosition(this._target.getAbsolutePosition());
         }
         if (this._targetLookDirection) {
-            this.lookAt(this.position.add(core_1.Vector3.Normalize(this._targetLookDirection).scale(2)));
+            this.setDirection(this._targetLookDirection);
         }
     };
     /**

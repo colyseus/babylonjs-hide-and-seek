@@ -11,7 +11,9 @@ export interface ISceneScriptMap {
     "src/scenes/scripts/players/cameraHolder.ts": ScriptMap;
     "src/scenes/scripts/players/player.ts": ScriptMap;
     "src/scenes/scripts/players/playerVisual.ts": ScriptMap;
+    "src/scenes/scripts/spawnPoint.ts": ScriptMap;
     "src/scenes/scripts/spawnPoints.ts": ScriptMap;
+    "src/scenes/utility.ts": ScriptMap;
 }
 /**
  * Defines the map of all available scripts in the project.

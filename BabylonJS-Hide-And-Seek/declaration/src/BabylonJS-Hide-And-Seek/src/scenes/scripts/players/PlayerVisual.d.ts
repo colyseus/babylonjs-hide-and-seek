@@ -3,6 +3,8 @@ import Player from './player';
 export default class PlayerVisual extends Mesh {
     private _target;
     private _targetLookDirection;
+    private _lerpSpeed;
+    private _lastLookDir;
     /**
      * Override constructor.
      * @warn do not fill.
@@ -23,6 +25,7 @@ export default class PlayerVisual extends Mesh {
     onStart(): void;
     setTarget(player: Player): void;
     setLookTargetDirection(direction: Vector3): void;
+    setPickable(isPickable: boolean): void;
     /**
      * Called each frame.
      */

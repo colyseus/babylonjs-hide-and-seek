@@ -47,7 +47,11 @@ export default class GameManager extends Node {
 
 	private _playerChaseSpeed: number = 25;
 	private _startChaseSpeed: number = 3;
-	private _hiderCheckDistance: number = 6;
+
+	private _seekerFOV: number = 60;
+	public seekerCheckDistance: number = 6;
+
+	private _halfSeekerFOV: number = 0;
 
 	public get CurrentGameState(): GameState {
 		return GameManager.Instance._currentGameState;
@@ -83,6 +87,8 @@ export default class GameManager extends Node {
 		this._availableRemotePlayerObjects = [];
 		this._spawnedRemotes = new Map<string, Player>();
 		this._players = new Map<string, PlayerState>();
+
+		this._halfSeekerFOV = this._seekerFOV / 2;
 
 		this.onJoinedRoom = this.onJoinedRoom.bind(this);
 		this.onLeftRoom = this.onLeftRoom.bind(this);
@@ -254,11 +260,9 @@ export default class GameManager extends Node {
 
 		player.setParent(null);
 
-		console.log(`Spawn Point Rotation: %o`, point.rotation);
-
 		player.position.copyFrom(point.position);
 
-		console.log(`Player Rotation: %o`, player.rotationQuaternion);
+		player.setVisualLookDirection(point.forward);
 
 		// Delay enabling player object to avoid visual briefly appearing somewhere else before getting moved to its spawn position
 		setTimeout(() => {
@@ -310,20 +314,32 @@ export default class GameManager extends Node {
 		const overlappingHiders: Player[] = [];
 
 		this._spawnedRemotes.forEach((hider: Player) => {
-			// TODO change from a spherical check to a pie-slice check
+			const forward: Vector3 = this._player.visualForward();
+			const dir: Vector3 = hider.position.subtract(this._player.position).normalize();
 
-			// Check for Hiders within the field of view of the Seeker
-			const angle: number = Vector3.GetAngleBetweenVectors(this._player.position, hider.position, this._player.forward);
+			// Check for Hiders within the field of view of the Seeker by getting the angle between the Seeker's
+			// forward vector and the normalized direction vector between the Seeker and the Hider
+			let angle: number = Math.abs(Vector3.GetAngleBetweenVectors(forward, dir, Vector3.Forward()));
 
-			console.log(`Hider Angle: ${angle}`);
+			// Convert angle to degrees
+			angle *= 180 / Math.PI;
 
-			// Of those within the FOV check if they're in range
-			// if (Vector3.Distance(this._player.position, hider.position) <= this._hiderCheckDistance) {
-			// 	// overlappingHiders.push(hider);
-			// }
+			// console.log(`Forward: (${forward.x}, ${forward.y}, ${forward.z})\nDir: (${dir.x}, ${dir.y}, ${dir.z})\nAngle: ${angle}`);
+
+			// If angle falls within the Seekers FOV check if the hider is close enough.
+			// If within the check distance the hider is a possible candiate for capture as
+			// as they are overlapping with the Seeker capture area.
+			if (angle <= this._halfSeekerFOV && Vector3.Distance(this._player.position, hider.position) <= this.seekerCheckDistance) {
+				// console.log(`Overlapping Hider: %o`, hider);
+				overlappingHiders.push(hider);
+			}
 		});
 
 		return overlappingHiders;
+	}
+
+	public seekerFoundHider(hider: Player) {
+		console.log(`Game Manager - Seeker found player: ${hider.sessionId()}`);
 	}
 
 	/**

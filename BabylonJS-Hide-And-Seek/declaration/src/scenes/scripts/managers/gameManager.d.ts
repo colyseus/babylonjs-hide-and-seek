@@ -23,7 +23,9 @@ export default class GameManager extends Node {
     private _playAgain;
     private _playerChaseSpeed;
     private _startChaseSpeed;
-    private _hiderCheckDistance;
+    private _seekerFOV;
+    seekerCheckDistance: number;
+    private _halfSeekerFOV;
     get CurrentGameState(): GameState;
     private set CurrentGameState(value);
     static get Instance(): GameManager;
@@ -60,6 +62,7 @@ export default class GameManager extends Node {
      * player objects within distance to the Seeker player.
      */
     getOverlappingHiders(): Player[];
+    seekerFoundHider(hider: Player): void;
     /**
      * Called each frame.
      */

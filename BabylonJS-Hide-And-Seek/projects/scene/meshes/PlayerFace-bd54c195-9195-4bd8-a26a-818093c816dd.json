@@ -2,7 +2,7 @@
 	"materials": [],
 	"meshes": [
 		{
-			"name": "New Cube",
+			"name": "PlayerFace",
 			"id": "bd54c195-9195-4bd8-a26a-818093c816dd",
 			"uniqueId": 508,
 			"type": "Mesh",
@@ -51,10 +51,10 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "e4706f7c-c369-431a-b2fa-62101b0e7c58",
 			"isUnIndexed": false,
-			"geometryUniqueId": 509,
+			"geometryUniqueId": 274,
 			"geometryId": "15bd1114-5746-4d63-9a3b-a1658f51415e",
 			"subMeshes": null,
-			"materialUniqueId": 221,
+			"materialUniqueId": 251,
 			"materialId": "default material",
 			"metadata": {
 				"editorGeometry": {

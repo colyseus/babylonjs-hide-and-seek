@@ -1,4 +1,4 @@
-import { Node, TransformNode, Vector3 } from '@babylonjs/core';
+import { AbstractMesh, Node, TransformNode, Vector3 } from '@babylonjs/core';
 import type { PlayerState } from '../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
 
 export class SpawnPoints {
@@ -25,6 +25,11 @@ export class SpawnPoints {
 			} else {
 				this._availablePoints.push(point);
 			}
+
+			// Enforce the meshes to not be pickable
+			point.getChildMeshes().forEach((mesh: AbstractMesh) => {
+				mesh.isPickable = false;
+			});
 		});
 
 		// console.log(`Found Seeker Point: ${this._seekerPoint !== null} - Found ${this._availablePoints.length} Hider Points`);

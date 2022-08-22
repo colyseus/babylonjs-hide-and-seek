@@ -21,6 +21,10 @@ var SpawnPoints = /** @class */ (function () {
             else {
                 _this._availablePoints.push(point);
             }
+            // Enforce the meshes to not be pickable
+            point.getChildMeshes().forEach(function (mesh) {
+                mesh.isPickable = false;
+            });
         });
         // console.log(`Found Seeker Point: ${this._seekerPoint !== null} - Found ${this._availablePoints.length} Hider Points`);
     };

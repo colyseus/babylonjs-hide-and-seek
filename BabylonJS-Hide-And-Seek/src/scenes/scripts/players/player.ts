@@ -219,8 +219,6 @@ export default class Player extends Mesh {
 
 				const info: PickingInfo[] = this._scene.multiPickWithRay(ray, this.checkPredicate);
 
-				console.log(`Raycast Hits: %o`, info);
-
 				/** Flag for if the hider is obscurred by another mesh */
 				let viewBlocked: boolean = false;
 				/** Flag for if we've found the hider in the list of raycast hits */
@@ -229,9 +227,11 @@ export default class Player extends Mesh {
 				for (let i = 0; i < info.length && !foundHider && !viewBlocked; i++) {
 					const mesh: AbstractMesh = info[i].pickedMesh;
 
-					if (mesh.name === 'ray') {
+					if (!mesh.isPickable || mesh.name === 'ray') {
 						continue;
 					}
+
+					// console.log(`Hit Pickable: %o`, mesh);
 
 					// Starting from the first raycast hit info
 					// if we hit an obstacle before we've hit the hider

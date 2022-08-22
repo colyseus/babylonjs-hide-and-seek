@@ -192,16 +192,16 @@ var Player = /** @class */ (function (_super) {
                 _this._rayHelper.show(_this._scene, core_1.Color3.Green());
                 //============================================
                 var info = _this._scene.multiPickWithRay(ray, _this.checkPredicate);
-                console.log("Raycast Hits: %o", info);
                 /** Flag for if the hider is obscurred by another mesh */
                 var viewBlocked = false;
                 /** Flag for if we've found the hider in the list of raycast hits */
                 var foundHider = false;
                 for (var i = 0; i < info.length && !foundHider && !viewBlocked; i++) {
                     var mesh = info[i].pickedMesh;
-                    if (mesh.name === 'ray') {
+                    if (!mesh.isPickable || mesh.name === 'ray') {
                         continue;
                     }
+                    // console.log(`Hit Pickable: %o`, mesh);
                     // Starting from the first raycast hit info
                     // if we hit an obstacle before we've hit the hider
                     // then the hider will be considered obscurred from the Seeker's view

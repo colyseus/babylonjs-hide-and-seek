@@ -220,7 +220,7 @@ var Player = /** @class */ (function (_super) {
         }
     };
     Player.prototype.checkPredicate = function (mesh) {
-        if (mesh === this || mesh === this._visual) {
+        if (!mesh.isPickable || mesh === this || mesh === this._visual) {
             return false;
         }
         return true;

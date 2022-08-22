@@ -254,7 +254,7 @@ export default class Player extends Mesh {
 	}
 
 	private checkPredicate(mesh: AbstractMesh): boolean {
-		if (mesh === this || mesh === this._visual) {
+		if (!mesh.isPickable || mesh === this || mesh === this._visual) {
 			return false;
 		}
 

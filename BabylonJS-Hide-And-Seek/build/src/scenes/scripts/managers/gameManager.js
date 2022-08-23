@@ -49,6 +49,8 @@ var GameManager = /** @class */ (function (_super) {
         _this._startChaseSpeed = 3;
         _this._seekerFOV = 60;
         _this.seekerCheckDistance = 6;
+        /** In ms, the time between messages sent to the server for each Hider discovered by the Seeker */
+        _this._foundHiderMsgRate = 1000;
         _this._halfSeekerFOV = 0;
         return _this;
     }
@@ -86,6 +88,7 @@ var GameManager = /** @class */ (function (_super) {
         this._availableRemotePlayerObjects = [];
         this._spawnedRemotes = new Map();
         this._players = new Map();
+        this._foundHiders = new Map();
         this._halfSeekerFOV = this._seekerFOV / 2;
         this.onJoinedRoom = this.onJoinedRoom.bind(this);
         this.onLeftRoom = this.onLeftRoom.bind(this);
@@ -125,7 +128,7 @@ var GameManager = /** @class */ (function (_super) {
     GameManager.prototype.onLeftRoom = function (code) {
         console.log("Left room: ".concat(code));
         this._cameraHolder.setTarget(this._cameraStartPos, this._startChaseSpeed);
-        this.despawnPlayers();
+        this.reset();
     };
     GameManager.prototype.onPlayerAdded = function (state, sessionId) {
         console.log("On Player Added: ".concat(sessionId));
@@ -168,9 +171,7 @@ var GameManager = /** @class */ (function (_super) {
             case GameState_1.GameState.NONE:
                 break;
             case GameState_1.GameState.WAIT_FOR_MINIMUM:
-                this.despawnPlayers();
-                this._spawnPoints.reset();
-                this._playAgain = false;
+                this.reset();
                 break;
             case GameState_1.GameState.CLOSE_COUNTDOWN:
                 break;
@@ -195,7 +196,7 @@ var GameManager = /** @class */ (function (_super) {
         }
     };
     GameManager.prototype.handleCountdownChange = function (countdown) {
-        console.log("Countdown: ".concat(countdown));
+        // console.log(`Countdown: ${countdown}`);
     };
     GameManager.prototype.spawnPlayers = function () {
         var _this = this;
@@ -232,17 +233,17 @@ var GameManager = /** @class */ (function (_super) {
     };
     GameManager.prototype.despawnPlayers = function () {
         var _this = this;
-        if (networkManager_1.default.Instance.Room) {
-            networkManager_1.default.Instance.Room.state.players.forEach(function (player, sessionId) {
-                _this.despawnPlayer(player);
-            });
-        }
-        else {
-            this.resetPlayerObject(this._player);
-            this._spawnedRemotes.forEach(function (playerObject) {
-                _this.resetPlayerObject(playerObject);
-            });
-        }
+        // if (NetworkManager.Instance.Room) {
+        // 	NetworkManager.Instance.Room.state.players.forEach((player: PlayerState, sessionId: string) => {
+        // 		this.despawnPlayer(player);
+        // 	});
+        // } else {
+        this.resetPlayerObject(this._player);
+        this._spawnedRemotes.forEach(function (playerObject) {
+            _this.resetPlayerObject(playerObject);
+        });
+        this._spawnedRemotes.clear();
+        // }
     };
     GameManager.prototype.despawnPlayer = function (player) {
         // Reset the player object if it has been spawned
@@ -287,7 +288,27 @@ var GameManager = /** @class */ (function (_super) {
         return overlappingHiders;
     };
     GameManager.prototype.seekerFoundHider = function (hider) {
-        console.log("Game Manager - Seeker found player: ".concat(hider.sessionId()));
+        // Sending the message to the server is not a guarantee the Hider will be captured by the Seeker.
+        // The server will do a final, yet simple, check to see if the Hider is close enough to be considered found.
+        var _this = this;
+        // Only send a capture message to the server if the hider is not currently captured
+        // or if we haven't sent a message in the past 'x' seconds
+        if (!hider.isCaptured() && !this._foundHiders.has(hider.sessionId())) {
+            // console.log(`Game Manager - Seeker found player: ${hider.sessionId()}`);
+            this._foundHiders.set(hider.sessionId(), hider);
+            // Send server message
+            networkManager_1.default.Instance.sendHiderFound(hider.sessionId());
+            // Remove the found hider from the collection after the elapsed time
+            // to allow the message to be sent again
+            setTimeout(function () {
+                _this._foundHiders.delete(hider.sessionId());
+            }, this._foundHiderMsgRate);
+        }
+    };
+    GameManager.prototype.reset = function () {
+        this.despawnPlayers();
+        this._spawnPoints.reset();
+        this._playAgain = false;
     };
     /**
      * Called each frame.

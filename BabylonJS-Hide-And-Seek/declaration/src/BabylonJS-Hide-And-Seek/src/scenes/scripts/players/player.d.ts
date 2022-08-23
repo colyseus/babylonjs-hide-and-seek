@@ -18,6 +18,7 @@ export default class Player extends Mesh {
      */
     constructor();
     sessionId(): string;
+    isCaptured(): boolean;
     /**
      * Called on the node is being initialized.
      * This function is called immediatly after the constructor has been called.

@@ -52,15 +52,15 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "fd7a4725-539b-4020-9b6f-3032264f3ad4",
 			"isUnIndexed": false,
-			"geometryUniqueId": 282,
+			"geometryUniqueId": 281,
 			"geometryId": "1d916d74-511b-480f-9a49-fe94c8f0dce6",
 			"subMeshes": null,
-			"materialUniqueId": 251,
+			"materialUniqueId": 246,
 			"materialId": "default material",
 			"physicsMass": 1,
 			"physicsFriction": 0.2,
 			"physicsRestitution": 0.2,
-			"physicsImpostor": 1,
+			"physicsImpostor": 0,
 			"metadata": {
 				"editorGeometry": {
 					"type": "Sphere",

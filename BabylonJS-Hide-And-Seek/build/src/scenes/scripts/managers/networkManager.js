@@ -53,6 +53,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var node_1 = require("@babylonjs/core/node");
 var Colyseus = require("colyseus.js");
+var GameState_1 = require("../GameState");
 var NetworkManager = /** @class */ (function (_super) {
     __extends(NetworkManager, _super);
     /**
@@ -217,6 +218,7 @@ var NetworkManager = /** @class */ (function (_super) {
         console.log("Register Room Handlers");
         if (this.Room) {
             this.Room.onLeave.once(function (code) {
+                _this.unregisterRoomHandlers();
                 _this.Room = null;
                 _this.onLeftRoom(code);
             });
@@ -234,8 +236,11 @@ var NetworkManager = /** @class */ (function (_super) {
             this.Room.state.players.onAdd = null;
             this.Room.state.players.onRemove = null;
             this.Room.state.gameState.onChange = null;
+            this.Room.onMessage('*', null);
         }
     };
+    // Messages to server
+    //==============================================
     NetworkManager.prototype.sendPlayerPosition = function (positionMsg) {
         if (!this.Room) {
             return;
@@ -248,6 +253,13 @@ var NetworkManager = /** @class */ (function (_super) {
         }
         this.Room.send('playAgain');
     };
+    NetworkManager.prototype.sendHiderFound = function (hiderId) {
+        if (!this.Room || this.Room.state.gameState.currentState !== GameState_1.GameState.HUNT) {
+            return;
+        }
+        this.Room.send('foundHider', hiderId);
+    };
+    //============================================== Messages to server
     NetworkManager.prototype.handleMessages = function (name, message) {
         // switch (name) {
         // 	case 'velocityChange':

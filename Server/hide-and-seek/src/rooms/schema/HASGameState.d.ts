@@ -1,6 +1,7 @@
 import { Schema } from '@colyseus/schema';
 import { GameConfig } from '../../models/GameConfig';
 import { HASRoom } from '../HASRoom';
+import { PlayerState } from './PlayerState';
 export declare enum GameState {
     NONE = "none",
     WAIT_FOR_MINIMUM = "waitForMinimum",
@@ -21,6 +22,7 @@ export declare class HASGameState extends Schema {
     private _stateTimestamp;
     private _capturedPlayers;
     constructor(room: HASRoom, config: GameConfig, ...args: any[]);
+    seekerCapturedHider(hider: PlayerState): void;
     /** Update the game loop */
     update(deltaTime: number): void;
     private moveToState;

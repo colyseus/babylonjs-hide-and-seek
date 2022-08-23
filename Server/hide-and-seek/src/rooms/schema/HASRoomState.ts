@@ -2,10 +2,11 @@ import { Schema, MapSchema, Context, type } from '@colyseus/schema';
 import logger from '../../helpers/logger';
 import { HASRoom } from '../HASRoom';
 import { PlayerState } from './PlayerState';
-import { random } from '../../helpers/Utility';
+import { distanceBetweenPlayers, random } from '../../helpers/Utility';
 import { HASGameState } from '../schema/HASGameState';
 import { GameConfig } from '../../models/GameConfig';
 import gameConfig from '../../gameConfig';
+import { GameState } from '../schema/HASGameState';
 
 export class HASRoomState extends Schema {
 	@type({ map: PlayerState }) players = new MapSchema<PlayerState>();
@@ -13,7 +14,7 @@ export class HASRoomState extends Schema {
 
 	private _room: HASRoom = null;
 	private _availableSpawnPoints: number[] = null;
-	// private _gameLoop: HASGameState = null;
+	private _config: GameConfig;
 
 	constructor(room: HASRoom, ...args: any[]) {
 		super(...args);
@@ -24,7 +25,9 @@ export class HASRoomState extends Schema {
 
 		logger.info(`Game Config: %o`, gameConfig);
 
-		this.gameState = new HASGameState(room, new GameConfig(gameConfig));
+		this._config = new GameConfig(gameConfig);
+
+		this.gameState = new HASGameState(room, this._config);
 	}
 
 	private initializeSpawnPoints() {
@@ -95,9 +98,20 @@ export class HASRoomState extends Schema {
 		});
 	}
 
-	// private updatePlayers(deltaTime: number) {
-	// 	this.players.forEach((player: PlayerState) => {
-	// 		player.update(deltaTime);
-	// 	});
-	// }
+	public seekerFoundHider(seekerId: string, hiderId: string) {
+		const seeker: PlayerState = this.players.get(seekerId);
+		const hider: PlayerState = this.players.get(hiderId);
+
+		if (!seeker || !hider) {
+			logger.error(`Failed to get ${seeker ? '' : `Seeker ${seekerId} `}${hider ? '' : `Hider ${hiderId}`}`);
+			return;
+		}
+
+		// Check if the Hider is close enough to the Seeker to be found
+		const distance: number = distanceBetweenPlayers(seeker, hider);
+
+		if (distance <= this._config.SeekerCheckDistance) {
+			this.gameState.seekerCapturedHider(hider);
+		}
+	}
 }

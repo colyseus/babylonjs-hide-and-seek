@@ -36,6 +36,20 @@ export class HASGameState extends Schema {
 		this._capturedPlayers = new Map<string, PlayerState>();
 	}
 
+	public seekerCapturedHider(hider: PlayerState) {
+		// If we're not in the right game state, return;
+		if (this.currentState !== GameState.HUNT || !hider) {
+			return;
+		}
+
+		logger.debug(`Game State - Seeker captured player: ${hider.id}`);
+
+		hider.isCaptured = true;
+		hider.canMove = false;
+
+		this._capturedPlayers.set(hider.id, hider);
+	}
+
 	/** Update the game loop */
 	public update(deltaTime: number) {
 		//
@@ -82,6 +96,7 @@ export class HASGameState extends Schema {
 				this._stateTimestamp = 0;
 				this.countdown = 0;
 				this.seekerWon = false;
+				this._capturedPlayers.clear();
 				this._room.state.resetForPlay();
 				break;
 			case GameState.CLOSE_COUNTDOWN:
@@ -180,14 +195,18 @@ export class HASGameState extends Schema {
 
 		const index: number = random(0, players.length - 1);
 
+		// logger.debug(`Seeker Index: ${index}`);
+
 		// Remove the seeker from the array; we don't need to assign a spawn point to it
 		const player: PlayerState = players.splice(index, 1)[0];
-
+		player.spawnPoint = -1;
 		player.isSeeker = true;
 
 		// Assign remaining players spawn point indices
 		for (let i = 0; i < players.length; i++) {
 			players[i].spawnPoint = this._room.state.getSpawnPointIndex();
+			players[i].isSeeker = false;
+			logger.debug(`Hider Spawn Point: ${players[i].spawnPoint}`);
 		}
 
 		this._capturedPlayers.clear();
@@ -228,8 +247,14 @@ export class HASGameState extends Schema {
 
 		this.setCountdown(countdown - elapsedTime, countdown);
 
+		let winCondition: number = this._config.SeekerWinCondition;
+		const hiderCount: number = this._room.state.players.size - 1;
+
+		// If we don't have enough hiders to satisfy the given win condition, the hider count itself will become the win condition
+		winCondition = hiderCount < winCondition ? hiderCount : winCondition;
+
 		// Check Seeker win condition
-		if (this._capturedPlayers.size !== this._config.SeekerWinCondition && elapsedTime < countdown) {
+		if (this._capturedPlayers.size < winCondition && elapsedTime < countdown) {
 			return;
 		}
 

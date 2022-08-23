@@ -11,13 +11,13 @@ export class SpawnPoints {
 
 	constructor(spawnPoints: TransformNode[]) {
 		this._spawnPoints = spawnPoints;
+		this._usedPoints = new Map<string, TransformNode>();
 
 		this.initializeSpawnPoints();
 	}
 
 	private initializeSpawnPoints() {
 		this._availablePoints = [];
-		this._usedPoints = new Map<string, TransformNode>();
 
 		this._spawnPoints.forEach((point: TransformNode) => {
 			if (point.name.includes('Seeker')) {
@@ -36,12 +36,15 @@ export class SpawnPoints {
 	}
 
 	public reset() {
+		this._usedPoints.clear();
 		this.initializeSpawnPoints();
 	}
 
 	public getSpawnPoint(playerState: PlayerState): TransformNode {
 		let point: TransformNode = null;
 		const index: number = playerState.spawnPoint;
+
+		console.log(`*** Get Spawn Pt - ${playerState.id} is Seeker: ${playerState.isSeeker} ***`);
 
 		if (playerState.isSeeker) {
 			if (!this._seekerPoint) {

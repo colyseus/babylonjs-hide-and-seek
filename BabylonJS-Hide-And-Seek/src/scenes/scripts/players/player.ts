@@ -39,6 +39,10 @@ export default class Player extends Mesh {
 		return this._state ? this._state.id : 'N/A';
 	}
 
+	public isCaptured(): boolean {
+		return this._state ? this._state.isCaptured : false;
+	}
+
 	/**
 	 * Called on the node is being initialized.
 	 * This function is called immediatly after the constructor has been called.

@@ -49,6 +49,9 @@ var Player = /** @class */ (function (_super) {
     Player.prototype.sessionId = function () {
         return this._state ? this._state.id : 'N/A';
     };
+    Player.prototype.isCaptured = function () {
+        return this._state ? this._state.isCaptured : false;
+    };
     /**
      * Called on the node is being initialized.
      * This function is called immediatly after the constructor has been called.

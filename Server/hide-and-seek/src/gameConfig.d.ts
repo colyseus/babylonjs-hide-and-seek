@@ -3,5 +3,6 @@ declare const _default: {
     preRoundCountdown: number;
     huntCountdown: number;
     prologueCountdown: number;
+    seekerCheckDistance: number;
 };
 export default _default;

@@ -47,11 +47,13 @@ export default class GameManager extends Node {
 
 	private _playerChaseSpeed: number = 25;
 	private _startChaseSpeed: number = 3;
-
 	private _seekerFOV: number = 60;
 	public seekerCheckDistance: number = 6;
+	/** In ms, the time between messages sent to the server for each Hider discovered by the Seeker */
+	private _foundHiderMsgRate: number = 1000;
 
 	private _halfSeekerFOV: number = 0;
+	private _foundHiders: Map<string, Player>;
 
 	public get CurrentGameState(): GameState {
 		return GameManager.Instance._currentGameState;
@@ -87,6 +89,7 @@ export default class GameManager extends Node {
 		this._availableRemotePlayerObjects = [];
 		this._spawnedRemotes = new Map<string, Player>();
 		this._players = new Map<string, PlayerState>();
+		this._foundHiders = new Map<string, Player>();
 
 		this._halfSeekerFOV = this._seekerFOV / 2;
 
@@ -137,7 +140,7 @@ export default class GameManager extends Node {
 	private onLeftRoom(code: number) {
 		console.log(`Left room: ${code}`);
 		this._cameraHolder.setTarget(this._cameraStartPos, this._startChaseSpeed);
-		this.despawnPlayers();
+		this.reset();
 	}
 
 	private onPlayerAdded(state: PlayerState, sessionId: string) {
@@ -197,9 +200,7 @@ export default class GameManager extends Node {
 			case GameState.NONE:
 				break;
 			case GameState.WAIT_FOR_MINIMUM:
-				this.despawnPlayers();
-				this._spawnPoints.reset();
-				this._playAgain = false;
+				this.reset();
 				break;
 			case GameState.CLOSE_COUNTDOWN:
 				break;
@@ -227,7 +228,7 @@ export default class GameManager extends Node {
 	}
 
 	private handleCountdownChange(countdown: number) {
-		console.log(`Countdown: ${countdown}`);
+		// console.log(`Countdown: ${countdown}`);
 	}
 
 	private spawnPlayers() {
@@ -273,17 +274,19 @@ export default class GameManager extends Node {
 	}
 
 	private despawnPlayers() {
-		if (NetworkManager.Instance.Room) {
-			NetworkManager.Instance.Room.state.players.forEach((player: PlayerState, sessionId: string) => {
-				this.despawnPlayer(player);
-			});
-		} else {
-			this.resetPlayerObject(this._player);
+		// if (NetworkManager.Instance.Room) {
+		// 	NetworkManager.Instance.Room.state.players.forEach((player: PlayerState, sessionId: string) => {
+		// 		this.despawnPlayer(player);
+		// 	});
+		// } else {
+		this.resetPlayerObject(this._player);
 
-			this._spawnedRemotes.forEach((playerObject: Player) => {
-				this.resetPlayerObject(playerObject);
-			});
-		}
+		this._spawnedRemotes.forEach((playerObject: Player) => {
+			this.resetPlayerObject(playerObject);
+		});
+
+		this._spawnedRemotes.clear();
+		// }
 	}
 
 	private despawnPlayer(player: PlayerState) {
@@ -339,7 +342,30 @@ export default class GameManager extends Node {
 	}
 
 	public seekerFoundHider(hider: Player) {
-		console.log(`Game Manager - Seeker found player: ${hider.sessionId()}`);
+		// Sending the message to the server is not a guarantee the Hider will be captured by the Seeker.
+		// The server will do a final, yet simple, check to see if the Hider is close enough to be considered found.
+
+		// Only send a capture message to the server if the hider is not currently captured
+		// or if we haven't sent a message in the past 'x' seconds
+		if (!hider.isCaptured() && !this._foundHiders.has(hider.sessionId())) {
+			// console.log(`Game Manager - Seeker found player: ${hider.sessionId()}`);
+			this._foundHiders.set(hider.sessionId(), hider);
+
+			// Send server message
+			NetworkManager.Instance.sendHiderFound(hider.sessionId());
+
+			// Remove the found hider from the collection after the elapsed time
+			// to allow the message to be sent again
+			setTimeout(() => {
+				this._foundHiders.delete(hider.sessionId());
+			}, this._foundHiderMsgRate);
+		}
+	}
+
+	private reset() {
+		this.despawnPlayers();
+		this._spawnPoints.reset();
+		this._playAgain = false;
 	}
 
 	/**

@@ -7,6 +7,7 @@ import ColyseusSettings from '../colyseusSettings';
 import type { PlayerState } from '../../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
 import GameManager from './gameManager';
 import { EventEmitter } from 'stream';
+import { GameState } from '../GameState';
 
 export default class NetworkManager extends Node {
 	public onJoinedRoom: (roomId: string) => void;
@@ -160,6 +161,7 @@ export default class NetworkManager extends Node {
 
 		if (this.Room) {
 			this.Room.onLeave.once((code: number) => {
+				this.unregisterRoomHandlers();
 				this.Room = null;
 				this.onLeftRoom(code);
 			});
@@ -178,9 +180,13 @@ export default class NetworkManager extends Node {
 			this.Room.state.players.onAdd = null;
 			this.Room.state.players.onRemove = null;
 			this.Room.state.gameState.onChange = null;
+
+			this.Room.onMessage('*', null);
 		}
 	}
 
+	// Messages to server
+	//==============================================
 	public sendPlayerPosition(positionMsg: PlayerInputMessage) {
 		if (!this.Room) {
 			return;
@@ -196,6 +202,15 @@ export default class NetworkManager extends Node {
 
 		this.Room.send('playAgain');
 	}
+
+	public sendHiderFound(hiderId: string) {
+		if (!this.Room || this.Room.state.gameState.currentState !== GameState.HUNT) {
+			return;
+		}
+
+		this.Room.send('foundHider', hiderId);
+	}
+	//============================================== Messages to server
 
 	private handleMessages(name: string, message: any) {
 		// switch (name) {

@@ -16,6 +16,7 @@ export class HASRoom extends Room<HASRoomState> {
 	private bindHandlers() {
 		this.handlePlayerInput = this.handlePlayerInput.bind(this);
 		this.handlePlayAgain = this.handlePlayAgain.bind(this);
+		this.handleHiderFound = this.handleHiderFound.bind(this);
 	}
 
 	onCreate(options: any) {
@@ -93,6 +94,7 @@ export class HASRoom extends Room<HASRoomState> {
 	private registerMessageHandlers() {
 		this.onMessage('playerInput', this.handlePlayerInput);
 		this.onMessage('playAgain', this.handlePlayAgain);
+		this.onMessage('foundHider', this.handleHiderFound);
 	}
 
 	private handlePlayerInput(client: Client, playerInput: PlayerInputMessage) {
@@ -111,5 +113,16 @@ export class HASRoom extends Room<HASRoomState> {
 		if (playerState) {
 			playerState.playAgain = true;
 		}
+	}
+
+	private handleHiderFound(client: Client, hiderId: string) {
+		// Only accept msg from client if they are the Seeker
+		const player: PlayerState = this.state.players.get(client.sessionId);
+
+		if (!player || !player.isSeeker) {
+			return;
+		}
+
+		this.state.seekerFoundHider(client.sessionId, hiderId);
 	}
 }

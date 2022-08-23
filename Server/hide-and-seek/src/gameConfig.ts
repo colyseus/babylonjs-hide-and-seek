@@ -1,6 +1,7 @@
 export default {
-	minimumPlayers: 2,
+	minimumPlayers: 3,
 	preRoundCountdown: 5000,
-	huntCountdown: 600000,
+	huntCountdown: 300000,
 	prologueCountdown: 5000,
+	seekerCheckDistance: 7,
 };

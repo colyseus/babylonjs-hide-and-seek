@@ -25,7 +25,10 @@ export default class GameManager extends Node {
     private _startChaseSpeed;
     private _seekerFOV;
     seekerCheckDistance: number;
+    /** In ms, the time between messages sent to the server for each Hider discovered by the Seeker */
+    private _foundHiderMsgRate;
     private _halfSeekerFOV;
+    private _foundHiders;
     get CurrentGameState(): GameState;
     private set CurrentGameState(value);
     static get Instance(): GameManager;
@@ -63,6 +66,7 @@ export default class GameManager extends Node {
      */
     getOverlappingHiders(): Player[];
     seekerFoundHider(hider: Player): void;
+    private reset;
     /**
      * Called each frame.
      */

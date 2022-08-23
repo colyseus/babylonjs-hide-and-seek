@@ -21,9 +21,9 @@ export default class Player extends Mesh {
 
 	private _xDirection: number = 0;
 	private _zDirection: number = 0;
+	private _originalPosition: Vector3;
 	private _lastPosition: Vector3;
 	private _previousMovements: PlayerInputMessage[] = null;
-	private _physics: IPhysicsEngine;
 	private _state: PlayerState = null;
 
 	private _rayHelper: RayHelper = null;
@@ -62,8 +62,8 @@ export default class Player extends Mesh {
 		// Workaround to the inspector failing to load the "visibleInInspector" tagged properties
 		this.isLocalPlayer = !this.name.includes('Remote Player') ? true : false;
 
-		this._lastPosition = this.position;
-		this._physics = this.getScene()._physicsEngine;
+		this._originalPosition = this.position;
+		this._lastPosition = this._originalPosition;
 
 		if (this.isLocalPlayer) {
 			console.log(`Player Visual: %o`, this._visual);
@@ -93,7 +93,14 @@ export default class Player extends Mesh {
 		this._state = state;
 	}
 
-	public setBodyRotation(rot: Vector3) {}
+	public reset() {
+		this._previousMovements = [];
+		this.position = this._originalPosition;
+		this._lastPosition = this.position;
+		this._state = null;
+
+		this.setVelocity(Vector3.Zero());
+	}
 
 	/**
 	 * Called each frame.
@@ -105,7 +112,10 @@ export default class Player extends Mesh {
 
 		// console.log(`Player Rotation: %o`, this.rotation);
 
-		this.updatePlayerMovement();
+		if (this.isLocalPlayer) {
+			this.updatePlayerMovement();
+		}
+
 		this.updatePositionFromState();
 		this.updateOrientation();
 
@@ -116,6 +126,10 @@ export default class Player extends Mesh {
 	}
 
 	public setVelocity(vel: Vector3) {
+		if (!this.isLocalPlayer) {
+			return;
+		}
+
 		this._rigidbody.setLinearVelocity(vel);
 	}
 
@@ -126,7 +140,7 @@ export default class Player extends Mesh {
 	}
 
 	private updatePlayerMovement() {
-		if (!this.isLocalPlayer || !this._state.canMove) {
+		if (!this._state.canMove || this._state.isCaptured) {
 			if (this._rigidbody.getLinearVelocity().length() > 0) {
 				this._rigidbody.setLinearVelocity(Vector3.Zero());
 			}

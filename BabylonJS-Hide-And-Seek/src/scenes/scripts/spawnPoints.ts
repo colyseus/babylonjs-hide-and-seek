@@ -35,11 +35,6 @@ export class SpawnPoints {
 		// console.log(`Found Seeker Point: ${this._seekerPoint !== null} - Found ${this._availablePoints.length} Hider Points`);
 	}
 
-	public reset() {
-		this._usedPoints.clear();
-		this.initializeSpawnPoints();
-	}
-
 	public getSpawnPoint(playerState: PlayerState): TransformNode {
 		let point: TransformNode = null;
 		const index: number = playerState.spawnPoint;

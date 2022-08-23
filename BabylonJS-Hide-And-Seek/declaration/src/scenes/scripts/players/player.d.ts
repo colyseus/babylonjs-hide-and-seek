@@ -7,9 +7,9 @@ export default class Player extends Mesh {
     private _rigidbody;
     private _xDirection;
     private _zDirection;
+    private _originalPosition;
     private _lastPosition;
     private _previousMovements;
-    private _physics;
     private _state;
     private _rayHelper;
     /**
@@ -31,7 +31,7 @@ export default class Player extends Mesh {
     visualForward(): Vector3;
     toggleEnabled(enabled: boolean): void;
     setPlayerState(state: PlayerState): void;
-    setBodyRotation(rot: Vector3): void;
+    reset(): void;
     /**
      * Called each frame.
      */

@@ -69,8 +69,8 @@ var Player = /** @class */ (function (_super) {
         this._rigidbody = this.getPhysicsImpostor();
         // Workaround to the inspector failing to load the "visibleInInspector" tagged properties
         this.isLocalPlayer = !this.name.includes('Remote Player') ? true : false;
-        this._lastPosition = this.position;
-        this._physics = this.getScene()._physicsEngine;
+        this._originalPosition = this.position;
+        this._lastPosition = this._originalPosition;
         if (this.isLocalPlayer) {
             console.log("Player Visual: %o", this._visual);
             this.isPickable = false;
@@ -93,7 +93,13 @@ var Player = /** @class */ (function (_super) {
         console.log("Player - Set Player State");
         this._state = state;
     };
-    Player.prototype.setBodyRotation = function (rot) { };
+    Player.prototype.reset = function () {
+        this._previousMovements = [];
+        this.position = this._originalPosition;
+        this._lastPosition = this.position;
+        this._state = null;
+        this.setVelocity(core_1.Vector3.Zero());
+    };
     /**
      * Called each frame.
      */
@@ -102,7 +108,9 @@ var Player = /** @class */ (function (_super) {
             return;
         }
         // console.log(`Player Rotation: %o`, this.rotation);
-        this.updatePlayerMovement();
+        if (this.isLocalPlayer) {
+            this.updatePlayerMovement();
+        }
         this.updatePositionFromState();
         this.updateOrientation();
         // Seeker detection of Hider players
@@ -111,6 +119,9 @@ var Player = /** @class */ (function (_super) {
         }
     };
     Player.prototype.setVelocity = function (vel) {
+        if (!this.isLocalPlayer) {
+            return;
+        }
         this._rigidbody.setLinearVelocity(vel);
     };
     Player.prototype.setVisualLookDirection = function (dir) {
@@ -119,7 +130,7 @@ var Player = /** @class */ (function (_super) {
         }
     };
     Player.prototype.updatePlayerMovement = function () {
-        if (!this.isLocalPlayer || !this._state.canMove) {
+        if (!this._state.canMove || this._state.isCaptured) {
             if (this._rigidbody.getLinearVelocity().length() > 0) {
                 this._rigidbody.setLinearVelocity(core_1.Vector3.Zero());
             }

@@ -158,15 +158,15 @@ export default class GameManager extends Node {
 	}
 
 	private resetPlayerObject(player: Player) {
-		player.setPlayerState(null);
-
-		player.setVelocity(Vector3.Zero());
+		player.reset();
 
 		player.toggleEnabled(false);
 
 		player.setParent(this);
 
-		this._availableRemotePlayerObjects.push(player);
+		if (!player.isLocalPlayer) {
+			this._availableRemotePlayerObjects.push(player);
+		}
 	}
 
 	private onGameStateChange(changes: any[]) {
@@ -228,7 +228,7 @@ export default class GameManager extends Node {
 	}
 
 	private handleCountdownChange(countdown: number) {
-		// console.log(`Countdown: ${countdown}`);
+		console.log(`Countdown: ${countdown}`);
 	}
 
 	private spawnPlayers() {
@@ -364,7 +364,9 @@ export default class GameManager extends Node {
 
 	private reset() {
 		this.despawnPlayers();
-		this._spawnPoints.reset();
+		this.initializeSpawnPoints();
+
+		this._foundHiders.clear();
 		this._playAgain = false;
 	}
 

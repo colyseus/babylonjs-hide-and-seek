@@ -140,11 +140,12 @@ var GameManager = /** @class */ (function (_super) {
         this._players.delete(sessionId);
     };
     GameManager.prototype.resetPlayerObject = function (player) {
-        player.setPlayerState(null);
-        player.setVelocity(core_1.Vector3.Zero());
+        player.reset();
         player.toggleEnabled(false);
         player.setParent(this);
-        this._availableRemotePlayerObjects.push(player);
+        if (!player.isLocalPlayer) {
+            this._availableRemotePlayerObjects.push(player);
+        }
     };
     GameManager.prototype.onGameStateChange = function (changes) {
         // console.log(`Game Manager - On Game State Change: %o`, changes);
@@ -196,7 +197,7 @@ var GameManager = /** @class */ (function (_super) {
         }
     };
     GameManager.prototype.handleCountdownChange = function (countdown) {
-        // console.log(`Countdown: ${countdown}`);
+        console.log("Countdown: ".concat(countdown));
     };
     GameManager.prototype.spawnPlayers = function () {
         var _this = this;
@@ -307,7 +308,8 @@ var GameManager = /** @class */ (function (_super) {
     };
     GameManager.prototype.reset = function () {
         this.despawnPlayers();
-        this._spawnPoints.reset();
+        this.initializeSpawnPoints();
+        this._foundHiders.clear();
         this._playAgain = false;
     };
     /**

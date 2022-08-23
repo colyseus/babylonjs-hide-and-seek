@@ -28,10 +28,6 @@ var SpawnPoints = /** @class */ (function () {
         });
         // console.log(`Found Seeker Point: ${this._seekerPoint !== null} - Found ${this._availablePoints.length} Hider Points`);
     };
-    SpawnPoints.prototype.reset = function () {
-        this._usedPoints.clear();
-        this.initializeSpawnPoints();
-    };
     SpawnPoints.prototype.getSpawnPoint = function (playerState) {
         var point = null;
         var index = playerState.spawnPoint;

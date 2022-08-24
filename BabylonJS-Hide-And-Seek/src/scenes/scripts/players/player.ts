@@ -69,12 +69,12 @@ export default class Player extends Mesh {
 			console.log(`Player Visual: %o`, this._visual);
 
 			this.isPickable = false;
-			this._visual?.setPickable(false);
 		}
 
 		if (this._visual) {
 			this._visual.setTarget(this);
 			this._visual.setParent(null);
+			this._visual.setPickable(false);
 		}
 	}
 

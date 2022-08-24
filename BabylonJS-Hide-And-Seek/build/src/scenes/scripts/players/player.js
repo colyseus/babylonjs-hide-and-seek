@@ -64,7 +64,6 @@ var Player = /** @class */ (function (_super) {
      * Called on the scene starts.
      */
     Player.prototype.onStart = function () {
-        var _a;
         // ...
         this._rigidbody = this.getPhysicsImpostor();
         // Workaround to the inspector failing to load the "visibleInInspector" tagged properties
@@ -74,11 +73,11 @@ var Player = /** @class */ (function (_super) {
         if (this.isLocalPlayer) {
             console.log("Player Visual: %o", this._visual);
             this.isPickable = false;
-            (_a = this._visual) === null || _a === void 0 ? void 0 : _a.setPickable(false);
         }
         if (this._visual) {
             this._visual.setTarget(this);
             this._visual.setParent(null);
+            this._visual.setPickable(false);
         }
     };
     Player.prototype.visualForward = function () {

@@ -182,7 +182,7 @@ var GameManager = /** @class */ (function (_super) {
                 // Set up player objects for the local player as well as all remote players
                 this.spawnPlayers();
                 // Send the initial position of the player to the server
-                networkManager_1.default.Instance.sendPlayerPosition(new PlayerInputMessage_1.PlayerInputMessage(this._player.position.asArray()));
+                networkManager_1.default.Instance.sendPlayerPosition(new PlayerInputMessage_1.PlayerInputMessage([], this._player.position.asArray()));
                 this._cameraHolder.setTargetPosition(this._player.position, this._startChaseSpeed);
                 break;
             case GameState_1.GameState.SCATTER:

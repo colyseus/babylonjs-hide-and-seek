@@ -211,7 +211,7 @@ export default class GameManager extends Node {
 				this.spawnPlayers();
 
 				// Send the initial position of the player to the server
-				NetworkManager.Instance.sendPlayerPosition(new PlayerInputMessage(this._player.position.asArray()));
+				NetworkManager.Instance.sendPlayerPosition(new PlayerInputMessage([], this._player.position.asArray()));
 
 				this._cameraHolder.setTargetPosition(this._player.position, this._startChaseSpeed);
 				break;

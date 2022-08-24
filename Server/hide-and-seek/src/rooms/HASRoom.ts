@@ -102,6 +102,7 @@ export class HASRoom extends Room<HASRoomState> {
 
 		if (playerState) {
 			playerState.setPosition(playerInput.position, playerInput.timestamp);
+			playerState.setDirection(playerInput.direction);
 		} else {
 			logger.error(`Failed to retrieve Player State for ${client.sessionId}`);
 		}

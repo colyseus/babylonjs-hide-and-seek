@@ -2,25 +2,24 @@
 	"materials": [],
 	"meshes": [
 		{
-			"name": "Remote Player 3",
-			"id": "758f9270-4adc-42ca-8d93-8a9637d82aa1",
-			"uniqueId": 174,
+			"name": "PlayerBody",
+			"id": "58507692-e3ef-4d40-8cf9-948712f6d8bc",
+			"uniqueId": 497,
 			"type": "Mesh",
 			"position": [
-				2.790640115737915,
-				0.5,
-				-9.114859580993652
+				-1.887379141862766e-15,
+				0,
+				0
 			],
-			"rotationQuaternion": [
+			"rotation": [
 				0,
-				0,
-				0,
-				1
+				3.141592653589793,
+				0
 			],
 			"scaling": [
+				0.9999999785721969,
 				1,
-				1,
-				1
+				0.9999999785721969
 			],
 			"pivotMatrix": {
 				"0": 1,
@@ -40,8 +39,8 @@
 				"14": 0,
 				"15": 1
 			},
-			"isEnabled": false,
-			"isVisible": false,
+			"isEnabled": true,
+			"isVisible": true,
 			"infiniteDistance": false,
 			"pickable": true,
 			"receiveShadows": false,
@@ -50,10 +49,10 @@
 			"checkCollisions": false,
 			"isBlocker": false,
 			"overrideMaterialSideOrientation": null,
-			"parentId": "fd7a4725-539b-4020-9b6f-3032264f3ad4",
+			"parentId": "758f9270-4adc-42ca-8d93-8a9637d82aa1",
 			"isUnIndexed": false,
-			"geometryUniqueId": 283,
-			"geometryId": "1d916d74-511b-480f-9a49-fe94c8f0dce6",
+			"geometryUniqueId": 294,
+			"geometryId": "f0a84ea6-2166-499c-b192-a3a1e08add33",
 			"subMeshes": null,
 			"materialUniqueId": 194,
 			"materialId": "default material",
@@ -67,13 +66,7 @@
 				},
 				"isPickable": true,
 				"script": {
-					"name": "src/scenes/scripts/players/player.ts",
-					"properties": {
-						"_movementSpeed": {
-							"type": "number",
-							"value": 600
-						}
-					}
+					"name": "src/scenes/scripts/players/playerVisual.ts"
 				},
 				"renderingGroupId": 0,
 				"doNotExport": false
@@ -91,7 +84,7 @@
 				0
 			],
 			"applyFog": true,
-			"delayLoadingFile": "geometries/1d916d74-511b-480f-9a49-fe94c8f0dce6.babylonbinarymeshdata",
+			"delayLoadingFile": "geometries/f0a84ea6-2166-499c-b192-a3a1e08add33.babylonbinarymeshdata",
 			"boundingBoxMaximum": [
 				0.5,
 				0.5,

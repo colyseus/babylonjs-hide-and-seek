@@ -114,10 +114,11 @@ export default class Player extends Mesh {
 
 		if (this.isLocalPlayer) {
 			this.updatePlayerMovement();
+		} else {
+			this.setVisualLookDirection(new Vector3(this._state.xDir, this._state.yDir, this._state.zDir));
 		}
 
 		this.updatePositionFromState();
-		this.updateOrientation();
 
 		// Seeker detection of Hider players
 		if (this._state.isSeeker) {
@@ -204,10 +205,9 @@ export default class Player extends Mesh {
 		}
 	}
 
-	private updateOrientation() {}
-
 	private sendPositionUpdateToServer() {
-		const inputMsg: PlayerInputMessage = new PlayerInputMessage([this.position.x, 0.5, this.position.z]);
+		const dir: Vector3 = Vector3.Normalize(this._rigidbody.getLinearVelocity());
+		const inputMsg: PlayerInputMessage = new PlayerInputMessage([dir.x, 0, dir.z], [this.position.x, 0.5, this.position.z]);
 
 		this._previousMovements.push(inputMsg);
 

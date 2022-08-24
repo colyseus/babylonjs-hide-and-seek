@@ -4,6 +4,5 @@ declare const _default: {
     huntCountdown: number;
     prologueCountdown: number;
     seekerCheckDistance: number;
-    allowDebug: boolean;
 };
 export default _default;

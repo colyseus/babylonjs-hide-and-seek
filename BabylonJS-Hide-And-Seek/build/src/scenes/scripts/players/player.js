@@ -111,8 +111,10 @@ var Player = /** @class */ (function (_super) {
         if (this.isLocalPlayer) {
             this.updatePlayerMovement();
         }
+        else {
+            this.setVisualLookDirection(new core_1.Vector3(this._state.xDir, this._state.yDir, this._state.zDir));
+        }
         this.updatePositionFromState();
-        this.updateOrientation();
         // Seeker detection of Hider players
         if (this._state.isSeeker) {
             this.checkForHiders();
@@ -182,9 +184,9 @@ var Player = /** @class */ (function (_super) {
             this.position.copyFrom(core_1.Vector3.Lerp(this.position, new core_1.Vector3(this._state.xPos, 0.5, this._state.zPos), gameManager_1.default.DeltaTime * 35));
         }
     };
-    Player.prototype.updateOrientation = function () { };
     Player.prototype.sendPositionUpdateToServer = function () {
-        var inputMsg = new PlayerInputMessage_1.PlayerInputMessage([this.position.x, 0.5, this.position.z]);
+        var dir = core_1.Vector3.Normalize(this._rigidbody.getLinearVelocity());
+        var inputMsg = new PlayerInputMessage_1.PlayerInputMessage([dir.x, 0, dir.z], [this.position.x, 0.5, this.position.z]);
         this._previousMovements.push(inputMsg);
         networkManager_1.default.Instance.sendPlayerPosition(inputMsg);
     };

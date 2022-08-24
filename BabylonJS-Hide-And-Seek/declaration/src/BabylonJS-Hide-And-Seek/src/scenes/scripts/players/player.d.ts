@@ -40,7 +40,6 @@ export default class Player extends Mesh {
     setVisualLookDirection(dir: Vector3): void;
     private updatePlayerMovement;
     private updatePositionFromState;
-    private updateOrientation;
     private sendPositionUpdateToServer;
     private checkForHiders;
     private checkPredicate;

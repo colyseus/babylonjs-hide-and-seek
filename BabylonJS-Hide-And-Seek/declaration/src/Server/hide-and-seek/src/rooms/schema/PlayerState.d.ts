@@ -12,8 +12,12 @@ export declare class PlayerState extends Schema {
     yPos: number;
     zPos: number;
     positionTimestamp: number;
+    xDir: number;
+    yDir: number;
+    zDir: number;
     constructor(/*room: HASRoom,*/ ...args: any[]);
     resetPlayer(): void;
     update(deltaTime: number): void;
     setPosition(position: number[], positionTimestamp: number): void;
+    setDirection(direction: number[]): void;
 }

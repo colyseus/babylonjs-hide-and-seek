@@ -20,6 +20,11 @@ export class PlayerState extends Schema {
 	@type('number') zPos: number = 0.0;
 	@type('number') positionTimestamp: number = 0.0;
 
+	// Player Position
+	@type('number') xDir: number = 0.0;
+	@type('number') yDir: number = 0.5;
+	@type('number') zDir: number = 0.0;
+
 	// private roomRef: HASRoom = null;
 
 	constructor(/*room: HASRoom,*/ ...args: any[]) {
@@ -47,5 +52,11 @@ export class PlayerState extends Schema {
 		this.zPos = position[2];
 
 		this.positionTimestamp = positionTimestamp;
+	}
+
+	public setDirection(direction: number[]) {
+		this.xDir = direction[0];
+		this.yDir = direction[1];
+		this.zDir = direction[2];
 	}
 }

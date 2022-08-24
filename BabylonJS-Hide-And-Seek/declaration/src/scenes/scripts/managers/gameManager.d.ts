@@ -1,7 +1,10 @@
 import { Node } from '@babylonjs/core/node';
+import { GameState } from '../GameState';
+import Player from '../players/player';
 export default class GameManager extends Node {
     private static _instance;
     private _cameraHolder;
+    private _cameraStartPos;
     private _spawnPointsRoot;
     private _player;
     private _remotePlayer1;
@@ -11,9 +14,23 @@ export default class GameManager extends Node {
     private _remotePlayer5;
     private _remotePlayer6;
     private _remotePlayer7;
-    private _availableRemotePlayers;
+    private _availableRemotePlayerObjects;
     private _spawnPoints;
     private _spawnedRemotes;
+    private _players;
+    private _currentGameState;
+    private _joiningRoom;
+    private _playAgain;
+    private _playerChaseSpeed;
+    private _startChaseSpeed;
+    private _seekerFOV;
+    seekerCheckDistance: number;
+    /** In ms, the time between messages sent to the server for each Hider discovered by the Seeker */
+    private _foundHiderMsgRate;
+    private _halfSeekerFOV;
+    private _foundHiders;
+    get CurrentGameState(): GameState;
+    private set CurrentGameState(value);
     static get Instance(): GameManager;
     static get DeltaTime(): number;
     /**
@@ -31,10 +48,25 @@ export default class GameManager extends Node {
      */
     onStart(): void;
     private initializeSpawnPoints;
+    private onJoinedRoom;
+    private onLeftRoom;
     private onPlayerAdded;
     private onPlayerRemoved;
-    private resetPlayer;
-    private lastChange;
+    private resetPlayerObject;
+    private onGameStateChange;
+    private handleGameStateChange;
+    private handleCountdownChange;
+    private spawnPlayers;
+    private spawnPlayer;
+    private despawnPlayers;
+    private despawnPlayer;
+    /**
+     * Used only when the local player is the Seeker to retrieve any Hider
+     * player objects within distance to the Seeker player.
+     */
+    getOverlappingHiders(): Player[];
+    seekerFoundHider(hider: Player): void;
+    private reset;
     /**
      * Called each frame.
      */

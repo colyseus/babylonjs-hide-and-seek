@@ -43,8 +43,15 @@ var Player = /** @class */ (function (_super) {
         _this._zDirection = 0;
         _this._previousMovements = null;
         _this._state = null;
+        _this._rayHelper = null;
         return _this;
     }
+    Player.prototype.sessionId = function () {
+        return this._state ? this._state.id : 'N/A';
+    };
+    Player.prototype.isCaptured = function () {
+        return this._state ? this._state.isCaptured : false;
+    };
     /**
      * Called on the node is being initialized.
      * This function is called immediatly after the constructor has been called.
@@ -61,22 +68,98 @@ var Player = /** @class */ (function (_super) {
         this._rigidbody = this.getPhysicsImpostor();
         // Workaround to the inspector failing to load the "visibleInInspector" tagged properties
         this.isLocalPlayer = !this.name.includes('Remote Player') ? true : false;
-        console.log("Player - On Start - Is Local: ".concat(this.isLocalPlayer));
-        this._lastPosition = this.position;
+        this._originalPosition = this.position;
+        this._lastPosition = this._originalPosition;
+        if (this.isLocalPlayer) {
+            console.log("Player Visual: %o", this._visual);
+            this.isPickable = false;
+        }
+        if (this._visual) {
+            this._visual.setTarget(this);
+            this._visual.setParent(null);
+            this._visual.setPickable(false);
+        }
+    };
+    Player.prototype.visualForward = function () {
+        return this._visual.forward;
+    };
+    Player.prototype.toggleEnabled = function (enabled) {
+        var _a;
+        this.setEnabled(enabled);
+        (_a = this._visual) === null || _a === void 0 ? void 0 : _a.setEnabled(enabled);
     };
     Player.prototype.setPlayerState = function (state) {
         console.log("Player - Set Player State");
         this._state = state;
-        // state.onChange = (changes: any[]) => {
-        // 	console.log(`Player State Changed: %o`, changes);
-        // };
+    };
+    Player.prototype.reset = function () {
+        this._previousMovements = [];
+        this.position = this._originalPosition;
+        this._lastPosition = this.position;
+        this._state = null;
+        this.setVelocity(core_1.Vector3.Zero());
     };
     /**
      * Called each frame.
      */
     Player.prototype.onUpdate = function () {
-        this.updatePlayerMovement();
+        if (!this.isEnabled(false)) {
+            return;
+        }
+        // console.log(`Player Rotation: %o`, this.rotation);
+        if (this.isLocalPlayer) {
+            this.updatePlayerMovement();
+        }
+        else {
+            this.setVisualLookDirection(new core_1.Vector3(this._state.xDir, this._state.yDir, this._state.zDir));
+        }
         this.updatePositionFromState();
+        // Seeker detection of Hider players
+        if (this._state.isSeeker) {
+            this.checkForHiders();
+        }
+    };
+    Player.prototype.setVelocity = function (vel) {
+        if (!this.isLocalPlayer) {
+            return;
+        }
+        this._rigidbody.setLinearVelocity(vel);
+    };
+    Player.prototype.setVisualLookDirection = function (dir) {
+        if (this._visual && dir.length() > 0) {
+            this._visual.setLookTargetDirection(dir);
+        }
+    };
+    Player.prototype.updatePlayerMovement = function () {
+        if (!this._state.canMove || this._state.isCaptured) {
+            if (this._rigidbody.getLinearVelocity().length() > 0) {
+                this._rigidbody.setLinearVelocity(core_1.Vector3.Zero());
+            }
+            return;
+        }
+        var velocity = new core_1.Vector3();
+        // W + -S (1/0 + -1/0)
+        this._zDirection = (inputManager_1.default.getKey(87) ? 1 : 0) + (inputManager_1.default.getKey(83) ? -1 : 0);
+        // -A + D (-1/0 + 1/0)
+        this._xDirection = (inputManager_1.default.getKey(65) ? -1 : 0) + (inputManager_1.default.getKey(68) ? 1 : 0);
+        // Prevent the player from moving faster than it should in a diagonal direction
+        if (this._zDirection !== 0 && this._xDirection !== 0) {
+            this._xDirection *= 0.75;
+            this._zDirection *= 0.75;
+        }
+        velocity.x = this._xDirection;
+        velocity.z = this._zDirection;
+        velocity.x *= this._movementSpeed * gameManager_1.default.DeltaTime;
+        velocity.z *= this._movementSpeed * gameManager_1.default.DeltaTime;
+        this.setVelocity(velocity);
+        this._rigidbody.setAngularVelocity(core_1.Vector3.Zero());
+        this.position.y = 0.5;
+        if (!this.position.equals(this._lastPosition)) {
+            this._lastPosition.copyFrom(this.position);
+            // Position has changed; send position to the server
+            this.sendPositionUpdateToServer();
+        }
+        this.setVisualLookDirection(velocity);
     };
     Player.prototype.updatePositionFromState = function () {
         if (!this._state) {
@@ -100,37 +183,52 @@ var Player = /** @class */ (function (_super) {
             this.position.copyFrom(core_1.Vector3.Lerp(this.position, new core_1.Vector3(this._state.xPos, 0.5, this._state.zPos), gameManager_1.default.DeltaTime * 35));
         }
     };
-    Player.prototype.updatePlayerMovement = function () {
-        if (!this.isLocalPlayer) {
-            return;
-        }
-        var direction = new core_1.Vector3();
-        // W + -S (1/0 + -1/0)
-        this._zDirection = (inputManager_1.default.getKey(87) ? 1 : 0) + (inputManager_1.default.getKey(83) ? -1 : 0);
-        // -A + D (-1/0 + 1/0)
-        this._xDirection = (inputManager_1.default.getKey(65) ? -1 : 0) + (inputManager_1.default.getKey(68) ? 1 : 0);
-        // Prevent the player from moving faster than it should in a diagonal direction
-        if (this._zDirection !== 0 && this._xDirection !== 0) {
-            this._xDirection *= 0.75;
-            this._zDirection *= 0.75;
-        }
-        direction.x = this._xDirection;
-        direction.z = this._zDirection;
-        direction.x *= this._movementSpeed * gameManager_1.default.DeltaTime;
-        direction.z *= this._movementSpeed * gameManager_1.default.DeltaTime;
-        this._rigidbody.setLinearVelocity(direction);
-        this._rigidbody.setAngularVelocity(core_1.Vector3.Zero());
-        this.position.y = 0.5;
-        if (!this.position.equals(this._lastPosition)) {
-            this._lastPosition.copyFrom(this.position);
-            // Position has changed; send position to the server
-            this.sendPositionUpdateToServer();
-        }
-    };
     Player.prototype.sendPositionUpdateToServer = function () {
-        var inputMsg = new PlayerInputMessage_1.PlayerInputMessage([this.position.x, 0.5, this.position.z]);
+        var dir = core_1.Vector3.Normalize(this._rigidbody.getLinearVelocity());
+        var inputMsg = new PlayerInputMessage_1.PlayerInputMessage([dir.x, 0, dir.z], [this.position.x, 0.5, this.position.z]);
         this._previousMovements.push(inputMsg);
         networkManager_1.default.Instance.sendPlayerPosition(inputMsg);
+    };
+    Player.prototype.checkForHiders = function () {
+        // When all nearby Hiders have been collected we can do a raycast check from the Seeker to each of the Hiders to determine if they are within line of sight
+        // Send a message to the server with the Ids of all the Hiders that are within line of sight.
+        var _this = this;
+        var hiders = gameManager_1.default.Instance.getOverlappingHiders();
+        if (hiders && hiders.length > 0) {
+            var distanceToHider_1 = -1;
+            // Raycast to each hider to determine if an obstacle is between them and the Seeker
+            hiders.forEach(function (hider) {
+                distanceToHider_1 = core_1.Vector3.Distance(_this.position, hider.position);
+                var ray = new core_1.Ray(_this.position, hider.position.subtract(_this.position).normalize(), gameManager_1.default.Instance.seekerCheckDistance + 1);
+                // Draw debug ray visual
+                //============================================
+                if (_this._rayHelper) {
+                    _this._rayHelper.dispose();
+                }
+                _this._rayHelper = new core_1.RayHelper(ray);
+                _this._rayHelper.show(_this._scene, core_1.Color3.Green());
+                //============================================
+                var info = _this._scene.multiPickWithRay(ray, _this.checkPredicate);
+                /** Flag for if the hider is obscurred by an obstacle mesh */
+                var viewBlocked = false;
+                for (var i = 0; i < info.length && !viewBlocked; i++) {
+                    var mesh = info[i].pickedMesh;
+                    // If an obstacle is closer than the Hider it would block the Seeker's view of the Hider
+                    if (info[i].distance < distanceToHider_1 && !mesh.name.includes('Remote')) {
+                        viewBlocked = true;
+                    }
+                }
+                if (!viewBlocked) {
+                    gameManager_1.default.Instance.seekerFoundHider(hider);
+                }
+            });
+        }
+    };
+    Player.prototype.checkPredicate = function (mesh) {
+        if (!mesh.isPickable || mesh === this || mesh === this._visual || mesh.name === 'ray') {
+            return false;
+        }
+        return true;
     };
     /**
      * Called on the object has been disposed.
@@ -155,6 +253,9 @@ var Player = /** @class */ (function (_super) {
     __decorate([
         (0, decorators_1.visibleInInspector)('number', 'Movement Speed', 1)
     ], Player.prototype, "_movementSpeed", void 0);
+    __decorate([
+        (0, decorators_1.fromChildren)('PlayerBody')
+    ], Player.prototype, "_visual", void 0);
     return Player;
 }(core_1.Mesh));
 exports.default = Player;

@@ -1,5 +1,5 @@
-import { Node, TransformNode, Vector3 } from '@babylonjs/core';
-import { PlayerState } from '../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
+import { AbstractMesh, Node, TransformNode, Vector3 } from '@babylonjs/core';
+import type { PlayerState } from '../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
 
 export class SpawnPoints {
 	private _spawnPoints: TransformNode[] = null;
@@ -11,13 +11,13 @@ export class SpawnPoints {
 
 	constructor(spawnPoints: TransformNode[]) {
 		this._spawnPoints = spawnPoints;
+		this._usedPoints = new Map<string, TransformNode>();
 
 		this.initializeSpawnPoints();
 	}
 
 	private initializeSpawnPoints() {
 		this._availablePoints = [];
-		this._usedPoints = new Map<string, TransformNode>();
 
 		this._spawnPoints.forEach((point: TransformNode) => {
 			if (point.name.includes('Seeker')) {
@@ -25,14 +25,21 @@ export class SpawnPoints {
 			} else {
 				this._availablePoints.push(point);
 			}
+
+			// Enforce the meshes to not be pickable
+			point.getChildMeshes().forEach((mesh: AbstractMesh) => {
+				mesh.isPickable = false;
+			});
 		});
 
-		console.log(`Found Seeker Point: ${this._seekerPoint !== null} - Found ${this._availablePoints.length} Hider Points`);
+		// console.log(`Found Seeker Point: ${this._seekerPoint !== null} - Found ${this._availablePoints.length} Hider Points`);
 	}
 
 	public getSpawnPoint(playerState: PlayerState): TransformNode {
 		let point: TransformNode = null;
 		const index: number = playerState.spawnPoint;
+
+		console.log(`*** Get Spawn Pt - ${playerState.id} is Seeker: ${playerState.isSeeker} ***`);
 
 		if (playerState.isSeeker) {
 			if (!this._seekerPoint) {
@@ -61,20 +68,24 @@ export class SpawnPoints {
 	}
 
 	public freeUpSpawnPoint(playerState: PlayerState) {
+		console.log(`Free Spawn Point: %o`, playerState);
+
 		const spawnPointIndex: number = playerState.spawnPoint;
 		let spawnPoint: TransformNode = null;
 
 		if (playerState.isSeeker) {
 			// Restore the seeker spawn point
-			spawnPoint = this._seekerPoint = this._usedPoints.get(playerState.id);
+			spawnPoint = this._usedPoints.get(playerState.id);
+
+			if (spawnPoint) {
+				this._seekerPoint = spawnPoint;
+			}
 		} else {
 			// Restore the hider spawn point
 			spawnPoint = this._availablePoints[spawnPointIndex] = this._usedPoints.get(playerState.id);
 		}
 
-		if (!spawnPoint) {
-			console.error(`Spawn Points - freeUpSpawnPoint() - Something went wrong, the spawn point was not restored`);
-		} else {
+		if (spawnPoint) {
 			this._usedPoints.delete(playerState.id);
 		}
 	}

@@ -3,6 +3,7 @@ export default class InputManager extends Node {
     private static _instance;
     private dsm;
     private _inputSource;
+    private _keyUp;
     /**
      * Override constructor.
      * @warn do not fill.
@@ -33,5 +34,7 @@ export default class InputManager extends Node {
      * @param sender defines the reference to the graph class that sent the message.
      */
     onMessage(name: string, data: any, sender: any): void;
+    private handleKeyboardEvent;
     static getKey(key: number): boolean;
+    static getKeyUp(key: number): boolean;
 }

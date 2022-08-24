@@ -2,15 +2,19 @@ import { Schema, MapSchema, Context, type } from '@colyseus/schema';
 import logger from '../../helpers/logger';
 import { HASRoom } from '../HASRoom';
 import { PlayerState } from './PlayerState';
-import { random } from '../../helpers/Utility';
+import { distanceBetweenPlayers, random } from '../../helpers/Utility';
+import { HASGameState } from '../schema/HASGameState';
+import { GameConfig } from '../../models/GameConfig';
+import gameConfig from '../../gameConfig';
+import { GameState } from '../schema/HASGameState';
 
 export class HASRoomState extends Schema {
 	@type({ map: PlayerState }) players = new MapSchema<PlayerState>();
-	@type('number') serverTime: number = 0.0;
-	@type('number') deltaTime: number = 0.0;
+	@type(HASGameState) gameState: HASGameState;
 
 	private _room: HASRoom = null;
 	private _availableSpawnPoints: number[] = null;
+	private _config: GameConfig;
 
 	constructor(room: HASRoom, ...args: any[]) {
 		super(...args);
@@ -18,6 +22,12 @@ export class HASRoomState extends Schema {
 		this._room = room;
 
 		this.initializeSpawnPoints();
+
+		logger.info(`Game Config: %o`, gameConfig);
+
+		this._config = new GameConfig(gameConfig);
+
+		this.gameState = new HASGameState(room, this._config);
 	}
 
 	private initializeSpawnPoints() {
@@ -33,9 +43,14 @@ export class HASRoomState extends Schema {
 			this._availableSpawnPoints.push(i);
 		}
 
-		logger.info(`Spawn Points: %o`, this._availableSpawnPoints);
+		// //logger.info(`Spawn Points: %o`, this._availableSpawnPoints);
 	}
 
+	/**
+	 * Get a number representing the inces of the spawn point client-side
+	 * @param isRandom should the spawn point be chosen randomly? Default is true
+	 * @returns Number representing the index of the spawn point client-side
+	 */
 	public getSpawnPointIndex(isRandom: boolean = true): number {
 		if (this._availableSpawnPoints.length === 0) {
 			logger.error(`No more available spawn point indexes!`);
@@ -70,15 +85,33 @@ export class HASRoomState extends Schema {
 	}
 
 	public update(deltaTime: number) {
-		// logger.debug(`Room State Update - DT: ${deltaTime}`);
-		this.deltaTime = deltaTime;
+		// this.updatePlayers(deltaTime);
 
-		this.updatePlayers();
+		this.gameState.update(deltaTime);
 	}
 
-	private updatePlayers() {
+	public resetForPlay() {
+		this.initializeSpawnPoints();
+
 		this.players.forEach((player: PlayerState) => {
-			player.update(this.deltaTime);
+			player.resetPlayer();
 		});
+	}
+
+	public seekerFoundHider(seekerId: string, hiderId: string) {
+		const seeker: PlayerState = this.players.get(seekerId);
+		const hider: PlayerState = this.players.get(hiderId);
+
+		if (!seeker || !hider) {
+			logger.error(`Failed to get ${seeker ? '' : `Seeker ${seekerId} `}${hider ? '' : `Hider ${hiderId}`}`);
+			return;
+		}
+
+		// Check if the Hider is close enough to the Seeker to be found
+		const distance: number = distanceBetweenPlayers(seeker, hider);
+
+		if (distance <= this._config.SeekerCheckDistance) {
+			this.gameState.seekerCapturedHider(hider);
+		}
 	}
 }

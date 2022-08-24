@@ -1,19 +1,24 @@
-import { Mesh } from '@babylonjs/core';
+import { Mesh, Vector3 } from '@babylonjs/core';
 import type { PlayerState } from '../../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
 export default class Player extends Mesh {
     private _movementSpeed;
+    private _visual;
     isLocalPlayer: boolean;
     private _rigidbody;
     private _xDirection;
     private _zDirection;
+    private _originalPosition;
     private _lastPosition;
     private _previousMovements;
     private _state;
+    private _rayHelper;
     /**
      * Override constructor.
      * @warn do not fill.
      */
     constructor();
+    sessionId(): string;
+    isCaptured(): boolean;
     /**
      * Called on the node is being initialized.
      * This function is called immediatly after the constructor has been called.
@@ -23,14 +28,21 @@ export default class Player extends Mesh {
      * Called on the scene starts.
      */
     onStart(): void;
+    visualForward(): Vector3;
+    toggleEnabled(enabled: boolean): void;
     setPlayerState(state: PlayerState): void;
+    reset(): void;
     /**
      * Called each frame.
      */
     onUpdate(): void;
-    private updatePositionFromState;
+    setVelocity(vel: Vector3): void;
+    setVisualLookDirection(dir: Vector3): void;
     private updatePlayerMovement;
+    private updatePositionFromState;
     private sendPositionUpdateToServer;
+    private checkForHiders;
+    private checkPredicate;
     /**
      * Called on the object has been disposed.
      * Object can be disposed manually or when the editor stops running the scene.

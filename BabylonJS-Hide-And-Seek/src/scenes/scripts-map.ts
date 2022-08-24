@@ -5,12 +5,16 @@ import { ScriptMap } from "./tools";
  */
 export interface ISceneScriptMap {
 	"src/scenes/scripts/colyseusSettings.ts": ScriptMap;
+	"src/scenes/scripts/GameState.ts": ScriptMap;
 	"src/scenes/scripts/managers/gameManager.ts": ScriptMap;
 	"src/scenes/scripts/managers/inputManager.ts": ScriptMap;
 	"src/scenes/scripts/managers/networkManager.ts": ScriptMap;
 	"src/scenes/scripts/players/cameraHolder.ts": ScriptMap;
 	"src/scenes/scripts/players/player.ts": ScriptMap;
+	"src/scenes/scripts/players/playerVisual.ts": ScriptMap;
+	"src/scenes/scripts/spawnPoint.ts": ScriptMap;
 	"src/scenes/scripts/spawnPoints.ts": ScriptMap;
+	"src/scenes/utility.ts": ScriptMap;
 }
 
 /**
@@ -18,10 +22,14 @@ export interface ISceneScriptMap {
  */
 export const scriptsMap: ISceneScriptMap = {
 	"src/scenes/scripts/colyseusSettings.ts": require("./scripts/colyseusSettings"),
+	"src/scenes/scripts/GameState.ts": require("./scripts/GameState"),
 	"src/scenes/scripts/managers/gameManager.ts": require("./scripts/managers/gameManager"),
 	"src/scenes/scripts/managers/inputManager.ts": require("./scripts/managers/inputManager"),
 	"src/scenes/scripts/managers/networkManager.ts": require("./scripts/managers/networkManager"),
 	"src/scenes/scripts/players/cameraHolder.ts": require("./scripts/players/cameraHolder"),
 	"src/scenes/scripts/players/player.ts": require("./scripts/players/player"),
+	"src/scenes/scripts/players/playerVisual.ts": require("./scripts/players/playerVisual"),
+	"src/scenes/scripts/spawnPoint.ts": require("./scripts/spawnPoint"),
 	"src/scenes/scripts/spawnPoints.ts": require("./scripts/spawnPoints"),
+	"src/scenes/utility.ts": require("./utility"),
 }

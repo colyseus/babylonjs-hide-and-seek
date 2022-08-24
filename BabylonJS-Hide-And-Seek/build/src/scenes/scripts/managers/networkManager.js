@@ -53,6 +53,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var node_1 = require("@babylonjs/core/node");
 var Colyseus = require("colyseus.js");
+var GameState_1 = require("../GameState");
 var NetworkManager = /** @class */ (function (_super) {
     __extends(NetworkManager, _super);
     /**
@@ -178,6 +179,7 @@ var NetworkManager = /** @class */ (function (_super) {
                         _a.Room = _b.sent();
                         if (this.Room) {
                             console.log("Joined Room: ".concat(this.Room.id));
+                            this.onJoinedRoom(this.Room.id);
                         }
                         this.registerRoomHandlers();
                         return [2 /*return*/];
@@ -212,20 +214,17 @@ var NetworkManager = /** @class */ (function (_super) {
         });
     };
     NetworkManager.prototype.registerRoomHandlers = function () {
+        var _this = this;
         console.log("Register Room Handlers");
         if (this.Room) {
-            // this.Room.onLeave.once(this.onLeaveGridRoom);
-            // this.Room.onStateChange.once(this.onRoomStateChange);
-            // this.Room.state.networkedUsers.onAdd = MMOManager.Instance.onAddNetworkedUser;
-            // this.Room.state.networkedUsers.onRemove = MMOManager.Instance.onRemoveNetworkedUser;
-            // this.Room.onMessage<ObjectUseMessage>('objectUsed', (msg) => {
-            // 	this.awaitObjectInteraction(msg.interactedObjectID, msg.interactingStateID);
-            // });
-            // this.Room.onMessage<MovedToGridMessage>('movedToGrid', (msg) => {
-            // 	this.onMovedToGrid(msg);
-            // });
+            this.Room.onLeave.once(function (code) {
+                _this.unregisterRoomHandlers();
+                _this.Room = null;
+                _this.onLeftRoom(code);
+            });
             this.Room.state.players.onAdd = this.onPlayerAdded;
             this.Room.state.players.onRemove = this.onPlayerRemoved;
+            this.Room.state.gameState.onChange = this.onGameStateChange;
             this.Room.onMessage('*', this.handleMessages);
         }
         else {
@@ -236,28 +235,31 @@ var NetworkManager = /** @class */ (function (_super) {
         if (this.Room) {
             this.Room.state.players.onAdd = null;
             this.Room.state.players.onRemove = null;
-            // this.Room.onLeave.remove(this.onLeaveGridRoom);
-            // this.Room.onStateChange.remove(this.onRoomStateChange);
-            // this.Room.state.networkedUsers.onAdd = null;
-            // this.Room.state.networkedUsers.onRemove = null;
+            this.Room.state.gameState.onChange = null;
+            this.Room.onMessage('*', null);
         }
     };
-    // public sendPlayerDirectionInput(velocity: Vector3, position: Vector3) {
-    // 	if (!this.Room) {
-    // 		return;
-    // 	}
-    // 	const inputMsg: PlayerInputMessage = new PlayerInputMessage(this.Room.sessionId, [velocity.x, velocity.y, velocity.z], [position.x, position.y, position.z]);
-    // 	this.Room.send('playerInput', inputMsg);
-    // }
+    // Messages to server
+    //==============================================
     NetworkManager.prototype.sendPlayerPosition = function (positionMsg) {
+        if (!this.Room) {
+            return;
+        }
         this.Room.send('playerInput', positionMsg);
     };
-    // private playerAdded(item: PlayerState, key: string) {
-    // 	//
-    // 	if (this.onPlayerAdded) {
-    // 		this.onPlayerAdded(item, key);
-    // 	}
-    // }
+    NetworkManager.prototype.sendPlayAgain = function () {
+        if (!this.Room) {
+            return;
+        }
+        this.Room.send('playAgain');
+    };
+    NetworkManager.prototype.sendHiderFound = function (hiderId) {
+        if (!this.Room || this.Room.state.gameState.currentState !== GameState_1.GameState.HUNT) {
+            return;
+        }
+        this.Room.send('foundHider', hiderId);
+    };
+    //============================================== Messages to server
     NetworkManager.prototype.handleMessages = function (name, message) {
         // switch (name) {
         // 	case 'velocityChange':

@@ -221,8 +221,12 @@ export default class Player extends Mesh {
 		const hiders: Player[] = GameManager.Instance.getOverlappingHiders();
 
 		if (hiders && hiders.length > 0) {
+			let distanceToHider: number = -1;
+
 			// Raycast to each hider to determine if an obstacle is between them and the Seeker
 			hiders.forEach((hider: Player) => {
+				distanceToHider = Vector3.Distance(this.position, hider.position);
+
 				let ray: Ray = new Ray(this.position, hider.position.subtract(this.position).normalize(), GameManager.Instance.seekerCheckDistance + 1);
 
 				// Draw debug ray visual
@@ -237,30 +241,15 @@ export default class Player extends Mesh {
 
 				const info: PickingInfo[] = this._scene.multiPickWithRay(ray, this.checkPredicate);
 
-				/** Flag for if the hider is obscurred by another mesh */
+				/** Flag for if the hider is obscurred by an obstacle mesh */
 				let viewBlocked: boolean = false;
-				/** Flag for if we've found the hider in the list of raycast hits */
-				let foundHider: boolean = false;
 
-				for (let i = 0; i < info.length && !foundHider && !viewBlocked; i++) {
+				for (let i = 0; i < info.length && !viewBlocked; i++) {
 					const mesh: AbstractMesh = info[i].pickedMesh;
 
-					if (!mesh.isPickable || mesh.name === 'ray') {
-						continue;
-					}
-
-					// console.log(`Hit Pickable: %o`, mesh);
-
-					// Starting from the first raycast hit info
-					// if we hit an obstacle before we've hit the hider
-					// then the hider will be considered obscurred from the Seeker's view
-					if (!mesh.name.includes('Remote') && !foundHider) {
+					// If an obstacle is closer than the Hider it would block the Seeker's view of the Hider
+					if (info[i].distance < distanceToHider && !mesh.name.includes('Remote')) {
 						viewBlocked = true;
-						// console.log(`Seeker's view blocked by "${mesh.name}"`);
-					}
-
-					if (mesh === hider._visual || mesh === hider) {
-						foundHider = true;
 					}
 				}
 
@@ -272,7 +261,7 @@ export default class Player extends Mesh {
 	}
 
 	private checkPredicate(mesh: AbstractMesh): boolean {
-		if (!mesh.isPickable || mesh === this || mesh === this._visual) {
+		if (!mesh.isPickable || mesh === this || mesh === this._visual || mesh.name === 'ray') {
 			return false;
 		}
 

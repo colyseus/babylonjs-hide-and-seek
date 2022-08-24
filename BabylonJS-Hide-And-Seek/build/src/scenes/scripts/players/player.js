@@ -194,8 +194,10 @@ var Player = /** @class */ (function (_super) {
         var _this = this;
         var hiders = gameManager_1.default.Instance.getOverlappingHiders();
         if (hiders && hiders.length > 0) {
+            var distanceToHider_1 = -1;
             // Raycast to each hider to determine if an obstacle is between them and the Seeker
             hiders.forEach(function (hider) {
+                distanceToHider_1 = core_1.Vector3.Distance(_this.position, hider.position);
                 var ray = new core_1.Ray(_this.position, hider.position.subtract(_this.position).normalize(), gameManager_1.default.Instance.seekerCheckDistance + 1);
                 // Draw debug ray visual
                 //============================================
@@ -206,25 +208,13 @@ var Player = /** @class */ (function (_super) {
                 _this._rayHelper.show(_this._scene, core_1.Color3.Green());
                 //============================================
                 var info = _this._scene.multiPickWithRay(ray, _this.checkPredicate);
-                /** Flag for if the hider is obscurred by another mesh */
+                /** Flag for if the hider is obscurred by an obstacle mesh */
                 var viewBlocked = false;
-                /** Flag for if we've found the hider in the list of raycast hits */
-                var foundHider = false;
-                for (var i = 0; i < info.length && !foundHider && !viewBlocked; i++) {
+                for (var i = 0; i < info.length && !viewBlocked; i++) {
                     var mesh = info[i].pickedMesh;
-                    if (!mesh.isPickable || mesh.name === 'ray') {
-                        continue;
-                    }
-                    // console.log(`Hit Pickable: %o`, mesh);
-                    // Starting from the first raycast hit info
-                    // if we hit an obstacle before we've hit the hider
-                    // then the hider will be considered obscurred from the Seeker's view
-                    if (!mesh.name.includes('Remote') && !foundHider) {
+                    // If an obstacle is closer than the Hider it would block the Seeker's view of the Hider
+                    if (info[i].distance < distanceToHider_1 && !mesh.name.includes('Remote')) {
                         viewBlocked = true;
-                        // console.log(`Seeker's view blocked by "${mesh.name}"`);
-                    }
-                    if (mesh === hider._visual || mesh === hider) {
-                        foundHider = true;
                     }
                 }
                 if (!viewBlocked) {
@@ -234,7 +224,7 @@ var Player = /** @class */ (function (_super) {
         }
     };
     Player.prototype.checkPredicate = function (mesh) {
-        if (!mesh.isPickable || mesh === this || mesh === this._visual) {
+        if (!mesh.isPickable || mesh === this || mesh === this._visual || mesh.name === 'ray') {
             return false;
         }
         return true;

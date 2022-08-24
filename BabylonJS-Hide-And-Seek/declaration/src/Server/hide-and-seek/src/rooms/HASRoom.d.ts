@@ -11,4 +11,5 @@ export declare class HASRoom extends Room<HASRoomState> {
     private registerMessageHandlers;
     private handlePlayerInput;
     private handlePlayAgain;
+    private handleHiderFound;
 }

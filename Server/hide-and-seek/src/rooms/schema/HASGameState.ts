@@ -195,8 +195,6 @@ export class HASGameState extends Schema {
 
 		const index: number = random(0, players.length - 1);
 
-		// logger.debug(`Seeker Index: ${index}`);
-
 		// Remove the seeker from the array; we don't need to assign a spawn point to it
 		const player: PlayerState = players.splice(index, 1)[0];
 		player.spawnPoint = -1;
@@ -206,7 +204,6 @@ export class HASGameState extends Schema {
 		for (let i = 0; i < players.length; i++) {
 			players[i].spawnPoint = this._room.state.getSpawnPointIndex();
 			players[i].isSeeker = false;
-			logger.debug(`Hider Spawn Point: ${players[i].spawnPoint}`);
 		}
 
 		this._capturedPlayers.clear();
@@ -254,7 +251,7 @@ export class HASGameState extends Schema {
 		winCondition = hiderCount < winCondition ? hiderCount : winCondition;
 
 		// Check Seeker win condition
-		if (this._capturedPlayers.size < winCondition && elapsedTime < countdown) {
+		if ((this._capturedPlayers.size < winCondition || this._config.AllowDebug) && elapsedTime < countdown) {
 			return;
 		}
 

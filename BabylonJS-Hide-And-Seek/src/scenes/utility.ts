@@ -1,5 +1,16 @@
 import { Matrix, Quaternion, Vector3 } from '@babylonjs/core';
 
+const deg2Rad = 360 / (Math.PI * 2);
+const kEpsilonNormalSqrt = 1e-15;
+
+export function clamp(value: number, min: number, max: number): number {
+	return Math.min(Math.max(value, min), max);
+}
+
+export function random(min: number, max: number): number {
+	return Math.floor(Math.random() * max + min);
+}
+
 export class Vec3 {
 	public static MoveTowards(current: Vector3, target: Vector3, maxDistanceDelta: number): Vector3 {
 		let toVector_x = target.x - current.x;
@@ -12,6 +23,31 @@ export class Vec3 {
 		var dist = Math.sqrt(sqdist);
 
 		return new Vector3(current.x + (toVector_x / dist) * maxDistanceDelta, current.y + (toVector_y / dist) * maxDistanceDelta, current.z + (toVector_z / dist) * maxDistanceDelta);
+	}
+
+	public static Angle(from: Vector3, to: Vector3): number {
+		let denominator: number = Math.sqrt(from.lengthSquared() * to.lengthSquared());
+		if (denominator < kEpsilonNormalSqrt) {
+			return 0;
+		}
+
+		let dot: number = clamp(Vector3.Dot(from, to) / denominator, -1, 1);
+		return Math.acos(dot) * deg2Rad;
+	}
+
+	public static SignedAngle(from: Vector3, to: Vector3, axis: Vector3) {
+		let unsignedAngle: number = Vec3.Angle(from, to);
+
+		let cross_x: number = from.y * to.z - from.z * to.y;
+		let cross_y: number = from.z * to.x - from.x * to.z;
+		let cross_z: number = from.x * to.y - from.y * to.x;
+		let sign: number = Math.sign(axis.x * cross_x + axis.y * cross_y + axis.z * cross_z);
+
+		if (sign === 0) {
+			sign = 1;
+		}
+
+		return unsignedAngle * sign;
 	}
 }
 

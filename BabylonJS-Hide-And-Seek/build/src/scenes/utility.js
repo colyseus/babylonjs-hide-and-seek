@@ -1,7 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Quat = exports.Vec3 = void 0;
+exports.Quat = exports.Vec3 = exports.random = exports.clamp = void 0;
 var core_1 = require("@babylonjs/core");
+var deg2Rad = 360 / (Math.PI * 2);
+var kEpsilonNormalSqrt = 1e-15;
+function clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
+}
+exports.clamp = clamp;
+function random(min, max) {
+    return Math.floor(Math.random() * max + min);
+}
+exports.random = random;
 var Vec3 = /** @class */ (function () {
     function Vec3() {
     }
@@ -14,6 +24,25 @@ var Vec3 = /** @class */ (function () {
             return target;
         var dist = Math.sqrt(sqdist);
         return new core_1.Vector3(current.x + (toVector_x / dist) * maxDistanceDelta, current.y + (toVector_y / dist) * maxDistanceDelta, current.z + (toVector_z / dist) * maxDistanceDelta);
+    };
+    Vec3.Angle = function (from, to) {
+        var denominator = Math.sqrt(from.lengthSquared() * to.lengthSquared());
+        if (denominator < kEpsilonNormalSqrt) {
+            return 0;
+        }
+        var dot = clamp(core_1.Vector3.Dot(from, to) / denominator, -1, 1);
+        return Math.acos(dot) * deg2Rad;
+    };
+    Vec3.SignedAngle = function (from, to, axis) {
+        var unsignedAngle = Vec3.Angle(from, to);
+        var cross_x = from.y * to.z - from.z * to.y;
+        var cross_y = from.z * to.x - from.x * to.z;
+        var cross_z = from.x * to.y - from.y * to.x;
+        var sign = Math.sign(axis.x * cross_x + axis.y * cross_y + axis.z * cross_z);
+        if (sign === 0) {
+            sign = 1;
+        }
+        return unsignedAngle * sign;
     };
     return Vec3;
 }());

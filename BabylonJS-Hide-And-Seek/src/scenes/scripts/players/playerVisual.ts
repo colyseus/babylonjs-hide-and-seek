@@ -1,15 +1,15 @@
 import { AbstractMesh, Axis, Mesh, Quaternion, Space, Vector3 } from '@babylonjs/core';
-import { Quat, Vec3 } from '../../utility';
+import { Quat, random, Vec3 } from '../../utility';
 import GameManager from '../managers/gameManager';
 import Player from './player';
 
 export default class PlayerVisual extends Mesh {
 	private _target: Player = null;
 	private _targetLookDirection: Vector3;
+	private _lerpSpeed: number = 10;
 
-	private _lerpSpeed: number = 1;
-
-	private _lastLookDir: Vector3 = new Vector3();
+	private _prevDir: Vector3;
+	private _currentDir: Vector3;
 
 	/**
 	 * Override constructor.
@@ -40,7 +40,8 @@ export default class PlayerVisual extends Mesh {
 		// ...
 		this.setEnabled(false);
 
-		this._lastLookDir = this.forward;
+		this._prevDir = this.forward;
+		this._currentDir = this.forward;
 	}
 
 	public setTarget(player: Player) {
@@ -70,7 +71,32 @@ export default class PlayerVisual extends Mesh {
 		}
 
 		if (this._targetLookDirection) {
+			this.rotateToTargetDirection();
+		}
+	}
+
+	private rotateToTargetDirection() {
+		// this.setDirection(this._targetLookDirection);
+
+		let angle: number = Vec3.SignedAngle(this.forward, this._targetLookDirection, Vector3.Up());
+
+		// console.log(`Angle between Forward (${this.forward.x}, ${this.forward.y}, ${this.forward.z}) and Target (${this._targetLookDirection.x}, ${this._targetLookDirection.y}, ${this._targetLookDirection.z}):  %o`, angle);
+
+		let absAngle: number = Math.abs(angle);
+
+		let turnDirection: number = 0;
+
+		if (absAngle < 5) {
 			this.setDirection(this._targetLookDirection);
+		} else {
+			// If the angle 180 randomize which direction the visual will rotate
+			if (absAngle === 180) {
+				turnDirection = random(1, 100) < 50 ? -1 : 1;
+			} else {
+				turnDirection = Math.sign(angle);
+			}
+
+			this.rotate(Vector3.Up(), GameManager.DeltaTime * this._lerpSpeed * turnDirection);
 		}
 	}
 

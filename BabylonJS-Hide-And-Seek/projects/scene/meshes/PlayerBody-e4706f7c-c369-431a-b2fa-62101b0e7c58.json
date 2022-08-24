@@ -13,7 +13,7 @@
 			],
 			"rotation": [
 				0,
-				3.1275056420848943,
+				3.141592653589793,
 				0
 			],
 			"scaling": [
@@ -54,7 +54,7 @@
 			"geometryUniqueId": 294,
 			"geometryId": "f0a84ea6-2166-499c-b192-a3a1e08add33",
 			"subMeshes": null,
-			"materialUniqueId": 246,
+			"materialUniqueId": 194,
 			"materialId": "default material",
 			"metadata": {
 				"editorGeometry": {

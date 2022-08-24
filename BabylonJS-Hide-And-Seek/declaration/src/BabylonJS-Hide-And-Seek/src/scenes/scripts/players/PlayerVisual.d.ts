@@ -4,7 +4,8 @@ export default class PlayerVisual extends Mesh {
     private _target;
     private _targetLookDirection;
     private _lerpSpeed;
-    private _lastLookDir;
+    private _prevDir;
+    private _currentDir;
     /**
      * Override constructor.
      * @warn do not fill.
@@ -30,6 +31,7 @@ export default class PlayerVisual extends Mesh {
      * Called each frame.
      */
     onUpdate(): void;
+    private rotateToTargetDirection;
     /**
      * Called on the object has been disposed.
      * Object can be disposed manually or when the editor stops running the scene.

@@ -16,6 +16,8 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@babylonjs/core");
+var utility_1 = require("../../utility");
+var gameManager_1 = require("../managers/gameManager");
 var PlayerVisual = /** @class */ (function (_super) {
     __extends(PlayerVisual, _super);
     /**
@@ -26,8 +28,7 @@ var PlayerVisual = /** @class */ (function (_super) {
     function PlayerVisual() {
         var _this = this;
         _this._target = null;
-        _this._lerpSpeed = 1;
-        _this._lastLookDir = new core_1.Vector3();
+        _this._lerpSpeed = 10;
         return _this;
     }
     /**
@@ -49,7 +50,8 @@ var PlayerVisual = /** @class */ (function (_super) {
     PlayerVisual.prototype.onStart = function () {
         // ...
         this.setEnabled(false);
-        this._lastLookDir = this.forward;
+        this._prevDir = this.forward;
+        this._currentDir = this.forward;
     };
     PlayerVisual.prototype.setTarget = function (player) {
         this._target = player;
@@ -73,7 +75,27 @@ var PlayerVisual = /** @class */ (function (_super) {
             this.setAbsolutePosition(this._target.getAbsolutePosition());
         }
         if (this._targetLookDirection) {
+            this.rotateToTargetDirection();
+        }
+    };
+    PlayerVisual.prototype.rotateToTargetDirection = function () {
+        // this.setDirection(this._targetLookDirection);
+        var angle = utility_1.Vec3.SignedAngle(this.forward, this._targetLookDirection, core_1.Vector3.Up());
+        // console.log(`Angle between Forward (${this.forward.x}, ${this.forward.y}, ${this.forward.z}) and Target (${this._targetLookDirection.x}, ${this._targetLookDirection.y}, ${this._targetLookDirection.z}):  %o`, angle);
+        var absAngle = Math.abs(angle);
+        var turnDirection = 0;
+        if (absAngle < 5) {
             this.setDirection(this._targetLookDirection);
+        }
+        else {
+            // If the angle 180 randomize which direction the visual will rotate
+            if (absAngle === 180) {
+                turnDirection = (0, utility_1.random)(1, 100) < 50 ? -1 : 1;
+            }
+            else {
+                turnDirection = Math.sign(angle);
+            }
+            this.rotate(core_1.Vector3.Up(), gameManager_1.default.DeltaTime * this._lerpSpeed * turnDirection);
         }
     };
     /**

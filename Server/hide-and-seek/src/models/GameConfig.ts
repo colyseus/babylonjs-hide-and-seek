@@ -50,4 +50,8 @@ export class GameConfig {
 	public get SeekerCheckDistance(): number {
 		return this._data.seekerCheckDistance || 7;
 	}
+
+	public get AllowDebug(): boolean {
+		return this._data.allowDebug || false;
+	}
 }

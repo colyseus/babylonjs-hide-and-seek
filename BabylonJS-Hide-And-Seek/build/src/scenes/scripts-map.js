@@ -13,6 +13,8 @@ exports.scriptsMap = {
     "src/scenes/scripts/players/cameraHolder.ts": require("./scripts/players/cameraHolder"),
     "src/scenes/scripts/players/player.ts": require("./scripts/players/player"),
     "src/scenes/scripts/players/playerVisual.ts": require("./scripts/players/playerVisual"),
+    "src/scenes/scripts/spawnPoint.ts": require("./scripts/spawnPoint"),
     "src/scenes/scripts/spawnPoints.ts": require("./scripts/spawnPoints"),
+    "src/scenes/utility.ts": require("./utility"),
 };
 //# sourceMappingURL=scripts-map.js.map

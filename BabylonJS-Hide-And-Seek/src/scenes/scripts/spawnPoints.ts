@@ -1,4 +1,4 @@
-import { Node, TransformNode, Vector3 } from '@babylonjs/core';
+import { AbstractMesh, Node, TransformNode, Vector3 } from '@babylonjs/core';
 import type { PlayerState } from '../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
 
 export class SpawnPoints {
@@ -11,13 +11,13 @@ export class SpawnPoints {
 
 	constructor(spawnPoints: TransformNode[]) {
 		this._spawnPoints = spawnPoints;
+		this._usedPoints = new Map<string, TransformNode>();
 
 		this.initializeSpawnPoints();
 	}
 
 	private initializeSpawnPoints() {
 		this._availablePoints = [];
-		this._usedPoints = new Map<string, TransformNode>();
 
 		this._spawnPoints.forEach((point: TransformNode) => {
 			if (point.name.includes('Seeker')) {
@@ -25,18 +25,21 @@ export class SpawnPoints {
 			} else {
 				this._availablePoints.push(point);
 			}
+
+			// Enforce the meshes to not be pickable
+			point.getChildMeshes().forEach((mesh: AbstractMesh) => {
+				mesh.isPickable = false;
+			});
 		});
 
 		// console.log(`Found Seeker Point: ${this._seekerPoint !== null} - Found ${this._availablePoints.length} Hider Points`);
 	}
 
-	public reset() {
-		this.initializeSpawnPoints();
-	}
-
 	public getSpawnPoint(playerState: PlayerState): TransformNode {
 		let point: TransformNode = null;
 		const index: number = playerState.spawnPoint;
+
+		console.log(`*** Get Spawn Pt - ${playerState.id} is Seeker: ${playerState.isSeeker} ***`);
 
 		if (playerState.isSeeker) {
 			if (!this._seekerPoint) {

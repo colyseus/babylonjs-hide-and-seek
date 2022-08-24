@@ -7,6 +7,7 @@ export declare class HASRoomState extends Schema {
     gameState: HASGameState;
     private _room;
     private _availableSpawnPoints;
+    private _config;
     constructor(room: HASRoom, ...args: any[]);
     private initializeSpawnPoints;
     /**
@@ -18,4 +19,5 @@ export declare class HASRoomState extends Schema {
     freeUpSpawnPointIndex(playerState: PlayerState): void;
     update(deltaTime: number): void;
     resetForPlay(): void;
+    seekerFoundHider(seekerId: string, hiderId: string): void;
 }

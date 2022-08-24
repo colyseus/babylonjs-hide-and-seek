@@ -46,4 +46,8 @@ export class GameConfig {
 	public get GameOverCountdown(): number {
 		return this._data.gameOverCountdown || 10000;
 	}
+
+	public get SeekerCheckDistance(): number {
+		return this._data.seekerCheckDistance || 7;
+	}
 }

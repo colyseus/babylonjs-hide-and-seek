@@ -1,9 +1,15 @@
-import { Mesh, Vector3 } from '@babylonjs/core';
+import { AbstractMesh, Axis, Mesh, Quaternion, Space, Vector3 } from '@babylonjs/core';
+import { Quat, Vec3 } from '../../utility';
+import GameManager from '../managers/gameManager';
 import Player from './player';
 
 export default class PlayerVisual extends Mesh {
 	private _target: Player = null;
 	private _targetLookDirection: Vector3;
+
+	private _lerpSpeed: number = 1;
+
+	private _lastLookDir: Vector3 = new Vector3();
 
 	/**
 	 * Override constructor.
@@ -33,6 +39,8 @@ export default class PlayerVisual extends Mesh {
 	public onStart(): void {
 		// ...
 		this.setEnabled(false);
+
+		this._lastLookDir = this.forward;
 	}
 
 	public setTarget(player: Player) {
@@ -40,7 +48,15 @@ export default class PlayerVisual extends Mesh {
 	}
 
 	public setLookTargetDirection(direction: Vector3) {
-		this._targetLookDirection = direction;
+		this._targetLookDirection = Vector3.Normalize(direction);
+	}
+
+	public setPickable(isPickable: boolean) {
+		this.isPickable = isPickable;
+
+		this.getChildMeshes().forEach((mesh: AbstractMesh) => {
+			mesh.isPickable = isPickable;
+		});
 	}
 
 	/**
@@ -54,7 +70,7 @@ export default class PlayerVisual extends Mesh {
 		}
 
 		if (this._targetLookDirection) {
-			this.lookAt(this.position.add(Vector3.Normalize(this._targetLookDirection).scale(2)));
+			this.setDirection(this._targetLookDirection);
 		}
 	}
 

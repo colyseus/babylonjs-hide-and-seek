@@ -47,7 +47,13 @@ export default class GameManager extends Node {
 
 	private _playerChaseSpeed: number = 25;
 	private _startChaseSpeed: number = 3;
-	private _hiderCheckDistance: number = 6;
+	private _seekerFOV: number = 60;
+	public seekerCheckDistance: number = 6;
+	/** In ms, the time between messages sent to the server for each Hider discovered by the Seeker */
+	private _foundHiderMsgRate: number = 1000;
+
+	private _halfSeekerFOV: number = 0;
+	private _foundHiders: Map<string, Player>;
 
 	public get CurrentGameState(): GameState {
 		return GameManager.Instance._currentGameState;
@@ -83,6 +89,9 @@ export default class GameManager extends Node {
 		this._availableRemotePlayerObjects = [];
 		this._spawnedRemotes = new Map<string, Player>();
 		this._players = new Map<string, PlayerState>();
+		this._foundHiders = new Map<string, Player>();
+
+		this._halfSeekerFOV = this._seekerFOV / 2;
 
 		this.onJoinedRoom = this.onJoinedRoom.bind(this);
 		this.onLeftRoom = this.onLeftRoom.bind(this);
@@ -131,7 +140,7 @@ export default class GameManager extends Node {
 	private onLeftRoom(code: number) {
 		console.log(`Left room: ${code}`);
 		this._cameraHolder.setTarget(this._cameraStartPos, this._startChaseSpeed);
-		this.despawnPlayers();
+		this.reset();
 	}
 
 	private onPlayerAdded(state: PlayerState, sessionId: string) {
@@ -149,15 +158,15 @@ export default class GameManager extends Node {
 	}
 
 	private resetPlayerObject(player: Player) {
-		player.setPlayerState(null);
-
-		player.setVelocity(Vector3.Zero());
+		player.reset();
 
 		player.toggleEnabled(false);
 
 		player.setParent(this);
 
-		this._availableRemotePlayerObjects.push(player);
+		if (!player.isLocalPlayer) {
+			this._availableRemotePlayerObjects.push(player);
+		}
 	}
 
 	private onGameStateChange(changes: any[]) {
@@ -191,9 +200,7 @@ export default class GameManager extends Node {
 			case GameState.NONE:
 				break;
 			case GameState.WAIT_FOR_MINIMUM:
-				this.despawnPlayers();
-				this._spawnPoints.reset();
-				this._playAgain = false;
+				this.reset();
 				break;
 			case GameState.CLOSE_COUNTDOWN:
 				break;
@@ -254,11 +261,9 @@ export default class GameManager extends Node {
 
 		player.setParent(null);
 
-		console.log(`Spawn Point Rotation: %o`, point.rotation);
-
 		player.position.copyFrom(point.position);
 
-		console.log(`Player Rotation: %o`, player.rotationQuaternion);
+		player.setVisualLookDirection(point.forward);
 
 		// Delay enabling player object to avoid visual briefly appearing somewhere else before getting moved to its spawn position
 		setTimeout(() => {
@@ -269,17 +274,19 @@ export default class GameManager extends Node {
 	}
 
 	private despawnPlayers() {
-		if (NetworkManager.Instance.Room) {
-			NetworkManager.Instance.Room.state.players.forEach((player: PlayerState, sessionId: string) => {
-				this.despawnPlayer(player);
-			});
-		} else {
-			this.resetPlayerObject(this._player);
+		// if (NetworkManager.Instance.Room) {
+		// 	NetworkManager.Instance.Room.state.players.forEach((player: PlayerState, sessionId: string) => {
+		// 		this.despawnPlayer(player);
+		// 	});
+		// } else {
+		this.resetPlayerObject(this._player);
 
-			this._spawnedRemotes.forEach((playerObject: Player) => {
-				this.resetPlayerObject(playerObject);
-			});
-		}
+		this._spawnedRemotes.forEach((playerObject: Player) => {
+			this.resetPlayerObject(playerObject);
+		});
+
+		this._spawnedRemotes.clear();
+		// }
 	}
 
 	private despawnPlayer(player: PlayerState) {
@@ -310,20 +317,57 @@ export default class GameManager extends Node {
 		const overlappingHiders: Player[] = [];
 
 		this._spawnedRemotes.forEach((hider: Player) => {
-			// TODO change from a spherical check to a pie-slice check
+			const forward: Vector3 = this._player.visualForward();
+			const dir: Vector3 = hider.position.subtract(this._player.position).normalize();
 
-			// Check for Hiders within the field of view of the Seeker
-			const angle: number = Vector3.GetAngleBetweenVectors(this._player.position, hider.position, this._player.forward);
+			// Check for Hiders within the field of view of the Seeker by getting the angle between the Seeker's
+			// forward vector and the normalized direction vector between the Seeker and the Hider
+			let angle: number = Math.abs(Vector3.GetAngleBetweenVectors(forward, dir, Vector3.Forward()));
 
-			console.log(`Hider Angle: ${angle}`);
+			// Convert angle to degrees
+			angle *= 180 / Math.PI;
 
-			// Of those within the FOV check if they're in range
-			// if (Vector3.Distance(this._player.position, hider.position) <= this._hiderCheckDistance) {
-			// 	// overlappingHiders.push(hider);
-			// }
+			// console.log(`Forward: (${forward.x}, ${forward.y}, ${forward.z})\nDir: (${dir.x}, ${dir.y}, ${dir.z})\nAngle: ${angle}`);
+
+			// If angle falls within the Seekers FOV check if the hider is close enough.
+			// If within the check distance the hider is a possible candiate for capture as
+			// as they are overlapping with the Seeker capture area.
+			if (angle <= this._halfSeekerFOV && Vector3.Distance(this._player.position, hider.position) <= this.seekerCheckDistance) {
+				// console.log(`Overlapping Hider: %o`, hider);
+				overlappingHiders.push(hider);
+			}
 		});
 
 		return overlappingHiders;
+	}
+
+	public seekerFoundHider(hider: Player) {
+		// Sending the message to the server is not a guarantee the Hider will be captured by the Seeker.
+		// The server will do a final, yet simple, check to see if the Hider is close enough to be considered found.
+
+		// Only send a capture message to the server if the hider is not currently captured
+		// or if we haven't sent a message in the past 'x' seconds
+		if (!hider.isCaptured() && !this._foundHiders.has(hider.sessionId())) {
+			// console.log(`Game Manager - Seeker found player: ${hider.sessionId()}`);
+			this._foundHiders.set(hider.sessionId(), hider);
+
+			// Send server message
+			NetworkManager.Instance.sendHiderFound(hider.sessionId());
+
+			// Remove the found hider from the collection after the elapsed time
+			// to allow the message to be sent again
+			setTimeout(() => {
+				this._foundHiders.delete(hider.sessionId());
+			}, this._foundHiderMsgRate);
+		}
+	}
+
+	private reset() {
+		this.despawnPlayers();
+		this.initializeSpawnPoints();
+
+		this._foundHiders.clear();
+		this._playAgain = false;
 	}
 
 	/**

@@ -10,4 +10,5 @@ export declare class GameConfig {
     get HuntCountdown(): number;
     get SeekerWinCondition(): number;
     get GameOverCountdown(): number;
+    get SeekerCheckDistance(): number;
 }

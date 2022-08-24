@@ -47,7 +47,11 @@ var GameManager = /** @class */ (function (_super) {
         _this._playAgain = false;
         _this._playerChaseSpeed = 25;
         _this._startChaseSpeed = 3;
-        _this._hiderCheckDistance = 6;
+        _this._seekerFOV = 60;
+        _this.seekerCheckDistance = 6;
+        /** In ms, the time between messages sent to the server for each Hider discovered by the Seeker */
+        _this._foundHiderMsgRate = 1000;
+        _this._halfSeekerFOV = 0;
         return _this;
     }
     Object.defineProperty(GameManager.prototype, "CurrentGameState", {
@@ -84,6 +88,8 @@ var GameManager = /** @class */ (function (_super) {
         this._availableRemotePlayerObjects = [];
         this._spawnedRemotes = new Map();
         this._players = new Map();
+        this._foundHiders = new Map();
+        this._halfSeekerFOV = this._seekerFOV / 2;
         this.onJoinedRoom = this.onJoinedRoom.bind(this);
         this.onLeftRoom = this.onLeftRoom.bind(this);
         this.onPlayerAdded = this.onPlayerAdded.bind(this);
@@ -122,7 +128,7 @@ var GameManager = /** @class */ (function (_super) {
     GameManager.prototype.onLeftRoom = function (code) {
         console.log("Left room: ".concat(code));
         this._cameraHolder.setTarget(this._cameraStartPos, this._startChaseSpeed);
-        this.despawnPlayers();
+        this.reset();
     };
     GameManager.prototype.onPlayerAdded = function (state, sessionId) {
         console.log("On Player Added: ".concat(sessionId));
@@ -134,11 +140,12 @@ var GameManager = /** @class */ (function (_super) {
         this._players.delete(sessionId);
     };
     GameManager.prototype.resetPlayerObject = function (player) {
-        player.setPlayerState(null);
-        player.setVelocity(core_1.Vector3.Zero());
+        player.reset();
         player.toggleEnabled(false);
         player.setParent(this);
-        this._availableRemotePlayerObjects.push(player);
+        if (!player.isLocalPlayer) {
+            this._availableRemotePlayerObjects.push(player);
+        }
     };
     GameManager.prototype.onGameStateChange = function (changes) {
         // console.log(`Game Manager - On Game State Change: %o`, changes);
@@ -165,9 +172,7 @@ var GameManager = /** @class */ (function (_super) {
             case GameState_1.GameState.NONE:
                 break;
             case GameState_1.GameState.WAIT_FOR_MINIMUM:
-                this.despawnPlayers();
-                this._spawnPoints.reset();
-                this._playAgain = false;
+                this.reset();
                 break;
             case GameState_1.GameState.CLOSE_COUNTDOWN:
                 break;
@@ -219,9 +224,8 @@ var GameManager = /** @class */ (function (_super) {
         }
         var point = this._spawnPoints.getSpawnPoint(playerState);
         player.setParent(null);
-        console.log("Spawn Point Rotation: %o", point.rotation);
         player.position.copyFrom(point.position);
-        console.log("Player Rotation: %o", player.rotationQuaternion);
+        player.setVisualLookDirection(point.forward);
         // Delay enabling player object to avoid visual briefly appearing somewhere else before getting moved to its spawn position
         setTimeout(function () {
             player.toggleEnabled(true);
@@ -230,17 +234,17 @@ var GameManager = /** @class */ (function (_super) {
     };
     GameManager.prototype.despawnPlayers = function () {
         var _this = this;
-        if (networkManager_1.default.Instance.Room) {
-            networkManager_1.default.Instance.Room.state.players.forEach(function (player, sessionId) {
-                _this.despawnPlayer(player);
-            });
-        }
-        else {
-            this.resetPlayerObject(this._player);
-            this._spawnedRemotes.forEach(function (playerObject) {
-                _this.resetPlayerObject(playerObject);
-            });
-        }
+        // if (NetworkManager.Instance.Room) {
+        // 	NetworkManager.Instance.Room.state.players.forEach((player: PlayerState, sessionId: string) => {
+        // 		this.despawnPlayer(player);
+        // 	});
+        // } else {
+        this.resetPlayerObject(this._player);
+        this._spawnedRemotes.forEach(function (playerObject) {
+            _this.resetPlayerObject(playerObject);
+        });
+        this._spawnedRemotes.clear();
+        // }
     };
     GameManager.prototype.despawnPlayer = function (player) {
         // Reset the player object if it has been spawned
@@ -266,16 +270,47 @@ var GameManager = /** @class */ (function (_super) {
         var _this = this;
         var overlappingHiders = [];
         this._spawnedRemotes.forEach(function (hider) {
-            // TODO change from a spherical check to a pie-slice check
-            // Check for Hiders within the field of view of the Seeker
-            var angle = core_1.Vector3.GetAngleBetweenVectors(_this._player.position, hider.position, _this._player.forward);
-            console.log("Hider Angle: ".concat(angle));
-            // Of those within the FOV check if they're in range
-            // if (Vector3.Distance(this._player.position, hider.position) <= this._hiderCheckDistance) {
-            // 	// overlappingHiders.push(hider);
-            // }
+            var forward = _this._player.visualForward();
+            var dir = hider.position.subtract(_this._player.position).normalize();
+            // Check for Hiders within the field of view of the Seeker by getting the angle between the Seeker's
+            // forward vector and the normalized direction vector between the Seeker and the Hider
+            var angle = Math.abs(core_1.Vector3.GetAngleBetweenVectors(forward, dir, core_1.Vector3.Forward()));
+            // Convert angle to degrees
+            angle *= 180 / Math.PI;
+            // console.log(`Forward: (${forward.x}, ${forward.y}, ${forward.z})\nDir: (${dir.x}, ${dir.y}, ${dir.z})\nAngle: ${angle}`);
+            // If angle falls within the Seekers FOV check if the hider is close enough.
+            // If within the check distance the hider is a possible candiate for capture as
+            // as they are overlapping with the Seeker capture area.
+            if (angle <= _this._halfSeekerFOV && core_1.Vector3.Distance(_this._player.position, hider.position) <= _this.seekerCheckDistance) {
+                // console.log(`Overlapping Hider: %o`, hider);
+                overlappingHiders.push(hider);
+            }
         });
         return overlappingHiders;
+    };
+    GameManager.prototype.seekerFoundHider = function (hider) {
+        // Sending the message to the server is not a guarantee the Hider will be captured by the Seeker.
+        // The server will do a final, yet simple, check to see if the Hider is close enough to be considered found.
+        var _this = this;
+        // Only send a capture message to the server if the hider is not currently captured
+        // or if we haven't sent a message in the past 'x' seconds
+        if (!hider.isCaptured() && !this._foundHiders.has(hider.sessionId())) {
+            // console.log(`Game Manager - Seeker found player: ${hider.sessionId()}`);
+            this._foundHiders.set(hider.sessionId(), hider);
+            // Send server message
+            networkManager_1.default.Instance.sendHiderFound(hider.sessionId());
+            // Remove the found hider from the collection after the elapsed time
+            // to allow the message to be sent again
+            setTimeout(function () {
+                _this._foundHiders.delete(hider.sessionId());
+            }, this._foundHiderMsgRate);
+        }
+    };
+    GameManager.prototype.reset = function () {
+        this.despawnPlayers();
+        this.initializeSpawnPoints();
+        this._foundHiders.clear();
+        this._playAgain = false;
     };
     /**
      * Called each frame.

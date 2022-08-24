@@ -8,12 +8,12 @@ var SpawnPoints = /** @class */ (function () {
         this._availablePoints = null;
         this._usedPoints = null;
         this._spawnPoints = spawnPoints;
+        this._usedPoints = new Map();
         this.initializeSpawnPoints();
     }
     SpawnPoints.prototype.initializeSpawnPoints = function () {
         var _this = this;
         this._availablePoints = [];
-        this._usedPoints = new Map();
         this._spawnPoints.forEach(function (point) {
             if (point.name.includes('Seeker')) {
                 _this._seekerPoint = point;
@@ -21,15 +21,17 @@ var SpawnPoints = /** @class */ (function () {
             else {
                 _this._availablePoints.push(point);
             }
+            // Enforce the meshes to not be pickable
+            point.getChildMeshes().forEach(function (mesh) {
+                mesh.isPickable = false;
+            });
         });
         // console.log(`Found Seeker Point: ${this._seekerPoint !== null} - Found ${this._availablePoints.length} Hider Points`);
-    };
-    SpawnPoints.prototype.reset = function () {
-        this.initializeSpawnPoints();
     };
     SpawnPoints.prototype.getSpawnPoint = function (playerState) {
         var point = null;
         var index = playerState.spawnPoint;
+        console.log("*** Get Spawn Pt - ".concat(playerState.id, " is Seeker: ").concat(playerState.isSeeker, " ***"));
         if (playerState.isSeeker) {
             if (!this._seekerPoint) {
                 console.error("Seeker spawn point has already been used!");

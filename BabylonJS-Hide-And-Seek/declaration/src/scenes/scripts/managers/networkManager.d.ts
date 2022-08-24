@@ -61,5 +61,6 @@ export default class NetworkManager extends Node {
     private unregisterRoomHandlers;
     sendPlayerPosition(positionMsg: PlayerInputMessage): void;
     sendPlayAgain(): void;
+    sendHiderFound(hiderId: string): void;
     private handleMessages;
 }

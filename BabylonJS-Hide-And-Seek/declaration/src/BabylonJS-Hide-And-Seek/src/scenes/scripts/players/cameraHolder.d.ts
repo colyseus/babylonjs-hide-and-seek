@@ -1,5 +1,6 @@
 import { Mesh, TransformNode, Vector3 } from '@babylonjs/core';
 export default class CameraHolder extends Mesh {
+    private _camera;
     private _target;
     private _targetPosition;
     private _chaseSpeed;

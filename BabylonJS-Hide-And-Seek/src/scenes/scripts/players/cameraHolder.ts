@@ -1,9 +1,12 @@
-import { Mesh, Space, TransformNode, Vector3 } from '@babylonjs/core';
+import { Camera, Mesh, Space, TransformNode, Vector3 } from '@babylonjs/core';
 import { Node } from '@babylonjs/core/node';
-import { fromScene, visibleInInspector } from '../../decorators';
+import { fromChildren, fromScene, visibleInInspector } from '../../decorators';
 import GameManager from '../managers/gameManager';
 
 export default class CameraHolder extends Mesh {
+	@fromChildren('Player Camera')
+	private _camera: Camera;
+
 	private _target: TransformNode = null;
 	private _targetPosition: Vector3 = null;
 	private _chaseSpeed: number = 1;
@@ -28,7 +31,9 @@ export default class CameraHolder extends Mesh {
 	 */
 	public onStart(): void {
 		// ...
-		// console.log(`Camera Holder Target: %o`, this._target);
+		console.log(`Player Camera: %o`, this._camera);
+
+		this._camera.layerMask = 1;
 	}
 
 	/**

@@ -10,11 +10,15 @@ exports.scriptsMap = {
     "src/scenes/scripts/managers/gameManager.ts": require("./scripts/managers/gameManager"),
     "src/scenes/scripts/managers/inputManager.ts": require("./scripts/managers/inputManager"),
     "src/scenes/scripts/managers/networkManager.ts": require("./scripts/managers/networkManager"),
+    "src/scenes/scripts/managers/uiManager.ts": require("./scripts/managers/uiManager"),
     "src/scenes/scripts/players/cameraHolder.ts": require("./scripts/players/cameraHolder"),
     "src/scenes/scripts/players/player.ts": require("./scripts/players/player"),
     "src/scenes/scripts/players/playerVisual.ts": require("./scripts/players/playerVisual"),
     "src/scenes/scripts/spawnPoint.ts": require("./scripts/spawnPoint"),
     "src/scenes/scripts/spawnPoints.ts": require("./scripts/spawnPoints"),
+    "src/scenes/scripts/ui/testUI.ts": require("./scripts/ui/testUI"),
+    "src/scenes/scripts/ui/titleUI.ts": require("./scripts/ui/titleUI"),
+    "src/scenes/scripts/ui/uiController.ts": require("./scripts/ui/uiController"),
     "src/scenes/utility.ts": require("./utility"),
 };
 //# sourceMappingURL=scripts-map.js.map

@@ -47,6 +47,7 @@ export default class GameManager extends Node {
      * Called on the scene starts.
      */
     onStart(): void;
+    joinRoom(roomId?: string): Promise<void>;
     private initializeSpawnPoints;
     private onJoinedRoom;
     private onLeftRoom;

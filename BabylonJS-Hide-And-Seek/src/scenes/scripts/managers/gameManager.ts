@@ -1,4 +1,4 @@
-import { Quaternion, TransformNode, Vector3 } from '@babylonjs/core';
+import { AbstractMesh, Quaternion, TransformNode, Vector3 } from '@babylonjs/core';
 import { Node } from '@babylonjs/core/node';
 import { GameState } from '../GameState';
 import type { PlayerState } from '../../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
@@ -7,7 +7,7 @@ import CameraHolder from '../players/cameraHolder';
 import Player from '../players/player';
 import { SpawnPoints } from '../spawnPoints';
 import InputManager from './inputManager';
-import NetworkManager from './networkManager';
+import NetworkManager, { NetworkEvent } from './networkManager';
 import { PlayerInputMessage } from '../../../../../Server/hide-and-seek/src/models/PlayerInputMessage';
 
 export default class GameManager extends Node {
@@ -119,13 +119,51 @@ export default class GameManager extends Node {
 
 		this._player.setParent(null);
 
-		NetworkManager.Instance.onJoinedRoom = this.onJoinedRoom;
-		NetworkManager.Instance.onLeftRoom = this.onLeftRoom;
-		NetworkManager.Instance.onPlayerAdded = this.onPlayerAdded;
-		NetworkManager.Instance.onPlayerRemoved = this.onPlayerRemoved;
-		NetworkManager.Instance.onGameStateChange = this.onGameStateChange;
+		// NetworkManager.Instance.onJoinedRoom = this.onJoinedRoom;
+		// NetworkManager.Instance.onLeftRoom = this.onLeftRoom;
+		// NetworkManager.Instance.onPlayerAdded = this.onPlayerAdded;
+		// NetworkManager.Instance.onPlayerRemoved = this.onPlayerRemoved;
+		// NetworkManager.Instance.onGameStateChange = this.onGameStateChange;
+
+		NetworkManager.Instance.onEvent(NetworkEvent.JOINED_ROOM, this.onJoinedRoom);
+		NetworkManager.Instance.onEvent(NetworkEvent.LEFT_ROOM, this.onLeftRoom);
+		NetworkManager.Instance.onEvent(NetworkEvent.PLAYER_ADDED, this.onPlayerAdded);
+		NetworkManager.Instance.onEvent(NetworkEvent.PLAYER_REMOVED, this.onPlayerRemoved);
+		NetworkManager.Instance.onEvent(NetworkEvent.GAME_STATE_CHANGED, this.onGameStateChange);
 
 		this._cameraHolder.setTarget(this._cameraStartPos, this._startChaseSpeed);
+
+		// Set the layermask of all scene meshes so they aren't visible in the UI camera
+		//================================================
+		let meshes: AbstractMesh[] = this._scene.meshes;
+
+		const meshLayermask: number = 1;
+		meshes.forEach((mesh: AbstractMesh) => {
+			// console.log(`Setting ${mesh.name} Layermask to ${meshLayermask}`);
+			mesh.layerMask = meshLayermask;
+		});
+		//================================================
+	}
+
+	public async joinRoom(roomId: string = null): Promise<void> {
+		if (this._joiningRoom || NetworkManager.Instance.Room) {
+			return;
+		}
+
+		if (!roomId) {
+			console.log('Start Quick Play!');
+		} else {
+			console.log(`Join room "${roomId}"`);
+		}
+
+		this._joiningRoom = true;
+
+		try {
+			await NetworkManager.Instance.joinRoom(roomId);
+		} catch (error: any) {
+			this._joiningRoom = false;
+			throw new Error(error.message);
+		}
 	}
 
 	private initializeSpawnPoints() {
@@ -143,18 +181,18 @@ export default class GameManager extends Node {
 		this.reset();
 	}
 
-	private onPlayerAdded(state: PlayerState, sessionId: string) {
-		console.log(`On Player Added: ${sessionId}`);
+	private onPlayerAdded(state: PlayerState) {
+		console.log(`On Player Added: %o`, state.id);
 
-		this._players.set(sessionId, state);
+		this._players.set(state.id, state);
 	}
 
-	private onPlayerRemoved(state: PlayerState, sessionId: string) {
-		console.log(`On Player Removed: ${sessionId}`);
+	private onPlayerRemoved(state: PlayerState) {
+		console.log(`On Player Removed: ${state.id}`);
 
 		this.despawnPlayer(state);
 
-		this._players.delete(sessionId);
+		this._players.delete(state.id);
 	}
 
 	private resetPlayerObject(player: Player) {
@@ -376,17 +414,17 @@ export default class GameManager extends Node {
 	public onUpdate(): void {
 		// ...
 
-		if (!NetworkManager.Instance.Room && InputManager.getKeyUp(32) && !this._joiningRoom) {
-			console.log('Join Room');
-			this._joiningRoom = true;
-			NetworkManager.Instance.joinRoom();
-		} else {
-			if (NetworkManager.Instance.Room && this.CurrentGameState === GameState.GAME_OVER && !this._playAgain && InputManager.getKeyUp(32)) {
-				this._playAgain = true;
-				this._cameraHolder.setTarget(this._cameraStartPos, this._startChaseSpeed);
-				NetworkManager.Instance.sendPlayAgain();
-			}
+		// if (!NetworkManager.Instance.Room && InputManager.getKeyUp(32) && !this._joiningRoom) {
+		// 	console.log('Join Room');
+		// 	this._joiningRoom = true;
+		// 	NetworkManager.Instance.joinRoom();
+		// } else {
+		if (NetworkManager.Instance.Room && this.CurrentGameState === GameState.GAME_OVER && !this._playAgain && InputManager.getKeyUp(32)) {
+			this._playAgain = true;
+			this._cameraHolder.setTarget(this._cameraStartPos, this._startChaseSpeed);
+			NetworkManager.Instance.sendPlayAgain();
 		}
+		// }
 	}
 
 	/**

@@ -51,9 +51,19 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.NetworkEvent = void 0;
 var node_1 = require("@babylonjs/core/node");
 var Colyseus = require("colyseus.js");
 var GameState_1 = require("../GameState");
+var EventEmitter = require("events");
+var NetworkEvent;
+(function (NetworkEvent) {
+    NetworkEvent["JOINED_ROOM"] = "joinedRoom";
+    NetworkEvent["LEFT_ROOM"] = "leftRoom";
+    NetworkEvent["PLAYER_ADDED"] = "playerAdded";
+    NetworkEvent["PLAYER_REMOVED"] = "playerRemoved";
+    NetworkEvent["GAME_STATE_CHANGED"] = "gameStateChanged";
+})(NetworkEvent = exports.NetworkEvent || (exports.NetworkEvent = {}));
 var NetworkManager = /** @class */ (function (_super) {
     __extends(NetworkManager, _super);
     /**
@@ -66,6 +76,7 @@ var NetworkManager = /** @class */ (function (_super) {
         _this._serverSettings = null;
         _this._client = null;
         _this._room = null;
+        _this._eventEmitter = new EventEmitter();
         return _this;
     }
     Object.defineProperty(NetworkManager, "Instance", {
@@ -116,6 +127,12 @@ var NetworkManager = /** @class */ (function (_super) {
         enumerable: false,
         configurable: true
     });
+    NetworkManager.prototype.onEvent = function (eventName, callback) {
+        this._eventEmitter.addListener(eventName, callback);
+    };
+    NetworkManager.prototype.broadcastEvent = function (eventName, data) {
+        this._eventEmitter.emit(eventName, data);
+    };
     /**
      * Called on the node is being initialized.
      * This function is called immediatly after the constructor has been called.
@@ -179,9 +196,9 @@ var NetworkManager = /** @class */ (function (_super) {
                         _a.Room = _b.sent();
                         if (this.Room) {
                             console.log("Joined Room: ".concat(this.Room.id));
-                            this.onJoinedRoom(this.Room.id);
+                            this.registerRoomHandlers();
+                            this.broadcastEvent(NetworkEvent.JOINED_ROOM, this.Room.id);
                         }
-                        this.registerRoomHandlers();
                         return [2 /*return*/];
                 }
             });
@@ -190,11 +207,9 @@ var NetworkManager = /** @class */ (function (_super) {
     NetworkManager.prototype.joinRoomWithId = function (roomId) {
         if (roomId === void 0) { roomId = ''; }
         return __awaiter(this, void 0, void 0, function () {
-            var error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 5, , 6]);
                         if (!roomId) return [3 /*break*/, 2];
                         console.log("Join room with id: ".concat(roomId));
                         return [4 /*yield*/, this._client.joinById(roomId)];
@@ -203,12 +218,6 @@ var NetworkManager = /** @class */ (function (_super) {
                         console.log("Join or create room");
                         return [4 /*yield*/, this._client.joinOrCreate('HAS_room')];
                     case 3: return [2 /*return*/, _a.sent()];
-                    case 4: return [3 /*break*/, 6];
-                    case 5:
-                        error_1 = _a.sent();
-                        console.error(error_1.stack);
-                        return [3 /*break*/, 6];
-                    case 6: return [2 /*return*/];
                 }
             });
         });
@@ -220,11 +229,12 @@ var NetworkManager = /** @class */ (function (_super) {
             this.Room.onLeave.once(function (code) {
                 _this.unregisterRoomHandlers();
                 _this.Room = null;
-                _this.onLeftRoom(code);
+                // this.onLeftRoom(code);
+                _this.broadcastEvent(NetworkEvent.LEFT_ROOM, code);
             });
-            this.Room.state.players.onAdd = this.onPlayerAdded;
-            this.Room.state.players.onRemove = this.onPlayerRemoved;
-            this.Room.state.gameState.onChange = this.onGameStateChange;
+            this.Room.state.players.onAdd = function (player) { return _this.broadcastEvent(NetworkEvent.PLAYER_ADDED, player); }; // this.onPlayerAdded;
+            this.Room.state.players.onRemove = function (player) { return _this.broadcastEvent(NetworkEvent.PLAYER_REMOVED, player); }; // this.onPlayerRemoved;
+            this.Room.state.gameState.onChange = function (changes) { return _this.broadcastEvent(NetworkEvent.GAME_STATE_CHANGED, changes); }; // this.onGameStateChange;
             this.Room.onMessage('*', this.handleMessages);
         }
         else {
@@ -266,6 +276,11 @@ var NetworkManager = /** @class */ (function (_super) {
         // 		this.handleVelocityChange(message);
         // }
     };
+    // public onJoinedRoom: (roomId: string) => void;
+    // public onPlayerAdded: (state: PlayerState, sesstionId: string) => void;
+    // public onPlayerRemoved: (state: PlayerState, sessionId: string) => void;
+    // public onGameStateChange: (changes: any[]) => void;
+    // public onLeftRoom: (code: number) => void;
     NetworkManager._instance = null;
     return NetworkManager;
 }(node_1.Node));

@@ -3,6 +3,9 @@ export default class UIManager extends Node {
     private _camera;
     private _uiLayer;
     private _titleUI;
+    private _lobbyUI;
+    private _prologueUI;
+    private _overlayUI;
     /**
      * Override constructor.
      * @warn do not fill.
@@ -23,9 +26,13 @@ export default class UIManager extends Node {
     onStart(): Promise<void>;
     private initializeUICamera;
     private loadUI;
-    private loadTestUI;
     private loadTitleUI;
+    private loadOverlayUI;
+    private loadLobbyUI;
+    private loadPrologueUI;
     private handleJoinRoom;
+    private handleReturnToTitle;
+    private handleGameStateChanged;
     /**
      * Called each frame.
      */

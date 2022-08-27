@@ -2,6 +2,7 @@ import { Node } from '@babylonjs/core/node';
 import * as Colyseus from 'colyseus.js';
 import type { HASRoomState } from '../../../../../Server/hide-and-seek/src/rooms/schema/HASRoomState';
 import type { PlayerInputMessage } from '../../../../../Server/hide-and-seek/src/models/PlayerInputMessage';
+import { GameConfig } from '../../../../../Server/hide-and-seek/src/models/GameConfig';
 export declare enum NetworkEvent {
     JOINED_ROOM = "joinedRoom",
     LEFT_ROOM = "leftRoom",
@@ -15,12 +16,14 @@ export default class NetworkManager extends Node {
     private _client;
     private _room;
     private _eventEmitter;
+    private _config;
     /**
      * Override constructor.
      * @warn do not fill.
      */
     protected constructor();
     static get Instance(): NetworkManager;
+    static get Config(): GameConfig;
     getColyseusServerAddress(): string;
     setColyseusServerAddress(value: string): void;
     getColyseusServerPort(): number;
@@ -29,9 +32,13 @@ export default class NetworkManager extends Node {
     set ColyseusUseSecure(value: boolean);
     private WebSocketEndPoint;
     private WebRequestEndPoint;
+    static Ready(): boolean;
     get Room(): Colyseus.Room<HASRoomState>;
     private set Room(value);
-    onEvent(eventName: string, callback: (data?: any) => void): void;
+    static get PlayerCount(): number;
+    get MinimumPlayers(): number;
+    addOnEvent(eventName: string, callback: (data?: any) => void): void;
+    removeOnEvent(eventName: string, callback: (data?: any) => void): void;
     private broadcastEvent;
     /**
      * Called on the node is being initialized.
@@ -61,6 +68,7 @@ export default class NetworkManager extends Node {
     onMessage(name: string, data: any, sender: any): void;
     joinRoom(roomId?: string): Promise<void>;
     private joinRoomWithId;
+    leaveRoom(): void;
     private registerRoomHandlers;
     private unregisterRoomHandlers;
     sendPlayerPosition(positionMsg: PlayerInputMessage): void;

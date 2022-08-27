@@ -15,6 +15,7 @@ export declare class TitleUI extends UIController {
     private registerControlHandlers;
     private handleQuickPlay;
     joinFailed(error: string): void;
+    setJoinUIEnabled(enabled: boolean): void;
     private handleJoin;
     private handleJoinSubmit;
     private handleCancleJoin;

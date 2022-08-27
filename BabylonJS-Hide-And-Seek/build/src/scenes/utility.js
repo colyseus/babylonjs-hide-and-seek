@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Quat = exports.Vec3 = exports.random = exports.clamp = void 0;
+exports.Quat = exports.Vec3 = exports.delay = exports.random = exports.clamp = void 0;
 var core_1 = require("@babylonjs/core");
 var deg2Rad = 360 / (Math.PI * 2);
 var kEpsilonNormalSqrt = 1e-15;
@@ -12,6 +12,13 @@ function random(min, max) {
     return Math.floor(Math.random() * max + min);
 }
 exports.random = random;
+/** Delay for a number of milliseconds */
+function delay(delay) {
+    return new Promise(function (resolve) {
+        setTimeout(resolve, delay);
+    });
+}
+exports.delay = delay;
 var Vec3 = /** @class */ (function () {
     function Vec3() {
     }

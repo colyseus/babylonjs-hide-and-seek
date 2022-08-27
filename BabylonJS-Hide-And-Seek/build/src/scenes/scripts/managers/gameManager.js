@@ -58,6 +58,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@babylonjs/core");
+var EventEmitter = require("events");
 var node_1 = require("@babylonjs/core/node");
 var GameState_1 = require("../GameState");
 var decorators_1 = require("../../decorators");
@@ -88,8 +89,17 @@ var GameManager = /** @class */ (function (_super) {
         /** In ms, the time between messages sent to the server for each Hider discovered by the Seeker */
         _this._foundHiderMsgRate = 1000;
         _this._halfSeekerFOV = 0;
+        _this._playerState = null;
+        _this._eventEmitter = new EventEmitter();
         return _this;
     }
+    Object.defineProperty(GameManager, "PlayerState", {
+        get: function () {
+            return GameManager.Instance._playerState;
+        },
+        enumerable: false,
+        configurable: true
+    });
     Object.defineProperty(GameManager.prototype, "CurrentGameState", {
         get: function () {
             return GameManager.Instance._currentGameState;
@@ -114,6 +124,15 @@ var GameManager = /** @class */ (function (_super) {
         enumerable: false,
         configurable: true
     });
+    GameManager.prototype.addOnEvent = function (eventName, callback) {
+        this._eventEmitter.addListener(eventName, callback);
+    };
+    GameManager.prototype.removeOnEvent = function (eventName, callback) {
+        this._eventEmitter.removeListener(eventName, callback);
+    };
+    GameManager.prototype.broadcastEvent = function (eventName, data) {
+        this._eventEmitter.emit(eventName, data);
+    };
     /**
      * Called on the node is being initialized.
      * This function is called immediatly after the constructor has been called.
@@ -147,16 +166,11 @@ var GameManager = /** @class */ (function (_super) {
         this._availableRemotePlayerObjects.push(this._remotePlayer6);
         this._availableRemotePlayerObjects.push(this._remotePlayer7);
         this._player.setParent(null);
-        // NetworkManager.Instance.onJoinedRoom = this.onJoinedRoom;
-        // NetworkManager.Instance.onLeftRoom = this.onLeftRoom;
-        // NetworkManager.Instance.onPlayerAdded = this.onPlayerAdded;
-        // NetworkManager.Instance.onPlayerRemoved = this.onPlayerRemoved;
-        // NetworkManager.Instance.onGameStateChange = this.onGameStateChange;
-        networkManager_1.default.Instance.onEvent(networkManager_1.NetworkEvent.JOINED_ROOM, this.onJoinedRoom);
-        networkManager_1.default.Instance.onEvent(networkManager_1.NetworkEvent.LEFT_ROOM, this.onLeftRoom);
-        networkManager_1.default.Instance.onEvent(networkManager_1.NetworkEvent.PLAYER_ADDED, this.onPlayerAdded);
-        networkManager_1.default.Instance.onEvent(networkManager_1.NetworkEvent.PLAYER_REMOVED, this.onPlayerRemoved);
-        networkManager_1.default.Instance.onEvent(networkManager_1.NetworkEvent.GAME_STATE_CHANGED, this.onGameStateChange);
+        networkManager_1.default.Instance.addOnEvent(networkManager_1.NetworkEvent.JOINED_ROOM, this.onJoinedRoom);
+        networkManager_1.default.Instance.addOnEvent(networkManager_1.NetworkEvent.LEFT_ROOM, this.onLeftRoom);
+        networkManager_1.default.Instance.addOnEvent(networkManager_1.NetworkEvent.PLAYER_ADDED, this.onPlayerAdded);
+        networkManager_1.default.Instance.addOnEvent(networkManager_1.NetworkEvent.PLAYER_REMOVED, this.onPlayerRemoved);
+        networkManager_1.default.Instance.addOnEvent(networkManager_1.NetworkEvent.GAME_STATE_CHANGED, this.onGameStateChange);
         this._cameraHolder.setTarget(this._cameraStartPos, this._startChaseSpeed);
         // Set the layermask of all scene meshes so they aren't visible in the UI camera
         //================================================
@@ -167,6 +181,9 @@ var GameManager = /** @class */ (function (_super) {
             mesh.layerMask = meshLayermask;
         });
         //================================================
+    };
+    GameManager.prototype.PlayerIsSeeker = function () {
+        return this._playerState.isSeeker;
     };
     GameManager.prototype.joinRoom = function (roomId) {
         if (roomId === void 0) { roomId = null; }
@@ -211,10 +228,15 @@ var GameManager = /** @class */ (function (_super) {
     GameManager.prototype.onLeftRoom = function (code) {
         console.log("Left room: ".concat(code));
         this._cameraHolder.setTarget(this._cameraStartPos, this._startChaseSpeed);
+        this._playerState = null;
         this.reset();
     };
     GameManager.prototype.onPlayerAdded = function (state) {
         console.log("On Player Added: %o", state.id);
+        if (state.id === networkManager_1.default.Instance.Room.sessionId) {
+            console.log("Local Player State Received!");
+            this._playerState = state;
+        }
         this._players.set(state.id, state);
     };
     GameManager.prototype.onPlayerRemoved = function (state) {
@@ -278,9 +300,11 @@ var GameManager = /** @class */ (function (_super) {
             default:
                 break;
         }
+        this.broadcastEvent('gameStateChanged', gameState);
     };
     GameManager.prototype.handleCountdownChange = function (countdown) {
         console.log("Countdown: ".concat(countdown));
+        this.broadcastEvent('updateCountdown', countdown);
     };
     GameManager.prototype.spawnPlayers = function () {
         var _this = this;

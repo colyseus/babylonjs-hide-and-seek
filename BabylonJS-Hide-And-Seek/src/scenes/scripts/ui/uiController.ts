@@ -1,5 +1,5 @@
 import { Scene, Texture } from '@babylonjs/core';
-import { AdvancedDynamicTexture, Control } from '@babylonjs/gui';
+import { AdvancedDynamicTexture, Control, Grid } from '@babylonjs/gui';
 import EventEmitter = require('events');
 
 export class UIController extends EventEmitter {
@@ -7,7 +7,11 @@ export class UIController extends EventEmitter {
 	protected _scene: Scene;
 	protected _uiLayer: number;
 	protected _uiTex: AdvancedDynamicTexture;
-	protected _root: Control;
+	protected _root: Control = null;
+
+	public loaded(): boolean {
+		return this._root !== null;
+	}
 
 	constructor(uiName: string, scene: Scene, layer: number) {
 		super();
@@ -44,7 +48,24 @@ export class UIController extends EventEmitter {
 		return this._uiTex.getControlByName(name);
 	}
 
+	protected cloneControl(control: Control): Control {
+		let serialized: any = {};
+
+		control.serialize(serialized);
+
+		return Grid.Parse(serialized, null);
+	}
+
+	protected getControlChild(control: Control, childName: string): Control {
+		return control.getDescendants(false, (ctrl) => ctrl.name === childName)[0];
+	}
+
 	public setVisible(visible: boolean) {
+		if (!this._root) {
+			console.error(`${this._uiName} UI - can't setVisible - No "Root" defined`);
+			return;
+		}
+
 		this._root.isVisible = visible;
 	}
 }

@@ -8,7 +8,7 @@ export class GameConfig {
 	}
 
 	public get MinPlayers(): number {
-		return this._data.minimumPlayers || 3;
+		return this._data.minPlayers || 3;
 	}
 
 	public get MaxPlayers(): number {
@@ -25,6 +25,10 @@ export class GameConfig {
 
 	public get PrologueCountdown(): number {
 		return this._data.prologueCountdown || 10000;
+	}
+
+	public get InitializeCountdown(): number {
+		return this._data.initializeCountdown || 1000;
 	}
 
 	public get PlayStartCountdown(): number {
@@ -53,5 +57,13 @@ export class GameConfig {
 
 	public get AllowDebug(): boolean {
 		return this._data.allowDebug || false;
+	}
+
+	public get SeekerGoal(): string {
+		return this._data.seekerGoal || 'TODO: Seeker Goal';
+	}
+
+	public get HiderGoal(): string {
+		return this._data.hiderGoal || 'TODO: Hider Goal';
 	}
 }

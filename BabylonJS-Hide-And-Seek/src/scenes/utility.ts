@@ -11,6 +11,13 @@ export function random(min: number, max: number): number {
 	return Math.floor(Math.random() * max + min);
 }
 
+/** Delay for a number of milliseconds */
+export function delay(delay: number): Promise<void> {
+	return new Promise((resolve) => {
+		setTimeout(resolve, delay);
+	});
+}
+
 export class Vec3 {
 	public static MoveTowards(current: Vector3, target: Vector3, maxDistanceDelta: number): Vector3 {
 		let toVector_x = target.x - current.x;

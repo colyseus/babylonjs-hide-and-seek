@@ -104,8 +104,29 @@ export class HASGameState extends Schema {
 				this._stateTimestamp = Date.now();
 				break;
 			case GameState.INITIALIZE:
+				// Reset the timestamp for the duration of the countdown to lock the room and begin a round of play
+				this._stateTimestamp = Date.now();
+
 				// Lock the room as we begin round of play initialization
 				this._room.lock();
+
+				// Randomly pick which player will be Seeker
+				const players: PlayerState[] = Array.from(this._room.state.players.values());
+
+				const index: number = random(0, players.length - 1);
+
+				// Remove the seeker from the array; we don't need to assign a spawn point to it
+				const player: PlayerState = players.splice(index, 1)[0];
+				player.spawnPoint = -1;
+				player.isSeeker = true;
+
+				// Assign remaining players spawn point indices
+				for (let i = 0; i < players.length; i++) {
+					players[i].spawnPoint = this._room.state.getSpawnPointIndex();
+					players[i].isSeeker = false;
+				}
+
+				this._capturedPlayers.clear();
 				break;
 			case GameState.PROLOGUE:
 				// Reset the timestamp for the duration of the prologue and scatter stages
@@ -190,23 +211,16 @@ export class HASGameState extends Schema {
 	}
 
 	private initializeRoundOfPlay() {
-		// Randomly pick which player will be Seeker
-		const players: PlayerState[] = Array.from(this._room.state.players.values());
+		let elapsedTime: number = Date.now() - this._stateTimestamp;
+		const countdown: number = this._config.InitializeCountdown;
 
-		const index: number = random(0, players.length - 1);
+		if (elapsedTime < countdown) {
+			this.setCountdown(countdown - elapsedTime, countdown);
 
-		// Remove the seeker from the array; we don't need to assign a spawn point to it
-		const player: PlayerState = players.splice(index, 1)[0];
-		player.spawnPoint = -1;
-		player.isSeeker = true;
-
-		// Assign remaining players spawn point indices
-		for (let i = 0; i < players.length; i++) {
-			players[i].spawnPoint = this._room.state.getSpawnPointIndex();
-			players[i].isSeeker = false;
+			return;
 		}
 
-		this._capturedPlayers.clear();
+		this.countdown = 0;
 
 		this.moveToState(GameState.PROLOGUE);
 	}

@@ -59,11 +59,15 @@ var UIController = /** @class */ (function (_super) {
     __extends(UIController, _super);
     function UIController(uiName, scene, layer) {
         var _this = _super.call(this) || this;
+        _this._root = null;
         _this._uiName = uiName;
         _this._scene = scene;
         _this._uiLayer = layer;
         return _this;
     }
+    UIController.prototype.loaded = function () {
+        return this._root !== null;
+    };
     UIController.prototype.initialize = function () {
         return __awaiter(this, void 0, void 0, function () {
             var _a;
@@ -106,7 +110,19 @@ var UIController = /** @class */ (function (_super) {
     UIController.prototype.getControl = function (name) {
         return this._uiTex.getControlByName(name);
     };
+    UIController.prototype.cloneControl = function (control) {
+        var serialized = {};
+        control.serialize(serialized);
+        return gui_1.Grid.Parse(serialized, null);
+    };
+    UIController.prototype.getControlChild = function (control, childName) {
+        return control.getDescendants(false, function (ctrl) { return ctrl.name === childName; })[0];
+    };
     UIController.prototype.setVisible = function (visible) {
+        if (!this._root) {
+            console.error("".concat(this._uiName, " UI - can't setVisible - No \"Root\" defined"));
+            return;
+        }
         this._root.isVisible = visible;
     };
     return UIController;

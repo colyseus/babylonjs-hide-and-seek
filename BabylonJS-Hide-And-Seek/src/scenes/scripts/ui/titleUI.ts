@@ -62,6 +62,14 @@ export class TitleUI extends UIController {
 		this._joinErrorText.text = error;
 	}
 
+	public setJoinUIEnabled(enabled: boolean) {
+		this._joinInput.isEnabled = enabled;
+		this._joinSubmit.isEnabled = enabled;
+		this._cancelJoin.isEnabled = enabled;
+		this._quickPlayBtn.isEnabled = enabled;
+		this._joinBtn.isEnabled = enabled;
+	}
+
 	private handleJoin() {
 		this._joinErrorText.text = '';
 		this._joinInput.text = '';

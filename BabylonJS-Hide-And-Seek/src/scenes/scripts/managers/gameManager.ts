@@ -1,4 +1,5 @@
 import { AbstractMesh, Quaternion, TransformNode, Vector3 } from '@babylonjs/core';
+import EventEmitter = require('events');
 import { Node } from '@babylonjs/core/node';
 import { GameState } from '../GameState';
 import type { PlayerState } from '../../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
@@ -54,6 +55,13 @@ export default class GameManager extends Node {
 
 	private _halfSeekerFOV: number = 0;
 	private _foundHiders: Map<string, Player>;
+	private _playerState: PlayerState = null;
+
+	private _eventEmitter: EventEmitter = new EventEmitter();
+
+	public static get PlayerState(): PlayerState {
+		return GameManager.Instance._playerState;
+	}
 
 	public get CurrentGameState(): GameState {
 		return GameManager.Instance._currentGameState;
@@ -69,6 +77,18 @@ export default class GameManager extends Node {
 
 	public static get DeltaTime(): number {
 		return this._instance._scene.deltaTime / 1000;
+	}
+
+	public addOnEvent(eventName: string, callback: (data?: any) => void) {
+		this._eventEmitter.addListener(eventName, callback);
+	}
+
+	public removeOnEvent(eventName: string, callback: (data?: any) => void) {
+		this._eventEmitter.removeListener(eventName, callback);
+	}
+
+	private broadcastEvent(eventName: string, data?: any) {
+		this._eventEmitter.emit(eventName, data);
 	}
 
 	/**
@@ -119,17 +139,11 @@ export default class GameManager extends Node {
 
 		this._player.setParent(null);
 
-		// NetworkManager.Instance.onJoinedRoom = this.onJoinedRoom;
-		// NetworkManager.Instance.onLeftRoom = this.onLeftRoom;
-		// NetworkManager.Instance.onPlayerAdded = this.onPlayerAdded;
-		// NetworkManager.Instance.onPlayerRemoved = this.onPlayerRemoved;
-		// NetworkManager.Instance.onGameStateChange = this.onGameStateChange;
-
-		NetworkManager.Instance.onEvent(NetworkEvent.JOINED_ROOM, this.onJoinedRoom);
-		NetworkManager.Instance.onEvent(NetworkEvent.LEFT_ROOM, this.onLeftRoom);
-		NetworkManager.Instance.onEvent(NetworkEvent.PLAYER_ADDED, this.onPlayerAdded);
-		NetworkManager.Instance.onEvent(NetworkEvent.PLAYER_REMOVED, this.onPlayerRemoved);
-		NetworkManager.Instance.onEvent(NetworkEvent.GAME_STATE_CHANGED, this.onGameStateChange);
+		NetworkManager.Instance.addOnEvent(NetworkEvent.JOINED_ROOM, this.onJoinedRoom);
+		NetworkManager.Instance.addOnEvent(NetworkEvent.LEFT_ROOM, this.onLeftRoom);
+		NetworkManager.Instance.addOnEvent(NetworkEvent.PLAYER_ADDED, this.onPlayerAdded);
+		NetworkManager.Instance.addOnEvent(NetworkEvent.PLAYER_REMOVED, this.onPlayerRemoved);
+		NetworkManager.Instance.addOnEvent(NetworkEvent.GAME_STATE_CHANGED, this.onGameStateChange);
 
 		this._cameraHolder.setTarget(this._cameraStartPos, this._startChaseSpeed);
 
@@ -143,6 +157,10 @@ export default class GameManager extends Node {
 			mesh.layerMask = meshLayermask;
 		});
 		//================================================
+	}
+
+	public PlayerIsSeeker(): boolean {
+		return this._playerState.isSeeker;
 	}
 
 	public async joinRoom(roomId: string = null): Promise<void> {
@@ -178,11 +196,18 @@ export default class GameManager extends Node {
 	private onLeftRoom(code: number) {
 		console.log(`Left room: ${code}`);
 		this._cameraHolder.setTarget(this._cameraStartPos, this._startChaseSpeed);
+
+		this._playerState = null;
 		this.reset();
 	}
 
 	private onPlayerAdded(state: PlayerState) {
 		console.log(`On Player Added: %o`, state.id);
+
+		if (state.id === NetworkManager.Instance.Room.sessionId) {
+			console.log(`Local Player State Received!`);
+			this._playerState = state;
+		}
 
 		this._players.set(state.id, state);
 	}
@@ -263,10 +288,13 @@ export default class GameManager extends Node {
 			default:
 				break;
 		}
+
+		this.broadcastEvent('gameStateChanged', gameState);
 	}
 
 	private handleCountdownChange(countdown: number) {
 		console.log(`Countdown: ${countdown}`);
+		this.broadcastEvent('updateCountdown', countdown);
 	}
 
 	private spawnPlayers() {

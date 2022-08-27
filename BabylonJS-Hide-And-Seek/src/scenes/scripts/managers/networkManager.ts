@@ -5,6 +5,7 @@ import type { PlayerInputMessage } from '../../../../../Server/hide-and-seek/src
 import ColyseusSettings from '../colyseusSettings';
 import type { PlayerState } from '../../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
 import { GameState } from '../GameState';
+import { GameConfig } from '../../../../../Server/hide-and-seek/src/models/GameConfig';
 import EventEmitter = require('events');
 
 export enum NetworkEvent {
@@ -16,18 +17,13 @@ export enum NetworkEvent {
 }
 
 export default class NetworkManager extends Node {
-	// public onJoinedRoom: (roomId: string) => void;
-	// public onPlayerAdded: (state: PlayerState, sesstionId: string) => void;
-	// public onPlayerRemoved: (state: PlayerState, sessionId: string) => void;
-	// public onGameStateChange: (changes: any[]) => void;
-	// public onLeftRoom: (code: number) => void;
-
 	private static _instance: NetworkManager = null;
 
 	private _serverSettings: ColyseusSettings = null;
 	private _client: Colyseus.Client = null;
 	private _room: Colyseus.Room<HASRoomState> = null;
 	private _eventEmitter: EventEmitter = new EventEmitter();
+	private _config: GameConfig = null;
 
 	/**
 	 * Override constructor.
@@ -38,6 +34,10 @@ export default class NetworkManager extends Node {
 
 	public static get Instance(): NetworkManager {
 		return NetworkManager._instance;
+	}
+
+	public static get Config(): GameConfig {
+		return NetworkManager.Instance._config;
 	}
 
 	public getColyseusServerAddress(): string {
@@ -72,7 +72,11 @@ export default class NetworkManager extends Node {
 		return `${this.ColyseusUseSecure ? 'https' : 'http'}://${this.getColyseusServerAddress()}:${this.getColyseusServerPort()}`;
 	}
 
-	public get Room() {
+	public static Ready(): boolean {
+		return this.Instance.Room !== null && this.Config !== null;
+	}
+
+	public get Room(): Colyseus.Room<HASRoomState> {
 		return this._room;
 	}
 
@@ -80,8 +84,20 @@ export default class NetworkManager extends Node {
 		this._room = value;
 	}
 
-	public onEvent(eventName: string, callback: (data?: any) => void) {
+	public static get PlayerCount(): number {
+		return this.Instance.Room ? this.Instance.Room.state.players.size : 0;
+	}
+
+	public get MinimumPlayers(): number {
+		return 3;
+	}
+
+	public addOnEvent(eventName: string, callback: (data?: any) => void) {
 		this._eventEmitter.addListener(eventName, callback);
+	}
+
+	public removeOnEvent(eventName: string, callback: (data?: any) => void) {
+		this._eventEmitter.removeListener(eventName, callback);
 	}
 
 	private broadcastEvent(eventName: string, data?: any) {
@@ -172,6 +188,14 @@ export default class NetworkManager extends Node {
 		// }
 	}
 
+	public leaveRoom() {
+		if (!this.Room) {
+			return;
+		}
+
+		this.Room.leave(true);
+	}
+
 	private registerRoomHandlers() {
 		console.log(`Register Room Handlers`);
 
@@ -230,9 +254,11 @@ export default class NetworkManager extends Node {
 	//============================================== Messages to server
 
 	private handleMessages(name: string, message: any) {
-		// switch (name) {
-		// 	case 'velocityChange':
-		// 		this.handleVelocityChange(message);
-		// }
+		switch (name) {
+			case 'config':
+				this._config = new GameConfig(message);
+				console.log(`Got Config: %o`, this._config);
+				break;
+		}
 	}
 }

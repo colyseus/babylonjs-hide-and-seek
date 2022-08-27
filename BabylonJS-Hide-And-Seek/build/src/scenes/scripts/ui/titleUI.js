@@ -102,6 +102,13 @@ var TitleUI = /** @class */ (function (_super) {
     TitleUI.prototype.joinFailed = function (error) {
         this._joinErrorText.text = error;
     };
+    TitleUI.prototype.setJoinUIEnabled = function (enabled) {
+        this._joinInput.isEnabled = enabled;
+        this._joinSubmit.isEnabled = enabled;
+        this._cancelJoin.isEnabled = enabled;
+        this._quickPlayBtn.isEnabled = enabled;
+        this._joinBtn.isEnabled = enabled;
+    };
     TitleUI.prototype.handleJoin = function () {
         this._joinErrorText.text = '';
         this._joinInput.text = '';

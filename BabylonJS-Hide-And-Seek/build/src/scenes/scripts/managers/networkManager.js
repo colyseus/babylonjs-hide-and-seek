@@ -55,6 +55,7 @@ exports.NetworkEvent = void 0;
 var node_1 = require("@babylonjs/core/node");
 var Colyseus = require("colyseus.js");
 var GameState_1 = require("../GameState");
+var GameConfig_1 = require("../../../../../Server/hide-and-seek/src/models/GameConfig");
 var EventEmitter = require("events");
 var NetworkEvent;
 (function (NetworkEvent) {
@@ -77,11 +78,19 @@ var NetworkManager = /** @class */ (function (_super) {
         _this._client = null;
         _this._room = null;
         _this._eventEmitter = new EventEmitter();
+        _this._config = null;
         return _this;
     }
     Object.defineProperty(NetworkManager, "Instance", {
         get: function () {
             return NetworkManager._instance;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(NetworkManager, "Config", {
+        get: function () {
+            return NetworkManager.Instance._config;
         },
         enumerable: false,
         configurable: true
@@ -117,6 +126,9 @@ var NetworkManager = /** @class */ (function (_super) {
     NetworkManager.prototype.WebRequestEndPoint = function () {
         return "".concat(this.ColyseusUseSecure ? 'https' : 'http', "://").concat(this.getColyseusServerAddress(), ":").concat(this.getColyseusServerPort());
     };
+    NetworkManager.Ready = function () {
+        return this.Instance.Room !== null && this.Config !== null;
+    };
     Object.defineProperty(NetworkManager.prototype, "Room", {
         get: function () {
             return this._room;
@@ -127,8 +139,25 @@ var NetworkManager = /** @class */ (function (_super) {
         enumerable: false,
         configurable: true
     });
-    NetworkManager.prototype.onEvent = function (eventName, callback) {
+    Object.defineProperty(NetworkManager, "PlayerCount", {
+        get: function () {
+            return this.Instance.Room ? this.Instance.Room.state.players.size : 0;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(NetworkManager.prototype, "MinimumPlayers", {
+        get: function () {
+            return 3;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    NetworkManager.prototype.addOnEvent = function (eventName, callback) {
         this._eventEmitter.addListener(eventName, callback);
+    };
+    NetworkManager.prototype.removeOnEvent = function (eventName, callback) {
+        this._eventEmitter.removeListener(eventName, callback);
     };
     NetworkManager.prototype.broadcastEvent = function (eventName, data) {
         this._eventEmitter.emit(eventName, data);
@@ -222,6 +251,12 @@ var NetworkManager = /** @class */ (function (_super) {
             });
         });
     };
+    NetworkManager.prototype.leaveRoom = function () {
+        if (!this.Room) {
+            return;
+        }
+        this.Room.leave(true);
+    };
     NetworkManager.prototype.registerRoomHandlers = function () {
         var _this = this;
         console.log("Register Room Handlers");
@@ -271,16 +306,13 @@ var NetworkManager = /** @class */ (function (_super) {
     };
     //============================================== Messages to server
     NetworkManager.prototype.handleMessages = function (name, message) {
-        // switch (name) {
-        // 	case 'velocityChange':
-        // 		this.handleVelocityChange(message);
-        // }
+        switch (name) {
+            case 'config':
+                this._config = new GameConfig_1.GameConfig(message);
+                console.log("Got Config: %o", this._config);
+                break;
+        }
     };
-    // public onJoinedRoom: (roomId: string) => void;
-    // public onPlayerAdded: (state: PlayerState, sesstionId: string) => void;
-    // public onPlayerRemoved: (state: PlayerState, sessionId: string) => void;
-    // public onGameStateChange: (changes: any[]) => void;
-    // public onLeftRoom: (code: number) => void;
     NetworkManager._instance = null;
     return NetworkManager;
 }(node_1.Node));

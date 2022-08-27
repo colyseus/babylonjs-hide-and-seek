@@ -60,9 +60,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@babylonjs/core");
 var node_1 = require("@babylonjs/core/node");
 var decorators_1 = require("../../decorators");
-var testUI_1 = require("../ui/testUI");
+var utility_1 = require("../../utility");
+var GameState_1 = require("../GameState");
+var lobbyUI_1 = require("../ui/lobbyUI");
+var overlayUI_1 = require("../ui/overlayUI");
+var prologueUI_1 = require("../ui/prologueUI");
 var titleUI_1 = require("../ui/titleUI");
 var gameManager_1 = require("./gameManager");
+var networkManager_1 = require("./networkManager");
 var UIManager = /** @class */ (function (_super) {
     __extends(UIManager, _super);
     /**
@@ -82,6 +87,8 @@ var UIManager = /** @class */ (function (_super) {
     UIManager.prototype.onInitialize = function () {
         // ...
         this.handleJoinRoom = this.handleJoinRoom.bind(this);
+        this.handleReturnToTitle = this.handleReturnToTitle.bind(this);
+        this.handleGameStateChanged = this.handleGameStateChanged.bind(this);
     };
     /**
      * Called on the node has been fully initialized and is ready.
@@ -98,6 +105,7 @@ var UIManager = /** @class */ (function (_super) {
                 // ...
                 this.initializeUICamera();
                 this.loadUI();
+                gameManager_1.default.Instance.addOnEvent('gameStateChanged', this.handleGameStateChanged);
                 return [2 /*return*/];
             });
         });
@@ -110,25 +118,75 @@ var UIManager = /** @class */ (function (_super) {
         this._scene.activeCameras = [this._scene.activeCamera, this._camera];
     };
     UIManager.prototype.loadUI = function () {
-        // this.loadTestGUI();
         this.loadTitleUI();
+        this.loadLobbyUI();
+        this.loadPrologueUI();
+        // Load overaly last so it will be rendered on top of everything else
+        this.loadOverlayUI();
     };
-    UIManager.prototype.loadTestUI = function () {
+    UIManager.prototype.loadTitleUI = function () {
+        this._titleUI = new titleUI_1.TitleUI(this._scene, this._uiLayer);
+        // Subscribe to UI events
+        this._titleUI.addListener('joinRoom', this.handleJoinRoom);
+    };
+    UIManager.prototype.loadOverlayUI = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var testGUI;
             return __generator(this, function (_a) {
-                testGUI = new testUI_1.TestUI(this._scene, this._uiLayer);
-                return [2 /*return*/];
+                switch (_a.label) {
+                    case 0:
+                        this._overlayUI = new overlayUI_1.OverlayUI(this._scene, this._uiLayer);
+                        _a.label = 1;
+                    case 1:
+                        if (!!this._overlayUI.loaded()) return [3 /*break*/, 3];
+                        return [4 /*yield*/, (0, utility_1.delay)(100)];
+                    case 2:
+                        _a.sent();
+                        return [3 /*break*/, 1];
+                    case 3:
+                        this._overlayUI.setVisible(false);
+                        return [2 /*return*/];
+                }
             });
         });
     };
-    UIManager.prototype.loadTitleUI = function () {
+    UIManager.prototype.loadLobbyUI = function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                this._titleUI = new titleUI_1.TitleUI(this._scene, this._uiLayer);
-                // Subscribe to UI events
-                this._titleUI.addListener('joinRoom', this.handleJoinRoom);
-                return [2 /*return*/];
+                switch (_a.label) {
+                    case 0:
+                        this._lobbyUI = new lobbyUI_1.LobbyUI(this._scene, this._uiLayer);
+                        this._lobbyUI.addListener('returnToTitle', this.handleReturnToTitle);
+                        _a.label = 1;
+                    case 1:
+                        if (!!this._lobbyUI.loaded()) return [3 /*break*/, 3];
+                        return [4 /*yield*/, (0, utility_1.delay)(100)];
+                    case 2:
+                        _a.sent();
+                        return [3 /*break*/, 1];
+                    case 3:
+                        this._lobbyUI.setVisible(false);
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    UIManager.prototype.loadPrologueUI = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        this._prologueUI = new prologueUI_1.PrologueUI(this._scene, this._uiLayer);
+                        _a.label = 1;
+                    case 1:
+                        if (!!this._lobbyUI.loaded()) return [3 /*break*/, 3];
+                        return [4 /*yield*/, (0, utility_1.delay)(100)];
+                    case 2:
+                        _a.sent();
+                        return [3 /*break*/, 1];
+                    case 3:
+                        this._prologueUI.setVisible(false);
+                        return [2 /*return*/];
+                }
             });
         });
     };
@@ -139,24 +197,70 @@ var UIManager = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 2, , 3]);
+                        this._overlayUI.setVisible(true);
+                        this._titleUI.setJoinUIEnabled(false);
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 6, , 7]);
                         // Attempt to join the room
                         return [4 /*yield*/, gameManager_1.default.Instance.joinRoom(roomId)];
-                    case 1:
+                    case 2:
                         // Attempt to join the room
                         _a.sent();
+                        _a.label = 3;
+                    case 3:
+                        if (!!networkManager_1.default.Ready()) return [3 /*break*/, 5];
+                        return [4 /*yield*/, (0, utility_1.delay)(100)];
+                    case 4:
+                        _a.sent();
                         return [3 /*break*/, 3];
-                    case 2:
+                    case 5:
+                        this._titleUI.setVisible(false);
+                        this._lobbyUI.setVisible(true);
+                        return [3 /*break*/, 7];
+                    case 6:
                         error_1 = _a.sent();
                         console.error(error_1.stack);
                         if (roomId) {
                             this._titleUI.joinFailed(error_1.message);
                         }
-                        return [3 /*break*/, 3];
-                    case 3: return [2 /*return*/];
+                        return [3 /*break*/, 7];
+                    case 7:
+                        this._titleUI.setJoinUIEnabled(true);
+                        this._overlayUI.setVisible(false);
+                        return [2 /*return*/];
                 }
             });
         });
+    };
+    UIManager.prototype.handleReturnToTitle = function () {
+        this._lobbyUI.setVisible(false);
+        this._titleUI.setVisible(true);
+        networkManager_1.default.Instance.leaveRoom();
+    };
+    UIManager.prototype.handleGameStateChanged = function (gameState) {
+        switch (gameState) {
+            case GameState_1.GameState.NONE:
+                break;
+            case GameState_1.GameState.WAIT_FOR_MINIMUM:
+                break;
+            case GameState_1.GameState.CLOSE_COUNTDOWN:
+                break;
+            case GameState_1.GameState.INITIALIZE:
+                break;
+            case GameState_1.GameState.PROLOGUE:
+                this._lobbyUI.setVisible(false);
+                this._prologueUI.setVisible(true);
+                break;
+            case GameState_1.GameState.SCATTER:
+                break;
+            case GameState_1.GameState.HUNT:
+                break;
+            case GameState_1.GameState.GAME_OVER:
+                break;
+            default:
+                break;
+        }
     };
     /**
      * Called each frame.

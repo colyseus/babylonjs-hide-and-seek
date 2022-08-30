@@ -96,6 +96,12 @@ var TitleUI = /** @class */ (function (_super) {
         this._joinSubmit.onPointerClickObservable.add(this.handleJoinSubmit);
         this._cancelJoin.onPointerClickObservable.add(this.handleCancleJoin);
     };
+    TitleUI.prototype.setVisible = function (visible) {
+        _super.prototype.setVisible.call(this, visible);
+        if (visible) {
+            this.handleCancleJoin();
+        }
+    };
     TitleUI.prototype.handleQuickPlay = function () {
         this.emit('joinRoom');
     };

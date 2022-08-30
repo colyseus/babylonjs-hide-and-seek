@@ -62,6 +62,7 @@ var node_1 = require("@babylonjs/core/node");
 var decorators_1 = require("../../decorators");
 var utility_1 = require("../../utility");
 var GameState_1 = require("../GameState");
+var GameplayUI_1 = require("../ui/GameplayUI");
 var lobbyUI_1 = require("../ui/lobbyUI");
 var overlayUI_1 = require("../ui/overlayUI");
 var prologueUI_1 = require("../ui/prologueUI");
@@ -89,6 +90,8 @@ var UIManager = /** @class */ (function (_super) {
         this.handleJoinRoom = this.handleJoinRoom.bind(this);
         this.handleReturnToTitle = this.handleReturnToTitle.bind(this);
         this.handleGameStateChanged = this.handleGameStateChanged.bind(this);
+        this.handleLeftRoom = this.handleLeftRoom.bind(this);
+        this.handlePlayAgain = this.handlePlayAgain.bind(this);
     };
     /**
      * Called on the node has been fully initialized and is ready.
@@ -106,6 +109,7 @@ var UIManager = /** @class */ (function (_super) {
                 this.initializeUICamera();
                 this.loadUI();
                 gameManager_1.default.Instance.addOnEvent('gameStateChanged', this.handleGameStateChanged);
+                networkManager_1.default.Instance.addOnEvent(networkManager_1.NetworkEvent.LEFT_ROOM, this.handleLeftRoom);
                 return [2 /*return*/];
             });
         });
@@ -121,6 +125,7 @@ var UIManager = /** @class */ (function (_super) {
         this.loadTitleUI();
         this.loadLobbyUI();
         this.loadPrologueUI();
+        this.loadGameplayUI();
         // Load overaly last so it will be rendered on top of everything else
         this.loadOverlayUI();
     };
@@ -156,6 +161,7 @@ var UIManager = /** @class */ (function (_super) {
                     case 0:
                         this._lobbyUI = new lobbyUI_1.LobbyUI(this._scene, this._uiLayer);
                         this._lobbyUI.addListener('returnToTitle', this.handleReturnToTitle);
+                        this._lobbyUI.addListener('playAgain', this.handlePlayAgain);
                         _a.label = 1;
                     case 1:
                         if (!!this._lobbyUI.loaded()) return [3 /*break*/, 3];
@@ -185,6 +191,26 @@ var UIManager = /** @class */ (function (_super) {
                         return [3 /*break*/, 1];
                     case 3:
                         this._prologueUI.setVisible(false);
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    UIManager.prototype.loadGameplayUI = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        this._gameplayUI = new GameplayUI_1.GameplayUI(this._scene, this._uiLayer);
+                        _a.label = 1;
+                    case 1:
+                        if (!!this._gameplayUI.loaded()) return [3 /*break*/, 3];
+                        return [4 /*yield*/, (0, utility_1.delay)(100)];
+                    case 2:
+                        _a.sent();
+                        return [3 /*break*/, 1];
+                    case 3:
+                        this._gameplayUI.setVisible(false);
                         return [2 /*return*/];
                 }
             });
@@ -233,16 +259,27 @@ var UIManager = /** @class */ (function (_super) {
             });
         });
     };
+    UIManager.prototype.handleLeftRoom = function () {
+        this._lobbyUI.clearPlayerList();
+        this._lobbyUI.setVisible(false);
+        this._gameplayUI.setVisible(false);
+        this._titleUI.setVisible(true);
+    };
     UIManager.prototype.handleReturnToTitle = function () {
         this._lobbyUI.setVisible(false);
         this._titleUI.setVisible(true);
         networkManager_1.default.Instance.leaveRoom();
+    };
+    UIManager.prototype.handlePlayAgain = function () {
+        networkManager_1.default.Instance.sendPlayAgain();
+        this._lobbyUI.setVisible(true);
     };
     UIManager.prototype.handleGameStateChanged = function (gameState) {
         switch (gameState) {
             case GameState_1.GameState.NONE:
                 break;
             case GameState_1.GameState.WAIT_FOR_MINIMUM:
+                this._lobbyUI.setVisible(true);
                 break;
             case GameState_1.GameState.CLOSE_COUNTDOWN:
                 break;
@@ -253,10 +290,19 @@ var UIManager = /** @class */ (function (_super) {
                 this._prologueUI.setVisible(true);
                 break;
             case GameState_1.GameState.SCATTER:
+                if (!gameManager_1.default.PlayerState.isSeeker) {
+                    this._prologueUI.shouldUpdatedCountdown = false;
+                    this._prologueUI.setCountdownText('Scatter!');
+                }
+                this._prologueUI.showInfo(false);
                 break;
             case GameState_1.GameState.HUNT:
+                this._prologueUI.setVisible(false);
+                this._gameplayUI.setVisible(true);
                 break;
             case GameState_1.GameState.GAME_OVER:
+                this._gameplayUI.setVisible(false);
+                this._lobbyUI.setVisible(true);
                 break;
             default:
                 break;

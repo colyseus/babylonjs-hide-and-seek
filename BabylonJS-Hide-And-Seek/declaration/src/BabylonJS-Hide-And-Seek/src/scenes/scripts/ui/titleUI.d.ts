@@ -13,6 +13,7 @@ export declare class TitleUI extends UIController {
     protected initialize(): Promise<void>;
     private setUpControls;
     private registerControlHandlers;
+    setVisible(visible: boolean): void;
     private handleQuickPlay;
     joinFailed(error: string): void;
     setJoinUIEnabled(enabled: boolean): void;

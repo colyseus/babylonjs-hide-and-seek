@@ -5,6 +5,7 @@ export default class UIManager extends Node {
     private _titleUI;
     private _lobbyUI;
     private _prologueUI;
+    private _gameplayUI;
     private _overlayUI;
     /**
      * Override constructor.
@@ -30,8 +31,11 @@ export default class UIManager extends Node {
     private loadOverlayUI;
     private loadLobbyUI;
     private loadPrologueUI;
+    private loadGameplayUI;
     private handleJoinRoom;
+    private handleLeftRoom;
     private handleReturnToTitle;
+    private handlePlayAgain;
     private handleGameStateChanged;
     /**
      * Called each frame.

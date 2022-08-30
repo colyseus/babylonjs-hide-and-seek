@@ -59,6 +59,7 @@ var PrologueUI = /** @class */ (function (_super) {
     __extends(PrologueUI, _super);
     function PrologueUI(scene, layer) {
         var _this = _super.call(this, 'Prologue', scene, layer) || this;
+        _this.shouldUpdatedCountdown = true;
         _this.updateCountdown = _this.updateCountdown.bind(_this);
         _this.initialize();
         return _this;
@@ -78,12 +79,15 @@ var PrologueUI = /** @class */ (function (_super) {
     };
     PrologueUI.prototype.setUpControls = function () {
         this._countdown = this.getControl('Countdown');
+        this._infoRoot = this.getControl('Info');
         this._header = this.getControl('Header');
         this._goal = this.getControl('Goal');
     };
     PrologueUI.prototype.setVisible = function (visible) {
         _super.prototype.setVisible.call(this, visible);
         if (visible) {
+            this.shouldUpdatedCountdown = true;
+            this.showInfo(true);
             this.updateTexts();
             gameManager_1.default.Instance.addOnEvent('updateCountdown', this.updateCountdown);
         }
@@ -91,8 +95,17 @@ var PrologueUI = /** @class */ (function (_super) {
             gameManager_1.default.Instance.removeOnEvent('updateCountdown', this.updateCountdown);
         }
     };
+    PrologueUI.prototype.showInfo = function (show) {
+        this._infoRoot.isVisible = show;
+    };
+    PrologueUI.prototype.setCountdownText = function (text) {
+        this._countdown.text = text;
+    };
     PrologueUI.prototype.updateCountdown = function (countdown) {
-        this._countdown.text = "".concat(gameManager_1.default.Instance.PlayerIsSeeker() ? "Hunt" : "Evade", " in ").concat(countdown);
+        if (!this.shouldUpdatedCountdown) {
+            return;
+        }
+        this.setCountdownText("".concat(gameManager_1.default.Instance.PlayerIsSeeker() ? "Hunt" : "Evade", " in ").concat(countdown));
     };
     PrologueUI.prototype.updateTexts = function () {
         this._header.text = "".concat(gameManager_1.default.Instance.PlayerIsSeeker() ? "Seeker" : "Hider");

@@ -36,6 +36,14 @@ export class HASGameState extends Schema {
 		this._capturedPlayers = new Map<string, PlayerState>();
 	}
 
+	private get WinCondition(): number {
+		let winCondition: number = this._config.SeekerWinCondition;
+		const hiderCount: number = this._room.state.players.size - 1;
+
+		// If we don't have enough hiders to satisfy the given win condition, the hider count itself will become the win condition
+		return hiderCount < winCondition ? hiderCount : winCondition;
+	}
+
 	public seekerCapturedHider(hider: PlayerState) {
 		// If we're not in the right game state, return;
 		if (this.currentState !== GameState.HUNT || !hider) {
@@ -85,9 +93,10 @@ export class HASGameState extends Schema {
 
 	private moveToState(state: GameState) {
 		this._lastState = this.currentState;
+
 		this.currentState = state;
 
-		logger.info(`Move state from "${this._lastState}" to "${this.currentState}"`);
+		logger.info(`Move state from "${this._lastState}" to "${state}"`);
 
 		// Anything that needs doing at the beginning of the state entry do here
 		switch (state) {
@@ -159,8 +168,7 @@ export class HASGameState extends Schema {
 
 				break;
 			case GameState.GAME_OVER:
-				// Determine if the Seeker has won
-				this.seekerWon = this._capturedPlayers.size === this._config.SeekerWinCondition;
+				logger.debug(`Game Over - Seeker Won: ${this.seekerWon}`);
 
 				// Disable player movement
 				this._room.state.players.forEach((player: PlayerState) => {
@@ -258,14 +266,11 @@ export class HASGameState extends Schema {
 
 		this.setCountdown(countdown - elapsedTime, countdown);
 
-		let winCondition: number = this._config.SeekerWinCondition;
-		const hiderCount: number = this._room.state.players.size - 1;
-
-		// If we don't have enough hiders to satisfy the given win condition, the hider count itself will become the win condition
-		winCondition = hiderCount < winCondition ? hiderCount : winCondition;
+		// Determine if the Seeker has won
+		this.seekerWon = this._capturedPlayers.size >= this.WinCondition;
 
 		// Check Seeker win condition
-		if ((this._capturedPlayers.size < winCondition || this._config.AllowDebug) && elapsedTime < countdown) {
+		if ((!this.seekerWon || this._config.AllowDebug) && elapsedTime < countdown) {
 			return;
 		}
 

@@ -63,6 +63,10 @@ export default class GameManager extends Node {
 		return GameManager.Instance._playerState;
 	}
 
+	public get Countdown(): number {
+		return NetworkManager.Instance.Room.state.gameState.countdown;
+	}
+
 	public get CurrentGameState(): GameState {
 		return GameManager.Instance._currentGameState;
 	}
@@ -77,6 +81,10 @@ export default class GameManager extends Node {
 
 	public static get DeltaTime(): number {
 		return this._instance._scene.deltaTime / 1000;
+	}
+
+	public SeekerWon(): boolean {
+		return NetworkManager.Instance.Room.state.gameState.seekerWon;
 	}
 
 	public addOnEvent(eventName: string, callback: (data?: any) => void) {
@@ -118,6 +126,7 @@ export default class GameManager extends Node {
 		this.onPlayerAdded = this.onPlayerAdded.bind(this);
 		this.onPlayerRemoved = this.onPlayerRemoved.bind(this);
 		this.onGameStateChange = this.onGameStateChange.bind(this);
+		this.onPlayerStateChange = this.onPlayerStateChange.bind(this);
 	}
 
 	/**
@@ -209,7 +218,29 @@ export default class GameManager extends Node {
 			this._playerState = state;
 		}
 
+		state.onChange = (changes: any[]) => {
+			this.onPlayerStateChange(state.id, changes);
+		};
+
 		this._players.set(state.id, state);
+	}
+
+	private onPlayerStateChange(sessionId: string, changes: any[]) {
+		let change: any = null;
+		for (let i = 0; i < changes.length; i++) {
+			change = changes[i];
+
+			if (!change) {
+				continue;
+			}
+
+			switch (change.field) {
+				case 'playAgain':
+					console.log(`Player (${sessionId}) State Change - ${change.field} to ${change.value}`);
+					this.broadcastEvent('playerPlayAgain', { sessionId, value: change.value });
+					break;
+			}
+		}
 	}
 
 	private onPlayerRemoved(state: PlayerState) {
@@ -293,7 +324,7 @@ export default class GameManager extends Node {
 	}
 
 	private handleCountdownChange(countdown: number) {
-		console.log(`Countdown: ${countdown}`);
+		// console.log(`Countdown: ${countdown}`);
 		this.broadcastEvent('updateCountdown', countdown);
 	}
 
@@ -432,6 +463,7 @@ export default class GameManager extends Node {
 		this.despawnPlayers();
 		this.initializeSpawnPoints();
 
+		this.CurrentGameState = GameState.NONE;
 		this._foundHiders.clear();
 		this._playAgain = false;
 	}
@@ -441,17 +473,16 @@ export default class GameManager extends Node {
 	 */
 	public onUpdate(): void {
 		// ...
-
 		// if (!NetworkManager.Instance.Room && InputManager.getKeyUp(32) && !this._joiningRoom) {
 		// 	console.log('Join Room');
 		// 	this._joiningRoom = true;
 		// 	NetworkManager.Instance.joinRoom();
 		// } else {
-		if (NetworkManager.Instance.Room && this.CurrentGameState === GameState.GAME_OVER && !this._playAgain && InputManager.getKeyUp(32)) {
-			this._playAgain = true;
-			this._cameraHolder.setTarget(this._cameraStartPos, this._startChaseSpeed);
-			NetworkManager.Instance.sendPlayAgain();
-		}
+		// if (NetworkManager.Instance.Room && this.CurrentGameState === GameState.GAME_OVER && !this._playAgain && InputManager.getKeyUp(32)) {
+		// 	this._playAgain = true;
+		// 	this._cameraHolder.setTarget(this._cameraStartPos, this._startChaseSpeed);
+		// 	NetworkManager.Instance.sendPlayAgain();
+		// }
 		// }
 	}
 

@@ -22,6 +22,7 @@ export declare class HASGameState extends Schema {
     private _stateTimestamp;
     private _capturedPlayers;
     constructor(room: HASRoom, config: GameConfig, ...args: any[]);
+    private get WinCondition();
     seekerCapturedHider(hider: PlayerState): void;
     /** Update the game loop */
     update(deltaTime: number): void;

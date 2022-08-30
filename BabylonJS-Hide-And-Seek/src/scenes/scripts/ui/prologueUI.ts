@@ -1,13 +1,16 @@
 import { Scene } from '@babylonjs/core';
-import { TextBlock } from '@babylonjs/gui';
+import { Control, TextBlock } from '@babylonjs/gui';
 import GameManager from '../managers/gameManager';
 import NetworkManager from '../managers/networkManager';
 import { UIController } from './uiController';
 
 export class PrologueUI extends UIController {
 	private _countdown: TextBlock;
+	private _infoRoot: Control;
 	private _header: TextBlock;
 	private _goal: TextBlock;
+
+	public shouldUpdatedCountdown: boolean = true;
 
 	constructor(scene: Scene, layer: number) {
 		super('Prologue', scene, layer);
@@ -25,6 +28,7 @@ export class PrologueUI extends UIController {
 
 	private setUpControls() {
 		this._countdown = this.getControl('Countdown') as TextBlock;
+		this._infoRoot = this.getControl('Info');
 		this._header = this.getControl('Header') as TextBlock;
 		this._goal = this.getControl('Goal') as TextBlock;
 	}
@@ -33,6 +37,10 @@ export class PrologueUI extends UIController {
 		super.setVisible(visible);
 
 		if (visible) {
+			this.shouldUpdatedCountdown = true;
+
+			this.showInfo(true);
+
 			this.updateTexts();
 
 			GameManager.Instance.addOnEvent('updateCountdown', this.updateCountdown);
@@ -41,8 +49,20 @@ export class PrologueUI extends UIController {
 		}
 	}
 
+	public showInfo(show: boolean) {
+		this._infoRoot.isVisible = show;
+	}
+
+	public setCountdownText(text: string) {
+		this._countdown.text = text;
+	}
+
 	private updateCountdown(countdown: number) {
-		this._countdown.text = `${GameManager.Instance.PlayerIsSeeker() ? `Hunt` : `Evade`} in ${countdown}`;
+		if (!this.shouldUpdatedCountdown) {
+			return;
+		}
+
+		this.setCountdownText(`${GameManager.Instance.PlayerIsSeeker() ? `Hunt` : `Evade`} in ${countdown}`);
 	}
 
 	private updateTexts() {

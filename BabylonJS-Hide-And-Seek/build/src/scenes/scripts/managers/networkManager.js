@@ -267,9 +267,9 @@ var NetworkManager = /** @class */ (function (_super) {
                 // this.onLeftRoom(code);
                 _this.broadcastEvent(NetworkEvent.LEFT_ROOM, code);
             });
-            this.Room.state.players.onAdd = function (player) { return _this.broadcastEvent(NetworkEvent.PLAYER_ADDED, player); }; // this.onPlayerAdded;
-            this.Room.state.players.onRemove = function (player) { return _this.broadcastEvent(NetworkEvent.PLAYER_REMOVED, player); }; // this.onPlayerRemoved;
-            this.Room.state.gameState.onChange = function (changes) { return _this.broadcastEvent(NetworkEvent.GAME_STATE_CHANGED, changes); }; // this.onGameStateChange;
+            this.Room.state.players.onAdd = function (player) { return _this.broadcastEvent(NetworkEvent.PLAYER_ADDED, player); };
+            this.Room.state.players.onRemove = function (player) { return _this.broadcastEvent(NetworkEvent.PLAYER_REMOVED, player); };
+            this.Room.state.gameState.onChange = function (changes) { return _this.broadcastEvent(NetworkEvent.GAME_STATE_CHANGED, changes); };
             this.Room.onMessage('*', this.handleMessages);
         }
         else {
@@ -292,17 +292,17 @@ var NetworkManager = /** @class */ (function (_super) {
         }
         this.Room.send('playerInput', positionMsg);
     };
-    NetworkManager.prototype.sendPlayAgain = function () {
-        if (!this.Room) {
-            return;
-        }
-        this.Room.send('playAgain');
-    };
     NetworkManager.prototype.sendHiderFound = function (hiderId) {
         if (!this.Room || this.Room.state.gameState.currentState !== GameState_1.GameState.HUNT) {
             return;
         }
         this.Room.send('foundHider', hiderId);
+    };
+    NetworkManager.prototype.sendPlayAgain = function () {
+        if (!this.Room || this.Room.state.gameState.currentState !== GameState_1.GameState.GAME_OVER) {
+            return;
+        }
+        this.Room.send('playAgain');
     };
     //============================================== Messages to server
     NetworkManager.prototype.handleMessages = function (name, message) {

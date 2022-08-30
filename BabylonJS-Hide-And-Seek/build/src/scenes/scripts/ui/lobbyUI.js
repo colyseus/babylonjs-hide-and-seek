@@ -55,6 +55,7 @@ exports.LobbyUI = void 0;
 var uiController_1 = require("./uiController");
 var networkManager_1 = require("../managers/networkManager");
 var gameManager_1 = require("../managers/gameManager");
+var GameState_1 = require("../GameState");
 var LobbyUI = /** @class */ (function (_super) {
     __extends(LobbyUI, _super);
     function LobbyUI(scene, layer) {
@@ -63,6 +64,9 @@ var LobbyUI = /** @class */ (function (_super) {
         _this.onPlayerRemoved = _this.onPlayerRemoved.bind(_this);
         _this.returnToTitle = _this.returnToTitle.bind(_this);
         _this.updateHeader = _this.updateHeader.bind(_this);
+        _this.playAgain = _this.playAgain.bind(_this);
+        _this.onPlayerPlayAgain = _this.onPlayerPlayAgain.bind(_this);
+        _this.updateCountdown = _this.updateCountdown.bind(_this);
         _this.initialize();
         return _this;
     }
@@ -77,6 +81,7 @@ var LobbyUI = /** @class */ (function (_super) {
                         this.setUpControls();
                         networkManager_1.default.Instance.addOnEvent(networkManager_1.NetworkEvent.PLAYER_ADDED, this.onPlayerAdded);
                         networkManager_1.default.Instance.addOnEvent(networkManager_1.NetworkEvent.PLAYER_REMOVED, this.onPlayerRemoved);
+                        gameManager_1.default.Instance.addOnEvent('playerPlayAgain', this.onPlayerPlayAgain);
                         return [2 /*return*/];
                 }
             });
@@ -87,22 +92,48 @@ var LobbyUI = /** @class */ (function (_super) {
         this._playerEntryTemplate = this.getControl('PlayerEl');
         this._header = this.getControl('Header');
         this._playerCount = this.getControl('PlayerCount');
-        this._backBtn = this.getControl('BackBtn');
+        this._roomCode = this.getControl('RoomCode');
+        this._gameOverCountdown = this.getControl('GameOverCountdown');
+        this._playAgainBtn = this.getControl('PlayAgainBtn');
+        this._leaveBtn = this.getControl('LeaveBtn');
         this.updateHeader();
         this.updatePlayerCount();
-        this._backBtn.onPointerClickObservable.add(this.returnToTitle);
+        this.registerControlHandlers();
         // Hide the template
         this._playerEntryTemplate.isVisible = false;
+    };
+    LobbyUI.prototype.registerControlHandlers = function () {
+        this._playAgainBtn.onPointerClickObservable.add(this.playAgain);
+        this._leaveBtn.onPointerClickObservable.add(this.returnToTitle);
     };
     LobbyUI.prototype.setVisible = function (visible) {
         _super.prototype.setVisible.call(this, visible);
         if (visible) {
-            this.updateHeader();
+            this.updateHeader(gameManager_1.default.Instance.Countdown);
             this.updatePlayerCount();
-            gameManager_1.default.Instance.addOnEvent('updateCountdown', this.updateHeader);
+            this._roomCode.text = "Room: ".concat(networkManager_1.default.Instance.Room.id);
+            this._playAgainBtn.isVisible = gameManager_1.default.Instance.CurrentGameState === GameState_1.GameState.GAME_OVER;
+            this._gameOverCountdown.isVisible = gameManager_1.default.Instance.CurrentGameState === GameState_1.GameState.GAME_OVER;
+            this._playerCount.isVisible = gameManager_1.default.Instance.CurrentGameState !== GameState_1.GameState.GAME_OVER;
+            gameManager_1.default.Instance.addOnEvent('updateCountdown', this.updateCountdown);
         }
         else {
-            gameManager_1.default.Instance.removeOnEvent('updateCountdown', this.updateHeader);
+            gameManager_1.default.Instance.removeOnEvent('updateCountdown', this.updateCountdown);
+            this._gameOverCountdown.isVisible = false;
+        }
+    };
+    LobbyUI.prototype.clearPlayerList = function () {
+        var _this = this;
+        this._playerList.getDescendants().forEach(function (control) {
+            _this._playerList.removeControl(control);
+        });
+        this._playerEntries.clear();
+    };
+    LobbyUI.prototype.updateCountdown = function (countdown) {
+        if (countdown === void 0) { countdown = 0; }
+        this._gameOverCountdown.text = "".concat(countdown);
+        if (gameManager_1.default.Instance.CurrentGameState !== GameState_1.GameState.GAME_OVER) {
+            this.updateHeader(countdown);
         }
     };
     LobbyUI.prototype.updateHeader = function (countdown) {
@@ -110,7 +141,12 @@ var LobbyUI = /** @class */ (function (_super) {
         if (!networkManager_1.default.Config) {
             return;
         }
-        this._header.text = networkManager_1.default.PlayerCount < networkManager_1.default.Config.MinPlayers ? "Waiting for Players" : "Game Starting in ".concat(countdown);
+        if (gameManager_1.default.Instance.CurrentGameState !== GameState_1.GameState.GAME_OVER) {
+            this._header.text = networkManager_1.default.PlayerCount < networkManager_1.default.Config.MinPlayers ? "Waiting for Players" : "Game Starting in ".concat(countdown);
+        }
+        else {
+            this._header.text = gameManager_1.default.Instance.SeekerWon() ? "Seeker Wins!" : "Hiders Win!";
+        }
     };
     LobbyUI.prototype.updatePlayerCount = function () {
         if (!networkManager_1.default.Config) {
@@ -131,12 +167,21 @@ var LobbyUI = /** @class */ (function (_super) {
         this.updatePlayerCount();
         this.updateHeader();
     };
+    LobbyUI.prototype.onPlayerPlayAgain = function (player) {
+        var sessionId = player.sessionId;
+        var playAgain = player.value;
+        var playerEntry = this._playerEntries.get(sessionId);
+        if (playerEntry) {
+            var playAgainCheck = this.getControlChild(playerEntry, 'PlayAgainCheck');
+            playAgainCheck.isVisible = playAgain;
+        }
+    };
     LobbyUI.prototype.returnToTitle = function () {
-        var _this = this;
-        this._playerList.getDescendants().forEach(function (control) {
-            _this._playerList.removeControl(control);
-        });
+        this.clearPlayerList();
         this.emit('returnToTitle');
+    };
+    LobbyUI.prototype.playAgain = function () {
+        this.emit('playAgain');
     };
     LobbyUI.prototype.addPlayerEntry = function (sessionId, playerName) {
         var playerEntry = this.cloneControl(this._playerEntryTemplate);

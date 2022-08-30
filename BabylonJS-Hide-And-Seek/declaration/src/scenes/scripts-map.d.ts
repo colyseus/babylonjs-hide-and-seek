@@ -14,6 +14,7 @@ export interface ISceneScriptMap {
     "src/scenes/scripts/players/playerVisual.ts": ScriptMap;
     "src/scenes/scripts/spawnPoint.ts": ScriptMap;
     "src/scenes/scripts/spawnPoints.ts": ScriptMap;
+    "src/scenes/scripts/ui/GameplayUI.ts": ScriptMap;
     "src/scenes/scripts/ui/lobbyUI.ts": ScriptMap;
     "src/scenes/scripts/ui/overlayUI.ts": ScriptMap;
     "src/scenes/scripts/ui/prologueUI.ts": ScriptMap;

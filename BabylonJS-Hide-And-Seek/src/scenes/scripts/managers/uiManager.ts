@@ -1,16 +1,15 @@
-import { ArcRotateCamera, Camera, EventState, Texture, Vector3 } from '@babylonjs/core';
+import { ArcRotateCamera, Camera, Vector3 } from '@babylonjs/core';
 import { Node } from '@babylonjs/core/node';
-import { AdvancedDynamicTexture, Control, InputText, TextBlock } from '@babylonjs/gui';
-import { fromChildren, visibleInInspector } from '../../decorators';
+import { visibleInInspector } from '../../decorators';
 import { delay } from '../../utility';
 import { GameState } from '../GameState';
+import { GameplayUI } from '../ui/GameplayUI';
 import { LobbyUI } from '../ui/lobbyUI';
 import { OverlayUI } from '../ui/overlayUI';
 import { PrologueUI } from '../ui/prologueUI';
-import { TestUI } from '../ui/testUI';
 import { TitleUI } from '../ui/titleUI';
 import GameManager from './gameManager';
-import NetworkManager from './networkManager';
+import NetworkManager, { NetworkEvent } from './networkManager';
 
 export default class UIManager extends Node {
 	private _camera: Camera;
@@ -21,6 +20,7 @@ export default class UIManager extends Node {
 	private _titleUI: TitleUI;
 	private _lobbyUI: LobbyUI;
 	private _prologueUI: PrologueUI;
+	private _gameplayUI: GameplayUI;
 	private _overlayUI: OverlayUI;
 
 	/**
@@ -39,6 +39,8 @@ export default class UIManager extends Node {
 		this.handleJoinRoom = this.handleJoinRoom.bind(this);
 		this.handleReturnToTitle = this.handleReturnToTitle.bind(this);
 		this.handleGameStateChanged = this.handleGameStateChanged.bind(this);
+		this.handleLeftRoom = this.handleLeftRoom.bind(this);
+		this.handlePlayAgain = this.handlePlayAgain.bind(this);
 	}
 
 	/**
@@ -58,6 +60,7 @@ export default class UIManager extends Node {
 		this.loadUI();
 
 		GameManager.Instance.addOnEvent('gameStateChanged', this.handleGameStateChanged);
+		NetworkManager.Instance.addOnEvent(NetworkEvent.LEFT_ROOM, this.handleLeftRoom);
 	}
 
 	private initializeUICamera() {
@@ -73,6 +76,7 @@ export default class UIManager extends Node {
 		this.loadTitleUI();
 		this.loadLobbyUI();
 		this.loadPrologueUI();
+		this.loadGameplayUI();
 		// Load overaly last so it will be rendered on top of everything else
 		this.loadOverlayUI();
 	}
@@ -98,6 +102,7 @@ export default class UIManager extends Node {
 		this._lobbyUI = new LobbyUI(this._scene, this._uiLayer);
 
 		this._lobbyUI.addListener('returnToTitle', this.handleReturnToTitle);
+		this._lobbyUI.addListener('playAgain', this.handlePlayAgain);
 
 		while (!this._lobbyUI.loaded()) {
 			await delay(100);
@@ -114,6 +119,16 @@ export default class UIManager extends Node {
 		}
 
 		this._prologueUI.setVisible(false);
+	}
+
+	private async loadGameplayUI() {
+		this._gameplayUI = new GameplayUI(this._scene, this._uiLayer);
+
+		while (!this._gameplayUI.loaded()) {
+			await delay(100);
+		}
+
+		this._gameplayUI.setVisible(false);
 	}
 
 	private async handleJoinRoom(roomId: string = null) {
@@ -142,6 +157,13 @@ export default class UIManager extends Node {
 		this._overlayUI.setVisible(false);
 	}
 
+	private handleLeftRoom() {
+		this._lobbyUI.clearPlayerList();
+		this._lobbyUI.setVisible(false);
+		this._gameplayUI.setVisible(false);
+		this._titleUI.setVisible(true);
+	}
+
 	private handleReturnToTitle() {
 		this._lobbyUI.setVisible(false);
 		this._titleUI.setVisible(true);
@@ -149,11 +171,18 @@ export default class UIManager extends Node {
 		NetworkManager.Instance.leaveRoom();
 	}
 
+	private handlePlayAgain() {
+		NetworkManager.Instance.sendPlayAgain();
+
+		this._lobbyUI.setVisible(true);
+	}
+
 	private handleGameStateChanged(gameState: GameState) {
 		switch (gameState) {
 			case GameState.NONE:
 				break;
 			case GameState.WAIT_FOR_MINIMUM:
+				this._lobbyUI.setVisible(true);
 				break;
 			case GameState.CLOSE_COUNTDOWN:
 				break;
@@ -164,10 +193,20 @@ export default class UIManager extends Node {
 				this._prologueUI.setVisible(true);
 				break;
 			case GameState.SCATTER:
+				if (!GameManager.PlayerState.isSeeker) {
+					this._prologueUI.shouldUpdatedCountdown = false;
+					this._prologueUI.setCountdownText('Scatter!');
+				}
+
+				this._prologueUI.showInfo(false);
 				break;
 			case GameState.HUNT:
+				this._prologueUI.setVisible(false);
+				this._gameplayUI.setVisible(true);
 				break;
 			case GameState.GAME_OVER:
+				this._gameplayUI.setVisible(false);
+				this._lobbyUI.setVisible(true);
 				break;
 			default:
 				break;

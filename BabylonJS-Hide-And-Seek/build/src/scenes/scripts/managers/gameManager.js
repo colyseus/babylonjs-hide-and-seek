@@ -63,7 +63,6 @@ var node_1 = require("@babylonjs/core/node");
 var GameState_1 = require("../GameState");
 var decorators_1 = require("../../decorators");
 var spawnPoints_1 = require("../spawnPoints");
-var inputManager_1 = require("./inputManager");
 var networkManager_1 = require("./networkManager");
 var PlayerInputMessage_1 = require("../../../../../Server/hide-and-seek/src/models/PlayerInputMessage");
 var GameManager = /** @class */ (function (_super) {
@@ -100,6 +99,13 @@ var GameManager = /** @class */ (function (_super) {
         enumerable: false,
         configurable: true
     });
+    Object.defineProperty(GameManager.prototype, "Countdown", {
+        get: function () {
+            return networkManager_1.default.Instance.Room.state.gameState.countdown;
+        },
+        enumerable: false,
+        configurable: true
+    });
     Object.defineProperty(GameManager.prototype, "CurrentGameState", {
         get: function () {
             return GameManager.Instance._currentGameState;
@@ -124,6 +130,9 @@ var GameManager = /** @class */ (function (_super) {
         enumerable: false,
         configurable: true
     });
+    GameManager.prototype.SeekerWon = function () {
+        return networkManager_1.default.Instance.Room.state.gameState.seekerWon;
+    };
     GameManager.prototype.addOnEvent = function (eventName, callback) {
         this._eventEmitter.addListener(eventName, callback);
     };
@@ -150,6 +159,7 @@ var GameManager = /** @class */ (function (_super) {
         this.onPlayerAdded = this.onPlayerAdded.bind(this);
         this.onPlayerRemoved = this.onPlayerRemoved.bind(this);
         this.onGameStateChange = this.onGameStateChange.bind(this);
+        this.onPlayerStateChange = this.onPlayerStateChange.bind(this);
     };
     /**
      * Called on the scene starts.
@@ -232,12 +242,31 @@ var GameManager = /** @class */ (function (_super) {
         this.reset();
     };
     GameManager.prototype.onPlayerAdded = function (state) {
+        var _this = this;
         console.log("On Player Added: %o", state.id);
         if (state.id === networkManager_1.default.Instance.Room.sessionId) {
             console.log("Local Player State Received!");
             this._playerState = state;
         }
+        state.onChange = function (changes) {
+            _this.onPlayerStateChange(state.id, changes);
+        };
         this._players.set(state.id, state);
+    };
+    GameManager.prototype.onPlayerStateChange = function (sessionId, changes) {
+        var change = null;
+        for (var i = 0; i < changes.length; i++) {
+            change = changes[i];
+            if (!change) {
+                continue;
+            }
+            switch (change.field) {
+                case 'playAgain':
+                    console.log("Player (".concat(sessionId, ") State Change - ").concat(change.field, " to ").concat(change.value));
+                    this.broadcastEvent('playerPlayAgain', { sessionId: sessionId, value: change.value });
+                    break;
+            }
+        }
     };
     GameManager.prototype.onPlayerRemoved = function (state) {
         console.log("On Player Removed: ".concat(state.id));
@@ -303,7 +332,7 @@ var GameManager = /** @class */ (function (_super) {
         this.broadcastEvent('gameStateChanged', gameState);
     };
     GameManager.prototype.handleCountdownChange = function (countdown) {
-        console.log("Countdown: ".concat(countdown));
+        // console.log(`Countdown: ${countdown}`);
         this.broadcastEvent('updateCountdown', countdown);
     };
     GameManager.prototype.spawnPlayers = function () {
@@ -416,6 +445,7 @@ var GameManager = /** @class */ (function (_super) {
     GameManager.prototype.reset = function () {
         this.despawnPlayers();
         this.initializeSpawnPoints();
+        this.CurrentGameState = GameState_1.GameState.NONE;
         this._foundHiders.clear();
         this._playAgain = false;
     };
@@ -429,11 +459,11 @@ var GameManager = /** @class */ (function (_super) {
         // 	this._joiningRoom = true;
         // 	NetworkManager.Instance.joinRoom();
         // } else {
-        if (networkManager_1.default.Instance.Room && this.CurrentGameState === GameState_1.GameState.GAME_OVER && !this._playAgain && inputManager_1.default.getKeyUp(32)) {
-            this._playAgain = true;
-            this._cameraHolder.setTarget(this._cameraStartPos, this._startChaseSpeed);
-            networkManager_1.default.Instance.sendPlayAgain();
-        }
+        // if (NetworkManager.Instance.Room && this.CurrentGameState === GameState.GAME_OVER && !this._playAgain && InputManager.getKeyUp(32)) {
+        // 	this._playAgain = true;
+        // 	this._cameraHolder.setTarget(this._cameraStartPos, this._startChaseSpeed);
+        // 	NetworkManager.Instance.sendPlayAgain();
+        // }
         // }
     };
     /**

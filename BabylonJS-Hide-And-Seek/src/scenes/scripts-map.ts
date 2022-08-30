@@ -15,6 +15,7 @@ export interface ISceneScriptMap {
 	"src/scenes/scripts/players/playerVisual.ts": ScriptMap;
 	"src/scenes/scripts/spawnPoint.ts": ScriptMap;
 	"src/scenes/scripts/spawnPoints.ts": ScriptMap;
+	"src/scenes/scripts/ui/GameplayUI.ts": ScriptMap;
 	"src/scenes/scripts/ui/lobbyUI.ts": ScriptMap;
 	"src/scenes/scripts/ui/overlayUI.ts": ScriptMap;
 	"src/scenes/scripts/ui/prologueUI.ts": ScriptMap;
@@ -39,6 +40,7 @@ export const scriptsMap: ISceneScriptMap = {
 	"src/scenes/scripts/players/playerVisual.ts": require("./scripts/players/playerVisual"),
 	"src/scenes/scripts/spawnPoint.ts": require("./scripts/spawnPoint"),
 	"src/scenes/scripts/spawnPoints.ts": require("./scripts/spawnPoints"),
+	"src/scenes/scripts/ui/GameplayUI.ts": require("./scripts/ui/GameplayUI"),
 	"src/scenes/scripts/ui/lobbyUI.ts": require("./scripts/ui/lobbyUI"),
 	"src/scenes/scripts/ui/overlayUI.ts": require("./scripts/ui/overlayUI"),
 	"src/scenes/scripts/ui/prologueUI.ts": require("./scripts/ui/prologueUI"),

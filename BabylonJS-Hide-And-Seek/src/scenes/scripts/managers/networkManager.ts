@@ -127,10 +127,6 @@ export default class NetworkManager extends Node {
 	 */
 	public async onStart(): Promise<void> {
 		// // ...
-		// console.log(`Network Manager - On Initialize - Create Colyseus Client with URL: ${this.WebSocketEndPoint()}`);
-		// this._client = new Colyseus.Client(this.WebSocketEndPoint());
-		// await this.joinRoom();
-		// console.log(`Joined Room! - ${this.Room.id}`);
 	}
 
 	/**
@@ -175,7 +171,6 @@ export default class NetworkManager extends Node {
 	}
 
 	private async joinRoomWithId(roomId: string = ''): Promise<Colyseus.Room<HASRoomState>> {
-		// try {
 		if (roomId) {
 			console.log(`Join room with id: ${roomId}`);
 			return await this._client.joinById(roomId);
@@ -183,9 +178,6 @@ export default class NetworkManager extends Node {
 			console.log(`Join or create room`);
 			return await this._client.joinOrCreate('HAS_room');
 		}
-		// } catch (error: any) {
-		// 	console.error(error.stack);
-		// }
 	}
 
 	public leaveRoom() {
@@ -206,9 +198,9 @@ export default class NetworkManager extends Node {
 				// this.onLeftRoom(code);
 				this.broadcastEvent(NetworkEvent.LEFT_ROOM, code);
 			});
-			this.Room.state.players.onAdd = (player: PlayerState) => this.broadcastEvent(NetworkEvent.PLAYER_ADDED, player); // this.onPlayerAdded;
-			this.Room.state.players.onRemove = (player: PlayerState) => this.broadcastEvent(NetworkEvent.PLAYER_REMOVED, player); // this.onPlayerRemoved;
-			this.Room.state.gameState.onChange = (changes: any[]) => this.broadcastEvent(NetworkEvent.GAME_STATE_CHANGED, changes); // this.onGameStateChange;
+			this.Room.state.players.onAdd = (player: PlayerState) => this.broadcastEvent(NetworkEvent.PLAYER_ADDED, player);
+			this.Room.state.players.onRemove = (player: PlayerState) => this.broadcastEvent(NetworkEvent.PLAYER_REMOVED, player);
+			this.Room.state.gameState.onChange = (changes: any[]) => this.broadcastEvent(NetworkEvent.GAME_STATE_CHANGED, changes);
 
 			this.Room.onMessage('*', this.handleMessages);
 		} else {
@@ -236,20 +228,20 @@ export default class NetworkManager extends Node {
 		this.Room.send('playerInput', positionMsg);
 	}
 
-	public sendPlayAgain() {
-		if (!this.Room) {
-			return;
-		}
-
-		this.Room.send('playAgain');
-	}
-
 	public sendHiderFound(hiderId: string) {
 		if (!this.Room || this.Room.state.gameState.currentState !== GameState.HUNT) {
 			return;
 		}
 
 		this.Room.send('foundHider', hiderId);
+	}
+
+	public sendPlayAgain() {
+		if (!this.Room || this.Room.state.gameState.currentState !== GameState.GAME_OVER) {
+			return;
+		}
+
+		this.Room.send('playAgain');
 	}
 	//============================================== Messages to server
 

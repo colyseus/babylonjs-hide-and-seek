@@ -54,6 +54,14 @@ export class TitleUI extends UIController {
 		this._cancelJoin.onPointerClickObservable.add(this.handleCancleJoin);
 	}
 
+	public setVisible(visible: boolean): void {
+		super.setVisible(visible);
+
+		if (visible) {
+			this.handleCancleJoin();
+		}
+	}
+
 	private handleQuickPlay() {
 		this.emit('joinRoom');
 	}

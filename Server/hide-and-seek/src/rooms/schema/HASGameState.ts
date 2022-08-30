@@ -36,6 +36,14 @@ export class HASGameState extends Schema {
 		this._capturedPlayers = new Map<string, PlayerState>();
 	}
 
+	private get WinCondition(): number {
+		let winCondition: number = this._config.SeekerWinCondition;
+		const hiderCount: number = this._room.state.players.size - 1;
+
+		// If we don't have enough hiders to satisfy the given win condition, the hider count itself will become the win condition
+		return hiderCount < winCondition ? hiderCount : winCondition;
+	}
+
 	public seekerCapturedHider(hider: PlayerState) {
 		// If we're not in the right game state, return;
 		if (this.currentState !== GameState.HUNT || !hider) {
@@ -85,9 +93,10 @@ export class HASGameState extends Schema {
 
 	private moveToState(state: GameState) {
 		this._lastState = this.currentState;
+
 		this.currentState = state;
 
-		logger.info(`Move state from "${this._lastState}" to "${this.currentState}"`);
+		logger.info(`Move state from "${this._lastState}" to "${state}"`);
 
 		// Anything that needs doing at the beginning of the state entry do here
 		switch (state) {
@@ -104,8 +113,29 @@ export class HASGameState extends Schema {
 				this._stateTimestamp = Date.now();
 				break;
 			case GameState.INITIALIZE:
+				// Reset the timestamp for the duration of the countdown to lock the room and begin a round of play
+				this._stateTimestamp = Date.now();
+
 				// Lock the room as we begin round of play initialization
 				this._room.lock();
+
+				// Randomly pick which player will be Seeker
+				const players: PlayerState[] = Array.from(this._room.state.players.values());
+
+				const index: number = random(0, players.length - 1);
+
+				// Remove the seeker from the array; we don't need to assign a spawn point to it
+				const player: PlayerState = players.splice(index, 1)[0];
+				player.spawnPoint = -1;
+				player.isSeeker = true;
+
+				// Assign remaining players spawn point indices
+				for (let i = 0; i < players.length; i++) {
+					players[i].spawnPoint = this._room.state.getSpawnPointIndex();
+					players[i].isSeeker = false;
+				}
+
+				this._capturedPlayers.clear();
 				break;
 			case GameState.PROLOGUE:
 				// Reset the timestamp for the duration of the prologue and scatter stages
@@ -138,8 +168,7 @@ export class HASGameState extends Schema {
 
 				break;
 			case GameState.GAME_OVER:
-				// Determine if the Seeker has won
-				this.seekerWon = this._capturedPlayers.size === this._config.SeekerWinCondition;
+				logger.debug(`Game Over - Seeker Won: ${this.seekerWon}`);
 
 				// Disable player movement
 				this._room.state.players.forEach((player: PlayerState) => {
@@ -190,23 +219,16 @@ export class HASGameState extends Schema {
 	}
 
 	private initializeRoundOfPlay() {
-		// Randomly pick which player will be Seeker
-		const players: PlayerState[] = Array.from(this._room.state.players.values());
+		let elapsedTime: number = Date.now() - this._stateTimestamp;
+		const countdown: number = this._config.InitializeCountdown;
 
-		const index: number = random(0, players.length - 1);
+		if (elapsedTime < countdown) {
+			this.setCountdown(countdown - elapsedTime, countdown);
 
-		// Remove the seeker from the array; we don't need to assign a spawn point to it
-		const player: PlayerState = players.splice(index, 1)[0];
-		player.spawnPoint = -1;
-		player.isSeeker = true;
-
-		// Assign remaining players spawn point indices
-		for (let i = 0; i < players.length; i++) {
-			players[i].spawnPoint = this._room.state.getSpawnPointIndex();
-			players[i].isSeeker = false;
+			return;
 		}
 
-		this._capturedPlayers.clear();
+		this.countdown = 0;
 
 		this.moveToState(GameState.PROLOGUE);
 	}
@@ -244,14 +266,11 @@ export class HASGameState extends Schema {
 
 		this.setCountdown(countdown - elapsedTime, countdown);
 
-		let winCondition: number = this._config.SeekerWinCondition;
-		const hiderCount: number = this._room.state.players.size - 1;
-
-		// If we don't have enough hiders to satisfy the given win condition, the hider count itself will become the win condition
-		winCondition = hiderCount < winCondition ? hiderCount : winCondition;
+		// Determine if the Seeker has won
+		this.seekerWon = this._capturedPlayers.size >= this.WinCondition;
 
 		// Check Seeker win condition
-		if ((this._capturedPlayers.size < winCondition || this._config.AllowDebug) && elapsedTime < countdown) {
+		if ((!this.seekerWon || this._config.AllowDebug) && elapsedTime < countdown) {
 			return;
 		}
 

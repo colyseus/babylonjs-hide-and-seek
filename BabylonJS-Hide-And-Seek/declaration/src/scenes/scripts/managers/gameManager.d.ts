@@ -1,5 +1,6 @@
 import { Node } from '@babylonjs/core/node';
 import { GameState } from '../GameState';
+import type { PlayerState } from '../../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
 import Player from '../players/player';
 export default class GameManager extends Node {
     private static _instance;
@@ -29,10 +30,18 @@ export default class GameManager extends Node {
     private _foundHiderMsgRate;
     private _halfSeekerFOV;
     private _foundHiders;
+    private _playerState;
+    private _eventEmitter;
+    static get PlayerState(): PlayerState;
+    get Countdown(): number;
     get CurrentGameState(): GameState;
     private set CurrentGameState(value);
     static get Instance(): GameManager;
     static get DeltaTime(): number;
+    SeekerWon(): boolean;
+    addOnEvent(eventName: string, callback: (data?: any) => void): void;
+    removeOnEvent(eventName: string, callback: (data?: any) => void): void;
+    private broadcastEvent;
     /**
      * Override constructor.
      * @warn do not fill.
@@ -47,10 +56,13 @@ export default class GameManager extends Node {
      * Called on the scene starts.
      */
     onStart(): void;
+    PlayerIsSeeker(): boolean;
+    joinRoom(roomId?: string): Promise<void>;
     private initializeSpawnPoints;
     private onJoinedRoom;
     private onLeftRoom;
     private onPlayerAdded;
+    private onPlayerStateChange;
     private onPlayerRemoved;
     private resetPlayerObject;
     private onGameStateChange;

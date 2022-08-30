@@ -3,12 +3,17 @@ import { PlayerInputMessage } from '../models/PlayerInputMessage';
 import { HASRoomState } from './schema/HASRoomState';
 import { PlayerState } from './schema/PlayerState';
 import logger from '../helpers/logger';
+import gameConfig from '../gameConfig';
+import { GameConfig } from '../models/GameConfig';
 
 export class HASRoom extends Room<HASRoomState> {
 	public movementSpeed: number = 600;
 
+	private _config: GameConfig;
+
 	constructor(presence?: Presence) {
 		super(presence);
+		this._config = new GameConfig(gameConfig);
 
 		this.bindHandlers();
 	}
@@ -22,7 +27,7 @@ export class HASRoom extends Room<HASRoomState> {
 	onCreate(options: any) {
 		this.maxClients = 8;
 
-		this.setState(new HASRoomState(this));
+		this.setState(new HASRoomState(this, this._config));
 
 		logger.info(`*********************** HIDE AND SEEK ROOM (${this.roomId}) CREATED ***********************`);
 		logger.info(`Options: %o`, options);
@@ -42,9 +47,9 @@ export class HASRoom extends Room<HASRoomState> {
 	onJoin(client: Client, options: any) {
 		logger.silly(`*** On Client Join - ${client.sessionId} ***`);
 
-		const isSeeker: boolean = this.state.players.size === 0;
+		// const isSeeker: boolean = this.state.players.size === 0;
 
-		let spawnIndex: number = isSeeker ? -1 : this.state.getSpawnPointIndex();
+		// let spawnIndex: number = isSeeker ? -1 : this.state.getSpawnPointIndex();
 
 		//logger.info(`${client.sessionId} spawn index: ${spawnIndex}`);
 
@@ -52,14 +57,17 @@ export class HASRoom extends Room<HASRoomState> {
 		const player = new PlayerState(this).assign({
 			id: client.sessionId,
 			username: options.username,
-			spawnPoint: spawnIndex,
-			isSeeker: isSeeker,
+			// spawnPoint: spawnIndex,
+			// isSeeker: isSeeker,
 		});
 
 		// Add the player to the collection;
 		// This will trigger the OnAdd event of the state's "players" collection on the client
 		// and the client will spawn a character object for this use.
 		this.state.players.set(client.sessionId, player);
+
+		// Send game config to the client that just connected
+		client.send('config', gameConfig);
 	}
 
 	async onLeave(client: Client, consented: boolean) {

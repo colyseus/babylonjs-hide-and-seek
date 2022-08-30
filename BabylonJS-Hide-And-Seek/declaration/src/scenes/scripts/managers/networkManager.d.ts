@@ -2,23 +2,28 @@ import { Node } from '@babylonjs/core/node';
 import * as Colyseus from 'colyseus.js';
 import type { HASRoomState } from '../../../../../Server/hide-and-seek/src/rooms/schema/HASRoomState';
 import type { PlayerInputMessage } from '../../../../../Server/hide-and-seek/src/models/PlayerInputMessage';
-import type { PlayerState } from '../../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
+import { GameConfig } from '../../../../../Server/hide-and-seek/src/models/GameConfig';
+export declare enum NetworkEvent {
+    JOINED_ROOM = "joinedRoom",
+    LEFT_ROOM = "leftRoom",
+    PLAYER_ADDED = "playerAdded",
+    PLAYER_REMOVED = "playerRemoved",
+    GAME_STATE_CHANGED = "gameStateChanged"
+}
 export default class NetworkManager extends Node {
-    onJoinedRoom: (roomId: string) => void;
-    onPlayerAdded: (state: PlayerState, sesstionId: string) => void;
-    onPlayerRemoved: (state: PlayerState, sessionId: string) => void;
-    onGameStateChange: (changes: any[]) => void;
-    onLeftRoom: (code: number) => void;
     private static _instance;
     private _serverSettings;
     private _client;
     private _room;
+    private _eventEmitter;
+    private _config;
     /**
      * Override constructor.
      * @warn do not fill.
      */
     protected constructor();
     static get Instance(): NetworkManager;
+    static get Config(): GameConfig;
     getColyseusServerAddress(): string;
     setColyseusServerAddress(value: string): void;
     getColyseusServerPort(): number;
@@ -27,8 +32,14 @@ export default class NetworkManager extends Node {
     set ColyseusUseSecure(value: boolean);
     private WebSocketEndPoint;
     private WebRequestEndPoint;
+    static Ready(): boolean;
     get Room(): Colyseus.Room<HASRoomState>;
     private set Room(value);
+    static get PlayerCount(): number;
+    get MinimumPlayers(): number;
+    addOnEvent(eventName: string, callback: (data?: any) => void): void;
+    removeOnEvent(eventName: string, callback: (data?: any) => void): void;
+    private broadcastEvent;
     /**
      * Called on the node is being initialized.
      * This function is called immediatly after the constructor has been called.
@@ -57,10 +68,11 @@ export default class NetworkManager extends Node {
     onMessage(name: string, data: any, sender: any): void;
     joinRoom(roomId?: string): Promise<void>;
     private joinRoomWithId;
+    leaveRoom(): void;
     private registerRoomHandlers;
     private unregisterRoomHandlers;
     sendPlayerPosition(positionMsg: PlayerInputMessage): void;
-    sendPlayAgain(): void;
     sendHiderFound(hiderId: string): void;
+    sendPlayAgain(): void;
     private handleMessages;
 }

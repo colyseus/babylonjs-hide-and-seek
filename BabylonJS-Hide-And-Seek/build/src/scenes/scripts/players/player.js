@@ -202,11 +202,11 @@ var Player = /** @class */ (function (_super) {
                 var ray = new core_1.Ray(_this.position, hider.position.subtract(_this.position).normalize(), gameManager_1.default.Instance.seekerCheckDistance + 1);
                 // Draw debug ray visual
                 //============================================
-                if (_this._rayHelper) {
-                    _this._rayHelper.dispose();
-                }
-                _this._rayHelper = new core_1.RayHelper(ray);
-                _this._rayHelper.show(_this._scene, core_1.Color3.Green());
+                // if (this._rayHelper) {
+                // 	this._rayHelper.dispose();
+                // }
+                // this._rayHelper = new RayHelper(ray);
+                // this._rayHelper.show(this._scene, Color3.Green());
                 //============================================
                 var info = _this._scene.multiPickWithRay(ray, _this.checkPredicate);
                 /** Flag for if the hider is obscurred by an obstacle mesh */

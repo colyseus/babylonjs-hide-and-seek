@@ -231,12 +231,12 @@ export default class Player extends Mesh {
 
 				// Draw debug ray visual
 				//============================================
-				if (this._rayHelper) {
-					this._rayHelper.dispose();
-				}
+				// if (this._rayHelper) {
+				// 	this._rayHelper.dispose();
+				// }
 
-				this._rayHelper = new RayHelper(ray);
-				this._rayHelper.show(this._scene, Color3.Green());
+				// this._rayHelper = new RayHelper(ray);
+				// this._rayHelper.show(this._scene, Color3.Green());
 				//============================================
 
 				const info: PickingInfo[] = this._scene.multiPickWithRay(ray, this.checkPredicate);

@@ -1,4 +1,5 @@
-import { Quaternion, TransformNode, Vector3 } from '@babylonjs/core';
+import { AbstractMesh, Quaternion, TransformNode, Vector3 } from '@babylonjs/core';
+import EventEmitter = require('events');
 import { Node } from '@babylonjs/core/node';
 import { GameState } from '../GameState';
 import type { PlayerState } from '../../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
@@ -7,7 +8,7 @@ import CameraHolder from '../players/cameraHolder';
 import Player from '../players/player';
 import { SpawnPoints } from '../spawnPoints';
 import InputManager from './inputManager';
-import NetworkManager from './networkManager';
+import NetworkManager, { NetworkEvent } from './networkManager';
 import { PlayerInputMessage } from '../../../../../Server/hide-and-seek/src/models/PlayerInputMessage';
 
 export default class GameManager extends Node {
@@ -54,6 +55,17 @@ export default class GameManager extends Node {
 
 	private _halfSeekerFOV: number = 0;
 	private _foundHiders: Map<string, Player>;
+	private _playerState: PlayerState = null;
+
+	private _eventEmitter: EventEmitter = new EventEmitter();
+
+	public static get PlayerState(): PlayerState {
+		return GameManager.Instance._playerState;
+	}
+
+	public get Countdown(): number {
+		return NetworkManager.Instance.Room.state.gameState.countdown;
+	}
 
 	public get CurrentGameState(): GameState {
 		return GameManager.Instance._currentGameState;
@@ -69,6 +81,22 @@ export default class GameManager extends Node {
 
 	public static get DeltaTime(): number {
 		return this._instance._scene.deltaTime / 1000;
+	}
+
+	public SeekerWon(): boolean {
+		return NetworkManager.Instance.Room.state.gameState.seekerWon;
+	}
+
+	public addOnEvent(eventName: string, callback: (data?: any) => void) {
+		this._eventEmitter.addListener(eventName, callback);
+	}
+
+	public removeOnEvent(eventName: string, callback: (data?: any) => void) {
+		this._eventEmitter.removeListener(eventName, callback);
+	}
+
+	private broadcastEvent(eventName: string, data?: any) {
+		this._eventEmitter.emit(eventName, data);
 	}
 
 	/**
@@ -98,6 +126,7 @@ export default class GameManager extends Node {
 		this.onPlayerAdded = this.onPlayerAdded.bind(this);
 		this.onPlayerRemoved = this.onPlayerRemoved.bind(this);
 		this.onGameStateChange = this.onGameStateChange.bind(this);
+		this.onPlayerStateChange = this.onPlayerStateChange.bind(this);
 	}
 
 	/**
@@ -119,13 +148,49 @@ export default class GameManager extends Node {
 
 		this._player.setParent(null);
 
-		NetworkManager.Instance.onJoinedRoom = this.onJoinedRoom;
-		NetworkManager.Instance.onLeftRoom = this.onLeftRoom;
-		NetworkManager.Instance.onPlayerAdded = this.onPlayerAdded;
-		NetworkManager.Instance.onPlayerRemoved = this.onPlayerRemoved;
-		NetworkManager.Instance.onGameStateChange = this.onGameStateChange;
+		NetworkManager.Instance.addOnEvent(NetworkEvent.JOINED_ROOM, this.onJoinedRoom);
+		NetworkManager.Instance.addOnEvent(NetworkEvent.LEFT_ROOM, this.onLeftRoom);
+		NetworkManager.Instance.addOnEvent(NetworkEvent.PLAYER_ADDED, this.onPlayerAdded);
+		NetworkManager.Instance.addOnEvent(NetworkEvent.PLAYER_REMOVED, this.onPlayerRemoved);
+		NetworkManager.Instance.addOnEvent(NetworkEvent.GAME_STATE_CHANGED, this.onGameStateChange);
 
 		this._cameraHolder.setTarget(this._cameraStartPos, this._startChaseSpeed);
+
+		// Set the layermask of all scene meshes so they aren't visible in the UI camera
+		//================================================
+		let meshes: AbstractMesh[] = this._scene.meshes;
+
+		const meshLayermask: number = 1;
+		meshes.forEach((mesh: AbstractMesh) => {
+			// console.log(`Setting ${mesh.name} Layermask to ${meshLayermask}`);
+			mesh.layerMask = meshLayermask;
+		});
+		//================================================
+	}
+
+	public PlayerIsSeeker(): boolean {
+		return this._playerState.isSeeker;
+	}
+
+	public async joinRoom(roomId: string = null): Promise<void> {
+		if (this._joiningRoom || NetworkManager.Instance.Room) {
+			return;
+		}
+
+		if (!roomId) {
+			console.log('Start Quick Play!');
+		} else {
+			console.log(`Join room "${roomId}"`);
+		}
+
+		this._joiningRoom = true;
+
+		try {
+			await NetworkManager.Instance.joinRoom(roomId);
+		} catch (error: any) {
+			this._joiningRoom = false;
+			throw new Error(error.message);
+		}
 	}
 
 	private initializeSpawnPoints() {
@@ -140,21 +205,50 @@ export default class GameManager extends Node {
 	private onLeftRoom(code: number) {
 		console.log(`Left room: ${code}`);
 		this._cameraHolder.setTarget(this._cameraStartPos, this._startChaseSpeed);
+
+		this._playerState = null;
 		this.reset();
 	}
 
-	private onPlayerAdded(state: PlayerState, sessionId: string) {
-		console.log(`On Player Added: ${sessionId}`);
+	private onPlayerAdded(state: PlayerState) {
+		console.log(`On Player Added: %o`, state.id);
 
-		this._players.set(sessionId, state);
+		if (state.id === NetworkManager.Instance.Room.sessionId) {
+			console.log(`Local Player State Received!`);
+			this._playerState = state;
+		}
+
+		state.onChange = (changes: any[]) => {
+			this.onPlayerStateChange(state.id, changes);
+		};
+
+		this._players.set(state.id, state);
 	}
 
-	private onPlayerRemoved(state: PlayerState, sessionId: string) {
-		console.log(`On Player Removed: ${sessionId}`);
+	private onPlayerStateChange(sessionId: string, changes: any[]) {
+		let change: any = null;
+		for (let i = 0; i < changes.length; i++) {
+			change = changes[i];
+
+			if (!change) {
+				continue;
+			}
+
+			switch (change.field) {
+				case 'playAgain':
+					console.log(`Player (${sessionId}) State Change - ${change.field} to ${change.value}`);
+					this.broadcastEvent('playerPlayAgain', { sessionId, value: change.value });
+					break;
+			}
+		}
+	}
+
+	private onPlayerRemoved(state: PlayerState) {
+		console.log(`On Player Removed: ${state.id}`);
 
 		this.despawnPlayer(state);
 
-		this._players.delete(sessionId);
+		this._players.delete(state.id);
 	}
 
 	private resetPlayerObject(player: Player) {
@@ -225,10 +319,13 @@ export default class GameManager extends Node {
 			default:
 				break;
 		}
+
+		this.broadcastEvent('gameStateChanged', gameState);
 	}
 
 	private handleCountdownChange(countdown: number) {
-		console.log(`Countdown: ${countdown}`);
+		// console.log(`Countdown: ${countdown}`);
+		this.broadcastEvent('updateCountdown', countdown);
 	}
 
 	private spawnPlayers() {
@@ -366,6 +463,7 @@ export default class GameManager extends Node {
 		this.despawnPlayers();
 		this.initializeSpawnPoints();
 
+		this.CurrentGameState = GameState.NONE;
 		this._foundHiders.clear();
 		this._playAgain = false;
 	}
@@ -375,18 +473,17 @@ export default class GameManager extends Node {
 	 */
 	public onUpdate(): void {
 		// ...
-
-		if (!NetworkManager.Instance.Room && InputManager.getKeyUp(32) && !this._joiningRoom) {
-			console.log('Join Room');
-			this._joiningRoom = true;
-			NetworkManager.Instance.joinRoom();
-		} else {
-			if (NetworkManager.Instance.Room && this.CurrentGameState === GameState.GAME_OVER && !this._playAgain && InputManager.getKeyUp(32)) {
-				this._playAgain = true;
-				this._cameraHolder.setTarget(this._cameraStartPos, this._startChaseSpeed);
-				NetworkManager.Instance.sendPlayAgain();
-			}
-		}
+		// if (!NetworkManager.Instance.Room && InputManager.getKeyUp(32) && !this._joiningRoom) {
+		// 	console.log('Join Room');
+		// 	this._joiningRoom = true;
+		// 	NetworkManager.Instance.joinRoom();
+		// } else {
+		// if (NetworkManager.Instance.Room && this.CurrentGameState === GameState.GAME_OVER && !this._playAgain && InputManager.getKeyUp(32)) {
+		// 	this._playAgain = true;
+		// 	this._cameraHolder.setTarget(this._cameraStartPos, this._startChaseSpeed);
+		// 	NetworkManager.Instance.sendPlayAgain();
+		// }
+		// }
 	}
 
 	/**

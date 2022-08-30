@@ -1,26 +1,29 @@
-import { Vector3 } from '@babylonjs/core';
 import { Node } from '@babylonjs/core/node';
 import * as Colyseus from 'colyseus.js';
 import type { HASRoomState } from '../../../../../Server/hide-and-seek/src/rooms/schema/HASRoomState';
 import type { PlayerInputMessage } from '../../../../../Server/hide-and-seek/src/models/PlayerInputMessage';
 import ColyseusSettings from '../colyseusSettings';
 import type { PlayerState } from '../../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
-import GameManager from './gameManager';
-import { EventEmitter } from 'stream';
 import { GameState } from '../GameState';
+import { GameConfig } from '../../../../../Server/hide-and-seek/src/models/GameConfig';
+import EventEmitter = require('events');
+
+export enum NetworkEvent {
+	JOINED_ROOM = 'joinedRoom',
+	LEFT_ROOM = 'leftRoom',
+	PLAYER_ADDED = 'playerAdded',
+	PLAYER_REMOVED = 'playerRemoved',
+	GAME_STATE_CHANGED = 'gameStateChanged',
+}
 
 export default class NetworkManager extends Node {
-	public onJoinedRoom: (roomId: string) => void;
-	public onPlayerAdded: (state: PlayerState, sesstionId: string) => void;
-	public onPlayerRemoved: (state: PlayerState, sessionId: string) => void;
-	public onGameStateChange: (changes: any[]) => void;
-	public onLeftRoom: (code: number) => void;
-
 	private static _instance: NetworkManager = null;
 
 	private _serverSettings: ColyseusSettings = null;
 	private _client: Colyseus.Client = null;
 	private _room: Colyseus.Room<HASRoomState> = null;
+	private _eventEmitter: EventEmitter = new EventEmitter();
+	private _config: GameConfig = null;
 
 	/**
 	 * Override constructor.
@@ -31,6 +34,10 @@ export default class NetworkManager extends Node {
 
 	public static get Instance(): NetworkManager {
 		return NetworkManager._instance;
+	}
+
+	public static get Config(): GameConfig {
+		return NetworkManager.Instance._config;
 	}
 
 	public getColyseusServerAddress(): string {
@@ -65,12 +72,36 @@ export default class NetworkManager extends Node {
 		return `${this.ColyseusUseSecure ? 'https' : 'http'}://${this.getColyseusServerAddress()}:${this.getColyseusServerPort()}`;
 	}
 
-	public get Room() {
+	public static Ready(): boolean {
+		return this.Instance.Room !== null && this.Config !== null;
+	}
+
+	public get Room(): Colyseus.Room<HASRoomState> {
 		return this._room;
 	}
 
 	private set Room(value: Colyseus.Room<HASRoomState>) {
 		this._room = value;
+	}
+
+	public static get PlayerCount(): number {
+		return this.Instance.Room ? this.Instance.Room.state.players.size : 0;
+	}
+
+	public get MinimumPlayers(): number {
+		return 3;
+	}
+
+	public addOnEvent(eventName: string, callback: (data?: any) => void) {
+		this._eventEmitter.addListener(eventName, callback);
+	}
+
+	public removeOnEvent(eventName: string, callback: (data?: any) => void) {
+		this._eventEmitter.removeListener(eventName, callback);
+	}
+
+	private broadcastEvent(eventName: string, data?: any) {
+		this._eventEmitter.emit(eventName, data);
 	}
 
 	/**
@@ -96,10 +127,6 @@ export default class NetworkManager extends Node {
 	 */
 	public async onStart(): Promise<void> {
 		// // ...
-		// console.log(`Network Manager - On Initialize - Create Colyseus Client with URL: ${this.WebSocketEndPoint()}`);
-		// this._client = new Colyseus.Client(this.WebSocketEndPoint());
-		// await this.joinRoom();
-		// console.log(`Joined Room! - ${this.Room.id}`);
 	}
 
 	/**
@@ -136,24 +163,29 @@ export default class NetworkManager extends Node {
 
 		if (this.Room) {
 			console.log(`Joined Room: ${this.Room.id}`);
-			this.onJoinedRoom(this.Room.id);
-		}
 
-		this.registerRoomHandlers();
+			this.registerRoomHandlers();
+
+			this.broadcastEvent(NetworkEvent.JOINED_ROOM, this.Room.id);
+		}
 	}
 
 	private async joinRoomWithId(roomId: string = ''): Promise<Colyseus.Room<HASRoomState>> {
-		try {
-			if (roomId) {
-				console.log(`Join room with id: ${roomId}`);
-				return await this._client.joinById(roomId);
-			} else {
-				console.log(`Join or create room`);
-				return await this._client.joinOrCreate('HAS_room');
-			}
-		} catch (error: any) {
-			console.error(error.stack);
+		if (roomId) {
+			console.log(`Join room with id: ${roomId}`);
+			return await this._client.joinById(roomId);
+		} else {
+			console.log(`Join or create room`);
+			return await this._client.joinOrCreate('HAS_room');
 		}
+	}
+
+	public leaveRoom() {
+		if (!this.Room) {
+			return;
+		}
+
+		this.Room.leave(true);
 	}
 
 	private registerRoomHandlers() {
@@ -163,11 +195,12 @@ export default class NetworkManager extends Node {
 			this.Room.onLeave.once((code: number) => {
 				this.unregisterRoomHandlers();
 				this.Room = null;
-				this.onLeftRoom(code);
+				// this.onLeftRoom(code);
+				this.broadcastEvent(NetworkEvent.LEFT_ROOM, code);
 			});
-			this.Room.state.players.onAdd = this.onPlayerAdded;
-			this.Room.state.players.onRemove = this.onPlayerRemoved;
-			this.Room.state.gameState.onChange = this.onGameStateChange;
+			this.Room.state.players.onAdd = (player: PlayerState) => this.broadcastEvent(NetworkEvent.PLAYER_ADDED, player);
+			this.Room.state.players.onRemove = (player: PlayerState) => this.broadcastEvent(NetworkEvent.PLAYER_REMOVED, player);
+			this.Room.state.gameState.onChange = (changes: any[]) => this.broadcastEvent(NetworkEvent.GAME_STATE_CHANGED, changes);
 
 			this.Room.onMessage('*', this.handleMessages);
 		} else {
@@ -195,14 +228,6 @@ export default class NetworkManager extends Node {
 		this.Room.send('playerInput', positionMsg);
 	}
 
-	public sendPlayAgain() {
-		if (!this.Room) {
-			return;
-		}
-
-		this.Room.send('playAgain');
-	}
-
 	public sendHiderFound(hiderId: string) {
 		if (!this.Room || this.Room.state.gameState.currentState !== GameState.HUNT) {
 			return;
@@ -210,12 +235,22 @@ export default class NetworkManager extends Node {
 
 		this.Room.send('foundHider', hiderId);
 	}
+
+	public sendPlayAgain() {
+		if (!this.Room || this.Room.state.gameState.currentState !== GameState.GAME_OVER) {
+			return;
+		}
+
+		this.Room.send('playAgain');
+	}
 	//============================================== Messages to server
 
 	private handleMessages(name: string, message: any) {
-		// switch (name) {
-		// 	case 'velocityChange':
-		// 		this.handleVelocityChange(message);
-		// }
+		switch (name) {
+			case 'config':
+				this._config = new GameConfig(message);
+				console.log(`Got Config: %o`, this._config);
+				break;
+		}
 	}
 }

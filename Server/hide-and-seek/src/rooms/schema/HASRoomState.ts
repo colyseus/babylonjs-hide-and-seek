@@ -5,7 +5,6 @@ import { PlayerState } from './PlayerState';
 import { distanceBetweenPlayers, random } from '../../helpers/Utility';
 import { HASGameState } from '../schema/HASGameState';
 import { GameConfig } from '../../models/GameConfig';
-import gameConfig from '../../gameConfig';
 import { GameState } from '../schema/HASGameState';
 
 export class HASRoomState extends Schema {
@@ -23,9 +22,9 @@ export class HASRoomState extends Schema {
 
 		this.initializeSpawnPoints();
 
-		logger.info(`Game Config: %o`, gameConfig);
+		logger.info(`Game Config: %o`, args[0]);
 
-		this._config = new GameConfig(gameConfig);
+		this._config = args[0];
 
 		this.gameState = new HASGameState(room, this._config);
 	}

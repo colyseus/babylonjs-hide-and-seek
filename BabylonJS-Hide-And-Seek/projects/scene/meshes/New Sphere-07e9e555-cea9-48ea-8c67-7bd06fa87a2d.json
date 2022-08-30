@@ -40,7 +40,7 @@
 				"15": 1
 			},
 			"isEnabled": true,
-			"isVisible": true,
+			"isVisible": false,
 			"infiniteDistance": false,
 			"pickable": true,
 			"receiveShadows": false,
@@ -51,7 +51,7 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "b127ed29-6923-493a-b0c6-6a02b964d393",
 			"isUnIndexed": false,
-			"geometryUniqueId": 308,
+			"geometryUniqueId": 312,
 			"geometryId": "f085d762-4855-4d4e-a160-dfdc61a0b8e1",
 			"subMeshes": null,
 			"materialUniqueId": 1209,

@@ -40,7 +40,7 @@
 				"15": 1
 			},
 			"isEnabled": true,
-			"isVisible": true,
+			"isVisible": false,
 			"infiniteDistance": false,
 			"pickable": true,
 			"receiveShadows": false,

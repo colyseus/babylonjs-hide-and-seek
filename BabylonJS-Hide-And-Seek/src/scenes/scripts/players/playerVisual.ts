@@ -1,4 +1,5 @@
-import { AbstractMesh, Axis, Mesh, Quaternion, Space, Vector3 } from '@babylonjs/core';
+import { AbstractMesh, Axis, Mesh, Quaternion, Space, TransformNode, Vector3 } from '@babylonjs/core';
+import { fromChildren } from '../../decorators';
 import { Quat, random, Vec3 } from '../../utility';
 import GameManager from '../managers/gameManager';
 import Player from './player';
@@ -10,6 +11,9 @@ export default class PlayerVisual extends Mesh {
 
 	private _prevDir: Vector3;
 	private _currentDir: Vector3;
+
+	@fromChildren('Captured')
+	private _captured: TransformNode;
 
 	/**
 	 * Override constructor.
@@ -39,6 +43,7 @@ export default class PlayerVisual extends Mesh {
 	public onStart(): void {
 		// ...
 		this.setEnabled(false);
+		this.setCaptured(false);
 
 		this._prevDir = this.forward;
 		this._currentDir = this.forward;
@@ -66,6 +71,10 @@ export default class PlayerVisual extends Mesh {
 		this.getChildMeshes().forEach((mesh: AbstractMesh) => {
 			mesh.isVisible = visible;
 		});
+	}
+
+	public setCaptured(captured: boolean) {
+		this._captured.setEnabled(captured);
 	}
 
 	/**

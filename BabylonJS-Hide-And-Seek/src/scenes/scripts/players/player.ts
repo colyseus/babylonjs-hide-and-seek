@@ -103,7 +103,8 @@ export default class Player extends Mesh {
 			this.setVisualVisibility(captured);
 		}
 
-		// TODO: Alter appearance to show captured state (like show the player in a cage or something)
+		// Alter appearance to show captured state (like show the player in a cage or something)
+		this._visual.setCaptured(captured);
 	}
 
 	public reset() {

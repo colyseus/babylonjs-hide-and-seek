@@ -100,7 +100,8 @@ var Player = /** @class */ (function (_super) {
         if (gameManager_1.default.Instance.PlayerIsSeeker()) {
             this.setVisualVisibility(captured);
         }
-        // TODO: Alter appearance to show captured state (like show the player in a cage or something)
+        // Alter appearance to show captured state (like show the player in a cage or something)
+        this._visual.setCaptured(captured);
     };
     Player.prototype.reset = function () {
         this._previousMovements = [];

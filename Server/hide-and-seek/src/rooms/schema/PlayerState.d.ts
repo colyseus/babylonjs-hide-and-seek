@@ -1,4 +1,5 @@
 import { Schema } from '@colyseus/schema';
+import { Client } from 'colyseus';
 export declare class PlayerState extends Schema {
     id: string;
     username: string;
@@ -15,7 +16,9 @@ export declare class PlayerState extends Schema {
     xDir: number;
     yDir: number;
     zDir: number;
-    constructor(/*room: HASRoom,*/ ...args: any[]);
+    private _client;
+    constructor(client: Client, ...args: any[]);
+    disconnect(): void;
     resetPlayer(): void;
     update(deltaTime: number): void;
     setPosition(position: number[], positionTimestamp: number): void;

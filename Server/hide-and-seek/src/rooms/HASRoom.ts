@@ -47,18 +47,12 @@ export class HASRoom extends Room<HASRoomState> {
 	onJoin(client: Client, options: any) {
 		logger.silly(`*** On Client Join - ${client.sessionId} ***`);
 
-		// const isSeeker: boolean = this.state.players.size === 0;
-
-		// let spawnIndex: number = isSeeker ? -1 : this.state.getSpawnPointIndex();
-
 		//logger.info(`${client.sessionId} spawn index: ${spawnIndex}`);
 
 		// Create a new instance of NetworkedEntityState for this client and assign initial state values
-		const player = new PlayerState(this).assign({
+		const player = new PlayerState(client).assign({
 			id: client.sessionId,
 			username: options.username,
-			// spawnPoint: spawnIndex,
-			// isSeeker: isSeeker,
 		});
 
 		// Add the player to the collection;

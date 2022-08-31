@@ -93,6 +93,20 @@ export default class Player extends Mesh {
 		this._state = state;
 	}
 
+	public setVisualVisibility(visible: boolean) {
+		this._visual.setVisibility(visible);
+	}
+
+	public showCaptured(captured: boolean) {
+		// Only alter the visibility of the player if the local player is the Seeker
+		if (GameManager.Instance.PlayerIsSeeker()) {
+			this.setVisualVisibility(captured);
+		}
+
+		// Alter appearance to show captured state (like show the player in a cage or something)
+		this._visual.setCaptured(captured);
+	}
+
 	public reset() {
 		this._previousMovements = [];
 		this.position = this._originalPosition;

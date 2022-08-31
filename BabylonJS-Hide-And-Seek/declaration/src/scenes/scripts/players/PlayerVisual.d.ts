@@ -6,6 +6,7 @@ export default class PlayerVisual extends Mesh {
     private _lerpSpeed;
     private _prevDir;
     private _currentDir;
+    private _captured;
     /**
      * Override constructor.
      * @warn do not fill.
@@ -27,6 +28,8 @@ export default class PlayerVisual extends Mesh {
     setTarget(player: Player): void;
     setLookTargetDirection(direction: Vector3): void;
     setPickable(isPickable: boolean): void;
+    setVisibility(visible: boolean): void;
+    setCaptured(captured: boolean): void;
     /**
      * Called each frame.
      */

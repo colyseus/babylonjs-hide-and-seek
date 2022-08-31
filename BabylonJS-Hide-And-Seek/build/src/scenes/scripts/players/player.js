@@ -92,6 +92,17 @@ var Player = /** @class */ (function (_super) {
         console.log("Player - Set Player State");
         this._state = state;
     };
+    Player.prototype.setVisualVisibility = function (visible) {
+        this._visual.setVisibility(visible);
+    };
+    Player.prototype.showCaptured = function (captured) {
+        // Only alter the visibility of the player if the local player is the Seeker
+        if (gameManager_1.default.Instance.PlayerIsSeeker()) {
+            this.setVisualVisibility(captured);
+        }
+        // Alter appearance to show captured state (like show the player in a cage or something)
+        this._visual.setCaptured(captured);
+    };
     Player.prototype.reset = function () {
         this._previousMovements = [];
         this.position = this._originalPosition;

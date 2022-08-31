@@ -14,8 +14,15 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@babylonjs/core");
+var decorators_1 = require("../../decorators");
 var utility_1 = require("../../utility");
 var gameManager_1 = require("../managers/gameManager");
 var PlayerVisual = /** @class */ (function (_super) {
@@ -50,6 +57,7 @@ var PlayerVisual = /** @class */ (function (_super) {
     PlayerVisual.prototype.onStart = function () {
         // ...
         this.setEnabled(false);
+        this.setCaptured(false);
         this._prevDir = this.forward;
         this._currentDir = this.forward;
     };
@@ -64,6 +72,15 @@ var PlayerVisual = /** @class */ (function (_super) {
         this.getChildMeshes().forEach(function (mesh) {
             mesh.isPickable = isPickable;
         });
+    };
+    PlayerVisual.prototype.setVisibility = function (visible) {
+        this.isVisible = visible;
+        this.getChildMeshes().forEach(function (mesh) {
+            mesh.isVisible = visible;
+        });
+    };
+    PlayerVisual.prototype.setCaptured = function (captured) {
+        this._captured.setEnabled(captured);
     };
     /**
      * Called each frame.
@@ -118,6 +135,9 @@ var PlayerVisual = /** @class */ (function (_super) {
                 break;
         }
     };
+    __decorate([
+        (0, decorators_1.fromChildren)('Captured')
+    ], PlayerVisual.prototype, "_captured", void 0);
     return PlayerVisual;
 }(core_1.Mesh));
 exports.default = PlayerVisual;

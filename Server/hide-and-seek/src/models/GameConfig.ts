@@ -55,10 +55,6 @@ export class GameConfig {
 		return this._data.seekerCheckDistance || 7;
 	}
 
-	public get AllowDebug(): boolean {
-		return this._data.allowDebug || false;
-	}
-
 	public get SeekerGoal(): string {
 		return this._data.seekerGoal || 'TODO: Seeker Goal';
 	}

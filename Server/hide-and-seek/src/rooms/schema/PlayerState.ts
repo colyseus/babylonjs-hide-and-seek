@@ -1,4 +1,5 @@
 import { Schema, type, MapSchema, ArraySchema } from '@colyseus/schema';
+import { Client } from 'colyseus';
 // import logger from '../../helpers/logger';
 import { clamp } from '../../helpers/Utility';
 import { HASRoom } from '../HASRoom';
@@ -25,12 +26,16 @@ export class PlayerState extends Schema {
 	@type('number') yDir: number = 0.5;
 	@type('number') zDir: number = 0.0;
 
-	// private roomRef: HASRoom = null;
+	private _client: Client;
 
-	constructor(/*room: HASRoom,*/ ...args: any[]) {
+	constructor(client: Client, ...args: any[]) {
 		super(args);
 
-		// this.roomRef = room;
+		this._client = client;
+	}
+
+	public disconnect() {
+		this._client.leave();
 	}
 
 	public resetPlayer() {

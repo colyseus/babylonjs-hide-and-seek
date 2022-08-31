@@ -7,6 +7,7 @@ export default class UIManager extends Node {
     private _prologueUI;
     private _gameplayUI;
     private _overlayUI;
+    private _gameOverDelay;
     /**
      * Override constructor.
      * @warn do not fill.

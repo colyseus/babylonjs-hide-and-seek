@@ -73,7 +73,6 @@ export class HASRoomState extends Schema {
 		}
 
 		if (spawnPoint < 0 || spawnPoint > this._room.maxClients - 2) {
-			logger.error(`Cannot free spawn point of ${spawnPoint}`);
 			return;
 		}
 

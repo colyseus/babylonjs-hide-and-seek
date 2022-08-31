@@ -44,14 +44,16 @@ export default class GameManager extends Node {
 	private _players: Map<string, PlayerState> = null;
 	private _currentGameState: GameState = GameState.NONE;
 	private _joiningRoom: boolean = false;
-	private _playAgain: boolean = false;
 
+	// Magic Numbers
+	//==========================================
 	private _playerChaseSpeed: number = 25;
 	private _startChaseSpeed: number = 3;
 	private _seekerFOV: number = 60;
 	public seekerCheckDistance: number = 6;
 	/** In ms, the time between messages sent to the server for each Hider discovered by the Seeker */
 	private _foundHiderMsgRate: number = 1000;
+	//==========================================
 
 	private _halfSeekerFOV: number = 0;
 	private _foundHiders: Map<string, Player>;
@@ -236,8 +238,11 @@ export default class GameManager extends Node {
 
 			switch (change.field) {
 				case 'playAgain':
-					console.log(`Player (${sessionId}) State Change - ${change.field} to ${change.value}`);
 					this.broadcastEvent('playerPlayAgain', { sessionId, value: change.value });
+					break;
+				case 'isCaptured':
+					// this.broadcastEvent('playerCaptured', { sessionId, value: change.value });
+					this.playerCaptureChanged(sessionId, change.value);
 					break;
 			}
 		}
@@ -311,10 +316,15 @@ export default class GameManager extends Node {
 				break;
 			case GameState.SCATTER:
 				this._cameraHolder.setTarget(this._player, this._playerChaseSpeed);
+
+				if (this.PlayerIsSeeker()) {
+					this.hidePlayersFromSeeker();
+				}
 				break;
 			case GameState.HUNT:
 				break;
 			case GameState.GAME_OVER:
+				this.revealAllPlayers();
 				break;
 			default:
 				break;
@@ -332,6 +342,8 @@ export default class GameManager extends Node {
 		NetworkManager.Instance.Room.state.players.forEach((player: PlayerState, sessionId: string) => {
 			this.spawnPlayer(player, sessionId);
 		});
+
+		this.revealAllPlayers();
 	}
 
 	private spawnPlayer(playerState: PlayerState, sessionId: string) {
@@ -406,6 +418,23 @@ export default class GameManager extends Node {
 		this._spawnPoints.freeUpSpawnPoint(player);
 	}
 
+	private hidePlayersFromSeeker() {
+		if (!this.PlayerIsSeeker()) {
+			console.log(`Player is not the Seeker`);
+			return;
+		}
+
+		this._spawnedRemotes.forEach((player: Player) => {
+			player.setVisualVisibility(false);
+		});
+	}
+
+	private revealAllPlayers() {
+		this._spawnedRemotes.forEach((player: Player) => {
+			player.setVisualVisibility(true);
+		});
+	}
+
 	/**
 	 * Used only when the local player is the Seeker to retrieve any Hider
 	 * player objects within distance to the Seeker player.
@@ -459,31 +488,32 @@ export default class GameManager extends Node {
 		}
 	}
 
+	private playerCaptureChanged(playerId: string, captured: boolean) {
+		if (playerId === NetworkManager.Instance.Room.sessionId) {
+			// Local player was captured
+			this._player.showCaptured(captured);
+		}
+
+		const remotePlayer: Player = this._spawnedRemotes.get(playerId);
+
+		if (remotePlayer) {
+			remotePlayer.showCaptured(captured);
+		}
+	}
+
 	private reset() {
 		this.despawnPlayers();
 		this.initializeSpawnPoints();
 
 		this.CurrentGameState = GameState.NONE;
 		this._foundHiders.clear();
-		this._playAgain = false;
 	}
 
 	/**
 	 * Called each frame.
 	 */
 	public onUpdate(): void {
-		// ...
-		// if (!NetworkManager.Instance.Room && InputManager.getKeyUp(32) && !this._joiningRoom) {
-		// 	console.log('Join Room');
-		// 	this._joiningRoom = true;
-		// 	NetworkManager.Instance.joinRoom();
-		// } else {
-		// if (NetworkManager.Instance.Room && this.CurrentGameState === GameState.GAME_OVER && !this._playAgain && InputManager.getKeyUp(32)) {
-		// 	this._playAgain = true;
-		// 	this._cameraHolder.setTarget(this._cameraStartPos, this._startChaseSpeed);
-		// 	NetworkManager.Instance.sendPlayAgain();
-		// }
-		// }
+		//
 	}
 
 	/**

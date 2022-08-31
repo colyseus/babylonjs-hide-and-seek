@@ -107,6 +107,9 @@ export class HASGameState extends Schema {
 				this.seekerWon = false;
 				this._capturedPlayers.clear();
 				this._room.state.resetForPlay();
+
+				// Unlock the room to allow more players to join (as long as the room isn't already full)
+				this._room.unlock();
 				break;
 			case GameState.CLOSE_COUNTDOWN:
 				// Reset the timestamp for the duration of the countdown to lock the room and begin a round of play
@@ -270,7 +273,7 @@ export class HASGameState extends Schema {
 		this.seekerWon = this._capturedPlayers.size >= this.WinCondition;
 
 		// Check Seeker win condition
-		if ((!this.seekerWon || this._config.AllowDebug) && elapsedTime < countdown) {
+		if (!this.seekerWon && elapsedTime < countdown) {
 			return;
 		}
 
@@ -281,26 +284,30 @@ export class HASGameState extends Schema {
 		let elapsedTime: number = Date.now() - this._stateTimestamp;
 		const countdown: number = this._config.GameOverCountdown;
 
-		let playAgain: number = 0;
-
-		this._room.state.players.forEach((player: PlayerState) => {
-			playAgain += player.playAgain ? 1 : 0;
-		});
-
-		// Check if there are enough players to play again
-		if (playAgain === this._config.MinPlayers) {
-			this.moveToState(GameState.NONE);
-			return;
-		}
-
 		if (elapsedTime < countdown) {
 			this.setCountdown(countdown - elapsedTime, countdown);
 
 			return;
 		}
 
-		// Not enough players wanted to play again so close the room
-		this._room.disconnect();
+		let playAgain: number = 0;
+
+		this._room.state.players.forEach((player: PlayerState) => {
+			if (player.playAgain) {
+				playAgain++;
+			} else {
+				// disconnect players that do not want to play again
+				player.disconnect();
+			}
+		});
+
+		// If any players want to play again keep the room alive and start the game state over
+		if (playAgain > 0) {
+			this.moveToState(GameState.NONE);
+		} else {
+			// No players wanted to play again so close the room
+			this._room.disconnect();
+		}
 	}
 
 	private setCountdown(timeMs: number, maxMs: number) {

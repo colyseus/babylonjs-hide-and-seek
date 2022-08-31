@@ -23,6 +23,11 @@ export default class UIManager extends Node {
 	private _gameplayUI: GameplayUI;
 	private _overlayUI: OverlayUI;
 
+	// Magic Numbers
+	//==========================================
+	private _gameOverDelay: number = 3000;
+	//==========================================
+
 	/**
 	 * Override constructor.
 	 * @warn do not fill.
@@ -206,7 +211,10 @@ export default class UIManager extends Node {
 				break;
 			case GameState.GAME_OVER:
 				this._gameplayUI.setVisible(false);
-				this._lobbyUI.setVisible(true);
+
+				setTimeout(() => {
+					this._lobbyUI.setVisible(true);
+				}, this._gameOverDelay);
 				break;
 			default:
 				break;

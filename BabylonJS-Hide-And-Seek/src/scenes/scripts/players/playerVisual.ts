@@ -60,6 +60,14 @@ export default class PlayerVisual extends Mesh {
 		});
 	}
 
+	public setVisibility(visible: boolean) {
+		this.isVisible = visible;
+
+		this.getChildMeshes().forEach((mesh: AbstractMesh) => {
+			mesh.isVisible = visible;
+		});
+	}
+
 	/**
 	 * Called each frame.
 	 */

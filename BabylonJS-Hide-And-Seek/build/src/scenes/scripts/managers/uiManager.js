@@ -71,6 +71,7 @@ var gameManager_1 = require("./gameManager");
 var networkManager_1 = require("./networkManager");
 var UIManager = /** @class */ (function (_super) {
     __extends(UIManager, _super);
+    //==========================================
     /**
      * Override constructor.
      * @warn do not fill.
@@ -79,6 +80,9 @@ var UIManager = /** @class */ (function (_super) {
     function UIManager() {
         var _this = this;
         _this._uiLayer = 2;
+        // Magic Numbers
+        //==========================================
+        _this._gameOverDelay = 3000;
         return _this;
     }
     /**
@@ -275,6 +279,7 @@ var UIManager = /** @class */ (function (_super) {
         this._lobbyUI.setVisible(true);
     };
     UIManager.prototype.handleGameStateChanged = function (gameState) {
+        var _this = this;
         switch (gameState) {
             case GameState_1.GameState.NONE:
                 break;
@@ -302,7 +307,9 @@ var UIManager = /** @class */ (function (_super) {
                 break;
             case GameState_1.GameState.GAME_OVER:
                 this._gameplayUI.setVisible(false);
-                this._lobbyUI.setVisible(true);
+                setTimeout(function () {
+                    _this._lobbyUI.setVisible(true);
+                }, this._gameOverDelay);
                 break;
             default:
                 break;

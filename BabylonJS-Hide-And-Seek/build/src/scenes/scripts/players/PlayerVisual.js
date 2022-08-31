@@ -65,6 +65,12 @@ var PlayerVisual = /** @class */ (function (_super) {
             mesh.isPickable = isPickable;
         });
     };
+    PlayerVisual.prototype.setVisibility = function (visible) {
+        this.isVisible = visible;
+        this.getChildMeshes().forEach(function (mesh) {
+            mesh.isVisible = visible;
+        });
+    };
     /**
      * Called each frame.
      */

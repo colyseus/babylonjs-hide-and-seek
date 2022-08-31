@@ -27,6 +27,7 @@ export default class PlayerVisual extends Mesh {
     setTarget(player: Player): void;
     setLookTargetDirection(direction: Vector3): void;
     setPickable(isPickable: boolean): void;
+    setVisibility(visible: boolean): void;
     /**
      * Called each frame.
      */

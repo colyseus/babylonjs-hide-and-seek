@@ -21,7 +21,6 @@ export default class GameManager extends Node {
     private _players;
     private _currentGameState;
     private _joiningRoom;
-    private _playAgain;
     private _playerChaseSpeed;
     private _startChaseSpeed;
     private _seekerFOV;
@@ -72,12 +71,15 @@ export default class GameManager extends Node {
     private spawnPlayer;
     private despawnPlayers;
     private despawnPlayer;
+    private hidePlayersFromSeeker;
+    private revealAllPlayers;
     /**
      * Used only when the local player is the Seeker to retrieve any Hider
      * player objects within distance to the Seeker player.
      */
     getOverlappingHiders(): Player[];
     seekerFoundHider(hider: Player): void;
+    private playerCaptureChanged;
     private reset;
     /**
      * Called each frame.

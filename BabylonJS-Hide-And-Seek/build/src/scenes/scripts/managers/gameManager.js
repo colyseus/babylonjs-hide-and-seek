@@ -80,13 +80,15 @@ var GameManager = /** @class */ (function (_super) {
         _this._players = null;
         _this._currentGameState = GameState_1.GameState.NONE;
         _this._joiningRoom = false;
-        _this._playAgain = false;
+        // Magic Numbers
+        //==========================================
         _this._playerChaseSpeed = 25;
         _this._startChaseSpeed = 3;
         _this._seekerFOV = 60;
         _this.seekerCheckDistance = 6;
         /** In ms, the time between messages sent to the server for each Hider discovered by the Seeker */
         _this._foundHiderMsgRate = 1000;
+        //==========================================
         _this._halfSeekerFOV = 0;
         _this._playerState = null;
         _this._eventEmitter = new EventEmitter();
@@ -262,8 +264,11 @@ var GameManager = /** @class */ (function (_super) {
             }
             switch (change.field) {
                 case 'playAgain':
-                    console.log("Player (".concat(sessionId, ") State Change - ").concat(change.field, " to ").concat(change.value));
                     this.broadcastEvent('playerPlayAgain', { sessionId: sessionId, value: change.value });
+                    break;
+                case 'isCaptured':
+                    // this.broadcastEvent('playerCaptured', { sessionId, value: change.value });
+                    this.playerCaptureChanged(sessionId, change.value);
                     break;
             }
         }
@@ -321,10 +326,14 @@ var GameManager = /** @class */ (function (_super) {
                 break;
             case GameState_1.GameState.SCATTER:
                 this._cameraHolder.setTarget(this._player, this._playerChaseSpeed);
+                if (this.PlayerIsSeeker()) {
+                    this.hidePlayersFromSeeker();
+                }
                 break;
             case GameState_1.GameState.HUNT:
                 break;
             case GameState_1.GameState.GAME_OVER:
+                this.revealAllPlayers();
                 break;
             default:
                 break;
@@ -340,6 +349,7 @@ var GameManager = /** @class */ (function (_super) {
         networkManager_1.default.Instance.Room.state.players.forEach(function (player, sessionId) {
             _this.spawnPlayer(player, sessionId);
         });
+        this.revealAllPlayers();
     };
     GameManager.prototype.spawnPlayer = function (playerState, sessionId) {
         var player = null;
@@ -398,6 +408,20 @@ var GameManager = /** @class */ (function (_super) {
         }
         this._spawnPoints.freeUpSpawnPoint(player);
     };
+    GameManager.prototype.hidePlayersFromSeeker = function () {
+        if (!this.PlayerIsSeeker()) {
+            console.log("Player is not the Seeker");
+            return;
+        }
+        this._spawnedRemotes.forEach(function (player) {
+            player.setVisualVisibility(false);
+        });
+    };
+    GameManager.prototype.revealAllPlayers = function () {
+        this._spawnedRemotes.forEach(function (player) {
+            player.setVisualVisibility(true);
+        });
+    };
     /**
      * Used only when the local player is the Seeker to retrieve any Hider
      * player objects within distance to the Seeker player.
@@ -442,29 +466,27 @@ var GameManager = /** @class */ (function (_super) {
             }, this._foundHiderMsgRate);
         }
     };
+    GameManager.prototype.playerCaptureChanged = function (playerId, captured) {
+        if (playerId === networkManager_1.default.Instance.Room.sessionId) {
+            // Local player was captured
+            this._player.showCaptured(captured);
+        }
+        var remotePlayer = this._spawnedRemotes.get(playerId);
+        if (remotePlayer) {
+            remotePlayer.showCaptured(captured);
+        }
+    };
     GameManager.prototype.reset = function () {
         this.despawnPlayers();
         this.initializeSpawnPoints();
         this.CurrentGameState = GameState_1.GameState.NONE;
         this._foundHiders.clear();
-        this._playAgain = false;
     };
     /**
      * Called each frame.
      */
     GameManager.prototype.onUpdate = function () {
-        // ...
-        // if (!NetworkManager.Instance.Room && InputManager.getKeyUp(32) && !this._joiningRoom) {
-        // 	console.log('Join Room');
-        // 	this._joiningRoom = true;
-        // 	NetworkManager.Instance.joinRoom();
-        // } else {
-        // if (NetworkManager.Instance.Room && this.CurrentGameState === GameState.GAME_OVER && !this._playAgain && InputManager.getKeyUp(32)) {
-        // 	this._playAgain = true;
-        // 	this._cameraHolder.setTarget(this._cameraStartPos, this._startChaseSpeed);
-        // 	NetworkManager.Instance.sendPlayAgain();
-        // }
-        // }
+        //
     };
     /**
      * Called on the object has been disposed.

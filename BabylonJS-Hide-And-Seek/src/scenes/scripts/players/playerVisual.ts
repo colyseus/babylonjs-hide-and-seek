@@ -2,6 +2,7 @@ import { AbstractMesh, Axis, Mesh, Quaternion, Space, TransformNode, Vector3 } f
 import { fromChildren } from '../../decorators';
 import { Quat, random, Vec3 } from '../../utility';
 import GameManager from '../managers/gameManager';
+import CapturedTrigger from './capturedTrigger';
 import Player from './player';
 
 export default class PlayerVisual extends Mesh {
@@ -14,6 +15,8 @@ export default class PlayerVisual extends Mesh {
 
 	@fromChildren('Captured')
 	private _captured: TransformNode;
+	@fromChildren('CapturedTrigger')
+	private _capturedTrigger: CapturedTrigger;
 
 	/**
 	 * Override constructor.
@@ -69,12 +72,20 @@ export default class PlayerVisual extends Mesh {
 		this.isVisible = visible;
 
 		this.getChildMeshes().forEach((mesh: AbstractMesh) => {
+			if (mesh === this._capturedTrigger) {
+				return;
+			}
+
 			mesh.isVisible = visible;
 		});
 	}
 
 	public setCaptured(captured: boolean) {
 		this._captured.setEnabled(captured);
+	}
+
+	public registerPlayerMeshForIntersection(mesh: Mesh) {
+		this._capturedTrigger.registerMeshForIntersection(mesh);
 	}
 
 	/**

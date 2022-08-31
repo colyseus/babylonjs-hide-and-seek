@@ -13,7 +13,7 @@ export default class Player extends Mesh {
 	private _movementSpeed: number = 1;
 
 	@fromChildren('PlayerBody')
-	private _visual: PlayerVisual;
+	public visual: PlayerVisual;
 
 	public isLocalPlayer: boolean = false;
 
@@ -66,25 +66,25 @@ export default class Player extends Mesh {
 		this._lastPosition = this._originalPosition;
 
 		if (this.isLocalPlayer) {
-			console.log(`Player Visual: %o`, this._visual);
+			console.log(`Player Visual: %o`, this.visual);
 
 			this.isPickable = false;
 		}
 
-		if (this._visual) {
-			this._visual.setTarget(this);
-			this._visual.setParent(null);
-			this._visual.setPickable(false);
+		if (this.visual) {
+			this.visual.setTarget(this);
+			this.visual.setParent(null);
+			this.visual.setPickable(false);
 		}
 	}
 
 	public visualForward(): Vector3 {
-		return this._visual.forward;
+		return this.visual.forward;
 	}
 
 	public toggleEnabled(enabled: boolean) {
 		this.setEnabled(enabled);
-		this._visual?.setEnabled(enabled);
+		this.visual?.setEnabled(enabled);
 	}
 
 	public setPlayerState(state: PlayerState) {
@@ -94,7 +94,7 @@ export default class Player extends Mesh {
 	}
 
 	public setVisualVisibility(visible: boolean) {
-		this._visual.setVisibility(visible);
+		this.visual.setVisibility(visible);
 	}
 
 	public showCaptured(captured: boolean) {
@@ -104,7 +104,7 @@ export default class Player extends Mesh {
 		}
 
 		// Alter appearance to show captured state (like show the player in a cage or something)
-		this._visual.setCaptured(captured);
+		this.visual.setCaptured(captured);
 	}
 
 	public reset() {
@@ -149,9 +149,13 @@ export default class Player extends Mesh {
 	}
 
 	public setVisualLookDirection(dir: Vector3) {
-		if (this._visual && dir.length() > 0) {
-			this._visual.setLookTargetDirection(dir);
+		if (this.visual && dir.length() > 0) {
+			this.visual.setLookTargetDirection(dir);
 		}
+	}
+
+	public registerPlayerMeshForIntersection(mesh: Mesh) {
+		this.visual.registerPlayerMeshForIntersection(mesh);
 	}
 
 	private updatePlayerMovement() {
@@ -275,7 +279,7 @@ export default class Player extends Mesh {
 	}
 
 	private checkPredicate(mesh: AbstractMesh): boolean {
-		if (!mesh.isPickable || mesh === this || mesh === this._visual || mesh.name === 'ray') {
+		if (!mesh.isPickable || mesh === this || mesh === this.visual || mesh.name === 'ray') {
 			return false;
 		}
 

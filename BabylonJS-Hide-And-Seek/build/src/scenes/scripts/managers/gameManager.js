@@ -168,6 +168,7 @@ var GameManager = /** @class */ (function (_super) {
      */
     GameManager.prototype.onStart = function () {
         // ...
+        var _this = this;
         this.initializeSpawnPoints();
         // Add remote player references to the array
         this._availableRemotePlayerObjects.push(this._remotePlayer1);
@@ -177,6 +178,9 @@ var GameManager = /** @class */ (function (_super) {
         this._availableRemotePlayerObjects.push(this._remotePlayer5);
         this._availableRemotePlayerObjects.push(this._remotePlayer6);
         this._availableRemotePlayerObjects.push(this._remotePlayer7);
+        this._availableRemotePlayerObjects.forEach(function (player) {
+            player.registerPlayerMeshForIntersection(_this._player.visual);
+        });
         this._player.setParent(null);
         networkManager_1.default.Instance.addOnEvent(networkManager_1.NetworkEvent.JOINED_ROOM, this.onJoinedRoom);
         networkManager_1.default.Instance.addOnEvent(networkManager_1.NetworkEvent.LEFT_ROOM, this.onLeftRoom);

@@ -148,6 +148,10 @@ export default class GameManager extends Node {
 		this._availableRemotePlayerObjects.push(this._remotePlayer6);
 		this._availableRemotePlayerObjects.push(this._remotePlayer7);
 
+		this._availableRemotePlayerObjects.forEach((player: Player) => {
+			player.registerPlayerMeshForIntersection(this._player.visual);
+		});
+
 		this._player.setParent(null);
 
 		NetworkManager.Instance.addOnEvent(NetworkEvent.JOINED_ROOM, this.onJoinedRoom);

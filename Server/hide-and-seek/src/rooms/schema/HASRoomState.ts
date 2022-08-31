@@ -6,6 +6,7 @@ import { distanceBetweenPlayers, random } from '../../helpers/Utility';
 import { HASGameState } from '../schema/HASGameState';
 import { GameConfig } from '../../models/GameConfig';
 import { GameState } from '../schema/HASGameState';
+import { RescueOperation } from '../../models/RescueOperation';
 
 export class HASRoomState extends Schema {
 	@type({ map: PlayerState }) players = new MapSchema<PlayerState>();
@@ -14,6 +15,8 @@ export class HASRoomState extends Schema {
 	private _room: HASRoom = null;
 	private _availableSpawnPoints: number[] = null;
 	private _config: GameConfig;
+
+	private _rescueOperations: Map<string, RescueOperation>;
 
 	constructor(room: HASRoom, ...args: any[]) {
 		super(...args);
@@ -27,6 +30,11 @@ export class HASRoomState extends Schema {
 		this._config = args[0];
 
 		this.gameState = new HASGameState(room, this._config);
+		this._rescueOperations = new Map<string, RescueOperation>();
+
+		this.playerRemoved = this.playerRemoved.bind(this);
+
+		this.players.onRemove = this.playerRemoved;
 	}
 
 	private initializeSpawnPoints() {
@@ -43,6 +51,16 @@ export class HASRoomState extends Schema {
 		}
 
 		// //logger.info(`Spawn Points: %o`, this._availableSpawnPoints);
+	}
+
+	private playerRemoved(player: PlayerState, sessionId: string) {
+		// Check if the player was involved with any rescue operations
+		this._rescueOperations.forEach((op: RescueOperation) => {
+			// Remove any rescue operation the player was involved with
+			if (op.isPlayerInOperation(player)) {
+				this._rescueOperations.delete(op.Key);
+			}
+		});
 	}
 
 	/**
@@ -83,9 +101,8 @@ export class HASRoomState extends Schema {
 	}
 
 	public update(deltaTime: number) {
-		// this.updatePlayers(deltaTime);
-
 		this.gameState.update(deltaTime);
+		this.updateRescueOperations();
 	}
 
 	public resetForPlay() {
@@ -111,5 +128,28 @@ export class HASRoomState extends Schema {
 		if (distance <= this._config.SeekerCheckDistance) {
 			this.gameState.seekerCapturedHider(hider);
 		}
+	}
+
+	public rescueHider(rescuerId: string, hiderId: string) {
+		const rescuer: PlayerState = this.players.get(rescuerId);
+		const hider: PlayerState = this.players.get(hiderId);
+
+		if (!rescuer || !hider) {
+			logger.error(`Failed to get ${rescuer ? '' : `Rescuer ${rescuerId} `}${hider ? '' : `Hider ${hiderId}`}`);
+			return;
+		}
+	}
+
+	/** Updates all valid rescue operations that have not failed or are not yet successful */
+	private updateRescueOperations() {
+		this._rescueOperations.forEach((op: RescueOperation) => {
+			op.update();
+
+			if (!op.IsValid) {
+				// The rescue operation is no longer valid either from a failure state or the hider was successfully rescued
+				this._rescueOperations.delete(op.Key);
+				logger.debug(`Removing rescue operation that is no longer valid: %o`, op);
+			}
+		});
 	}
 }

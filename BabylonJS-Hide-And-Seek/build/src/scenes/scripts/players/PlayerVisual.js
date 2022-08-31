@@ -74,13 +74,20 @@ var PlayerVisual = /** @class */ (function (_super) {
         });
     };
     PlayerVisual.prototype.setVisibility = function (visible) {
+        var _this = this;
         this.isVisible = visible;
         this.getChildMeshes().forEach(function (mesh) {
+            if (mesh === _this._capturedTrigger) {
+                return;
+            }
             mesh.isVisible = visible;
         });
     };
     PlayerVisual.prototype.setCaptured = function (captured) {
         this._captured.setEnabled(captured);
+    };
+    PlayerVisual.prototype.registerPlayerMeshForIntersection = function (mesh) {
+        this._capturedTrigger.registerMeshForIntersection(mesh);
     };
     /**
      * Called each frame.
@@ -138,6 +145,9 @@ var PlayerVisual = /** @class */ (function (_super) {
     __decorate([
         (0, decorators_1.fromChildren)('Captured')
     ], PlayerVisual.prototype, "_captured", void 0);
+    __decorate([
+        (0, decorators_1.fromChildren)('CapturedTrigger')
+    ], PlayerVisual.prototype, "_capturedTrigger", void 0);
     return PlayerVisual;
 }(core_1.Mesh));
 exports.default = PlayerVisual;

@@ -1,4 +1,4 @@
-import { AbstractMesh, Quaternion, TransformNode, Vector3 } from '@babylonjs/core';
+import { AbstractMesh, TransformNode, Vector3 } from '@babylonjs/core';
 import EventEmitter = require('events');
 import { Node } from '@babylonjs/core/node';
 import { GameState } from '../GameState';
@@ -7,7 +7,6 @@ import { fromChildren, fromScene } from '../../decorators';
 import CameraHolder from '../players/cameraHolder';
 import Player from '../players/player';
 import { SpawnPoints } from '../spawnPoints';
-import InputManager from './inputManager';
 import NetworkManager, { NetworkEvent } from './networkManager';
 import { PlayerInputMessage } from '../../../../../Server/hide-and-seek/src/models/PlayerInputMessage';
 

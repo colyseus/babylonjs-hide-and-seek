@@ -1,5 +1,6 @@
-import { ActionEvent, ActionManager, ExecuteCodeAction, Mesh } from '@babylonjs/core';
+import { ActionEvent, ActionManager, ExecuteCodeAction, Mesh, Vector3 } from '@babylonjs/core';
 import GameManager from '../managers/gameManager';
+import NetworkManager from '../managers/networkManager';
 import Player from './player';
 import PlayerVisual from './playerVisual';
 
@@ -34,7 +35,9 @@ export default class CapturedTrigger extends Mesh {
 	 */
 	public onStart(): void {
 		// ...
-		this.isVisible = false;
+		this.isVisible = true;
+
+		this.setTriggerSize(NetworkManager.Config.RescueDistance);
 	}
 
 	public registerMeshForIntersection(mesh: Mesh) {
@@ -57,30 +60,17 @@ export default class CapturedTrigger extends Mesh {
 			}
 		);
 
-		// let exitAction = new ExecuteCodeAction(
-		// 	{
-		// 		trigger: ActionManager.OnIntersectionExitTrigger,
-		// 		parameter: {
-		// 			mesh: mesh,
-		// 			usePreciseIntersection: true,
-		// 		},
-		// 	},
-		// 	(event: ActionEvent) => {
-		// 		// console.log(`Captured Trigger - Mesh intersection EXIT %o`, event);
-		// 		const visual: PlayerVisual = event.additionalData as PlayerVisual;
-
-		// 		if (visual.player.isCaptured()) {
-		// 			GameManager.Instance.rescueCapturedHider(visual.player);
-		// 		}
-		// 	}
-		// );
-
 		this.actionManager.registerAction(enterAction);
-		// this.actionManager.registerAction(exitAction);
 	}
 
 	public setPlayerReference(player: Player) {
 		this._player = player;
+	}
+
+	/** Size is the radius of the trigger so actual scale of the trigger will be double the size */
+	private setTriggerSize(size: number) {
+		const scale: number = size * 2;
+		this.scaling = new Vector3(scale, scale, scale);
 	}
 
 	/**

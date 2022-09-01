@@ -17,6 +17,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@babylonjs/core");
 var gameManager_1 = require("../managers/gameManager");
+var networkManager_1 = require("../managers/networkManager");
 var CapturedTrigger = /** @class */ (function (_super) {
     __extends(CapturedTrigger, _super);
     /**
@@ -47,7 +48,8 @@ var CapturedTrigger = /** @class */ (function (_super) {
      */
     CapturedTrigger.prototype.onStart = function () {
         // ...
-        this.isVisible = false;
+        this.isVisible = true;
+        this.setTriggerSize(networkManager_1.default.Config.RescueDistance);
     };
     CapturedTrigger.prototype.registerMeshForIntersection = function (mesh) {
         var _this = this;
@@ -65,27 +67,15 @@ var CapturedTrigger = /** @class */ (function (_super) {
                 gameManager_1.default.Instance.rescueCapturedHider(_this._player);
             }
         });
-        // let exitAction = new ExecuteCodeAction(
-        // 	{
-        // 		trigger: ActionManager.OnIntersectionExitTrigger,
-        // 		parameter: {
-        // 			mesh: mesh,
-        // 			usePreciseIntersection: true,
-        // 		},
-        // 	},
-        // 	(event: ActionEvent) => {
-        // 		// console.log(`Captured Trigger - Mesh intersection EXIT %o`, event);
-        // 		const visual: PlayerVisual = event.additionalData as PlayerVisual;
-        // 		if (visual.player.isCaptured()) {
-        // 			GameManager.Instance.rescueCapturedHider(visual.player);
-        // 		}
-        // 	}
-        // );
         this.actionManager.registerAction(enterAction);
-        // this.actionManager.registerAction(exitAction);
     };
     CapturedTrigger.prototype.setPlayerReference = function (player) {
         this._player = player;
+    };
+    /** Size is the radius of the trigger so actual scale of the trigger will be double the size */
+    CapturedTrigger.prototype.setTriggerSize = function (size) {
+        var scale = size * 2;
+        this.scaling = new core_1.Vector3(scale, scale, scale);
     };
     /**
      * Called each frame.

@@ -236,6 +236,16 @@ export default class NetworkManager extends Node {
 		this.Room.send('foundHider', hiderId);
 	}
 
+	public sendRescueHider(hiderId: string) {
+		if (!this.Room || this.Room.state.gameState.currentState !== GameState.HUNT) {
+			return;
+		}
+
+		console.log(`Network Manager - Start Rescue of captured Hider ${hiderId}`);
+
+		this.Room.send('rescueHider', hiderId);
+	}
+
 	public sendPlayAgain() {
 		if (!this.Room || this.Room.state.gameState.currentState !== GameState.GAME_OVER) {
 			return;

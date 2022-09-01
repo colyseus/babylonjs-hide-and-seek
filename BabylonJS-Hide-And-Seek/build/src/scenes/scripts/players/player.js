@@ -78,6 +78,7 @@ var Player = /** @class */ (function (_super) {
             this.visual.setTarget(this);
             this.visual.setParent(null);
             this.visual.setPickable(false);
+            this.visual.setPlayerReference(this);
         }
     };
     Player.prototype.visualForward = function () {
@@ -108,6 +109,7 @@ var Player = /** @class */ (function (_super) {
         this.position = this._originalPosition;
         this._lastPosition = this.position;
         this._state = null;
+        this.visual.setCaptured(false);
         this.setVelocity(core_1.Vector3.Zero());
     };
     /**

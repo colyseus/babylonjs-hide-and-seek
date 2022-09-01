@@ -61,6 +61,11 @@ var PlayerVisual = /** @class */ (function (_super) {
         this._prevDir = this.forward;
         this._currentDir = this.forward;
     };
+    PlayerVisual.prototype.setPlayerReference = function (player) {
+        var _a;
+        this.player = player;
+        (_a = this._capturedTrigger) === null || _a === void 0 ? void 0 : _a.setPlayerReference(player);
+    };
     PlayerVisual.prototype.setTarget = function (player) {
         this._target = player;
     };

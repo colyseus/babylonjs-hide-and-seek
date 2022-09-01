@@ -22,3 +22,5 @@ Server/hide-and-seek/src/rooms/schema/HASRoomState.js
 Server/hide-and-seek/src/rooms/schema/HASRoomState.js.map
 Server/hide-and-seek/src/rooms/schema/PlayerState.js
 Server/hide-and-seek/src/rooms/schema/PlayerState.js.map
+Server/hide-and-seek/src/models/RescueOperation.js
+Server/hide-and-seek/src/models/RescueOperation.js.map

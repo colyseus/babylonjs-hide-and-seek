@@ -14,6 +14,16 @@ import { PlayerInputMessage } from '../../../../../Server/hide-and-seek/src/mode
 export default class GameManager extends Node {
 	private static _instance: GameManager = null;
 
+	// Magic Numbers
+	//==========================================
+	private _playerChaseSpeed: number = 25;
+	private _startChaseSpeed: number = 3;
+	private _seekerFOV: number = 60;
+	public seekerCheckDistance: number = 6;
+	/** In ms, the time between messages sent to the server for each Hider discovered by the Seeker */
+	private _foundHiderMsgRate: number = 1000;
+	//==========================================
+
 	@fromScene('Camera Holder')
 	private _cameraHolder: CameraHolder;
 	@fromScene('CameraStartPos')
@@ -44,16 +54,6 @@ export default class GameManager extends Node {
 	private _players: Map<string, PlayerState> = null;
 	private _currentGameState: GameState = GameState.NONE;
 	private _joiningRoom: boolean = false;
-
-	// Magic Numbers
-	//==========================================
-	private _playerChaseSpeed: number = 25;
-	private _startChaseSpeed: number = 3;
-	private _seekerFOV: number = 60;
-	public seekerCheckDistance: number = 6;
-	/** In ms, the time between messages sent to the server for each Hider discovered by the Seeker */
-	private _foundHiderMsgRate: number = 1000;
-	//==========================================
 
 	private _halfSeekerFOV: number = 0;
 	private _foundHiders: Map<string, Player>;
@@ -490,6 +490,10 @@ export default class GameManager extends Node {
 				this._foundHiders.delete(hider.sessionId());
 			}, this._foundHiderMsgRate);
 		}
+	}
+
+	public rescueCapturedHider(hider: Player) {
+		NetworkManager.Instance.sendRescueHider(hider.sessionId());
 	}
 
 	private playerCaptureChanged(playerId: string, captured: boolean) {

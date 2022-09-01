@@ -1,6 +1,11 @@
 import { ActionEvent, ActionManager, ExecuteCodeAction, Mesh } from '@babylonjs/core';
+import GameManager from '../managers/gameManager';
+import Player from './player';
+import PlayerVisual from './playerVisual';
 
 export default class CapturedTrigger extends Mesh {
+	private _player: Player;
+
 	/**
 	 * Override constructor.
 	 * @warn do not fill.
@@ -42,25 +47,40 @@ export default class CapturedTrigger extends Mesh {
 				},
 			},
 			(event: ActionEvent) => {
-				console.log(`Captured Trigger - Mesh intersection ENTER %o`, event);
+				// console.log(`Captured Trigger - Mesh intersection ENTER %o`, event);
+				const localPlayerVisual: PlayerVisual = event.additionalData as PlayerVisual;
+
+				console.log(`Captured Trigger - Player is captured?: ${this._player.isCaptured()}`);
+				if (this._player.isCaptured() && localPlayerVisual.player.isLocalPlayer) {
+					GameManager.Instance.rescueCapturedHider(this._player);
+				}
 			}
 		);
 
-		let exitAction = new ExecuteCodeAction(
-			{
-				trigger: ActionManager.OnIntersectionExitTrigger,
-				parameter: {
-					mesh: mesh,
-					usePreciseIntersection: true,
-				},
-			},
-			(event: ActionEvent) => {
-				console.log(`Captured Trigger - Mesh intersection EXIT %o`, event);
-			}
-		);
+		// let exitAction = new ExecuteCodeAction(
+		// 	{
+		// 		trigger: ActionManager.OnIntersectionExitTrigger,
+		// 		parameter: {
+		// 			mesh: mesh,
+		// 			usePreciseIntersection: true,
+		// 		},
+		// 	},
+		// 	(event: ActionEvent) => {
+		// 		// console.log(`Captured Trigger - Mesh intersection EXIT %o`, event);
+		// 		const visual: PlayerVisual = event.additionalData as PlayerVisual;
+
+		// 		if (visual.player.isCaptured()) {
+		// 			GameManager.Instance.rescueCapturedHider(visual.player);
+		// 		}
+		// 	}
+		// );
 
 		this.actionManager.registerAction(enterAction);
-		this.actionManager.registerAction(exitAction);
+		// this.actionManager.registerAction(exitAction);
+	}
+
+	public setPlayerReference(player: Player) {
+		this._player = player;
 	}
 
 	/**

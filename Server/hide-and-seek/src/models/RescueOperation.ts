@@ -1,11 +1,14 @@
+import logger from '../helpers/logger';
 import { distanceBetweenPlayers } from '../helpers/Utility';
 import { PlayerState } from '../rooms/schema/PlayerState';
 
 export class RescueOperation {
-	public get IsValid(): boolean {
+	/** Whether or not the rescue operation is done with either the outcome a failure or success */
+	public get IsDone(): boolean {
 		return !this._failed && this._closeEnough && this._hider.isCaptured;
 	}
 
+	/** Whether or not the rescue operation has succeeded */
 	public get Success(): boolean {
 		return this._success;
 	}
@@ -13,6 +16,11 @@ export class RescueOperation {
 	/** Combination of the Rescuer's and Hider's Ids */
 	public get Key(): string {
 		return `${this._rescuer.id}_${this._hider.id}`;
+	}
+
+	/** The Hider that's been captured */
+	public get Hider(): PlayerState {
+		return this._hider;
 	}
 
 	private _rescuer: PlayerState;
@@ -51,7 +59,6 @@ export class RescueOperation {
 		if (this._closeEnough && Date.now() - this._startTime >= this._rescueTime) {
 			// The rescuer has been close enough for the necessary time
 			this._success = true;
-			this._hider.isCaptured = false;
 		}
 	}
 }

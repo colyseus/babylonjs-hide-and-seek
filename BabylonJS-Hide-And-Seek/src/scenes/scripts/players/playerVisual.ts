@@ -6,6 +6,8 @@ import CapturedTrigger from './capturedTrigger';
 import Player from './player';
 
 export default class PlayerVisual extends Mesh {
+	public player: Player;
+
 	private _target: Player = null;
 	private _targetLookDirection: Vector3;
 	private _lerpSpeed: number = 10;
@@ -50,6 +52,12 @@ export default class PlayerVisual extends Mesh {
 
 		this._prevDir = this.forward;
 		this._currentDir = this.forward;
+	}
+
+	public setPlayerReference(player: Player) {
+		this.player = player;
+
+		this._capturedTrigger?.setPlayerReference(player);
 	}
 
 	public setTarget(player: Player) {

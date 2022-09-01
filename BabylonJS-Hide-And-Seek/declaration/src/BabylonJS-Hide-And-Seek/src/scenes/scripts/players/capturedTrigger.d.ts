@@ -1,5 +1,7 @@
 import { Mesh } from '@babylonjs/core';
+import Player from './player';
 export default class CapturedTrigger extends Mesh {
+    private _player;
     /**
      * Override constructor.
      * @warn do not fill.
@@ -19,6 +21,7 @@ export default class CapturedTrigger extends Mesh {
      */
     onStart(): void;
     registerMeshForIntersection(mesh: Mesh): void;
+    setPlayerReference(player: Player): void;
     /**
      * Called each frame.
      */

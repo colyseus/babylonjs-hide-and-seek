@@ -75,6 +75,7 @@ export default class Player extends Mesh {
 			this.visual.setTarget(this);
 			this.visual.setParent(null);
 			this.visual.setPickable(false);
+			this.visual.setPlayerReference(this);
 		}
 	}
 
@@ -112,6 +113,8 @@ export default class Player extends Mesh {
 		this.position = this._originalPosition;
 		this._lastPosition = this.position;
 		this._state = null;
+
+		this.visual.setCaptured(false);
 
 		this.setVelocity(Vector3.Zero());
 	}

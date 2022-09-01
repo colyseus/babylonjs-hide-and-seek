@@ -1,6 +1,7 @@
 import { Mesh, Vector3 } from '@babylonjs/core';
 import Player from './player';
 export default class PlayerVisual extends Mesh {
+    player: Player;
     private _target;
     private _targetLookDirection;
     private _lerpSpeed;
@@ -26,6 +27,7 @@ export default class PlayerVisual extends Mesh {
      * Called on the scene starts.
      */
     onStart(): void;
+    setPlayerReference(player: Player): void;
     setTarget(player: Player): void;
     setLookTargetDirection(direction: Vector3): void;
     setPickable(isPickable: boolean): void;

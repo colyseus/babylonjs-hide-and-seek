@@ -25,8 +25,6 @@ export class HASRoomState extends Schema {
 
 		this.initializeSpawnPoints();
 
-		logger.info(`Game Config: %o`, args[0]);
-
 		this._config = args[0];
 
 		this.gameState = new HASGameState(room, this._config);
@@ -131,12 +129,37 @@ export class HASRoomState extends Schema {
 	}
 
 	public rescueHider(rescuerId: string, hiderId: string) {
-		const rescuer: PlayerState = this.players.get(rescuerId);
-		const hider: PlayerState = this.players.get(hiderId);
+		try {
+			const rescuer: PlayerState = this.players.get(rescuerId);
+			const hider: PlayerState = this.players.get(hiderId);
 
-		if (!rescuer || !hider) {
-			logger.error(`Failed to get ${rescuer ? '' : `Rescuer ${rescuerId} `}${hider ? '' : `Hider ${hiderId}`}`);
-			return;
+			if (!rescuer || !hider) {
+				logger.error(`Failed to get ${rescuer ? '' : `Rescuer ${rescuerId} `}${hider ? '' : `Hider ${hiderId}`}`);
+				return;
+			}
+
+			let rescueAlreadyInProgress: boolean = false;
+
+			// Check if a rescue operation is already underway by another player; if so don't start another one
+			this._rescueOperations.forEach((op: RescueOperation) => {
+				// If the hider is in this operation but not the rescuer then this is a rescue operation that's already in progress
+				// and we don't need to start a new one with this rescuer.
+				// Now if the same rescuer already has a rescue op in progress for this hider then we'll just replace the old one with
+				// a new one in the event the rescuer had left the rescue distance and returned.
+				if (op.isPlayerInOperation(hider) && !op.isPlayerInOperation(rescuer)) {
+					rescueAlreadyInProgress = true;
+				}
+			});
+
+			if (rescueAlreadyInProgress) {
+				return;
+			}
+
+			const op: RescueOperation = new RescueOperation(rescuer, hider, this._config.RescueTime, this._config.RescueDistance);
+
+			this._rescueOperations.set(op.Key, op);
+		} catch (error: any) {
+			logger.error(error.stack);
 		}
 	}
 
@@ -145,10 +168,14 @@ export class HASRoomState extends Schema {
 		this._rescueOperations.forEach((op: RescueOperation) => {
 			op.update();
 
-			if (!op.IsValid) {
-				// The rescue operation is no longer valid either from a failure state or the hider was successfully rescued
+			if (op.Success) {
+				// the rescue effort was successful
+				this.gameState.capturedHiderRescued(op.Hider);
+			}
+
+			if (!op.IsDone) {
+				// The rescue operation is now done, either it succeeded or failed
 				this._rescueOperations.delete(op.Key);
-				logger.debug(`Removing rescue operation that is no longer valid: %o`, op);
 			}
 		});
 	}

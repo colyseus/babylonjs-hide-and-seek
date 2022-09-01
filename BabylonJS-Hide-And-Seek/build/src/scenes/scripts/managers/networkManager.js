@@ -298,6 +298,13 @@ var NetworkManager = /** @class */ (function (_super) {
         }
         this.Room.send('foundHider', hiderId);
     };
+    NetworkManager.prototype.sendRescueHider = function (hiderId) {
+        if (!this.Room || this.Room.state.gameState.currentState !== GameState_1.GameState.HUNT) {
+            return;
+        }
+        console.log("Network Manager - Start Rescue of captured Hider ".concat(hiderId));
+        this.Room.send('rescueHider', hiderId);
+    };
     NetworkManager.prototype.sendPlayAgain = function () {
         if (!this.Room || this.Room.state.gameState.currentState !== GameState_1.GameState.GAME_OVER) {
             return;

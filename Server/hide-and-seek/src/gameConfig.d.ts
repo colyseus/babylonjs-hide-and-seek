@@ -6,6 +6,8 @@ declare const _default: {
     prologueCountdown: number;
     huntCountdown: number;
     gameOverCountdown: number;
+    rescueTime: number;
+    rescueDistance: number;
     seekerCheckDistance: number;
     seekerGoal: string;
     hiderGoal: string;

@@ -59,6 +59,10 @@ export class GameConfig {
 		return this._data.rescueTime || 2000;
 	}
 
+	public get RescueDistance(): number {
+		return this._data.rescueDistance || 2;
+	}
+
 	public get SeekerGoal(): string {
 		return this._data.seekerGoal || 'TODO: Seeker Goal';
 	}

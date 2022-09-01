@@ -13,6 +13,7 @@ export declare class GameConfig {
     get GameOverCountdown(): number;
     get SeekerCheckDistance(): number;
     get RescueTime(): number;
+    get RescueDistance(): number;
     get SeekerGoal(): string;
     get HiderGoal(): string;
 }

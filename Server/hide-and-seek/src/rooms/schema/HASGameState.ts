@@ -58,6 +58,15 @@ export class HASGameState extends Schema {
 		this._capturedPlayers.set(hider.id, hider);
 	}
 
+	public capturedHiderRescued(hider: PlayerState) {
+		logger.debug(`Game State - Captured Hider rescued: ${hider.id}`);
+
+		hider.isCaptured = false;
+		hider.canMove = true;
+
+		this._capturedPlayers.delete(hider.id);
+	}
+
 	/** Update the game loop */
 	public update(deltaTime: number) {
 		//

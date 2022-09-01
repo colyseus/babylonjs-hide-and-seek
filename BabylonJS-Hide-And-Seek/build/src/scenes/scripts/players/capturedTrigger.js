@@ -16,6 +16,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@babylonjs/core");
+var gameManager_1 = require("../managers/gameManager");
 var CapturedTrigger = /** @class */ (function (_super) {
     __extends(CapturedTrigger, _super);
     /**
@@ -49,6 +50,7 @@ var CapturedTrigger = /** @class */ (function (_super) {
         this.isVisible = false;
     };
     CapturedTrigger.prototype.registerMeshForIntersection = function (mesh) {
+        var _this = this;
         var enterAction = new core_1.ExecuteCodeAction({
             trigger: core_1.ActionManager.OnIntersectionEnterTrigger,
             parameter: {
@@ -56,19 +58,34 @@ var CapturedTrigger = /** @class */ (function (_super) {
                 usePreciseIntersection: true,
             },
         }, function (event) {
-            console.log("Captured Trigger - Mesh intersection ENTER %o", event);
+            // console.log(`Captured Trigger - Mesh intersection ENTER %o`, event);
+            var localPlayerVisual = event.additionalData;
+            console.log("Captured Trigger - Player is captured?: ".concat(_this._player.isCaptured()));
+            if (_this._player.isCaptured() && localPlayerVisual.player.isLocalPlayer) {
+                gameManager_1.default.Instance.rescueCapturedHider(_this._player);
+            }
         });
-        var exitAction = new core_1.ExecuteCodeAction({
-            trigger: core_1.ActionManager.OnIntersectionExitTrigger,
-            parameter: {
-                mesh: mesh,
-                usePreciseIntersection: true,
-            },
-        }, function (event) {
-            console.log("Captured Trigger - Mesh intersection EXIT %o", event);
-        });
+        // let exitAction = new ExecuteCodeAction(
+        // 	{
+        // 		trigger: ActionManager.OnIntersectionExitTrigger,
+        // 		parameter: {
+        // 			mesh: mesh,
+        // 			usePreciseIntersection: true,
+        // 		},
+        // 	},
+        // 	(event: ActionEvent) => {
+        // 		// console.log(`Captured Trigger - Mesh intersection EXIT %o`, event);
+        // 		const visual: PlayerVisual = event.additionalData as PlayerVisual;
+        // 		if (visual.player.isCaptured()) {
+        // 			GameManager.Instance.rescueCapturedHider(visual.player);
+        // 		}
+        // 	}
+        // );
         this.actionManager.registerAction(enterAction);
-        this.actionManager.registerAction(exitAction);
+        // this.actionManager.registerAction(exitAction);
+    };
+    CapturedTrigger.prototype.setPlayerReference = function (player) {
+        this._player = player;
     };
     /**
      * Called each frame.

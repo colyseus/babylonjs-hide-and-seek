@@ -4,6 +4,12 @@ import type { PlayerState } from '../../../../../Server/hide-and-seek/src/rooms/
 import Player from '../players/player';
 export default class GameManager extends Node {
     private static _instance;
+    private _playerChaseSpeed;
+    private _startChaseSpeed;
+    private _seekerFOV;
+    seekerCheckDistance: number;
+    /** In ms, the time between messages sent to the server for each Hider discovered by the Seeker */
+    private _foundHiderMsgRate;
     private _cameraHolder;
     private _cameraStartPos;
     private _spawnPointsRoot;
@@ -21,12 +27,6 @@ export default class GameManager extends Node {
     private _players;
     private _currentGameState;
     private _joiningRoom;
-    private _playerChaseSpeed;
-    private _startChaseSpeed;
-    private _seekerFOV;
-    seekerCheckDistance: number;
-    /** In ms, the time between messages sent to the server for each Hider discovered by the Seeker */
-    private _foundHiderMsgRate;
     private _halfSeekerFOV;
     private _foundHiders;
     private _playerState;
@@ -79,6 +79,7 @@ export default class GameManager extends Node {
      */
     getOverlappingHiders(): Player[];
     seekerFoundHider(hider: Player): void;
+    rescueCapturedHider(hider: Player): void;
     private playerCaptureChanged;
     private reset;
     /**

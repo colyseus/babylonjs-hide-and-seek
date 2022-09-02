@@ -12,6 +12,7 @@ exports.scriptsMap = {
     "src/scenes/scripts/managers/networkManager.ts": require("./scripts/managers/networkManager"),
     "src/scenes/scripts/managers/uiManager.ts": require("./scripts/managers/uiManager"),
     "src/scenes/scripts/players/cameraHolder.ts": require("./scripts/players/cameraHolder"),
+    "src/scenes/scripts/players/capturedTrigger.ts": require("./scripts/players/capturedTrigger"),
     "src/scenes/scripts/players/player.ts": require("./scripts/players/player"),
     "src/scenes/scripts/players/playerVisual.ts": require("./scripts/players/playerVisual"),
     "src/scenes/scripts/spawnPoint.ts": require("./scripts/spawnPoint"),

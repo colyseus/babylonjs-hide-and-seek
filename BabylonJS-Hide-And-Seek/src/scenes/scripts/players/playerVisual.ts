@@ -2,9 +2,13 @@ import { AbstractMesh, Axis, Mesh, Quaternion, Space, TransformNode, Vector3 } f
 import { fromChildren } from '../../decorators';
 import { Quat, random, Vec3 } from '../../utility';
 import GameManager from '../managers/gameManager';
+import NetworkManager from '../managers/networkManager';
+import CapturedTrigger from './capturedTrigger';
 import Player from './player';
 
 export default class PlayerVisual extends Mesh {
+	public player: Player;
+
 	private _target: Player = null;
 	private _targetLookDirection: Vector3;
 	private _lerpSpeed: number = 10;
@@ -14,6 +18,10 @@ export default class PlayerVisual extends Mesh {
 
 	@fromChildren('Captured')
 	private _captured: TransformNode;
+	@fromChildren('RescueMesh')
+	public rescueMesh: Mesh;
+	@fromChildren('CapturedTrigger')
+	private _capturedTrigger: CapturedTrigger;
 
 	/**
 	 * Override constructor.
@@ -49,6 +57,17 @@ export default class PlayerVisual extends Mesh {
 		this._currentDir = this.forward;
 	}
 
+	public setPlayerReference(player: Player) {
+		this.player = player;
+
+		this._capturedTrigger?.setPlayerReference(player);
+	}
+
+	public setTriggerSize(size: number) {
+		console.log(`Player Visual - Set trigger size: ${size}`);
+		this._capturedTrigger?.setTriggerSize(size);
+	}
+
 	public setTarget(player: Player) {
 		this._target = player;
 	}
@@ -69,12 +88,20 @@ export default class PlayerVisual extends Mesh {
 		this.isVisible = visible;
 
 		this.getChildMeshes().forEach((mesh: AbstractMesh) => {
+			if (mesh === this._capturedTrigger) {
+				return;
+			}
+
 			mesh.isVisible = visible;
 		});
 	}
 
 	public setCaptured(captured: boolean) {
 		this._captured.setEnabled(captured);
+	}
+
+	public registerPlayerMeshForIntersection(mesh: Mesh) {
+		this._capturedTrigger.registerMeshForIntersection(mesh);
 	}
 
 	/**

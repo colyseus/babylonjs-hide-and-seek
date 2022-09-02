@@ -61,6 +61,16 @@ var PlayerVisual = /** @class */ (function (_super) {
         this._prevDir = this.forward;
         this._currentDir = this.forward;
     };
+    PlayerVisual.prototype.setPlayerReference = function (player) {
+        var _a;
+        this.player = player;
+        (_a = this._capturedTrigger) === null || _a === void 0 ? void 0 : _a.setPlayerReference(player);
+    };
+    PlayerVisual.prototype.setTriggerSize = function (size) {
+        var _a;
+        console.log("Player Visual - Set trigger size: ".concat(size));
+        (_a = this._capturedTrigger) === null || _a === void 0 ? void 0 : _a.setTriggerSize(size);
+    };
     PlayerVisual.prototype.setTarget = function (player) {
         this._target = player;
     };
@@ -74,13 +84,20 @@ var PlayerVisual = /** @class */ (function (_super) {
         });
     };
     PlayerVisual.prototype.setVisibility = function (visible) {
+        var _this = this;
         this.isVisible = visible;
         this.getChildMeshes().forEach(function (mesh) {
+            if (mesh === _this._capturedTrigger) {
+                return;
+            }
             mesh.isVisible = visible;
         });
     };
     PlayerVisual.prototype.setCaptured = function (captured) {
         this._captured.setEnabled(captured);
+    };
+    PlayerVisual.prototype.registerPlayerMeshForIntersection = function (mesh) {
+        this._capturedTrigger.registerMeshForIntersection(mesh);
     };
     /**
      * Called each frame.
@@ -138,6 +155,12 @@ var PlayerVisual = /** @class */ (function (_super) {
     __decorate([
         (0, decorators_1.fromChildren)('Captured')
     ], PlayerVisual.prototype, "_captured", void 0);
+    __decorate([
+        (0, decorators_1.fromChildren)('RescueMesh')
+    ], PlayerVisual.prototype, "rescueMesh", void 0);
+    __decorate([
+        (0, decorators_1.fromChildren)('CapturedTrigger')
+    ], PlayerVisual.prototype, "_capturedTrigger", void 0);
     return PlayerVisual;
 }(core_1.Mesh));
 exports.default = PlayerVisual;

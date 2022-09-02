@@ -1,12 +1,15 @@
 import { Mesh, Vector3 } from '@babylonjs/core';
 import Player from './player';
 export default class PlayerVisual extends Mesh {
+    player: Player;
     private _target;
     private _targetLookDirection;
     private _lerpSpeed;
     private _prevDir;
     private _currentDir;
     private _captured;
+    rescueMesh: Mesh;
+    private _capturedTrigger;
     /**
      * Override constructor.
      * @warn do not fill.
@@ -25,11 +28,14 @@ export default class PlayerVisual extends Mesh {
      * Called on the scene starts.
      */
     onStart(): void;
+    setPlayerReference(player: Player): void;
+    setTriggerSize(size: number): void;
     setTarget(player: Player): void;
     setLookTargetDirection(direction: Vector3): void;
     setPickable(isPickable: boolean): void;
     setVisibility(visible: boolean): void;
     setCaptured(captured: boolean): void;
+    registerPlayerMeshForIntersection(mesh: Mesh): void;
     /**
      * Called each frame.
      */

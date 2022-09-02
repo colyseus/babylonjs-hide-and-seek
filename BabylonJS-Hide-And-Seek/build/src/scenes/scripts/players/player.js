@@ -71,29 +71,34 @@ var Player = /** @class */ (function (_super) {
         this._originalPosition = this.position;
         this._lastPosition = this._originalPosition;
         if (this.isLocalPlayer) {
-            console.log("Player Visual: %o", this._visual);
+            console.log("Player Visual: %o", this.visual);
             this.isPickable = false;
         }
-        if (this._visual) {
-            this._visual.setTarget(this);
-            this._visual.setParent(null);
-            this._visual.setPickable(false);
+        if (this.visual) {
+            this.visual.setTarget(this);
+            this.visual.setParent(null);
+            this.visual.setPickable(false);
+            this.visual.setPlayerReference(this);
         }
     };
     Player.prototype.visualForward = function () {
-        return this._visual.forward;
+        return this.visual.forward;
     };
     Player.prototype.toggleEnabled = function (enabled) {
         var _a;
         this.setEnabled(enabled);
-        (_a = this._visual) === null || _a === void 0 ? void 0 : _a.setEnabled(enabled);
+        (_a = this.visual) === null || _a === void 0 ? void 0 : _a.setEnabled(enabled);
     };
     Player.prototype.setPlayerState = function (state) {
         console.log("Player - Set Player State");
         this._state = state;
     };
+    Player.prototype.setCapturedTriggerSize = function (size) {
+        console.log("Player - set captured trigger size: ".concat(size));
+        this.visual.setTriggerSize(size);
+    };
     Player.prototype.setVisualVisibility = function (visible) {
-        this._visual.setVisibility(visible);
+        this.visual.setVisibility(visible);
     };
     Player.prototype.showCaptured = function (captured) {
         // Only alter the visibility of the player if the local player is the Seeker
@@ -101,13 +106,14 @@ var Player = /** @class */ (function (_super) {
             this.setVisualVisibility(captured);
         }
         // Alter appearance to show captured state (like show the player in a cage or something)
-        this._visual.setCaptured(captured);
+        this.visual.setCaptured(captured);
     };
     Player.prototype.reset = function () {
         this._previousMovements = [];
         this.position = this._originalPosition;
         this._lastPosition = this.position;
         this._state = null;
+        this.visual.setCaptured(false);
         this.setVelocity(core_1.Vector3.Zero());
     };
     /**
@@ -137,9 +143,12 @@ var Player = /** @class */ (function (_super) {
         this._rigidbody.setLinearVelocity(vel);
     };
     Player.prototype.setVisualLookDirection = function (dir) {
-        if (this._visual && dir.length() > 0) {
-            this._visual.setLookTargetDirection(dir);
+        if (this.visual && dir.length() > 0) {
+            this.visual.setLookTargetDirection(dir);
         }
+    };
+    Player.prototype.registerPlayerMeshForIntersection = function (mesh) {
+        this.visual.registerPlayerMeshForIntersection(mesh);
     };
     Player.prototype.updatePlayerMovement = function () {
         if (!this._state.canMove || this._state.isCaptured) {
@@ -236,7 +245,7 @@ var Player = /** @class */ (function (_super) {
         }
     };
     Player.prototype.checkPredicate = function (mesh) {
-        if (!mesh.isPickable || mesh === this || mesh === this._visual || mesh.name === 'ray') {
+        if (!mesh.isPickable || mesh === this || mesh === this.visual || mesh.name === 'ray') {
             return false;
         }
         return true;
@@ -266,7 +275,7 @@ var Player = /** @class */ (function (_super) {
     ], Player.prototype, "_movementSpeed", void 0);
     __decorate([
         (0, decorators_1.fromChildren)('PlayerBody')
-    ], Player.prototype, "_visual", void 0);
+    ], Player.prototype, "visual", void 0);
     return Player;
 }(core_1.Mesh));
 exports.default = Player;

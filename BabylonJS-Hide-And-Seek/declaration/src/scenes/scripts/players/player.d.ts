@@ -1,8 +1,9 @@
 import { Mesh, Vector3 } from '@babylonjs/core';
 import type { PlayerState } from '../../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
+import PlayerVisual from './playerVisual';
 export default class Player extends Mesh {
     private _movementSpeed;
-    private _visual;
+    visual: PlayerVisual;
     isLocalPlayer: boolean;
     private _rigidbody;
     private _xDirection;
@@ -31,6 +32,7 @@ export default class Player extends Mesh {
     visualForward(): Vector3;
     toggleEnabled(enabled: boolean): void;
     setPlayerState(state: PlayerState): void;
+    setCapturedTriggerSize(size: number): void;
     setVisualVisibility(visible: boolean): void;
     showCaptured(captured: boolean): void;
     reset(): void;
@@ -40,6 +42,7 @@ export default class Player extends Mesh {
     onUpdate(): void;
     setVelocity(vel: Vector3): void;
     setVisualLookDirection(dir: Vector3): void;
+    registerPlayerMeshForIntersection(mesh: Mesh): void;
     private updatePlayerMovement;
     private updatePositionFromState;
     private sendPositionUpdateToServer;

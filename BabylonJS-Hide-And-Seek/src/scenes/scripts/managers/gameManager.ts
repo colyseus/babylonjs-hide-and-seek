@@ -1,4 +1,4 @@
-import { AbstractMesh, Quaternion, TransformNode, Vector3 } from '@babylonjs/core';
+import { AbstractMesh, TransformNode, Vector3 } from '@babylonjs/core';
 import EventEmitter = require('events');
 import { Node } from '@babylonjs/core/node';
 import { GameState } from '../GameState';
@@ -7,12 +7,21 @@ import { fromChildren, fromScene } from '../../decorators';
 import CameraHolder from '../players/cameraHolder';
 import Player from '../players/player';
 import { SpawnPoints } from '../spawnPoints';
-import InputManager from './inputManager';
 import NetworkManager, { NetworkEvent } from './networkManager';
 import { PlayerInputMessage } from '../../../../../Server/hide-and-seek/src/models/PlayerInputMessage';
 
 export default class GameManager extends Node {
 	private static _instance: GameManager = null;
+
+	// Magic Numbers
+	//==========================================
+	private _playerChaseSpeed: number = 25;
+	private _startChaseSpeed: number = 3;
+	private _seekerFOV: number = 60;
+	public seekerCheckDistance: number = 6;
+	/** In ms, the time between messages sent to the server for each Hider discovered by the Seeker */
+	private _foundHiderMsgRate: number = 1000;
+	//==========================================
 
 	@fromScene('Camera Holder')
 	private _cameraHolder: CameraHolder;
@@ -44,16 +53,6 @@ export default class GameManager extends Node {
 	private _players: Map<string, PlayerState> = null;
 	private _currentGameState: GameState = GameState.NONE;
 	private _joiningRoom: boolean = false;
-
-	// Magic Numbers
-	//==========================================
-	private _playerChaseSpeed: number = 25;
-	private _startChaseSpeed: number = 3;
-	private _seekerFOV: number = 60;
-	public seekerCheckDistance: number = 6;
-	/** In ms, the time between messages sent to the server for each Hider discovered by the Seeker */
-	private _foundHiderMsgRate: number = 1000;
-	//==========================================
 
 	private _halfSeekerFOV: number = 0;
 	private _foundHiders: Map<string, Player>;
@@ -147,6 +146,10 @@ export default class GameManager extends Node {
 		this._availableRemotePlayerObjects.push(this._remotePlayer5);
 		this._availableRemotePlayerObjects.push(this._remotePlayer6);
 		this._availableRemotePlayerObjects.push(this._remotePlayer7);
+
+		this._availableRemotePlayerObjects.forEach((player: Player) => {
+			player.registerPlayerMeshForIntersection(this._player.visual.rescueMesh);
+		});
 
 		this._player.setParent(null);
 
@@ -380,6 +383,9 @@ export default class GameManager extends Node {
 		}, 100);
 
 		player.setPlayerState(playerState);
+
+		console.log(`Game Manager - Spawn Player - set captured trigger size`);
+		player.setCapturedTriggerSize(NetworkManager.Config.RescueDistance);
 	}
 
 	private despawnPlayers() {
@@ -486,6 +492,10 @@ export default class GameManager extends Node {
 				this._foundHiders.delete(hider.sessionId());
 			}, this._foundHiderMsgRate);
 		}
+	}
+
+	public rescueCapturedHider(hider: Player) {
+		NetworkManager.Instance.sendRescueHider(hider.sessionId());
 	}
 
 	private playerCaptureChanged(playerId: string, captured: boolean) {

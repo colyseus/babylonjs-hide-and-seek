@@ -74,12 +74,6 @@ var GameManager = /** @class */ (function (_super) {
     // @ts-ignore ignoring the super call as we don't want to re-init
     function GameManager() {
         var _this = this;
-        _this._availableRemotePlayerObjects = null;
-        _this._spawnPoints = null;
-        _this._spawnedRemotes = null;
-        _this._players = null;
-        _this._currentGameState = GameState_1.GameState.NONE;
-        _this._joiningRoom = false;
         // Magic Numbers
         //==========================================
         _this._playerChaseSpeed = 25;
@@ -88,7 +82,12 @@ var GameManager = /** @class */ (function (_super) {
         _this.seekerCheckDistance = 6;
         /** In ms, the time between messages sent to the server for each Hider discovered by the Seeker */
         _this._foundHiderMsgRate = 1000;
-        //==========================================
+        _this._availableRemotePlayerObjects = null;
+        _this._spawnPoints = null;
+        _this._spawnedRemotes = null;
+        _this._players = null;
+        _this._currentGameState = GameState_1.GameState.NONE;
+        _this._joiningRoom = false;
         _this._halfSeekerFOV = 0;
         _this._playerState = null;
         _this._eventEmitter = new EventEmitter();
@@ -168,6 +167,7 @@ var GameManager = /** @class */ (function (_super) {
      */
     GameManager.prototype.onStart = function () {
         // ...
+        var _this = this;
         this.initializeSpawnPoints();
         // Add remote player references to the array
         this._availableRemotePlayerObjects.push(this._remotePlayer1);
@@ -177,6 +177,9 @@ var GameManager = /** @class */ (function (_super) {
         this._availableRemotePlayerObjects.push(this._remotePlayer5);
         this._availableRemotePlayerObjects.push(this._remotePlayer6);
         this._availableRemotePlayerObjects.push(this._remotePlayer7);
+        this._availableRemotePlayerObjects.forEach(function (player) {
+            player.registerPlayerMeshForIntersection(_this._player.visual.rescueMesh);
+        });
         this._player.setParent(null);
         networkManager_1.default.Instance.addOnEvent(networkManager_1.NetworkEvent.JOINED_ROOM, this.onJoinedRoom);
         networkManager_1.default.Instance.addOnEvent(networkManager_1.NetworkEvent.LEFT_ROOM, this.onLeftRoom);
@@ -377,6 +380,8 @@ var GameManager = /** @class */ (function (_super) {
             player.toggleEnabled(true);
         }, 100);
         player.setPlayerState(playerState);
+        console.log("Game Manager - Spawn Player - set captured trigger size");
+        player.setCapturedTriggerSize(networkManager_1.default.Config.RescueDistance);
     };
     GameManager.prototype.despawnPlayers = function () {
         var _this = this;
@@ -465,6 +470,9 @@ var GameManager = /** @class */ (function (_super) {
                 _this._foundHiders.delete(hider.sessionId());
             }, this._foundHiderMsgRate);
         }
+    };
+    GameManager.prototype.rescueCapturedHider = function (hider) {
+        networkManager_1.default.Instance.sendRescueHider(hider.sessionId());
     };
     GameManager.prototype.playerCaptureChanged = function (playerId, captured) {
         if (playerId === networkManager_1.default.Instance.Room.sessionId) {

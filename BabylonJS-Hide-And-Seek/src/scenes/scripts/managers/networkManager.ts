@@ -7,6 +7,7 @@ import type { PlayerState } from '../../../../../Server/hide-and-seek/src/rooms/
 import { GameState } from '../GameState';
 import { GameConfig } from '../../../../../Server/hide-and-seek/src/models/GameConfig';
 import EventEmitter = require('events');
+import { delay } from '../../utility';
 
 export enum NetworkEvent {
 	JOINED_ROOM = 'joinedRoom',
@@ -166,6 +167,11 @@ export default class NetworkManager extends Node {
 
 			this.registerRoomHandlers();
 
+			// Wait to receive the game config from the server
+			while (!this._config) {
+				await delay(100);
+			}
+
 			this.broadcastEvent(NetworkEvent.JOINED_ROOM, this.Room.id);
 		}
 	}
@@ -195,7 +201,8 @@ export default class NetworkManager extends Node {
 			this.Room.onLeave.once((code: number) => {
 				this.unregisterRoomHandlers();
 				this.Room = null;
-				// this.onLeftRoom(code);
+				this._config = null;
+
 				this.broadcastEvent(NetworkEvent.LEFT_ROOM, code);
 			});
 			this.Room.state.players.onAdd = (player: PlayerState) => this.broadcastEvent(NetworkEvent.PLAYER_ADDED, player);
@@ -234,6 +241,16 @@ export default class NetworkManager extends Node {
 		}
 
 		this.Room.send('foundHider', hiderId);
+	}
+
+	public sendRescueHider(hiderId: string) {
+		if (!this.Room || this.Room.state.gameState.currentState !== GameState.HUNT) {
+			return;
+		}
+
+		console.log(`Network Manager - Start Rescue of captured Hider ${hiderId}`);
+
+		this.Room.send('rescueHider', hiderId);
 	}
 
 	public sendPlayAgain() {

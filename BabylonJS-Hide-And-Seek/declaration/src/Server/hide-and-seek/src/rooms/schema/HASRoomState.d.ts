@@ -8,8 +8,10 @@ export declare class HASRoomState extends Schema {
     private _room;
     private _availableSpawnPoints;
     private _config;
+    private _rescueOperations;
     constructor(room: HASRoom, ...args: any[]);
     private initializeSpawnPoints;
+    private playerRemoved;
     /**
      * Get a number representing the inces of the spawn point client-side
      * @param isRandom should the spawn point be chosen randomly? Default is true
@@ -20,4 +22,7 @@ export declare class HASRoomState extends Schema {
     update(deltaTime: number): void;
     resetForPlay(): void;
     seekerFoundHider(seekerId: string, hiderId: string): void;
+    rescueHider(rescuerId: string, hiderId: string): void;
+    /** Updates all valid rescue operations that have not failed or are not yet successful */
+    private updateRescueOperations;
 }

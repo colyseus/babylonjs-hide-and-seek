@@ -7,9 +7,9 @@
 			"uniqueId": 152,
 			"type": "Mesh",
 			"position": [
-				-16.43699836730957,
-				-0.32231569290161133,
-				16.438905715942383
+				-3.842367172241211,
+				0.5,
+				0
 			],
 			"rotationQuaternion": [
 				0,
@@ -18,7 +18,7 @@
 				1
 			],
 			"scaling": [
-				10,
+				2.5174498558044434,
 				1,
 				10
 			],
@@ -41,16 +41,16 @@
 				"15": 1
 			},
 			"isEnabled": true,
-			"isVisible": true,
+			"isVisible": false,
 			"infiniteDistance": false,
 			"pickable": true,
 			"receiveShadows": false,
 			"billboardMode": 0,
-			"visibility": 1,
+			"visibility": 0.3,
 			"checkCollisions": false,
 			"isBlocker": false,
 			"overrideMaterialSideOrientation": null,
-			"parentId": "1f2689f7-75cb-4dc5-aed5-7d20d28457da",
+			"parentId": "5d200318-819d-4aea-8418-382509ff1cfa",
 			"isUnIndexed": false,
 			"geometryUniqueId": 683,
 			"geometryId": "3385bfc4-83bf-443d-951b-b50ef8a41b49",

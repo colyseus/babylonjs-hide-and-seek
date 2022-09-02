@@ -87,7 +87,11 @@
 					"name": "tree4",
 					"sceneFileName": "models/BabylonJS Graveyard Assets/Assets-meshes-graveYardPack/tree4/tree4.glb"
 				},
-				"isPickable": true
+				"isPickable": true,
+				"script": {
+					"name": "None"
+				},
+				"renderingGroupId": 0
 			},
 			"instances": [],
 			"animations": [],

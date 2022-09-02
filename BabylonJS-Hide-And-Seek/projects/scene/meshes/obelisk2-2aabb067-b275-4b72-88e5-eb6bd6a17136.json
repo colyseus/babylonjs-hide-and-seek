@@ -87,7 +87,11 @@
 					"name": "obelisk2",
 					"sceneFileName": "models/BabylonJS Graveyard Assets/Assets-meshes-graveYardPack/obelisk2/obelisk2.glb"
 				},
-				"isPickable": true
+				"isPickable": true,
+				"script": {
+					"name": "None"
+				},
+				"renderingGroupId": 0
 			},
 			"instances": [],
 			"animations": [],

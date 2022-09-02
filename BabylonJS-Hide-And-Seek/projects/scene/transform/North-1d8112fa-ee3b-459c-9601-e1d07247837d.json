@@ -1,36 +1,35 @@
 {
 	"tags": null,
 	"position": [
-		-0.00839321780949831,
 		0,
-		34.34395980834961
+		0,
+		17.3293514251709
 	],
 	"rotation": [
 		0,
-		-1.5710404807769653,
+		0,
 		0
 	],
 	"scaling": [
-		0.9999995529611386,
 		1,
-		0.9999995529611386
+		1,
+		1
 	],
 	"billboardMode": 0,
 	"scalingDeterminant": 1,
 	"infiniteDistance": false,
 	"ignoreNonUniformScaling": false,
 	"reIntegrateRotationIntoRotationQuaternion": false,
-	"name": "Obstacle B",
-	"id": "c214a492-0310-4803-ba5d-6fc624970379",
+	"name": "North",
+	"id": "1d8112fa-ee3b-459c-9601-e1d07247837d",
 	"state": "",
 	"metadata": {
 		"script": {
 			"name": "None"
-		},
-		"doNotExport": false
+		}
 	},
 	"type": "TransformNode",
-	"uniqueId": 30,
+	"uniqueId": 6473,
 	"parentId": "1f2689f7-75cb-4dc5-aed5-7d20d28457da",
 	"localMatrix": {
 		"0": 1,

@@ -87,7 +87,11 @@
 					"name": "tombstone9",
 					"sceneFileName": "models/BabylonJS Graveyard Assets/Assets-meshes-graveYardPack/tombstone9/tombstone9.glb"
 				},
-				"isPickable": true
+				"isPickable": true,
+				"script": {
+					"name": "None"
+				},
+				"renderingGroupId": 0
 			},
 			"instances": [],
 			"animations": [],
@@ -95,7 +99,7 @@
 			"layerMask": 268435455,
 			"alphaIndex": 1.7976931348623157e+308,
 			"hasVertexAlpha": false,
-			"overlayAlpha": 0.5,
+			"overlayAlpha": 0.3,
 			"overlayColor": [
 				1,
 				0,

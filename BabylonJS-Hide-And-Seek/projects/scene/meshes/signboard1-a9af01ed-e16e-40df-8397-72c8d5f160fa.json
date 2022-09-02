@@ -87,7 +87,12 @@
 					"name": "signboard1",
 					"sceneFileName": "models/BabylonJS Graveyard Assets/Assets-meshes-graveYardPack/signboard1/signboard1.glb"
 				},
-				"isPickable": true
+				"isPickable": true,
+				"script": {
+					"name": "None"
+				},
+				"renderingGroupId": 0,
+				"doNotExport": false
 			},
 			"instances": [],
 			"animations": [],

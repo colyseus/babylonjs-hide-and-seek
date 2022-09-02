@@ -32,6 +32,7 @@ export default class Player extends Mesh {
     visualForward(): Vector3;
     toggleEnabled(enabled: boolean): void;
     setPlayerState(state: PlayerState): void;
+    setCapturedTriggerSize(size: number): void;
     setVisualVisibility(visible: boolean): void;
     showCaptured(captured: boolean): void;
     reset(): void;

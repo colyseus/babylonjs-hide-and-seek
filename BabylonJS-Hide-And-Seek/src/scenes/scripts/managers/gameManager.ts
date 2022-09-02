@@ -148,7 +148,7 @@ export default class GameManager extends Node {
 		this._availableRemotePlayerObjects.push(this._remotePlayer7);
 
 		this._availableRemotePlayerObjects.forEach((player: Player) => {
-			player.registerPlayerMeshForIntersection(this._player.visual);
+			player.registerPlayerMeshForIntersection(this._player.visual.rescueMesh);
 		});
 
 		this._player.setParent(null);
@@ -383,6 +383,9 @@ export default class GameManager extends Node {
 		}, 100);
 
 		player.setPlayerState(playerState);
+
+		console.log(`Game Manager - Spawn Player - set captured trigger size`);
+		player.setCapturedTriggerSize(NetworkManager.Config.RescueDistance);
 	}
 
 	private despawnPlayers() {

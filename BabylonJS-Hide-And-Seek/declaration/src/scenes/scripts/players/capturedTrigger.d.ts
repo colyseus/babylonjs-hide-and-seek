@@ -23,7 +23,7 @@ export default class CapturedTrigger extends Mesh {
     registerMeshForIntersection(mesh: Mesh): void;
     setPlayerReference(player: Player): void;
     /** Size is the radius of the trigger so actual scale of the trigger will be double the size */
-    private setTriggerSize;
+    setTriggerSize(size: number): void;
     /**
      * Called each frame.
      */

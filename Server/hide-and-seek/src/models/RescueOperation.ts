@@ -48,10 +48,14 @@ export class RescueOperation {
 	}
 
 	public update() {
-		// The rescuer needs to remain close enough in order to rescue the hider
-		this._closeEnough = distanceBetweenPlayers(this._rescuer, this._hider) <= this._rescueDistance;
+		const dist: number = distanceBetweenPlayers(this._rescuer, this._hider);
 
-		if (!this._closeEnough || this._failed) {
+		// The rescuer needs to remain close enough in order to rescue the hider
+		// The +1 is to account for the size of the rescue mesh making contact with the
+		// captured trigger before the actual position of the player is within the trigger mesh
+		this._closeEnough = dist <= this._rescueDistance + 1;
+
+		if (!this._closeEnough) {
 			this._failed = true;
 			return;
 		}

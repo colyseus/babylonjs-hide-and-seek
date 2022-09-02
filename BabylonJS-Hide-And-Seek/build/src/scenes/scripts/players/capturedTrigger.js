@@ -17,7 +17,6 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@babylonjs/core");
 var gameManager_1 = require("../managers/gameManager");
-var networkManager_1 = require("../managers/networkManager");
 var CapturedTrigger = /** @class */ (function (_super) {
     __extends(CapturedTrigger, _super);
     /**
@@ -48,8 +47,8 @@ var CapturedTrigger = /** @class */ (function (_super) {
      */
     CapturedTrigger.prototype.onStart = function () {
         // ...
-        this.isVisible = true;
-        this.setTriggerSize(networkManager_1.default.Config.RescueDistance);
+        this.isVisible = false;
+        this.setEnabled(true);
     };
     CapturedTrigger.prototype.registerMeshForIntersection = function (mesh) {
         var _this = this;
@@ -61,7 +60,7 @@ var CapturedTrigger = /** @class */ (function (_super) {
             },
         }, function (event) {
             // console.log(`Captured Trigger - Mesh intersection ENTER %o`, event);
-            var localPlayerVisual = event.additionalData;
+            var localPlayerVisual = event.additionalData.parent;
             console.log("Captured Trigger - Player is captured?: ".concat(_this._player.isCaptured()));
             if (_this._player.isCaptured() && localPlayerVisual.player.isLocalPlayer) {
                 gameManager_1.default.Instance.rescueCapturedHider(_this._player);
@@ -74,8 +73,10 @@ var CapturedTrigger = /** @class */ (function (_super) {
     };
     /** Size is the radius of the trigger so actual scale of the trigger will be double the size */
     CapturedTrigger.prototype.setTriggerSize = function (size) {
+        console.log("Set Trigger Size: ".concat(size, " - Current Scale: ").concat(this.scaling.x));
         var scale = size * 2;
         this.scaling = new core_1.Vector3(scale, scale, scale);
+        console.log("Set Trigger Size: ".concat(size, " - New Scale: ").concat(this.scaling.x));
     };
     /**
      * Called each frame.

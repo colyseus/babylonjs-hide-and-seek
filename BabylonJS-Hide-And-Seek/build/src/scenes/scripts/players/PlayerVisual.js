@@ -66,6 +66,11 @@ var PlayerVisual = /** @class */ (function (_super) {
         this.player = player;
         (_a = this._capturedTrigger) === null || _a === void 0 ? void 0 : _a.setPlayerReference(player);
     };
+    PlayerVisual.prototype.setTriggerSize = function (size) {
+        var _a;
+        console.log("Player Visual - Set trigger size: ".concat(size));
+        (_a = this._capturedTrigger) === null || _a === void 0 ? void 0 : _a.setTriggerSize(size);
+    };
     PlayerVisual.prototype.setTarget = function (player) {
         this._target = player;
     };
@@ -150,6 +155,9 @@ var PlayerVisual = /** @class */ (function (_super) {
     __decorate([
         (0, decorators_1.fromChildren)('Captured')
     ], PlayerVisual.prototype, "_captured", void 0);
+    __decorate([
+        (0, decorators_1.fromChildren)('RescueMesh')
+    ], PlayerVisual.prototype, "rescueMesh", void 0);
     __decorate([
         (0, decorators_1.fromChildren)('CapturedTrigger')
     ], PlayerVisual.prototype, "_capturedTrigger", void 0);

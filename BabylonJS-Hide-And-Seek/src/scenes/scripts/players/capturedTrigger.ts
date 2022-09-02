@@ -35,9 +35,8 @@ export default class CapturedTrigger extends Mesh {
 	 */
 	public onStart(): void {
 		// ...
-		this.isVisible = true;
-
-		this.setTriggerSize(NetworkManager.Config.RescueDistance);
+		this.isVisible = false;
+		this.setEnabled(true);
 	}
 
 	public registerMeshForIntersection(mesh: Mesh) {
@@ -51,7 +50,7 @@ export default class CapturedTrigger extends Mesh {
 			},
 			(event: ActionEvent) => {
 				// console.log(`Captured Trigger - Mesh intersection ENTER %o`, event);
-				const localPlayerVisual: PlayerVisual = event.additionalData as PlayerVisual;
+				const localPlayerVisual: PlayerVisual = event.additionalData.parent as PlayerVisual;
 
 				console.log(`Captured Trigger - Player is captured?: ${this._player.isCaptured()}`);
 				if (this._player.isCaptured() && localPlayerVisual.player.isLocalPlayer) {
@@ -68,9 +67,13 @@ export default class CapturedTrigger extends Mesh {
 	}
 
 	/** Size is the radius of the trigger so actual scale of the trigger will be double the size */
-	private setTriggerSize(size: number) {
+	public setTriggerSize(size: number) {
+		console.log(`Set Trigger Size: ${size} - Current Scale: ${this.scaling.x}`);
+
 		const scale: number = size * 2;
 		this.scaling = new Vector3(scale, scale, scale);
+
+		console.log(`Set Trigger Size: ${size} - New Scale: ${this.scaling.x}`);
 	}
 
 	/**

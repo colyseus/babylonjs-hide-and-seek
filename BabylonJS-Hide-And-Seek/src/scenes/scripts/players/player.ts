@@ -94,6 +94,11 @@ export default class Player extends Mesh {
 		this._state = state;
 	}
 
+	public setCapturedTriggerSize(size: number) {
+		console.log(`Player - set captured trigger size: ${size}`);
+		this.visual.setTriggerSize(size);
+	}
+
 	public setVisualVisibility(visible: boolean) {
 		this.visual.setVisibility(visible);
 	}

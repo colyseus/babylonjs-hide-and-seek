@@ -2,6 +2,7 @@ import { AbstractMesh, Axis, Mesh, Quaternion, Space, TransformNode, Vector3 } f
 import { fromChildren } from '../../decorators';
 import { Quat, random, Vec3 } from '../../utility';
 import GameManager from '../managers/gameManager';
+import NetworkManager from '../managers/networkManager';
 import CapturedTrigger from './capturedTrigger';
 import Player from './player';
 
@@ -17,6 +18,8 @@ export default class PlayerVisual extends Mesh {
 
 	@fromChildren('Captured')
 	private _captured: TransformNode;
+	@fromChildren('RescueMesh')
+	public rescueMesh: Mesh;
 	@fromChildren('CapturedTrigger')
 	private _capturedTrigger: CapturedTrigger;
 
@@ -58,6 +61,11 @@ export default class PlayerVisual extends Mesh {
 		this.player = player;
 
 		this._capturedTrigger?.setPlayerReference(player);
+	}
+
+	public setTriggerSize(size: number) {
+		console.log(`Player Visual - Set trigger size: ${size}`);
+		this._capturedTrigger?.setTriggerSize(size);
 	}
 
 	public setTarget(player: Player) {

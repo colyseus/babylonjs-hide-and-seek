@@ -178,7 +178,7 @@ var GameManager = /** @class */ (function (_super) {
         this._availableRemotePlayerObjects.push(this._remotePlayer6);
         this._availableRemotePlayerObjects.push(this._remotePlayer7);
         this._availableRemotePlayerObjects.forEach(function (player) {
-            player.registerPlayerMeshForIntersection(_this._player.visual);
+            player.registerPlayerMeshForIntersection(_this._player.visual.rescueMesh);
         });
         this._player.setParent(null);
         networkManager_1.default.Instance.addOnEvent(networkManager_1.NetworkEvent.JOINED_ROOM, this.onJoinedRoom);
@@ -380,6 +380,8 @@ var GameManager = /** @class */ (function (_super) {
             player.toggleEnabled(true);
         }, 100);
         player.setPlayerState(playerState);
+        console.log("Game Manager - Spawn Player - set captured trigger size");
+        player.setCapturedTriggerSize(networkManager_1.default.Config.RescueDistance);
     };
     GameManager.prototype.despawnPlayers = function () {
         var _this = this;

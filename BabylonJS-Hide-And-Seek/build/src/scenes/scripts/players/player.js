@@ -93,6 +93,10 @@ var Player = /** @class */ (function (_super) {
         console.log("Player - Set Player State");
         this._state = state;
     };
+    Player.prototype.setCapturedTriggerSize = function (size) {
+        console.log("Player - set captured trigger size: ".concat(size));
+        this.visual.setTriggerSize(size);
+    };
     Player.prototype.setVisualVisibility = function (visible) {
         this.visual.setVisibility(visible);
     };

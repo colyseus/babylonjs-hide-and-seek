@@ -57,6 +57,7 @@ var Colyseus = require("colyseus.js");
 var GameState_1 = require("../GameState");
 var GameConfig_1 = require("../../../../../Server/hide-and-seek/src/models/GameConfig");
 var EventEmitter = require("events");
+var utility_1 = require("../../utility");
 var NetworkEvent;
 (function (NetworkEvent) {
     NetworkEvent["JOINED_ROOM"] = "joinedRoom";
@@ -223,12 +224,20 @@ var NetworkManager = /** @class */ (function (_super) {
                         return [4 /*yield*/, this.joinRoomWithId(roomId)];
                     case 1:
                         _a.Room = _b.sent();
-                        if (this.Room) {
-                            console.log("Joined Room: ".concat(this.Room.id));
-                            this.registerRoomHandlers();
-                            this.broadcastEvent(NetworkEvent.JOINED_ROOM, this.Room.id);
-                        }
-                        return [2 /*return*/];
+                        if (!this.Room) return [3 /*break*/, 5];
+                        console.log("Joined Room: ".concat(this.Room.id));
+                        this.registerRoomHandlers();
+                        _b.label = 2;
+                    case 2:
+                        if (!!this._config) return [3 /*break*/, 4];
+                        return [4 /*yield*/, (0, utility_1.delay)(100)];
+                    case 3:
+                        _b.sent();
+                        return [3 /*break*/, 2];
+                    case 4:
+                        this.broadcastEvent(NetworkEvent.JOINED_ROOM, this.Room.id);
+                        _b.label = 5;
+                    case 5: return [2 /*return*/];
                 }
             });
         });
@@ -264,7 +273,7 @@ var NetworkManager = /** @class */ (function (_super) {
             this.Room.onLeave.once(function (code) {
                 _this.unregisterRoomHandlers();
                 _this.Room = null;
-                // this.onLeftRoom(code);
+                _this._config = null;
                 _this.broadcastEvent(NetworkEvent.LEFT_ROOM, code);
             });
             this.Room.state.players.onAdd = function (player) { return _this.broadcastEvent(NetworkEvent.PLAYER_ADDED, player); };

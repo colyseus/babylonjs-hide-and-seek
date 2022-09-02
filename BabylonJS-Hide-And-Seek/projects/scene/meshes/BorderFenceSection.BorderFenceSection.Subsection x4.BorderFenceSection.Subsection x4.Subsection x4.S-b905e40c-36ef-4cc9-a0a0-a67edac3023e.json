@@ -1,0 +1,105 @@
+{
+	"materials": [],
+	"meshes": [
+		{
+			"name": "BorderFenceSection.BorderFenceSection.Subsection x4.BorderFenceSection.Subsection x4.Subsection x4.Subsection x2.BorderFenceSection.Subsection x4.Subsection x4.Subsection x2.Subsection x4.Subsection x2.Subsection.Subsection.BorderFenceSection.Subsection x4.Subsection x4.Subsection x2.Subsection x4.Subsection x2.Subsection.Subsection.Subsection x4.Subsection x2.Subsection.Subsection.Subsection.Subsection.Subsection.fence A secion 1",
+			"id": "b905e40c-36ef-4cc9-a0a0-a67edac3023e",
+			"uniqueId": 998,
+			"type": "Mesh",
+			"position": [
+				-0.13219070434570312,
+				0,
+				0
+			],
+			"rotationQuaternion": [
+				0,
+				0,
+				1,
+				0
+			],
+			"scaling": [
+				1,
+				-1,
+				1
+			],
+			"pivotMatrix": {
+				"0": 1,
+				"1": 0,
+				"2": 0,
+				"3": 0,
+				"4": 0,
+				"5": 1,
+				"6": 0,
+				"7": 0,
+				"8": 0,
+				"9": 0,
+				"10": 1,
+				"11": 0,
+				"12": 0,
+				"13": 0,
+				"14": 0,
+				"15": 1
+			},
+			"isEnabled": true,
+			"isVisible": true,
+			"infiniteDistance": false,
+			"pickable": true,
+			"receiveShadows": false,
+			"billboardMode": 0,
+			"visibility": 1,
+			"checkCollisions": false,
+			"isBlocker": false,
+			"overrideMaterialSideOrientation": null,
+			"parentId": "0618d5c5-f53c-4593-b5bf-ad92cf39705a",
+			"isUnIndexed": false,
+			"materialUniqueId": 632,
+			"materialId": "default material",
+			"metadata": {
+				"basePoseMatrix": {
+					"0": -1,
+					"1": 0,
+					"2": 0,
+					"3": 0,
+					"4": 0,
+					"5": 1,
+					"6": 0,
+					"7": 0,
+					"8": 0,
+					"9": 0,
+					"10": 1,
+					"11": 0,
+					"12": 0,
+					"13": 0,
+					"14": 0,
+					"15": 1
+				},
+				"originalSourceFile": {
+					"id": "__root__",
+					"name": "__root__",
+					"sceneFileName": "models/BabylonJS Graveyard Assets/Assets-meshes-graveYardPack/fenceASection1/fenceASection1.glb"
+				},
+				"isPickable": true,
+				"script": {
+					"name": "None"
+				},
+				"renderingGroupId": 0,
+				"doNotExport": false
+			},
+			"instances": [],
+			"animations": [],
+			"ranges": [],
+			"layerMask": 268435455,
+			"alphaIndex": 1.7976931348623157e+308,
+			"hasVertexAlpha": false,
+			"overlayAlpha": 0.5,
+			"overlayColor": [
+				1,
+				0,
+				0
+			],
+			"applyFog": true
+		}
+	],
+	"multiMaterials": [],
+	"lods": []
+}

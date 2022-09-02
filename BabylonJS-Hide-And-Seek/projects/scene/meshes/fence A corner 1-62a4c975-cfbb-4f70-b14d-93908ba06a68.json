@@ -7,9 +7,9 @@
 			"uniqueId": 71,
 			"type": "Mesh",
 			"position": [
-				-25,
+				-24.345407485961914,
 				0,
-				25
+				26
 			],
 			"rotationQuaternion": [
 				1,
@@ -52,7 +52,7 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "547168ac-7bf2-4f23-872c-3ff4f2ef9dfb",
 			"isUnIndexed": false,
-			"materialUniqueId": 296,
+			"materialUniqueId": 632,
 			"materialId": "default material",
 			"metadata": {
 				"basePoseMatrix": {

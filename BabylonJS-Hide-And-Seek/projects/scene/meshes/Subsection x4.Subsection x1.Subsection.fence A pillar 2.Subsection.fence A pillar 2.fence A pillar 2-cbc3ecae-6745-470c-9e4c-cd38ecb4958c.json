@@ -2,13 +2,13 @@
 	"materials": [],
 	"meshes": [
 		{
-			"name": "E wall",
-			"id": "29a50d68-1174-47c4-8bfb-7794f4062341",
-			"uniqueId": 150,
+			"name": "Subsection x4.Subsection x1.Subsection.fence A pillar 2.Subsection.fence A pillar 2.fence A pillar 2.fenceAPillar2",
+			"id": "cbc3ecae-6745-470c-9e4c-cd38ecb4958c",
+			"uniqueId": 740,
 			"type": "Mesh",
 			"position": [
-				25,
-				0.5,
+				0,
+				0,
 				0
 			],
 			"rotationQuaternion": [
@@ -20,9 +20,9 @@
 			"scaling": [
 				1,
 				1,
-				50
+				1
 			],
-			"localMatrix": {
+			"pivotMatrix": {
 				"0": 1,
 				"1": 0,
 				"2": 0,
@@ -49,22 +49,43 @@
 			"visibility": 1,
 			"checkCollisions": false,
 			"isBlocker": false,
-			"overrideMaterialSideOrientation": null,
-			"parentId": "547168ac-7bf2-4f23-872c-3ff4f2ef9dfb",
+			"overrideMaterialSideOrientation": 0,
+			"parentId": "e815717d-ddf3-48a6-b944-3799ad3a729a",
 			"isUnIndexed": false,
-			"geometryUniqueId": 365,
-			"geometryId": "ec30b670-20b5-4227-96ab-6c653e0bde2d",
+			"geometryUniqueId": 800,
+			"geometryId": "422d5775-b77d-4b68-b761-1bb67f3eb330",
 			"subMeshes": null,
-			"materialUniqueId": 296,
-			"materialId": "default material",
-			"physicsMass": 0,
-			"physicsFriction": 0.2,
-			"physicsRestitution": 0.2,
-			"physicsImpostor": 2,
+			"materialUniqueId": 302,
+			"materialId": "9d441afb-6910-4845-ac7f-38c95a35c756",
 			"metadata": {
-				"editorGeometry": {
-					"type": "Cube",
-					"size": 1
+				"gltf": {
+					"pointers": [
+						"/meshes/0/primitives/0",
+						"/nodes/0"
+					]
+				},
+				"basePoseMatrix": {
+					"0": -1,
+					"1": 0,
+					"2": 0,
+					"3": 0,
+					"4": 0,
+					"5": 1,
+					"6": 0,
+					"7": 0,
+					"8": 0,
+					"9": 0,
+					"10": 1,
+					"11": 0,
+					"12": 0,
+					"13": 0,
+					"14": 0,
+					"15": 1
+				},
+				"originalSourceFile": {
+					"id": "fenceAPillar2",
+					"name": "fenceAPillar2",
+					"sceneFileName": "models/BabylonJS Graveyard Assets/Assets-meshes-graveYardPack/fenceAPillar2/fenceAPillar2.glb"
 				},
 				"isPickable": true,
 				"script": {
@@ -85,46 +106,46 @@
 				0
 			],
 			"applyFog": true,
-			"delayLoadingFile": "geometries/ec30b670-20b5-4227-96ab-6c653e0bde2d.babylonbinarymeshdata",
+			"delayLoadingFile": "geometries/422d5775-b77d-4b68-b761-1bb67f3eb330.babylonbinarymeshdata",
 			"boundingBoxMaximum": [
-				0.5,
-				0.5,
-				0.5
+				0.320329487323761,
+				2.0096120834350586,
+				0.40767985582351685
 			],
 			"boundingBoxMinimum": [
-				-0.5,
-				-0.5,
-				-0.5
+				-0.320329487323761,
+				-0.06797407567501068,
+				-0.40767985582351685
 			],
 			"_binaryInfo": {
 				"positionsAttrDesc": {
-					"count": 72,
+					"count": 666,
 					"stride": 3,
 					"offset": 0,
 					"dataType": 1
 				},
 				"normalsAttrDesc": {
-					"count": 72,
+					"count": 666,
 					"stride": 3,
-					"offset": 288,
+					"offset": 2664,
 					"dataType": 1
 				},
 				"uvsAttrDesc": {
-					"count": 48,
+					"count": 444,
 					"stride": 2,
-					"offset": 576,
+					"offset": 5328,
 					"dataType": 1
 				},
 				"indicesAttrDesc": {
-					"count": 36,
+					"count": 330,
 					"stride": 1,
-					"offset": 768,
+					"offset": 7104,
 					"dataType": 0
 				},
 				"subMeshesAttrDesc": {
 					"count": 1,
 					"stride": 5,
-					"offset": 912,
+					"offset": 8424,
 					"dataType": 0
 				}
 			},

@@ -1,0 +1,54 @@
+{
+	"tags": null,
+	"position": [
+		3.1928634643554688,
+		0,
+		0
+	],
+	"rotation": [
+		0,
+		0,
+		0
+	],
+	"scaling": [
+		1,
+		1,
+		1
+	],
+	"billboardMode": 0,
+	"scalingDeterminant": 1,
+	"infiniteDistance": false,
+	"ignoreNonUniformScaling": false,
+	"reIntegrateRotationIntoRotationQuaternion": false,
+	"name": "BorderFenceSection.BorderFenceSection.BorderFenceSection.Subsection x4.BorderFenceSection.BorderFenceSection.Subsection x4.BorderFenceSection.Subsection x4.Subsection x2.BorderFenceSection.BorderFenceSection.Subsection x4.BorderFenceSection.Subsection x4.Subsection x2.BorderFenceSection.Subsection x4.Subsection x2.Subsection.Subsection",
+	"id": "65fef5c6-7bae-4783-9c29-f8b0f0afbd15",
+	"state": "",
+	"metadata": {
+		"script": {
+			"name": "None"
+		},
+		"doNotExport": false
+	},
+	"type": "TransformNode",
+	"uniqueId": 1134,
+	"parentId": "871334e9-3bc1-4582-916c-e26e34e0de09",
+	"localMatrix": {
+		"0": 1,
+		"1": 0,
+		"2": 0,
+		"3": 0,
+		"4": 0,
+		"5": 1,
+		"6": 0,
+		"7": 0,
+		"8": 0,
+		"9": 0,
+		"10": 1,
+		"11": 0,
+		"12": 0,
+		"13": 0,
+		"14": 0,
+		"15": 1
+	},
+	"isEnabled": true
+}

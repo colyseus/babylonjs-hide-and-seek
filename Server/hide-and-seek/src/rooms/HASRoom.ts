@@ -26,7 +26,7 @@ export class HASRoom extends Room<HASRoomState> {
 	}
 
 	onCreate(options: any) {
-		this.maxClients = 8;
+		this.maxClients = this._config.MaxPlayers;
 
 		this.setState(new HASRoomState(this, this._config));
 

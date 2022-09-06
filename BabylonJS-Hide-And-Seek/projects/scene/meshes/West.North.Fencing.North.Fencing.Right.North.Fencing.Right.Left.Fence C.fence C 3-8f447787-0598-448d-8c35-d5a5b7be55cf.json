@@ -1,0 +1,105 @@
+{
+	"materials": [],
+	"meshes": [
+		{
+			"name": "West.North.Fencing.North.Fencing.Right.North.Fencing.Right.Left.Fence C.fence C 3",
+			"id": "8f447787-0598-448d-8c35-d5a5b7be55cf",
+			"uniqueId": 6332,
+			"type": "Mesh",
+			"position": [
+				-0.21518373489379883,
+				2.6352702112157355e-17,
+				-2.7077598571777344
+			],
+			"rotationQuaternion": [
+				-0.6860794741025437,
+				4.2010384594940684e-17,
+				0.7275266010361251,
+				4.4548189587830016e-17
+			],
+			"scaling": [
+				0.9999998196337984,
+				-0.999999463558197,
+				0.9999998196337984
+			],
+			"pivotMatrix": {
+				"0": 1,
+				"1": 0,
+				"2": 0,
+				"3": 0,
+				"4": 0,
+				"5": 1,
+				"6": 0,
+				"7": 0,
+				"8": 0,
+				"9": 0,
+				"10": 1,
+				"11": 0,
+				"12": 0,
+				"13": 0,
+				"14": 0,
+				"15": 1
+			},
+			"isEnabled": true,
+			"isVisible": true,
+			"infiniteDistance": false,
+			"pickable": true,
+			"receiveShadows": false,
+			"billboardMode": 0,
+			"visibility": 1,
+			"checkCollisions": false,
+			"isBlocker": false,
+			"overrideMaterialSideOrientation": null,
+			"parentId": "5c94a2a1-c4ae-4ec0-91b4-ff24d702a16f",
+			"isUnIndexed": false,
+			"materialUniqueId": 1158,
+			"materialId": "default material",
+			"metadata": {
+				"basePoseMatrix": {
+					"0": -1,
+					"1": 0,
+					"2": 0,
+					"3": 0,
+					"4": 0,
+					"5": 1,
+					"6": 0,
+					"7": 0,
+					"8": 0,
+					"9": 0,
+					"10": 1,
+					"11": 0,
+					"12": 0,
+					"13": 0,
+					"14": 0,
+					"15": 1
+				},
+				"originalSourceFile": {
+					"id": "__root__",
+					"name": "__root__",
+					"sceneFileName": "models/BabylonJS Graveyard Assets/Assets-meshes-graveYardPack/fenceC3/fenceC3.glb"
+				},
+				"isPickable": true,
+				"script": {
+					"name": "None"
+				},
+				"renderingGroupId": 0,
+				"doNotExport": false
+			},
+			"instances": [],
+			"animations": [],
+			"ranges": [],
+			"layerMask": 268435455,
+			"alphaIndex": 1.7976931348623157e+308,
+			"hasVertexAlpha": false,
+			"overlayAlpha": 0.5,
+			"overlayColor": [
+				1,
+				0,
+				0
+			],
+			"applyFog": true
+		}
+	],
+	"multiMaterials": [],
+	"lods": []
+}

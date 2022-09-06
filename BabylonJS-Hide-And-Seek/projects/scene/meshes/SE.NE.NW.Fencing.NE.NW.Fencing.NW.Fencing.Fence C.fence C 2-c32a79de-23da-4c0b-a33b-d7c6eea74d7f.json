@@ -1,0 +1,105 @@
+{
+	"materials": [],
+	"meshes": [
+		{
+			"name": "SE.NE.NW.Fencing.NE.NW.Fencing.NW.Fencing.Fence C.fence C 2",
+			"id": "c32a79de-23da-4c0b-a33b-d7c6eea74d7f",
+			"uniqueId": 7383,
+			"type": "Mesh",
+			"position": [
+				-4.886640548706055,
+				-1.6000613839289304e-16,
+				-1.3065509796142578
+			],
+			"rotationQuaternion": [
+				0.7056298961882288,
+				0.0456776461684715,
+				0.7056298968963257,
+				-0.045677684398161694
+			],
+			"scaling": [
+				1.000000000000001,
+				-0.9999996542200836,
+				0.9999999535983626
+			],
+			"pivotMatrix": {
+				"0": 1,
+				"1": 0,
+				"2": 0,
+				"3": 0,
+				"4": 0,
+				"5": 1,
+				"6": 0,
+				"7": 0,
+				"8": 0,
+				"9": 0,
+				"10": 1,
+				"11": 0,
+				"12": 0,
+				"13": 0,
+				"14": 0,
+				"15": 1
+			},
+			"isEnabled": true,
+			"isVisible": true,
+			"infiniteDistance": false,
+			"pickable": true,
+			"receiveShadows": false,
+			"billboardMode": 0,
+			"visibility": 1,
+			"checkCollisions": false,
+			"isBlocker": false,
+			"overrideMaterialSideOrientation": null,
+			"parentId": "6e782648-7282-4525-9d64-c6c0e3fe1ada",
+			"isUnIndexed": false,
+			"materialUniqueId": 1158,
+			"materialId": "default material",
+			"metadata": {
+				"basePoseMatrix": {
+					"0": -1,
+					"1": 0,
+					"2": 0,
+					"3": 0,
+					"4": 0,
+					"5": 1,
+					"6": 0,
+					"7": 0,
+					"8": 0,
+					"9": 0,
+					"10": 1,
+					"11": 0,
+					"12": 0,
+					"13": 0,
+					"14": 0,
+					"15": 1
+				},
+				"originalSourceFile": {
+					"id": "__root__",
+					"name": "__root__",
+					"sceneFileName": "models/BabylonJS Graveyard Assets/Assets-meshes-graveYardPack/fenceC2/fenceC2.glb"
+				},
+				"isPickable": true,
+				"script": {
+					"name": "None"
+				},
+				"renderingGroupId": 0,
+				"doNotExport": false
+			},
+			"instances": [],
+			"animations": [],
+			"ranges": [],
+			"layerMask": 268435455,
+			"alphaIndex": 1.7976931348623157e+308,
+			"hasVertexAlpha": false,
+			"overlayAlpha": 0.5,
+			"overlayColor": [
+				1,
+				0,
+				0
+			],
+			"applyFog": true
+		}
+	],
+	"multiMaterials": [],
+	"lods": []
+}

@@ -50,5 +50,5 @@
 	"animations": [],
 	"invertY": false,
 	"samplingMode": 3,
-	"_useSRGBBuffer": true
+	"_useSRGBBuffer": false
 }

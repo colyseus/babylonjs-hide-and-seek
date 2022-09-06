@@ -52,7 +52,7 @@
 			"overrideMaterialSideOrientation": 0,
 			"parentId": "89998b45-39b5-479c-8e73-4b34eab44c6c",
 			"isUnIndexed": false,
-			"geometryUniqueId": 7753,
+			"geometryUniqueId": 1374,
 			"geometryId": "ebb99af4-5d3d-42f4-8eab-beeb9ff352b4",
 			"subMeshes": null,
 			"materialUniqueId": 7754,
@@ -87,7 +87,11 @@
 					"name": "coffin",
 					"sceneFileName": "models/BabylonJS Graveyard Assets/Assets-meshes-graveYardPack/coffin/coffin.glb"
 				},
-				"isPickable": true
+				"isPickable": true,
+				"script": {
+					"name": "None"
+				},
+				"renderingGroupId": 0
 			},
 			"instances": [],
 			"animations": [],

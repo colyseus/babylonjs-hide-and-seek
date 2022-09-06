@@ -9,6 +9,7 @@ export interface ISceneScriptMap {
 	"src/scenes/scripts/managers/gameManager.ts": ScriptMap;
 	"src/scenes/scripts/managers/inputManager.ts": ScriptMap;
 	"src/scenes/scripts/managers/networkManager.ts": ScriptMap;
+	"src/scenes/scripts/managers/optimizationManager.ts": ScriptMap;
 	"src/scenes/scripts/managers/uiManager.ts": ScriptMap;
 	"src/scenes/scripts/players/cameraHolder.ts": ScriptMap;
 	"src/scenes/scripts/players/capturedTrigger.ts": ScriptMap;
@@ -20,6 +21,7 @@ export interface ISceneScriptMap {
 	"src/scenes/scripts/ui/lobbyUI.ts": ScriptMap;
 	"src/scenes/scripts/ui/overlayUI.ts": ScriptMap;
 	"src/scenes/scripts/ui/prologueUI.ts": ScriptMap;
+	"src/scenes/scripts/ui/statusUI.ts": ScriptMap;
 	"src/scenes/scripts/ui/testUI.ts": ScriptMap;
 	"src/scenes/scripts/ui/titleUI.ts": ScriptMap;
 	"src/scenes/scripts/ui/uiController.ts": ScriptMap;
@@ -35,6 +37,7 @@ export const scriptsMap: ISceneScriptMap = {
 	"src/scenes/scripts/managers/gameManager.ts": require("./scripts/managers/gameManager"),
 	"src/scenes/scripts/managers/inputManager.ts": require("./scripts/managers/inputManager"),
 	"src/scenes/scripts/managers/networkManager.ts": require("./scripts/managers/networkManager"),
+	"src/scenes/scripts/managers/optimizationManager.ts": require("./scripts/managers/optimizationManager"),
 	"src/scenes/scripts/managers/uiManager.ts": require("./scripts/managers/uiManager"),
 	"src/scenes/scripts/players/cameraHolder.ts": require("./scripts/players/cameraHolder"),
 	"src/scenes/scripts/players/capturedTrigger.ts": require("./scripts/players/capturedTrigger"),
@@ -46,6 +49,7 @@ export const scriptsMap: ISceneScriptMap = {
 	"src/scenes/scripts/ui/lobbyUI.ts": require("./scripts/ui/lobbyUI"),
 	"src/scenes/scripts/ui/overlayUI.ts": require("./scripts/ui/overlayUI"),
 	"src/scenes/scripts/ui/prologueUI.ts": require("./scripts/ui/prologueUI"),
+	"src/scenes/scripts/ui/statusUI.ts": require("./scripts/ui/statusUI"),
 	"src/scenes/scripts/ui/testUI.ts": require("./scripts/ui/testUI"),
 	"src/scenes/scripts/ui/titleUI.ts": require("./scripts/ui/titleUI"),
 	"src/scenes/scripts/ui/uiController.ts": require("./scripts/ui/uiController"),

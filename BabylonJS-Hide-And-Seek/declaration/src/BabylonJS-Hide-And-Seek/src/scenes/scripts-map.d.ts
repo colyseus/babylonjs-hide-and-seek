@@ -8,6 +8,7 @@ export interface ISceneScriptMap {
     "src/scenes/scripts/managers/gameManager.ts": ScriptMap;
     "src/scenes/scripts/managers/inputManager.ts": ScriptMap;
     "src/scenes/scripts/managers/networkManager.ts": ScriptMap;
+    "src/scenes/scripts/managers/optimizationManager.ts": ScriptMap;
     "src/scenes/scripts/managers/uiManager.ts": ScriptMap;
     "src/scenes/scripts/players/cameraHolder.ts": ScriptMap;
     "src/scenes/scripts/players/capturedTrigger.ts": ScriptMap;
@@ -19,6 +20,7 @@ export interface ISceneScriptMap {
     "src/scenes/scripts/ui/lobbyUI.ts": ScriptMap;
     "src/scenes/scripts/ui/overlayUI.ts": ScriptMap;
     "src/scenes/scripts/ui/prologueUI.ts": ScriptMap;
+    "src/scenes/scripts/ui/statusUI.ts": ScriptMap;
     "src/scenes/scripts/ui/testUI.ts": ScriptMap;
     "src/scenes/scripts/ui/titleUI.ts": ScriptMap;
     "src/scenes/scripts/ui/uiController.ts": ScriptMap;

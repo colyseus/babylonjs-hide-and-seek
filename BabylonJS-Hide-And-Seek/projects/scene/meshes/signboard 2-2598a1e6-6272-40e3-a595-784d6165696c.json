@@ -52,7 +52,7 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "a42ec12a-7f0a-4d92-bb09-c5a43e5c9ca6",
 			"isUnIndexed": false,
-			"materialUniqueId": 632,
+			"materialUniqueId": 1158,
 			"materialId": "default material",
 			"metadata": {
 				"basePoseMatrix": {
@@ -82,7 +82,8 @@
 				"script": {
 					"name": "None"
 				},
-				"renderingGroupId": 0
+				"renderingGroupId": 0,
+				"doNotExport": false
 			},
 			"instances": [],
 			"animations": [],

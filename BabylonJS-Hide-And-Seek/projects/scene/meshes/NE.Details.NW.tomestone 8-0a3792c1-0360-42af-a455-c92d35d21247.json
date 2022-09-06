@@ -1,0 +1,105 @@
+{
+	"materials": [],
+	"meshes": [
+		{
+			"name": "NE.Details.NW.tomestone 8",
+			"id": "0a3792c1-0360-42af-a455-c92d35d21247",
+			"uniqueId": 7283,
+			"type": "Mesh",
+			"position": [
+				3.7255210876464844,
+				-5.103452916545965e-16,
+				-4.1672773361206055
+			],
+			"rotationQuaternion": [
+				0.7071067811865475,
+				4.329763624842299e-17,
+				0.7071067811865476,
+				4.329796847451028e-17
+			],
+			"scaling": [
+				0.9999997019767761,
+				-0.9999996423721313,
+				0.9999997019767761
+			],
+			"pivotMatrix": {
+				"0": 1,
+				"1": 0,
+				"2": 0,
+				"3": 0,
+				"4": 0,
+				"5": 1,
+				"6": 0,
+				"7": 0,
+				"8": 0,
+				"9": 0,
+				"10": 1,
+				"11": 0,
+				"12": 0,
+				"13": 0,
+				"14": 0,
+				"15": 1
+			},
+			"isEnabled": true,
+			"isVisible": true,
+			"infiniteDistance": false,
+			"pickable": true,
+			"receiveShadows": false,
+			"billboardMode": 0,
+			"visibility": 1,
+			"checkCollisions": false,
+			"isBlocker": false,
+			"overrideMaterialSideOrientation": null,
+			"parentId": "4ca0ac38-3687-4f2c-bb03-d29d81054b10",
+			"isUnIndexed": false,
+			"materialUniqueId": 1158,
+			"materialId": "default material",
+			"metadata": {
+				"basePoseMatrix": {
+					"0": -1,
+					"1": 0,
+					"2": 0,
+					"3": 0,
+					"4": 0,
+					"5": 1,
+					"6": 0,
+					"7": 0,
+					"8": 0,
+					"9": 0,
+					"10": 1,
+					"11": 0,
+					"12": 0,
+					"13": 0,
+					"14": 0,
+					"15": 1
+				},
+				"originalSourceFile": {
+					"id": "__root__",
+					"name": "__root__",
+					"sceneFileName": "models/BabylonJS Graveyard Assets/Assets-meshes-graveYardPack/tombstone8/tombstone8.glb"
+				},
+				"isPickable": true,
+				"script": {
+					"name": "None"
+				},
+				"renderingGroupId": 0,
+				"doNotExport": false
+			},
+			"instances": [],
+			"animations": [],
+			"ranges": [],
+			"layerMask": 268435455,
+			"alphaIndex": 1.7976931348623157e+308,
+			"hasVertexAlpha": false,
+			"overlayAlpha": 0.5,
+			"overlayColor": [
+				1,
+				0,
+				0
+			],
+			"applyFog": true
+		}
+	],
+	"multiMaterials": [],
+	"lods": []
+}

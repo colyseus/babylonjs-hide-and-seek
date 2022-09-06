@@ -8,8 +8,8 @@
 			"type": "Mesh",
 			"position": [
 				5.028583526611328,
-				3.786807433279343e-16,
-				0.6897544860839844
+				2.6959147593017137e-16,
+				-0.20103073120117188
 			],
 			"rotationQuaternion": [
 				0.7071067811865475,
@@ -50,9 +50,9 @@
 			"checkCollisions": false,
 			"isBlocker": false,
 			"overrideMaterialSideOrientation": null,
-			"parentId": "1d8112fa-ee3b-459c-9601-e1d07247837d",
+			"parentId": "c33f7682-38bc-4275-ba21-39d7f2111425",
 			"isUnIndexed": false,
-			"materialUniqueId": 632,
+			"materialUniqueId": 1158,
 			"materialId": "default material",
 			"metadata": {
 				"basePoseMatrix": {

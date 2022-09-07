@@ -1,6 +1,10 @@
-import { AbstractMesh, Mesh, TransformNode } from '@babylonjs/core';
+import { AbstractMesh, Mesh, Scene, TransformNode } from '@babylonjs/core';
+import { fromScene } from '../../decorators';
 
 export default class OptimizationManager extends TransformNode {
+	@fromScene('Environment')
+	private _environment: TransformNode;
+
 	/**
 	 * Override constructor.
 	 * @warn do not fill.
@@ -30,14 +34,22 @@ export default class OptimizationManager extends TransformNode {
 		// ...
 		// this.getScene().getMeshesByTags();
 
-		const allMeshes: AbstractMesh[] = this._scene.meshes;
+		const environmentMeshes: AbstractMesh[] = this._environment.getChildMeshes();
 
-		allMeshes.forEach((mesh: AbstractMesh) => {
+		console.log(`Environment Mesh Count: ${environmentMeshes.length}`);
+
+		environmentMeshes.forEach((mesh: AbstractMesh) => {
 			mesh.freezeWorldMatrix();
 			mesh.doNotSyncBoundingInfo = true;
 		});
 
-		this._scene.freeActiveMeshes();
+		console.log(`Skip Pointer Move Picking`);
+		this._scene.skipPointerMovePicking = true;
+
+		this._scene.autoClear = false; // Color buffer
+		// this._scene.autoClearDepthAndStencil = false; // Depth and stencil
+
+		// this._scene.freezeActiveMeshes(); // a bunch of meshes don't render
 	}
 
 	/**

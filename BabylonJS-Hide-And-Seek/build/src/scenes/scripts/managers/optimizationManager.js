@@ -14,8 +14,15 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@babylonjs/core");
+var decorators_1 = require("../../decorators");
 var OptimizationManager = /** @class */ (function (_super) {
     __extends(OptimizationManager, _super);
     /**
@@ -46,12 +53,17 @@ var OptimizationManager = /** @class */ (function (_super) {
     OptimizationManager.prototype.onStart = function () {
         // ...
         // this.getScene().getMeshesByTags();
-        var allMeshes = this._scene.meshes;
-        allMeshes.forEach(function (mesh) {
+        var environmentMeshes = this._environment.getChildMeshes();
+        console.log("Environment Mesh Count: ".concat(environmentMeshes.length));
+        environmentMeshes.forEach(function (mesh) {
             mesh.freezeWorldMatrix();
             mesh.doNotSyncBoundingInfo = true;
         });
-        this._scene.freeActiveMeshes();
+        console.log("Skip Pointer Move Picking");
+        this._scene.skipPointerMovePicking = true;
+        this._scene.autoClear = false; // Color buffer
+        // this._scene.autoClearDepthAndStencil = false; // Depth and stencil
+        // this._scene.freezeActiveMeshes(); // a bunch of meshes don't render
     };
     /**
      * Called each frame.
@@ -79,6 +91,9 @@ var OptimizationManager = /** @class */ (function (_super) {
                 break;
         }
     };
+    __decorate([
+        (0, decorators_1.fromScene)('Environment')
+    ], OptimizationManager.prototype, "_environment", void 0);
     return OptimizationManager;
 }(core_1.TransformNode));
 exports.default = OptimizationManager;

@@ -1,5 +1,6 @@
 import { TransformNode } from '@babylonjs/core';
 export default class OptimizationManager extends TransformNode {
+    private _environment;
     /**
      * Override constructor.
      * @warn do not fill.

@@ -2,7 +2,7 @@
 	"materials": [],
 	"meshes": [
 		{
-			"name": "cube",
+			"name": "Cube",
 			"id": "f734f6d9-8801-49e6-ba51-67d3b013058f",
 			"uniqueId": 7304,
 			"type": "Mesh",
@@ -52,10 +52,10 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "f4d047b0-50d1-45b3-af6c-95d734465e6a",
 			"isUnIndexed": false,
-			"geometryUniqueId": 1680,
+			"geometryUniqueId": 1056,
 			"geometryId": "3385bfc4-83bf-443d-951b-b50ef8a41b49",
 			"subMeshes": null,
-			"materialUniqueId": 1158,
+			"materialUniqueId": 1119,
 			"materialId": "default material",
 			"physicsMass": 0,
 			"physicsFriction": 0.2,

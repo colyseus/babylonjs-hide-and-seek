@@ -9,7 +9,7 @@
 			"position": [
 				0,
 				1,
-				0
+				25
 			],
 			"rotationQuaternion": [
 				0,
@@ -50,12 +50,12 @@
 			"checkCollisions": false,
 			"isBlocker": false,
 			"overrideMaterialSideOrientation": null,
-			"parentId": "40a2dbf4-6a39-4b28-9c88-6278be783d41",
+			"parentId": "653ca785-a816-43f4-99e5-d769bc663ef3",
 			"isUnIndexed": false,
-			"geometryUniqueId": 1242,
+			"geometryUniqueId": 1384,
 			"geometryId": "7a765c88-4ccb-40b3-8767-d8f1c041aeb1",
 			"subMeshes": null,
-			"materialUniqueId": 1119,
+			"materialUniqueId": 664,
 			"materialId": "default material",
 			"physicsMass": 0,
 			"physicsFriction": 0.2,

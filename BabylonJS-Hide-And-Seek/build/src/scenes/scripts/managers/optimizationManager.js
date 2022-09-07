@@ -53,15 +53,22 @@ var OptimizationManager = /** @class */ (function (_super) {
     OptimizationManager.prototype.onStart = function () {
         // ...
         // this.getScene().getMeshesByTags();
-        var environmentMeshes = this._environment.getChildMeshes();
-        console.log("Environment Mesh Count: ".concat(environmentMeshes.length));
-        environmentMeshes.forEach(function (mesh) {
-            mesh.freezeWorldMatrix();
-            mesh.doNotSyncBoundingInfo = true;
-        });
+        var meshes = this._borderFence.getChildMeshes();
+        // console.log(`Environment Mesh Count: ${environmentMeshes.length}`);
+        console.log("Border Fence Mesh Count: ".concat(meshes.length, " %o"), meshes);
+        var newMesh = core_1.Mesh.MergeMeshes(meshes, true, true);
+        var settings = [];
+        settings.push(new core_1.SimplificationSettings(0.8, 60));
+        settings.push(new core_1.SimplificationSettings(0.4, 150));
+        newMesh.simplify(settings);
+        console.log("Combined Mesh: %o", newMesh);
+        // meshes.forEach((mesh: AbstractMesh) => {
+        // 	mesh.freezeWorldMatrix();
+        // 	mesh.doNotSyncBoundingInfo = true;
+        // });
         console.log("Skip Pointer Move Picking");
         this._scene.skipPointerMovePicking = true;
-        this._scene.autoClear = false; // Color buffer
+        // this._scene.autoClear = false; // Color buffer
         // this._scene.autoClearDepthAndStencil = false; // Depth and stencil
         // this._scene.freezeActiveMeshes(); // a bunch of meshes don't render
     };
@@ -94,6 +101,9 @@ var OptimizationManager = /** @class */ (function (_super) {
     __decorate([
         (0, decorators_1.fromScene)('Environment')
     ], OptimizationManager.prototype, "_environment", void 0);
+    __decorate([
+        (0, decorators_1.fromScene)('Border Fence')
+    ], OptimizationManager.prototype, "_borderFence", void 0);
     return OptimizationManager;
 }(core_1.TransformNode));
 exports.default = OptimizationManager;

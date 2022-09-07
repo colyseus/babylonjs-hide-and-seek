@@ -1,9 +1,11 @@
-import { AbstractMesh, Mesh, Scene, TransformNode } from '@babylonjs/core';
+import { AbstractMesh, ISimplificationSettings, Mesh, Scene, SimplificationSettings, TransformNode } from '@babylonjs/core';
 import { fromScene } from '../../decorators';
 
 export default class OptimizationManager extends TransformNode {
 	@fromScene('Environment')
 	private _environment: TransformNode;
+	@fromScene('Border Fence')
+	private _borderFence: TransformNode;
 
 	/**
 	 * Override constructor.
@@ -34,19 +36,31 @@ export default class OptimizationManager extends TransformNode {
 		// ...
 		// this.getScene().getMeshesByTags();
 
-		const environmentMeshes: AbstractMesh[] = this._environment.getChildMeshes();
+		const meshes: Mesh[] = this._borderFence.getChildMeshes() as Mesh[];
 
-		console.log(`Environment Mesh Count: ${environmentMeshes.length}`);
+		// console.log(`Environment Mesh Count: ${environmentMeshes.length}`);
+		console.log(`Border Fence Mesh Count: ${meshes.length} %o`, meshes);
 
-		environmentMeshes.forEach((mesh: AbstractMesh) => {
-			mesh.freezeWorldMatrix();
-			mesh.doNotSyncBoundingInfo = true;
-		});
+		const newMesh: Mesh = Mesh.MergeMeshes(meshes, true, true);
+
+		let settings: Array<ISimplificationSettings> = [];
+
+		settings.push(new SimplificationSettings(0.8, 60));
+		settings.push(new SimplificationSettings(0.4, 150));
+
+		newMesh.simplify(settings);
+
+		console.log(`Combined Mesh: %o`, newMesh);
+
+		// meshes.forEach((mesh: AbstractMesh) => {
+		// 	mesh.freezeWorldMatrix();
+		// 	mesh.doNotSyncBoundingInfo = true;
+		// });
 
 		console.log(`Skip Pointer Move Picking`);
 		this._scene.skipPointerMovePicking = true;
 
-		this._scene.autoClear = false; // Color buffer
+		// this._scene.autoClear = false; // Color buffer
 		// this._scene.autoClearDepthAndStencil = false; // Depth and stencil
 
 		// this._scene.freezeActiveMeshes(); // a bunch of meshes don't render

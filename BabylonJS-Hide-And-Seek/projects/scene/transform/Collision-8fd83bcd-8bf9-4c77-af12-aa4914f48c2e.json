@@ -1,0 +1,54 @@
+{
+	"tags": null,
+	"position": [
+		-0.4319181442260742,
+		0,
+		0.054999351501464844
+	],
+	"rotation": [
+		0,
+		0,
+		0
+	],
+	"scaling": [
+		1,
+		1,
+		1
+	],
+	"billboardMode": 0,
+	"scalingDeterminant": 1,
+	"infiniteDistance": false,
+	"ignoreNonUniformScaling": false,
+	"reIntegrateRotationIntoRotationQuaternion": false,
+	"name": "Collision",
+	"id": "8fd83bcd-8bf9-4c77-af12-aa4914f48c2e",
+	"state": "",
+	"metadata": {
+		"script": {
+			"name": "None"
+		},
+		"doNotExport": false
+	},
+	"type": "TransformNode",
+	"uniqueId": 2475,
+	"parentId": "86d6583d-4f97-4fbb-8f28-773fc7dfff89",
+	"localMatrix": {
+		"0": 1,
+		"1": 0,
+		"2": 0,
+		"3": 0,
+		"4": 0,
+		"5": 1,
+		"6": 0,
+		"7": 0,
+		"8": 0,
+		"9": 0,
+		"10": 1,
+		"11": 0,
+		"12": 0,
+		"13": 0,
+		"14": 0,
+		"15": 1
+	},
+	"isEnabled": true
+}

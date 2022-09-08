@@ -1,0 +1,53 @@
+{
+	"tags": null,
+	"position": [
+		-8.021648406982422,
+		0,
+		7.777825832366943
+	],
+	"rotation": [
+		0,
+		0,
+		0
+	],
+	"scaling": [
+		1,
+		1,
+		1
+	],
+	"billboardMode": 0,
+	"scalingDeterminant": 1,
+	"infiniteDistance": false,
+	"ignoreNonUniformScaling": false,
+	"reIntegrateRotationIntoRotationQuaternion": false,
+	"name": "Small Group",
+	"id": "86d6583d-4f97-4fbb-8f28-773fc7dfff89",
+	"state": "",
+	"metadata": {
+		"script": {
+			"name": "None"
+		}
+	},
+	"type": "TransformNode",
+	"uniqueId": 1802,
+	"parentId": "1f2689f7-75cb-4dc5-aed5-7d20d28457da",
+	"localMatrix": {
+		"0": 1,
+		"1": 0,
+		"2": 0,
+		"3": 0,
+		"4": 0,
+		"5": 1,
+		"6": 0,
+		"7": 0,
+		"8": 0,
+		"9": 0,
+		"10": 1,
+		"11": 0,
+		"12": 0,
+		"13": 0,
+		"14": 0,
+		"15": 1
+	},
+	"isEnabled": true
+}

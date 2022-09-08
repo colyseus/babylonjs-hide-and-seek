@@ -52,7 +52,7 @@
 			"overrideMaterialSideOrientation": 0,
 			"parentId": "2598a1e6-6272-40e3-a595-784d6165696c",
 			"isUnIndexed": false,
-			"geometryUniqueId": 1183,
+			"geometryUniqueId": 1254,
 			"geometryId": "66c7383a-243a-4ce0-b64b-900679128c84",
 			"subMeshes": null,
 			"materialUniqueId": 309,
@@ -91,7 +91,8 @@
 				"script": {
 					"name": "None"
 				},
-				"renderingGroupId": 0
+				"renderingGroupId": 0,
+				"doNotExport": false
 			},
 			"instances": [],
 			"animations": [],

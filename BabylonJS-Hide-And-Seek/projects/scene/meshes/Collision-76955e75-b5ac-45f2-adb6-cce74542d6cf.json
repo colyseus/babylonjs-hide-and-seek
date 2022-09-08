@@ -9,7 +9,7 @@
 			"position": [
 				0,
 				1,
-				25
+				26
 			],
 			"rotationQuaternion": [
 				0,
@@ -52,10 +52,10 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "653ca785-a816-43f4-99e5-d769bc663ef3",
 			"isUnIndexed": false,
-			"geometryUniqueId": 1379,
+			"geometryUniqueId": 856,
 			"geometryId": "7a765c88-4ccb-40b3-8767-d8f1c041aeb1",
 			"subMeshes": null,
-			"materialUniqueId": 850,
+			"materialUniqueId": 938,
 			"materialId": "default material",
 			"physicsMass": 0,
 			"physicsFriction": 0.2,

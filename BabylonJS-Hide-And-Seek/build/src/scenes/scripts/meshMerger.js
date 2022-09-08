@@ -46,12 +46,21 @@ var MeshMerger = /** @class */ (function (_super) {
     MeshMerger.prototype.onStart = function () {
         // ...
         var meshes = this.getChildMeshes();
-        console.log("".concat(this.name, " Mesh Count: ").concat(meshes.length));
-        var newMesh = core_1.Mesh.MergeMeshes(meshes, true, true);
+        this.combineMeshes(meshes, false);
+        if (!meshes) {
+            this.combineMeshes(meshes, true);
+        }
         // let settings: Array<ISimplificationSettings> = [];
-        // settings.push(new SimplificationSettings(0.8, 60));
+        // settings.push(new SimplificationSettings(0.8, 50));
         // settings.push(new SimplificationSettings(0.4, 150));
         // newMesh.simplify(settings);
+    };
+    MeshMerger.prototype.combineMeshes = function (meshes, allow32Bit) {
+        var _a;
+        var newMesh = core_1.Mesh.MergeMeshes(meshes, true, allow32Bit);
+        if (!newMesh) {
+            console.error("Failed to combine mesh for ".concat(this.name, " - ").concat(((_a = this.parent) === null || _a === void 0 ? void 0 : _a.name) || 'no parent'));
+        }
     };
     /**
      * Called each frame.

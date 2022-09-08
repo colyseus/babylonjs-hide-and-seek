@@ -31,16 +31,26 @@ export default class MeshMerger extends TransformNode {
 
 		const meshes: Mesh[] = this.getChildMeshes() as Mesh[];
 
-		console.log(`${this.name} Mesh Count: ${meshes.length}`);
+		this.combineMeshes(meshes, false);
 
-		const newMesh: Mesh = Mesh.MergeMeshes(meshes, true, true);
+		if (!meshes) {
+			this.combineMeshes(meshes, true);
+		}
 
 		// let settings: Array<ISimplificationSettings> = [];
 
-		// settings.push(new SimplificationSettings(0.8, 60));
+		// settings.push(new SimplificationSettings(0.8, 50));
 		// settings.push(new SimplificationSettings(0.4, 150));
 
 		// newMesh.simplify(settings);
+	}
+
+	private combineMeshes(meshes: Mesh[], allow32Bit: boolean) {
+		const newMesh: Mesh = Mesh.MergeMeshes(meshes, true, allow32Bit);
+
+		if (!newMesh) {
+			console.error(`Failed to combine mesh for ${this.name} - ${this.parent?.name || 'no parent'}`);
+		}
 	}
 
 	/**

@@ -50,9 +50,9 @@
 			"checkCollisions": false,
 			"isBlocker": false,
 			"overrideMaterialSideOrientation": null,
-			"parentId": "a2a17ad5-8907-4f37-8ee1-62eba6baae43",
+			"parentId": "fe68f8ac-e4c9-4f95-83c2-2a4b4a627b1d",
 			"isUnIndexed": false,
-			"materialUniqueId": 850,
+			"materialUniqueId": 938,
 			"materialId": "default material",
 			"metadata": {
 				"basePoseMatrix": {

@@ -18,6 +18,7 @@ export default class MeshMerger extends TransformNode {
      * Called on the scene starts.
      */
     onStart(): void;
+    private combineMeshes;
     /**
      * Called each frame.
      */

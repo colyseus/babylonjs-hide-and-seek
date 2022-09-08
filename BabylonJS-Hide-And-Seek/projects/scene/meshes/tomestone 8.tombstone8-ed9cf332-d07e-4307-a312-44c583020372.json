@@ -7,19 +7,18 @@
 			"uniqueId": 7500,
 			"type": "Mesh",
 			"position": [
+				-2.5549070835113525,
 				0,
-				0,
-				0
+				-2.9763689041137695
 			],
-			"rotationQuaternion": [
+			"rotation": [
 				0,
 				0,
-				0,
-				1
+				3.141592653589793
 			],
 			"scaling": [
 				1,
-				1,
+				-1,
 				1
 			],
 			"pivotMatrix": {
@@ -50,13 +49,13 @@
 			"checkCollisions": false,
 			"isBlocker": false,
 			"overrideMaterialSideOrientation": 0,
-			"parentId": "f80936de-db4a-43b5-a851-47f09f4ea92c",
+			"parentId": "c33f7682-38bc-4275-ba21-39d7f2111425",
 			"isUnIndexed": false,
-			"geometryUniqueId": 983,
+			"geometryUniqueId": 1100,
 			"geometryId": "2fa89405-6cb6-444b-9d96-0d07bddf31e7",
 			"subMeshes": null,
-			"materialUniqueId": 327,
-			"materialId": "b49faa83-dc4e-4119-afef-d49d80ec261f",
+			"materialUniqueId": 2024,
+			"materialId": "62cb76cb-a4dc-4a46-bf10-02a67f9b07d4",
 			"metadata": {
 				"gltf": {
 					"pointers": [
@@ -91,7 +90,8 @@
 				"script": {
 					"name": "None"
 				},
-				"renderingGroupId": 0
+				"renderingGroupId": 0,
+				"doNotExport": false
 			},
 			"instances": [],
 			"animations": [],

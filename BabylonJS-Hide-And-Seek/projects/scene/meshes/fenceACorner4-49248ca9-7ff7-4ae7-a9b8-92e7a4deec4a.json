@@ -52,7 +52,7 @@
 			"overrideMaterialSideOrientation": 0,
 			"parentId": "f456c477-58e5-4c37-bd12-06f23a286cd2",
 			"isUnIndexed": false,
-			"geometryUniqueId": 1238,
+			"geometryUniqueId": 1250,
 			"geometryId": "a14ad832-ec28-48b6-9049-55b3c80ddc2e",
 			"subMeshes": null,
 			"materialUniqueId": 363,
@@ -87,7 +87,12 @@
 					"name": "fenceACorner4",
 					"sceneFileName": "models/BabylonJS Graveyard Assets/Assets-meshes-graveYardPack/fenceACorner4/fenceACorner4.glb"
 				},
-				"isPickable": true
+				"isPickable": true,
+				"script": {
+					"name": "None"
+				},
+				"renderingGroupId": 0,
+				"doNotExport": false
 			},
 			"instances": [],
 			"animations": [],

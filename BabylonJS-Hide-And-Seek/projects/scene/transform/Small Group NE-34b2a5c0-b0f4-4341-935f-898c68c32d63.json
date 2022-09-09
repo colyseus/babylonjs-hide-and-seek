@@ -1,9 +1,9 @@
 {
 	"tags": null,
 	"position": [
-		7.681492805480957,
+		8.021648406982422,
 		0,
-		8.043055534362793
+		7.777825832366943
 	],
 	"rotation": [
 		0,
@@ -20,7 +20,7 @@
 	"infiniteDistance": false,
 	"ignoreNonUniformScaling": false,
 	"reIntegrateRotationIntoRotationQuaternion": false,
-	"name": "Small Group 2",
+	"name": "Small Group NE",
 	"id": "34b2a5c0-b0f4-4341-935f-898c68c32d63",
 	"state": "",
 	"metadata": {

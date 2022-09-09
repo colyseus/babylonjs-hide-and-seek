@@ -46,8 +46,10 @@ var MeshMerger = /** @class */ (function (_super) {
     MeshMerger.prototype.onStart = function () {
         // ...
         var meshes = this.getChildMeshes();
+        // Attempt to combine meshes allow32bit set to false
         this.combineMeshes(meshes, false);
         if (!meshes) {
+            // Attempt to combine meshes allow32bit set to true
             this.combineMeshes(meshes, true);
         }
         // let settings: Array<ISimplificationSettings> = [];

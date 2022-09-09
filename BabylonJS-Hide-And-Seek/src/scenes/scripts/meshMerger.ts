@@ -31,9 +31,11 @@ export default class MeshMerger extends TransformNode {
 
 		const meshes: Mesh[] = this.getChildMeshes() as Mesh[];
 
+		// Attempt to combine meshes allow32bit set to false
 		this.combineMeshes(meshes, false);
 
 		if (!meshes) {
+			// Attempt to combine meshes allow32bit set to true
 			this.combineMeshes(meshes, true);
 		}
 

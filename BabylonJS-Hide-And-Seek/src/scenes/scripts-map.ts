@@ -9,7 +9,6 @@ export interface ISceneScriptMap {
 	"src/scenes/scripts/managers/gameManager.ts": ScriptMap;
 	"src/scenes/scripts/managers/inputManager.ts": ScriptMap;
 	"src/scenes/scripts/managers/networkManager.ts": ScriptMap;
-	"src/scenes/scripts/managers/optimizationManager.ts": ScriptMap;
 	"src/scenes/scripts/managers/uiManager.ts": ScriptMap;
 	"src/scenes/scripts/meshMerger.ts": ScriptMap;
 	"src/scenes/scripts/players/cameraHolder.ts": ScriptMap;
@@ -38,7 +37,6 @@ export const scriptsMap: ISceneScriptMap = {
 	"src/scenes/scripts/managers/gameManager.ts": require("./scripts/managers/gameManager"),
 	"src/scenes/scripts/managers/inputManager.ts": require("./scripts/managers/inputManager"),
 	"src/scenes/scripts/managers/networkManager.ts": require("./scripts/managers/networkManager"),
-	"src/scenes/scripts/managers/optimizationManager.ts": require("./scripts/managers/optimizationManager"),
 	"src/scenes/scripts/managers/uiManager.ts": require("./scripts/managers/uiManager"),
 	"src/scenes/scripts/meshMerger.ts": require("./scripts/meshMerger"),
 	"src/scenes/scripts/players/cameraHolder.ts": require("./scripts/players/cameraHolder"),

@@ -38,13 +38,6 @@ export default class MeshMerger extends TransformNode {
 			// Attempt to combine meshes allow32bit set to true
 			this.combineMeshes(meshes, true);
 		}
-
-		// let settings: Array<ISimplificationSettings> = [];
-
-		// settings.push(new SimplificationSettings(0.8, 50));
-		// settings.push(new SimplificationSettings(0.4, 150));
-
-		// newMesh.simplify(settings);
 	}
 
 	private combineMeshes(meshes: Mesh[], allow32Bit: boolean) {

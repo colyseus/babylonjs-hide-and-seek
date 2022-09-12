@@ -1,0 +1,162 @@
+{
+	"materials": [],
+	"meshes": [
+		{
+			"name": "fenceACorner4",
+			"id": "15ed7bf2-414a-4599-928a-b10f153ae968",
+			"uniqueId": 2008,
+			"type": "Mesh",
+			"position": [
+				0.8827872276306152,
+				0.33225858211517334,
+				0
+			],
+			"rotationQuaternion": [
+				0,
+				0,
+				0.7071067811865475,
+				0.7071067811865476
+			],
+			"scaling": [
+				0.6699196696281433,
+				0.6699196696281433,
+				0.6699196696281433
+			],
+			"pivotMatrix": {
+				"0": 1,
+				"1": 0,
+				"2": 0,
+				"3": 0,
+				"4": 0,
+				"5": 1,
+				"6": 0,
+				"7": 0,
+				"8": 0,
+				"9": 0,
+				"10": 1,
+				"11": 0,
+				"12": 0,
+				"13": 0,
+				"14": 0,
+				"15": 1
+			},
+			"isEnabled": true,
+			"isVisible": true,
+			"infiniteDistance": false,
+			"pickable": true,
+			"receiveShadows": false,
+			"billboardMode": 0,
+			"visibility": 1,
+			"checkCollisions": false,
+			"isBlocker": false,
+			"overrideMaterialSideOrientation": 0,
+			"parentId": "a73f4e8b-efd5-414d-9ff9-bbbed226654a",
+			"isUnIndexed": false,
+			"geometryUniqueId": 1392,
+			"geometryId": "a14ad832-ec28-48b6-9049-55b3c80ddc2e",
+			"subMeshes": null,
+			"materialUniqueId": 2024,
+			"materialId": "62cb76cb-a4dc-4a46-bf10-02a67f9b07d4",
+			"metadata": {
+				"gltf": {
+					"pointers": [
+						"/meshes/0/primitives/0",
+						"/nodes/0"
+					]
+				},
+				"basePoseMatrix": {
+					"0": -1,
+					"1": 0,
+					"2": 0,
+					"3": 0,
+					"4": 0,
+					"5": 1,
+					"6": 0,
+					"7": 0,
+					"8": 0,
+					"9": 0,
+					"10": 1,
+					"11": 0,
+					"12": 0,
+					"13": 0,
+					"14": 0,
+					"15": 1
+				},
+				"originalSourceFile": {
+					"id": "fenceACorner4",
+					"name": "fenceACorner4",
+					"sceneFileName": "models/BabylonJS Graveyard Assets/Assets-meshes-graveYardPack/fenceACorner4/fenceACorner4.glb"
+				},
+				"isPickable": true,
+				"script": {
+					"name": "None"
+				},
+				"renderingGroupId": 0,
+				"doNotExport": false
+			},
+			"instances": [],
+			"animations": [],
+			"ranges": [],
+			"layerMask": 268435455,
+			"alphaIndex": 1.7976931348623157e+308,
+			"hasVertexAlpha": false,
+			"overlayAlpha": 0.3,
+			"overlayColor": [
+				1,
+				0,
+				0
+			],
+			"applyFog": true,
+			"delayLoadingFile": "geometries/a14ad832-ec28-48b6-9049-55b3c80ddc2e.babylonbinarymeshdata",
+			"boundingBoxMaximum": [
+				0.44167327880859375,
+				2.4796955585479736,
+				0.41683217883110046
+			],
+			"boundingBoxMinimum": [
+				-0.3583965003490448,
+				-0.06797412037849426,
+				-0.3583962023258209
+			],
+			"_binaryInfo": {
+				"positionsAttrDesc": {
+					"count": 1164,
+					"stride": 3,
+					"offset": 0,
+					"dataType": 1
+				},
+				"normalsAttrDesc": {
+					"count": 1164,
+					"stride": 3,
+					"offset": 4656,
+					"dataType": 1
+				},
+				"uvsAttrDesc": {
+					"count": 776,
+					"stride": 2,
+					"offset": 9312,
+					"dataType": 1
+				},
+				"indicesAttrDesc": {
+					"count": 531,
+					"stride": 1,
+					"offset": 12416,
+					"dataType": 0
+				},
+				"subMeshesAttrDesc": {
+					"count": 1,
+					"stride": 5,
+					"offset": 14540,
+					"dataType": 0
+				}
+			},
+			"positions": null,
+			"normals": null,
+			"uvs": null,
+			"hasUVs": true,
+			"indices": null
+		}
+	],
+	"multiMaterials": [],
+	"lods": []
+}

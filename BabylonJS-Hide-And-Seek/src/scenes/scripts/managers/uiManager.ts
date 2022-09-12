@@ -1,4 +1,4 @@
-import { ArcRotateCamera, Camera, Vector3 } from '@babylonjs/core';
+import { ArcRotateCamera, Camera, Engine, Vector3 } from '@babylonjs/core';
 import { Node } from '@babylonjs/core/node';
 import { visibleInInspector } from '../../decorators';
 import { delay } from '../../utility';
@@ -7,6 +7,7 @@ import { GameplayUI } from '../ui/GameplayUI';
 import { LobbyUI } from '../ui/lobbyUI';
 import { OverlayUI } from '../ui/overlayUI';
 import { PrologueUI } from '../ui/prologueUI';
+import { StatsUI } from '../ui/statusUI';
 import { TitleUI } from '../ui/titleUI';
 import GameManager from './gameManager';
 import NetworkManager, { NetworkEvent } from './networkManager';
@@ -22,6 +23,9 @@ export default class UIManager extends Node {
 	private _prologueUI: PrologueUI;
 	private _gameplayUI: GameplayUI;
 	private _overlayUI: OverlayUI;
+	private _statUI: StatsUI;
+
+	private _engine: Engine;
 
 	// Magic Numbers
 	//==========================================
@@ -46,6 +50,8 @@ export default class UIManager extends Node {
 		this.handleGameStateChanged = this.handleGameStateChanged.bind(this);
 		this.handleLeftRoom = this.handleLeftRoom.bind(this);
 		this.handlePlayAgain = this.handlePlayAgain.bind(this);
+
+		this._engine = this.getEngine();
 	}
 
 	/**
@@ -84,6 +90,8 @@ export default class UIManager extends Node {
 		this.loadGameplayUI();
 		// Load overaly last so it will be rendered on top of everything else
 		this.loadOverlayUI();
+
+		this.loadStatsUI();
 	}
 
 	private loadTitleUI() {
@@ -134,6 +142,14 @@ export default class UIManager extends Node {
 		}
 
 		this._gameplayUI.setVisible(false);
+	}
+
+	private loadStatsUI() {
+		this._statUI = new StatsUI(this._scene, this._uiLayer);
+
+		this._scene.registerBeforeRender(() => {
+			this._statUI.setFPSValue(this._engine.getFps().toFixed());
+		});
 	}
 
 	private async handleJoinRoom(roomId: string = null) {

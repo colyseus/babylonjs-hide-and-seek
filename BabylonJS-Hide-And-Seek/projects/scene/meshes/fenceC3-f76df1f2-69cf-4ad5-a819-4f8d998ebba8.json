@@ -52,7 +52,7 @@
 			"overrideMaterialSideOrientation": 0,
 			"parentId": "7da5c49e-ce33-4269-a0bd-ffa503a9d90a",
 			"isUnIndexed": false,
-			"geometryUniqueId": 317,
+			"geometryUniqueId": 1257,
 			"geometryId": "06b9ca89-96d3-457d-8ace-eab720567ee1",
 			"subMeshes": null,
 			"materialUniqueId": 291,
@@ -87,7 +87,11 @@
 					"name": "fenceC3",
 					"sceneFileName": "models/BabylonJS Graveyard Assets/Assets-meshes-graveYardPack/fenceC3/fenceC3.glb"
 				},
-				"isPickable": true
+				"isPickable": true,
+				"script": {
+					"name": "None"
+				},
+				"renderingGroupId": 0
 			},
 			"instances": [],
 			"animations": [],

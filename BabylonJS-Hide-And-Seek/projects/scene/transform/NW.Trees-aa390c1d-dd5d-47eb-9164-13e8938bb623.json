@@ -1,0 +1,53 @@
+{
+	"tags": null,
+	"position": [
+		0,
+		0,
+		0
+	],
+	"rotation": [
+		0,
+		0,
+		0
+	],
+	"scaling": [
+		-0.9999998814473596,
+		0.9999998814473596,
+		1
+	],
+	"billboardMode": 0,
+	"scalingDeterminant": 1,
+	"infiniteDistance": false,
+	"ignoreNonUniformScaling": false,
+	"reIntegrateRotationIntoRotationQuaternion": false,
+	"name": "NW.Trees",
+	"id": "aa390c1d-dd5d-47eb-9164-13e8938bb623",
+	"state": "",
+	"metadata": {
+		"script": {
+			"name": "src/scenes/scripts/meshMerger.ts"
+		}
+	},
+	"type": "TransformNode",
+	"uniqueId": 2291,
+	"parentId": "f51a5b97-0150-411e-88c8-6a010bcb05a8",
+	"localMatrix": {
+		"0": 1,
+		"1": 0,
+		"2": 0,
+		"3": 0,
+		"4": 0,
+		"5": 1,
+		"6": 0,
+		"7": 0,
+		"8": 0,
+		"9": 0,
+		"10": 1,
+		"11": 0,
+		"12": 0,
+		"13": 0,
+		"14": 0,
+		"15": 1
+	},
+	"isEnabled": true
+}

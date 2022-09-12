@@ -66,6 +66,7 @@ var GameplayUI_1 = require("../ui/GameplayUI");
 var lobbyUI_1 = require("../ui/lobbyUI");
 var overlayUI_1 = require("../ui/overlayUI");
 var prologueUI_1 = require("../ui/prologueUI");
+var statusUI_1 = require("../ui/statusUI");
 var titleUI_1 = require("../ui/titleUI");
 var gameManager_1 = require("./gameManager");
 var networkManager_1 = require("./networkManager");
@@ -96,6 +97,7 @@ var UIManager = /** @class */ (function (_super) {
         this.handleGameStateChanged = this.handleGameStateChanged.bind(this);
         this.handleLeftRoom = this.handleLeftRoom.bind(this);
         this.handlePlayAgain = this.handlePlayAgain.bind(this);
+        this._engine = this.getEngine();
     };
     /**
      * Called on the node has been fully initialized and is ready.
@@ -132,6 +134,7 @@ var UIManager = /** @class */ (function (_super) {
         this.loadGameplayUI();
         // Load overaly last so it will be rendered on top of everything else
         this.loadOverlayUI();
+        this.loadStatsUI();
     };
     UIManager.prototype.loadTitleUI = function () {
         this._titleUI = new titleUI_1.TitleUI(this._scene, this._uiLayer);
@@ -218,6 +221,13 @@ var UIManager = /** @class */ (function (_super) {
                         return [2 /*return*/];
                 }
             });
+        });
+    };
+    UIManager.prototype.loadStatsUI = function () {
+        var _this = this;
+        this._statUI = new statusUI_1.StatsUI(this._scene, this._uiLayer);
+        this._scene.registerBeforeRender(function () {
+            _this._statUI.setFPSValue(_this._engine.getFps().toFixed());
         });
     };
     UIManager.prototype.handleJoinRoom = function (roomId) {

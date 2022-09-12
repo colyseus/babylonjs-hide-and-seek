@@ -1,5 +1,5 @@
 export default {
-	minPlayers: 3,
+	minPlayers: 2,
 	maxPlayers: 8,
 	preRoundCountdown: 10000,
 	initializeCountdown: 500,

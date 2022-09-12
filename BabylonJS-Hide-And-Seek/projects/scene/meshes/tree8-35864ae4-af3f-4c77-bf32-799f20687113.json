@@ -52,7 +52,7 @@
 			"overrideMaterialSideOrientation": 0,
 			"parentId": "120eb43f-b9b1-4b46-948a-1e5ebfc3c610",
 			"isUnIndexed": false,
-			"geometryUniqueId": 456,
+			"geometryUniqueId": 1414,
 			"geometryId": "8f5a043c-270f-46aa-af85-2ba743739e09",
 			"subMeshes": null,
 			"materialUniqueId": 357,
@@ -87,7 +87,11 @@
 					"name": "tree8",
 					"sceneFileName": "models/BabylonJS Graveyard Assets/Assets-meshes-graveYardPack/tree8/tree8.glb"
 				},
-				"isPickable": true
+				"isPickable": true,
+				"script": {
+					"name": "None"
+				},
+				"renderingGroupId": 0
 			},
 			"instances": [],
 			"animations": [],
@@ -95,7 +99,7 @@
 			"layerMask": 268435455,
 			"alphaIndex": 1.7976931348623157e+308,
 			"hasVertexAlpha": false,
-			"overlayAlpha": 0.5,
+			"overlayAlpha": 0.3,
 			"overlayColor": [
 				1,
 				0,

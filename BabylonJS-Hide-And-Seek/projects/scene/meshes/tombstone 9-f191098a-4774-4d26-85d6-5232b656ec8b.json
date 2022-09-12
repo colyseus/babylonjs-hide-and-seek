@@ -9,18 +9,18 @@
 			"position": [
 				-72,
 				0,
-				0
+				-1.1222741603851318
 			],
 			"rotationQuaternion": [
 				0,
-				1,
 				0,
+				1,
 				0
 			],
 			"scaling": [
 				1,
-				1,
-				-1
+				-1,
+				1
 			],
 			"localMatrix": {
 				"0": 1,
@@ -52,7 +52,7 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "c52ac2f9-ca0a-4c23-90eb-c020aa791dca",
 			"isUnIndexed": false,
-			"materialUniqueId": 296,
+			"materialUniqueId": 292,
 			"materialId": "default material",
 			"metadata": {
 				"basePoseMatrix": {

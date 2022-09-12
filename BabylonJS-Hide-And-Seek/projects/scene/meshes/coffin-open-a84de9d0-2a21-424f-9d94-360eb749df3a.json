@@ -1,0 +1,161 @@
+{
+	"materials": [],
+	"meshes": [
+		{
+			"name": "coffin-open",
+			"id": "a84de9d0-2a21-424f-9d94-360eb749df3a",
+			"uniqueId": 3156,
+			"type": "Mesh",
+			"position": [
+				0.16439509391784668,
+				0.6639054417610168,
+				2.8984591960906982
+			],
+			"rotation": [
+				0.39021498560458967,
+				3.1261251384294444,
+				3.1415925685596466
+			],
+			"scaling": [
+				0.9999999329944933,
+				-0.9999996515507888,
+				0.9999994562200891
+			],
+			"pivotMatrix": {
+				"0": 1,
+				"1": 0,
+				"2": 0,
+				"3": 0,
+				"4": 0,
+				"5": 1,
+				"6": 0,
+				"7": 0,
+				"8": 0,
+				"9": 0,
+				"10": 1,
+				"11": 0,
+				"12": 0,
+				"13": 0,
+				"14": 0,
+				"15": 1
+			},
+			"isEnabled": true,
+			"isVisible": true,
+			"infiniteDistance": false,
+			"pickable": true,
+			"receiveShadows": false,
+			"billboardMode": 0,
+			"visibility": 1,
+			"checkCollisions": false,
+			"isBlocker": false,
+			"overrideMaterialSideOrientation": 0,
+			"parentId": "dcd02095-56a8-4642-8be3-7bd6eabc33e2",
+			"isUnIndexed": false,
+			"geometryUniqueId": 1269,
+			"geometryId": "46b79bc9-6005-4a31-a20d-861836480067",
+			"subMeshes": null,
+			"materialUniqueId": 2024,
+			"materialId": "62cb76cb-a4dc-4a46-bf10-02a67f9b07d4",
+			"metadata": {
+				"gltf": {
+					"pointers": [
+						"/meshes/0/primitives/0",
+						"/nodes/0"
+					]
+				},
+				"basePoseMatrix": {
+					"0": -1,
+					"1": 0,
+					"2": 0,
+					"3": 0,
+					"4": 0,
+					"5": 1,
+					"6": 0,
+					"7": 0,
+					"8": 0,
+					"9": 0,
+					"10": 1,
+					"11": 0,
+					"12": 0,
+					"13": 0,
+					"14": 0,
+					"15": 1
+				},
+				"originalSourceFile": {
+					"id": "coffinOpen",
+					"name": "coffinOpen",
+					"sceneFileName": "models/BabylonJS Graveyard Assets/Assets-meshes-graveYardPack/coffinOpen/coffinOpen.glb"
+				},
+				"isPickable": true,
+				"script": {
+					"name": "None"
+				},
+				"renderingGroupId": 0,
+				"doNotExport": false
+			},
+			"instances": [],
+			"animations": [],
+			"ranges": [],
+			"layerMask": 268435455,
+			"alphaIndex": 1.7976931348623157e+308,
+			"hasVertexAlpha": false,
+			"overlayAlpha": 0.3,
+			"overlayColor": [
+				1,
+				0,
+				0
+			],
+			"applyFog": true,
+			"delayLoadingFile": "geometries/46b79bc9-6005-4a31-a20d-861836480067.babylonbinarymeshdata",
+			"boundingBoxMaximum": [
+				0.8299870491027832,
+				0.5577699542045593,
+				0.6357899904251099
+			],
+			"boundingBoxMinimum": [
+				-0.4505143463611603,
+				-0.06797407567501068,
+				-0.6096526384353638
+			],
+			"_binaryInfo": {
+				"positionsAttrDesc": {
+					"count": 1332,
+					"stride": 3,
+					"offset": 0,
+					"dataType": 1
+				},
+				"normalsAttrDesc": {
+					"count": 1332,
+					"stride": 3,
+					"offset": 5328,
+					"dataType": 1
+				},
+				"uvsAttrDesc": {
+					"count": 888,
+					"stride": 2,
+					"offset": 10656,
+					"dataType": 1
+				},
+				"indicesAttrDesc": {
+					"count": 696,
+					"stride": 1,
+					"offset": 14208,
+					"dataType": 0
+				},
+				"subMeshesAttrDesc": {
+					"count": 1,
+					"stride": 5,
+					"offset": 16992,
+					"dataType": 0
+				}
+			},
+			"positions": null,
+			"normals": null,
+			"uvs": null,
+			"hasUVs": true,
+			"indices": null
+		}
+	],
+	"multiMaterials": [],
+	"lods": []
+}

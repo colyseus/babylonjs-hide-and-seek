@@ -52,7 +52,7 @@
 			"overrideMaterialSideOrientation": 0,
 			"parentId": "2598a1e6-6272-40e3-a595-784d6165696c",
 			"isUnIndexed": false,
-			"geometryUniqueId": 311,
+			"geometryUniqueId": 1266,
 			"geometryId": "66c7383a-243a-4ce0-b64b-900679128c84",
 			"subMeshes": null,
 			"materialUniqueId": 309,
@@ -87,7 +87,12 @@
 					"name": "signboard2",
 					"sceneFileName": "models/BabylonJS Graveyard Assets/Assets-meshes-graveYardPack/signboard2/signboard2.glb"
 				},
-				"isPickable": true
+				"isPickable": true,
+				"script": {
+					"name": "None"
+				},
+				"renderingGroupId": 0,
+				"doNotExport": false
 			},
 			"instances": [],
 			"animations": [],

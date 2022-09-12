@@ -52,7 +52,7 @@
 			"overrideMaterialSideOrientation": 0,
 			"parentId": "09aee583-960b-47f4-bb52-293d42fa4785",
 			"isUnIndexed": false,
-			"geometryUniqueId": 352,
+			"geometryUniqueId": 1308,
 			"geometryId": "175d23cc-9742-4442-a7aa-d601cf4ffb37",
 			"subMeshes": null,
 			"materialUniqueId": 331,
@@ -87,7 +87,11 @@
 					"name": "stump1",
 					"sceneFileName": "models/BabylonJS Graveyard Assets/Assets-meshes-graveYardPack/stump1/stump1.glb"
 				},
-				"isPickable": true
+				"isPickable": true,
+				"script": {
+					"name": "None"
+				},
+				"renderingGroupId": 0
 			},
 			"instances": [],
 			"animations": [],
@@ -95,7 +99,7 @@
 			"layerMask": 268435455,
 			"alphaIndex": 1.7976931348623157e+308,
 			"hasVertexAlpha": false,
-			"overlayAlpha": 0.5,
+			"overlayAlpha": 0.3,
 			"overlayColor": [
 				1,
 				0,

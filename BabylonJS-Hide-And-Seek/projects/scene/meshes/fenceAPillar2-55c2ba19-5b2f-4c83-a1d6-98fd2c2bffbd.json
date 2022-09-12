@@ -52,7 +52,7 @@
 			"overrideMaterialSideOrientation": 0,
 			"parentId": "3f23c588-3619-4bc8-8d7c-e85654fdfa52",
 			"isUnIndexed": false,
-			"geometryUniqueId": 310,
+			"geometryUniqueId": 1252,
 			"geometryId": "422d5775-b77d-4b68-b761-1bb67f3eb330",
 			"subMeshes": null,
 			"materialUniqueId": 302,
@@ -87,7 +87,12 @@
 					"name": "fenceAPillar2",
 					"sceneFileName": "models/BabylonJS Graveyard Assets/Assets-meshes-graveYardPack/fenceAPillar2/fenceAPillar2.glb"
 				},
-				"isPickable": true
+				"isPickable": true,
+				"script": {
+					"name": "None"
+				},
+				"renderingGroupId": 0,
+				"doNotExport": false
 			},
 			"instances": [],
 			"animations": [],

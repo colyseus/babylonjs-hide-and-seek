@@ -1,0 +1,54 @@
+{
+	"tags": null,
+	"position": [
+		0,
+		0,
+		0
+	],
+	"rotation": [
+		0,
+		0,
+		0
+	],
+	"scaling": [
+		1,
+		1,
+		1
+	],
+	"billboardMode": 0,
+	"scalingDeterminant": 1,
+	"infiniteDistance": false,
+	"ignoreNonUniformScaling": false,
+	"reIntegrateRotationIntoRotationQuaternion": false,
+	"name": "Details",
+	"id": "c628ed56-045c-4807-98d2-8fa0a13f9c2b",
+	"state": "",
+	"metadata": {
+		"doNotExport": false,
+		"script": {
+			"name": "src/scenes/scripts/meshMerger.ts"
+		}
+	},
+	"type": "TransformNode",
+	"uniqueId": 2556,
+	"parentId": "86d6583d-4f97-4fbb-8f28-773fc7dfff89",
+	"localMatrix": {
+		"0": 1,
+		"1": 0,
+		"2": 0,
+		"3": 0,
+		"4": 0,
+		"5": 1,
+		"6": 0,
+		"7": 0,
+		"8": 0,
+		"9": 0,
+		"10": 1,
+		"11": 0,
+		"12": 0,
+		"13": 0,
+		"14": 0,
+		"15": 1
+	},
+	"isEnabled": true
+}

@@ -1,6 +1,5 @@
-import { Camera, Mesh, Space, TransformNode, Vector3 } from '@babylonjs/core';
-import { Node } from '@babylonjs/core/node';
-import { fromChildren, fromScene, visibleInInspector } from '../../decorators';
+import { Camera, Mesh, TransformNode, Vector3 } from '@babylonjs/core';
+import { fromChildren } from '../../decorators';
 import GameManager from '../managers/gameManager';
 
 export default class CameraHolder extends Mesh {

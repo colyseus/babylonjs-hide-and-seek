@@ -52,7 +52,7 @@
 			"overrideMaterialSideOrientation": 0,
 			"parentId": "5b1e6bb7-279a-4cea-88ee-69c81c230028",
 			"isUnIndexed": false,
-			"geometryUniqueId": 299,
+			"geometryUniqueId": 1240,
 			"geometryId": "964aa48b-0db5-43a9-b405-b24aac9a3838",
 			"subMeshes": null,
 			"materialUniqueId": 323,
@@ -95,7 +95,7 @@
 			"layerMask": 268435455,
 			"alphaIndex": 1.7976931348623157e+308,
 			"hasVertexAlpha": false,
-			"overlayAlpha": 0.5,
+			"overlayAlpha": 0.3,
 			"overlayColor": [
 				1,
 				0,

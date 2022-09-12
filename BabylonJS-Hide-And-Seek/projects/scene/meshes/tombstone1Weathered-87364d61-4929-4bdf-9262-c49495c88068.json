@@ -52,7 +52,7 @@
 			"overrideMaterialSideOrientation": 0,
 			"parentId": "22deb77a-1959-4162-ab6f-d65c229d2b90",
 			"isUnIndexed": false,
-			"geometryUniqueId": 316,
+			"geometryUniqueId": 1268,
 			"geometryId": "e43115bd-d0a4-4402-8cb8-4807d57522de",
 			"subMeshes": null,
 			"materialUniqueId": 343,
@@ -87,7 +87,11 @@
 					"name": "tombstone1Weathered",
 					"sceneFileName": "models/BabylonJS Graveyard Assets/Assets-meshes-graveYardPack/tombstone1Weathered/tombstone1Weathered.glb"
 				},
-				"isPickable": true
+				"isPickable": true,
+				"script": {
+					"name": "None"
+				},
+				"renderingGroupId": 0
 			},
 			"instances": [],
 			"animations": [],

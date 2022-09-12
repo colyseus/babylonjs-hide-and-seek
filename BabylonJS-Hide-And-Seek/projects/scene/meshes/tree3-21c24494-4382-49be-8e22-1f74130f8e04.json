@@ -52,7 +52,7 @@
 			"overrideMaterialSideOrientation": 0,
 			"parentId": "97e92544-dae5-4c27-aa00-783cdb0d1b52",
 			"isUnIndexed": false,
-			"geometryUniqueId": 454,
+			"geometryUniqueId": 1410,
 			"geometryId": "b81d0dc9-6997-46f2-a1de-47b07b85ba9f",
 			"subMeshes": null,
 			"materialUniqueId": 365,
@@ -87,7 +87,11 @@
 					"name": "tree3",
 					"sceneFileName": "models/BabylonJS Graveyard Assets/Assets-meshes-graveYardPack/tree3/tree3.glb"
 				},
-				"isPickable": true
+				"isPickable": true,
+				"script": {
+					"name": "None"
+				},
+				"renderingGroupId": 0
 			},
 			"instances": [],
 			"animations": [],

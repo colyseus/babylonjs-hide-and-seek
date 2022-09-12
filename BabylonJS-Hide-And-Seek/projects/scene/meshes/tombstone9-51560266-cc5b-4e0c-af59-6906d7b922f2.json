@@ -52,7 +52,7 @@
 			"overrideMaterialSideOrientation": 0,
 			"parentId": "f191098a-4774-4d26-85d6-5232b656ec8b",
 			"isUnIndexed": false,
-			"geometryUniqueId": 361,
+			"geometryUniqueId": 1300,
 			"geometryId": "3f621e91-3822-488b-b712-e78f0dbcd2d9",
 			"subMeshes": null,
 			"materialUniqueId": 353,
@@ -87,7 +87,12 @@
 					"name": "tombstone9",
 					"sceneFileName": "models/BabylonJS Graveyard Assets/Assets-meshes-graveYardPack/tombstone9/tombstone9.glb"
 				},
-				"isPickable": true
+				"isPickable": true,
+				"script": {
+					"name": "None"
+				},
+				"renderingGroupId": 0,
+				"doNotExport": false
 			},
 			"instances": [],
 			"animations": [],
@@ -95,7 +100,7 @@
 			"layerMask": 268435455,
 			"alphaIndex": 1.7976931348623157e+308,
 			"hasVertexAlpha": false,
-			"overlayAlpha": 0.5,
+			"overlayAlpha": 0.3,
 			"overlayColor": [
 				1,
 				0,

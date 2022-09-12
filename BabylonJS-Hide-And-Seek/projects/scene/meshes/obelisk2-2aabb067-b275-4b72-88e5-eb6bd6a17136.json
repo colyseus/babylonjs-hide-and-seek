@@ -52,7 +52,7 @@
 			"overrideMaterialSideOrientation": 0,
 			"parentId": "4bf1f9b7-b520-45b6-97aa-81483c3d79d0",
 			"isUnIndexed": false,
-			"geometryUniqueId": 307,
+			"geometryUniqueId": 1274,
 			"geometryId": "458400c8-2afe-4af2-aaeb-0a632699b920",
 			"subMeshes": null,
 			"materialUniqueId": 304,
@@ -87,7 +87,11 @@
 					"name": "obelisk2",
 					"sceneFileName": "models/BabylonJS Graveyard Assets/Assets-meshes-graveYardPack/obelisk2/obelisk2.glb"
 				},
-				"isPickable": true
+				"isPickable": true,
+				"script": {
+					"name": "None"
+				},
+				"renderingGroupId": 0
 			},
 			"instances": [],
 			"animations": [],

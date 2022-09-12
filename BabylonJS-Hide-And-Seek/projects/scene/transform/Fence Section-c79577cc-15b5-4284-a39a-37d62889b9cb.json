@@ -1,0 +1,54 @@
+{
+	"tags": null,
+	"position": [
+		-0.020070720463991165,
+		0,
+		-0.03542327880859375
+	],
+	"rotation": [
+		0,
+		3.1400000000574813,
+		0
+	],
+	"scaling": [
+		1.0000000165748286,
+		1,
+		1.0000000165748286
+	],
+	"billboardMode": 0,
+	"scalingDeterminant": 1,
+	"infiniteDistance": false,
+	"ignoreNonUniformScaling": false,
+	"reIntegrateRotationIntoRotationQuaternion": false,
+	"name": "Fence Section",
+	"id": "c79577cc-15b5-4284-a39a-37d62889b9cb",
+	"state": "",
+	"metadata": {
+		"doNotExport": false,
+		"script": {
+			"name": "None"
+		}
+	},
+	"type": "TransformNode",
+	"uniqueId": 3878,
+	"parentId": "eedc0676-b969-4b3c-875b-56eaa630087c",
+	"localMatrix": {
+		"0": 1,
+		"1": 0,
+		"2": 0,
+		"3": 0,
+		"4": 0,
+		"5": 1,
+		"6": 0,
+		"7": 0,
+		"8": 0,
+		"9": 0,
+		"10": 1,
+		"11": 0,
+		"12": 0,
+		"13": 0,
+		"14": 0,
+		"15": 1
+	},
+	"isEnabled": true
+}

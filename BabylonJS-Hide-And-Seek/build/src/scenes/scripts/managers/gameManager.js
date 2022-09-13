@@ -150,10 +150,11 @@ var GameManager = /** @class */ (function (_super) {
     GameManager.prototype.onInitialize = function () {
         // ...
         GameManager._instance = this;
-        this._availableRemotePlayerObjects = [];
         this._spawnedRemotes = new Map();
         this._players = new Map();
         this._foundHiders = new Map();
+        this._availableRemotePlayerObjects = [];
+        this._cachedInteractables = [];
         this._halfSeekerFOV = this._seekerFOV / 2;
         this.onJoinedRoom = this.onJoinedRoom.bind(this);
         this.onLeftRoom = this.onLeftRoom.bind(this);
@@ -167,20 +168,8 @@ var GameManager = /** @class */ (function (_super) {
      */
     GameManager.prototype.onStart = function () {
         // ...
-        var _this = this;
         this.initializeSpawnPoints();
-        // Add remote player references to the array
-        this._availableRemotePlayerObjects.push(this._remotePlayer1);
-        this._availableRemotePlayerObjects.push(this._remotePlayer2);
-        this._availableRemotePlayerObjects.push(this._remotePlayer3);
-        this._availableRemotePlayerObjects.push(this._remotePlayer4);
-        this._availableRemotePlayerObjects.push(this._remotePlayer5);
-        this._availableRemotePlayerObjects.push(this._remotePlayer6);
-        this._availableRemotePlayerObjects.push(this._remotePlayer7);
-        this._availableRemotePlayerObjects.forEach(function (player) {
-            player.registerPlayerMeshForIntersection(_this._player.visual.rescueMesh);
-        });
-        this._player.setParent(null);
+        this.initializePlayers();
         networkManager_1.default.Instance.addOnEvent(networkManager_1.NetworkEvent.JOINED_ROOM, this.onJoinedRoom);
         networkManager_1.default.Instance.addOnEvent(networkManager_1.NetworkEvent.LEFT_ROOM, this.onLeftRoom);
         networkManager_1.default.Instance.addOnEvent(networkManager_1.NetworkEvent.PLAYER_ADDED, this.onPlayerAdded);
@@ -196,6 +185,28 @@ var GameManager = /** @class */ (function (_super) {
             mesh.layerMask = meshLayermask;
         });
         //================================================
+    };
+    GameManager.prototype.initializePlayers = function () {
+        var _this = this;
+        // Add remote player references to the array
+        this._availableRemotePlayerObjects.push(this._remotePlayer1);
+        this._availableRemotePlayerObjects.push(this._remotePlayer2);
+        this._availableRemotePlayerObjects.push(this._remotePlayer3);
+        this._availableRemotePlayerObjects.push(this._remotePlayer4);
+        this._availableRemotePlayerObjects.push(this._remotePlayer5);
+        this._availableRemotePlayerObjects.push(this._remotePlayer6);
+        this._availableRemotePlayerObjects.push(this._remotePlayer7);
+        this._availableRemotePlayerObjects.forEach(function (player) {
+            player.registerPlayerMeshForIntersection(_this._player.visual.rescueMesh);
+        });
+        this._player.setParent(null);
+        // Register any cached interactables
+        if (this._cachedInteractables.length > 0) {
+            console.log("Registering ".concat(this._cachedInteractables.length, " interactables"));
+            this._cachedInteractables.forEach(function (interactable) {
+                _this.registerInteractable(interactable);
+            });
+        }
     };
     GameManager.prototype.PlayerIsSeeker = function () {
         return this._playerState.isSeeker;
@@ -232,6 +243,22 @@ var GameManager = /** @class */ (function (_super) {
                 }
             });
         });
+    };
+    GameManager.prototype.registerInteractable = function (interactable) {
+        if (this._availableRemotePlayerObjects.length <= 0) {
+            // Cache the interactable until the remote players have been initialized
+            this._cachedInteractables.push(interactable);
+            console.log("Caching interactable until remote player objects are initialized");
+        }
+        else {
+            console.log("Register interactable with player objects");
+            // Register each remote player object with the interactable
+            this._availableRemotePlayerObjects.forEach(function (player) {
+                interactable.registerMeshForIntersection(player.visual);
+            });
+            // Register the local player object with the interactable
+            interactable.registerMeshForIntersection(this._player.visual);
+        }
     };
     GameManager.prototype.initializeSpawnPoints = function () {
         var spawnPoints = this._spawnPointsRoot.getChildren();

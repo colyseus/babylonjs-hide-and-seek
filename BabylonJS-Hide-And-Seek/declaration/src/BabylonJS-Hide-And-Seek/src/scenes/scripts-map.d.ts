@@ -5,6 +5,8 @@ import { ScriptMap } from "./tools";
 export interface ISceneScriptMap {
     "src/scenes/scripts/colyseusSettings.ts": ScriptMap;
     "src/scenes/scripts/GameState.ts": ScriptMap;
+    "src/scenes/scripts/interactables/interactableTrigger.ts": ScriptMap;
+    "src/scenes/scripts/interactables/mudTrigger.ts": ScriptMap;
     "src/scenes/scripts/managers/gameManager.ts": ScriptMap;
     "src/scenes/scripts/managers/inputManager.ts": ScriptMap;
     "src/scenes/scripts/managers/networkManager.ts": ScriptMap;

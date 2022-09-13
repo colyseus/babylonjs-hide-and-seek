@@ -202,7 +202,7 @@
 	"separateCullingPass": false,
 	"fogEnabled": true,
 	"pointSize": 1,
-	"zOffset": 0,
+	"zOffset": -2,
 	"zOffsetUnits": 0,
 	"pointsCloud": false,
 	"fillMode": 0,

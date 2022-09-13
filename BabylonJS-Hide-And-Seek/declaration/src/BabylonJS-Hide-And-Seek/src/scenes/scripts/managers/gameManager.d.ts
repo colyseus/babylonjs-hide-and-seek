@@ -2,6 +2,7 @@ import { Node } from '@babylonjs/core/node';
 import { GameState } from '../GameState';
 import type { PlayerState } from '../../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
 import Player from '../players/player';
+import InteractableTrigger from '../interactables/interactableTrigger';
 export default class GameManager extends Node {
     private static _instance;
     private _playerChaseSpeed;
@@ -31,6 +32,7 @@ export default class GameManager extends Node {
     private _foundHiders;
     private _playerState;
     private _eventEmitter;
+    private _cachedInteractables;
     static get PlayerState(): PlayerState;
     get Countdown(): number;
     get CurrentGameState(): GameState;
@@ -55,8 +57,10 @@ export default class GameManager extends Node {
      * Called on the scene starts.
      */
     onStart(): void;
+    private initializePlayers;
     PlayerIsSeeker(): boolean;
     joinRoom(roomId?: string): Promise<void>;
+    registerInteractable(interactable: InteractableTrigger): void;
     private initializeSpawnPoints;
     private onJoinedRoom;
     private onLeftRoom;

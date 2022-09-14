@@ -40,7 +40,11 @@ export default class MudTrigger extends InteractableTrigger {
 	}
 
 	protected onPlayerEnteredTrigger(player: Player) {
-		console.log(`Mud Trigger - Player is captured?: ${player.isCaptured()}`);
+		if (player.isCaptured()) {
+			return;
+		}
+
+		// TODO: activate the footstep particles on the player's visual
 	}
 
 	/**

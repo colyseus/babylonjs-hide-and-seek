@@ -65,12 +65,8 @@ export default class InteractableTrigger extends Mesh {
 				},
 			},
 			(event: ActionEvent) => {
-				console.log(`Interactable Trigger Entered: %o`, event.additionalData);
 				let playerVisual: PlayerVisual = event.additionalData as PlayerVisual;
 
-				// if (!playerVisual) {
-				// 	playerVisual = event.additionalData as PlayerVisual;
-				// }
 				const player: Player = playerVisual.player;
 
 				this.onPlayerEnteredTrigger(player);

@@ -52,7 +52,10 @@ var MudTrigger = /** @class */ (function (_super) {
         _super.prototype.registerMeshForIntersection.call(this, mesh);
     };
     MudTrigger.prototype.onPlayerEnteredTrigger = function (player) {
-        console.log("Mud Trigger - Player is captured?: ".concat(player.isCaptured()));
+        if (player.isCaptured()) {
+            return;
+        }
+        // TODO: activate the footstep particles on the player's visual
     };
     /**
      * Called each frame.

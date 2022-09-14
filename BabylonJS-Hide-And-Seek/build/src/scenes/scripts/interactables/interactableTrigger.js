@@ -77,11 +77,7 @@ var InteractableTrigger = /** @class */ (function (_super) {
                 usePreciseIntersection: true,
             },
         }, function (event) {
-            console.log("Interactable Trigger Entered: %o", event.additionalData);
             var playerVisual = event.additionalData;
-            // if (!playerVisual) {
-            // 	playerVisual = event.additionalData as PlayerVisual;
-            // }
             var player = playerVisual.player;
             _this.onPlayerEnteredTrigger(player);
         });

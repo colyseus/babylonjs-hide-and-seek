@@ -22,6 +22,7 @@ export default class MudTrigger extends InteractableTrigger {
     onStart(): void;
     registerMeshForIntersection(mesh: Mesh): void;
     protected onPlayerEnteredTrigger(player: Player): void;
+    protected onPlayerExitedTrigger(player: Player): void;
     /**
      * Called each frame.
      */

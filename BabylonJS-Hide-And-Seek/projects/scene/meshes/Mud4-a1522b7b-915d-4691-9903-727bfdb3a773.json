@@ -12,14 +12,14 @@
 				23.098888397216797
 			],
 			"rotation": [
-				1.5609367273297112,
-				-0.2265401397202009,
-				-2.399998829132685
+				1.5609366995265532,
+				-0.22650730654331971,
+				-2.399965995807698
 			],
 			"scaling": [
-				0.9999999854822169,
-				0.9999999899591696,
-				1.0000000264725173
+				0.9999999877926122,
+				0.9999999892076049,
+				1.0000000280324342
 			],
 			"localMatrix": {
 				"0": 1,
@@ -51,14 +51,19 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "6326c232-77f8-4370-afcc-be49aa782312",
 			"isUnIndexed": false,
-			"geometryUniqueId": 3634,
+			"geometryUniqueId": 1411,
 			"geometryId": "43174edb-3000-44cc-bf0b-5ae10bf72342",
 			"subMeshes": null,
 			"materialUniqueId": 1623,
 			"materialId": "1ac40e75-f1fd-4207-9ffc-5d2483a04d2a",
 			"metadata": {
 				"isDecal": true,
-				"isPickable": true
+				"isPickable": true,
+				"script": {
+					"name": "None"
+				},
+				"renderingGroupId": 0,
+				"doNotExport": false
 			},
 			"instances": [],
 			"animations": [],
@@ -66,7 +71,7 @@
 			"layerMask": 268435455,
 			"alphaIndex": 1.7976931348623157e+308,
 			"hasVertexAlpha": false,
-			"overlayAlpha": 0.5,
+			"overlayAlpha": 0.3,
 			"overlayColor": [
 				1,
 				0,
@@ -75,14 +80,14 @@
 			"applyFog": true,
 			"delayLoadingFile": "geometries/43174edb-3000-44cc-bf0b-5ae10bf72342.babylonbinarymeshdata",
 			"boundingBoxMaximum": [
-				3.1250000000000036,
-				3.1250000000000036,
-				0.04353275612942493
+				3.125,
+				3.125,
+				0.043532755225896835
 			],
 			"boundingBoxMinimum": [
-				-3.125000000000003,
-				-3.1250000000000036,
-				-0.043532756834806216
+				-3.125,
+				-3.125,
+				-0.043532755225896835
 			],
 			"_binaryInfo": {
 				"positionsAttrDesc": {

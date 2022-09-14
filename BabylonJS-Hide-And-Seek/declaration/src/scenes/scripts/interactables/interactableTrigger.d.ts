@@ -39,6 +39,7 @@ export default class InteractableTrigger extends Mesh {
     onStart(): void;
     registerMeshForIntersection(mesh: Mesh): void;
     protected onPlayerEnteredTrigger(player: Player): void;
+    protected onPlayerExitedTrigger(player: Player): void;
     /**
      * Called each frame.
      */

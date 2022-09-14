@@ -51,7 +51,7 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "6326c232-77f8-4370-afcc-be49aa782312",
 			"isUnIndexed": false,
-			"geometryUniqueId": 3142,
+			"geometryUniqueId": 1423,
 			"geometryId": "f35cc385-65c0-4651-8f11-cbdecbfe0972",
 			"subMeshes": null,
 			"materialUniqueId": 1623,
@@ -62,7 +62,8 @@
 				"script": {
 					"name": "None"
 				},
-				"renderingGroupId": 0
+				"renderingGroupId": 0,
+				"doNotExport": false
 			},
 			"instances": [],
 			"animations": [],
@@ -79,14 +80,14 @@
 			"applyFog": true,
 			"delayLoadingFile": "geometries/f35cc385-65c0-4651-8f11-cbdecbfe0972.babylonbinarymeshdata",
 			"boundingBoxMaximum": [
-				2.4200000000000017,
-				2.420000000000002,
-				1.0746959672464913e-15
+				2.4200000762939453,
+				2.4200000762939453,
+				1.0746959217184694e-15
 			],
 			"boundingBoxMinimum": [
-				-2.4200000000000017,
-				-2.420000000000002,
-				-1.0746958084278135e-15
+				-2.4200000762939453,
+				-2.4200000762939453,
+				-1.074695815839351e-15
 			],
 			"_binaryInfo": {
 				"positionsAttrDesc": {

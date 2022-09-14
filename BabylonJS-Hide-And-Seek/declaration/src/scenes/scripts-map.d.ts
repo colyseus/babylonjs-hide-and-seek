@@ -14,6 +14,7 @@ export interface ISceneScriptMap {
     "src/scenes/scripts/meshMerger.ts": ScriptMap;
     "src/scenes/scripts/players/cameraHolder.ts": ScriptMap;
     "src/scenes/scripts/players/capturedTrigger.ts": ScriptMap;
+    "src/scenes/scripts/players/mudPrints.ts": ScriptMap;
     "src/scenes/scripts/players/player.ts": ScriptMap;
     "src/scenes/scripts/players/playerVisual.ts": ScriptMap;
     "src/scenes/scripts/spawnPoint.ts": ScriptMap;

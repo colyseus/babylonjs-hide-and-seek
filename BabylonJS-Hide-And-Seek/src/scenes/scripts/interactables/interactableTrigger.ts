@@ -35,6 +35,8 @@ export default class InteractableTrigger extends Mesh {
 	 */
 	public onInitialize(): void {
 		// ...
+		this.onPlayerEnteredTrigger = this.onPlayerEnteredTrigger.bind(this);
+		this.onPlayerExitedTrigger = this.onPlayerExitedTrigger.bind(this);
 	}
 
 	/**
@@ -73,10 +75,30 @@ export default class InteractableTrigger extends Mesh {
 			}
 		);
 
+		let exitAction = new ExecuteCodeAction(
+			{
+				trigger: ActionManager.OnIntersectionExitTrigger,
+				parameter: {
+					mesh: mesh,
+					usePreciseIntersection: true,
+				},
+			},
+			(event: ActionEvent) => {
+				let playerVisual: PlayerVisual = event.additionalData as PlayerVisual;
+
+				const player: Player = playerVisual.player;
+
+				this.onPlayerExitedTrigger(player);
+			}
+		);
+
 		this.actionManager.registerAction(enterAction);
+		this.actionManager.registerAction(exitAction);
 	}
 
 	protected onPlayerEnteredTrigger(player: Player) {}
+
+	protected onPlayerExitedTrigger(player: Player) {}
 
 	/**
 	 * Called each frame.

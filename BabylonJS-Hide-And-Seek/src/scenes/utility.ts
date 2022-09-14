@@ -18,6 +18,16 @@ export function delay(delay: number): Promise<void> {
 	});
 }
 
+export class Easing {
+	public static easeOutExpo(x: number): number {
+		return x === 1 ? 1 : 1 - Math.pow(2, -10 * x);
+	}
+
+	public static easeInExpo(x: number): number {
+		return x === 0 ? 0 : Math.pow(2, 10 * x - 10);
+	}
+}
+
 export class Vec3 {
 	public static MoveTowards(current: Vector3, target: Vector3, maxDistanceDelta: number): Vector3 {
 		let toVector_x = target.x - current.x;

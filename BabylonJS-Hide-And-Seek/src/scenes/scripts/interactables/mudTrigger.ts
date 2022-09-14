@@ -44,7 +44,17 @@ export default class MudTrigger extends InteractableTrigger {
 			return;
 		}
 
-		// TODO: activate the footstep particles on the player's visual
+		// Turn on mud prints with no run time
+		player.visual.toggleMudPrints(true);
+	}
+
+	protected onPlayerExitedTrigger(player: Player) {
+		if (player.isCaptured()) {
+			return;
+		}
+
+		// Start a runtime for the mud prints so they stop after a time
+		player.visual.toggleMudPrints(true, 1500);
 	}
 
 	/**

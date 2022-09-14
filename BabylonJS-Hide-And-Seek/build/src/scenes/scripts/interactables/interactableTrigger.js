@@ -52,6 +52,8 @@ var InteractableTrigger = /** @class */ (function (_super) {
      */
     InteractableTrigger.prototype.onInitialize = function () {
         // ...
+        this.onPlayerEnteredTrigger = this.onPlayerEnteredTrigger.bind(this);
+        this.onPlayerExitedTrigger = this.onPlayerExitedTrigger.bind(this);
     };
     /**
      * Called on the node has been fully initialized and is ready.
@@ -81,9 +83,22 @@ var InteractableTrigger = /** @class */ (function (_super) {
             var player = playerVisual.player;
             _this.onPlayerEnteredTrigger(player);
         });
+        var exitAction = new core_1.ExecuteCodeAction({
+            trigger: core_1.ActionManager.OnIntersectionExitTrigger,
+            parameter: {
+                mesh: mesh,
+                usePreciseIntersection: true,
+            },
+        }, function (event) {
+            var playerVisual = event.additionalData;
+            var player = playerVisual.player;
+            _this.onPlayerExitedTrigger(player);
+        });
         this.actionManager.registerAction(enterAction);
+        this.actionManager.registerAction(exitAction);
     };
     InteractableTrigger.prototype.onPlayerEnteredTrigger = function (player) { };
+    InteractableTrigger.prototype.onPlayerExitedTrigger = function (player) { };
     /**
      * Called each frame.
      */

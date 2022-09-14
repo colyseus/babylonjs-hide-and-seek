@@ -13,7 +13,7 @@
 			],
 			"rotation": [
 				1.5707963267948966,
-				0.8292036861126868,
+				0.8292037123454876,
 				0
 			],
 			"scaling": [
@@ -51,14 +51,18 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "6326c232-77f8-4370-afcc-be49aa782312",
 			"isUnIndexed": false,
-			"geometryUniqueId": 3854,
+			"geometryUniqueId": 1419,
 			"geometryId": "1fe3f79b-108d-4459-ba70-51a209fafbcc",
 			"subMeshes": null,
 			"materialUniqueId": 1623,
 			"materialId": "1ac40e75-f1fd-4207-9ffc-5d2483a04d2a",
 			"metadata": {
 				"isDecal": true,
-				"isPickable": true
+				"isPickable": true,
+				"script": {
+					"name": "None"
+				},
+				"renderingGroupId": 0
 			},
 			"instances": [],
 			"animations": [],
@@ -75,14 +79,14 @@
 			"applyFog": true,
 			"delayLoadingFile": "geometries/1fe3f79b-108d-4459-ba70-51a209fafbcc.babylonbinarymeshdata",
 			"boundingBoxMaximum": [
-				4.805000000000006,
-				4.805000000000006,
-				1.33365562862255e-15
+				4.804999828338623,
+				4.804999828338623,
+				1.3336555989133824e-15
 			],
 			"boundingBoxMinimum": [
-				-4.805000000000006,
-				-4.805000000000006,
-				-1.3336552309945603e-15
+				-4.804999828338623,
+				-4.804999828338623,
+				-1.3336552812760272e-15
 			],
 			"_binaryInfo": {
 				"positionsAttrDesc": {

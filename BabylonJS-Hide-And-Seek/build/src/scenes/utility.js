@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Quat = exports.Vec3 = exports.delay = exports.random = exports.clamp = void 0;
+exports.Quat = exports.Vec3 = exports.Easing = exports.delay = exports.random = exports.clamp = void 0;
 var core_1 = require("@babylonjs/core");
 var deg2Rad = 360 / (Math.PI * 2);
 var kEpsilonNormalSqrt = 1e-15;
@@ -19,6 +19,18 @@ function delay(delay) {
     });
 }
 exports.delay = delay;
+var Easing = /** @class */ (function () {
+    function Easing() {
+    }
+    Easing.easeOutExpo = function (x) {
+        return x === 1 ? 1 : 1 - Math.pow(2, -10 * x);
+    };
+    Easing.easeInExpo = function (x) {
+        return x === 0 ? 0 : Math.pow(2, 10 * x - 10);
+    };
+    return Easing;
+}());
+exports.Easing = Easing;
 var Vec3 = /** @class */ (function () {
     function Vec3() {
     }

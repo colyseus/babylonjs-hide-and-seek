@@ -55,7 +55,15 @@ var MudTrigger = /** @class */ (function (_super) {
         if (player.isCaptured()) {
             return;
         }
-        // TODO: activate the footstep particles on the player's visual
+        // Turn on mud prints with no run time
+        player.visual.toggleMudPrints(true);
+    };
+    MudTrigger.prototype.onPlayerExitedTrigger = function (player) {
+        if (player.isCaptured()) {
+            return;
+        }
+        // Start a runtime for the mud prints so they stop after a time
+        player.visual.toggleMudPrints(true, 1500);
     };
     /**
      * Called each frame.

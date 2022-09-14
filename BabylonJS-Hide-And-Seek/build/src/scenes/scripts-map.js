@@ -16,6 +16,7 @@ exports.scriptsMap = {
     "src/scenes/scripts/meshMerger.ts": require("./scripts/meshMerger"),
     "src/scenes/scripts/players/cameraHolder.ts": require("./scripts/players/cameraHolder"),
     "src/scenes/scripts/players/capturedTrigger.ts": require("./scripts/players/capturedTrigger"),
+    "src/scenes/scripts/players/mudPrints.ts": require("./scripts/players/mudPrints"),
     "src/scenes/scripts/players/player.ts": require("./scripts/players/player"),
     "src/scenes/scripts/players/playerVisual.ts": require("./scripts/players/playerVisual"),
     "src/scenes/scripts/spawnPoint.ts": require("./scripts/spawnPoint"),

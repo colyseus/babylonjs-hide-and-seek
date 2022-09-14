@@ -15,6 +15,7 @@ export interface ISceneScriptMap {
 	"src/scenes/scripts/meshMerger.ts": ScriptMap;
 	"src/scenes/scripts/players/cameraHolder.ts": ScriptMap;
 	"src/scenes/scripts/players/capturedTrigger.ts": ScriptMap;
+	"src/scenes/scripts/players/mudPrints.ts": ScriptMap;
 	"src/scenes/scripts/players/player.ts": ScriptMap;
 	"src/scenes/scripts/players/playerVisual.ts": ScriptMap;
 	"src/scenes/scripts/spawnPoint.ts": ScriptMap;
@@ -45,6 +46,7 @@ export const scriptsMap: ISceneScriptMap = {
 	"src/scenes/scripts/meshMerger.ts": require("./scripts/meshMerger"),
 	"src/scenes/scripts/players/cameraHolder.ts": require("./scripts/players/cameraHolder"),
 	"src/scenes/scripts/players/capturedTrigger.ts": require("./scripts/players/capturedTrigger"),
+	"src/scenes/scripts/players/mudPrints.ts": require("./scripts/players/mudPrints"),
 	"src/scenes/scripts/players/player.ts": require("./scripts/players/player"),
 	"src/scenes/scripts/players/playerVisual.ts": require("./scripts/players/playerVisual"),
 	"src/scenes/scripts/spawnPoint.ts": require("./scripts/spawnPoint"),

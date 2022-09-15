@@ -45,7 +45,6 @@ export default class InteractableTrigger extends Mesh {
 	public onInitialized(): void {
 		// ...
 		this.actionManager = new ActionManager(this.getScene());
-		console.log(`Interactable On Initialized`);
 	}
 
 	/**
@@ -88,7 +87,9 @@ export default class InteractableTrigger extends Mesh {
 
 				const player: Player = playerVisual.player;
 
-				this.onPlayerExitedTrigger(player);
+				if (this.onPlayerExitedTrigger) {
+					this.onPlayerExitedTrigger(player);
+				}
 			}
 		);
 

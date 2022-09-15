@@ -218,10 +218,7 @@ export default class GameManager extends Node {
 		if (this._availableRemotePlayerObjects.length <= 0) {
 			// Cache the interactable until the remote players have been initialized
 			this._cachedInteractables.push(interactable);
-
-			console.log(`Caching interactable until remote player objects are initialized`);
 		} else {
-			console.log(`Register interactable with player objects`);
 			// Register each remote player object with the interactable
 			this._availableRemotePlayerObjects.forEach((player: Player) => {
 				interactable.registerMeshForIntersection(player.visual);

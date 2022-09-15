@@ -7,6 +7,7 @@ exports.scriptsMap = void 0;
 exports.scriptsMap = {
     "src/scenes/scripts/colyseusSettings.ts": require("./scripts/colyseusSettings"),
     "src/scenes/scripts/GameState.ts": require("./scripts/GameState"),
+    "src/scenes/scripts/interactables/batsTrigger.ts": require("./scripts/interactables/batsTrigger"),
     "src/scenes/scripts/interactables/interactableTrigger.ts": require("./scripts/interactables/interactableTrigger"),
     "src/scenes/scripts/interactables/mudTrigger.ts": require("./scripts/interactables/mudTrigger"),
     "src/scenes/scripts/managers/gameManager.ts": require("./scripts/managers/gameManager"),

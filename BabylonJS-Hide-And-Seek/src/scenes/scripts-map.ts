@@ -6,6 +6,7 @@ import { ScriptMap } from "./tools";
 export interface ISceneScriptMap {
 	"src/scenes/scripts/colyseusSettings.ts": ScriptMap;
 	"src/scenes/scripts/GameState.ts": ScriptMap;
+	"src/scenes/scripts/interactables/batsTrigger.ts": ScriptMap;
 	"src/scenes/scripts/interactables/interactableTrigger.ts": ScriptMap;
 	"src/scenes/scripts/interactables/mudTrigger.ts": ScriptMap;
 	"src/scenes/scripts/managers/gameManager.ts": ScriptMap;
@@ -37,6 +38,7 @@ export interface ISceneScriptMap {
 export const scriptsMap: ISceneScriptMap = {
 	"src/scenes/scripts/colyseusSettings.ts": require("./scripts/colyseusSettings"),
 	"src/scenes/scripts/GameState.ts": require("./scripts/GameState"),
+	"src/scenes/scripts/interactables/batsTrigger.ts": require("./scripts/interactables/batsTrigger"),
 	"src/scenes/scripts/interactables/interactableTrigger.ts": require("./scripts/interactables/interactableTrigger"),
 	"src/scenes/scripts/interactables/mudTrigger.ts": require("./scripts/interactables/mudTrigger"),
 	"src/scenes/scripts/managers/gameManager.ts": require("./scripts/managers/gameManager"),

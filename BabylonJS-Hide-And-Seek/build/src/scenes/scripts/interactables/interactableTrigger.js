@@ -61,7 +61,6 @@ var InteractableTrigger = /** @class */ (function (_super) {
     InteractableTrigger.prototype.onInitialized = function () {
         // ...
         this.actionManager = new core_1.ActionManager(this.getScene());
-        console.log("Interactable On Initialized");
     };
     /**
      * Called on the scene starts.
@@ -92,7 +91,9 @@ var InteractableTrigger = /** @class */ (function (_super) {
         }, function (event) {
             var playerVisual = event.additionalData;
             var player = playerVisual.player;
-            _this.onPlayerExitedTrigger(player);
+            if (_this.onPlayerExitedTrigger) {
+                _this.onPlayerExitedTrigger(player);
+            }
         });
         this.actionManager.registerAction(enterAction);
         this.actionManager.registerAction(exitAction);

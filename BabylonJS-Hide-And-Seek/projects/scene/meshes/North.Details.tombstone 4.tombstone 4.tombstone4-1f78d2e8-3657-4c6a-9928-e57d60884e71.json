@@ -51,10 +51,10 @@
 			"overrideMaterialSideOrientation": 0,
 			"parentId": "8a32373d-b1a1-4ff4-bed1-409ba65f7997",
 			"isUnIndexed": false,
-			"geometryUniqueId": 1237,
+			"geometryUniqueId": 1239,
 			"geometryId": "57f71cf9-0c23-4ebb-867d-2f043b6b699a",
 			"subMeshes": null,
-			"materialUniqueId": 580,
+			"materialUniqueId": 312,
 			"materialId": "default material",
 			"metadata": {
 				"gltf": {

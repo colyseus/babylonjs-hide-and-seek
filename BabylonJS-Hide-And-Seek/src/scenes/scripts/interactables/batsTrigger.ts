@@ -1,5 +1,4 @@
 import { Mesh, ParticleSystem } from '@babylonjs/core';
-import { Node } from '@babylonjs/core/node';
 import { fromChildren, fromParticleSystems } from '../../decorators';
 import Player from '../players/player';
 import InteractableTrigger from './interactableTrigger';
@@ -47,8 +46,6 @@ export default class BatsTrigger extends InteractableTrigger {
 		this._batsPrefab.reset();
 
 		this._bats = this._batsPrefab.clone(`bats-${this._scene.getUniqueId()}`, this._emitter);
-
-		console.log(`Bats Trigger: ${this._bats.name}`);
 
 		this._bats.stop();
 		this._bats.reset();

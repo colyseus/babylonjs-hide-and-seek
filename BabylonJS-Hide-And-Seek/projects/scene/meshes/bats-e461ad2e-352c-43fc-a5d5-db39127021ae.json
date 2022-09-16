@@ -39,7 +39,7 @@
 				"14": 0,
 				"15": 1
 			},
-			"isEnabled": true,
+			"isEnabled": false,
 			"isVisible": true,
 			"infiniteDistance": false,
 			"pickable": true,
@@ -51,7 +51,7 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "bf396404-abff-4821-a5a1-e59e357ca840",
 			"isUnIndexed": false,
-			"materialUniqueId": 580,
+			"materialUniqueId": 312,
 			"materialId": "default material",
 			"metadata": {
 				"isPickable": true,

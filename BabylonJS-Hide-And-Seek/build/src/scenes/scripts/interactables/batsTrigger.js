@@ -58,7 +58,6 @@ var BatsTrigger = /** @class */ (function (_super) {
         this._batsPrefab.stop();
         this._batsPrefab.reset();
         this._bats = this._batsPrefab.clone("bats-".concat(this._scene.getUniqueId()), this._emitter);
-        console.log("Bats Trigger: ".concat(this._bats.name));
         this._bats.stop();
         this._bats.reset();
     };

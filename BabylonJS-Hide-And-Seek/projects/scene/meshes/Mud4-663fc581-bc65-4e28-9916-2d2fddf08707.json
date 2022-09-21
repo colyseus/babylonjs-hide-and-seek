@@ -1,0 +1,132 @@
+{
+	"materials": [],
+	"meshes": [
+		{
+			"name": "Mud4",
+			"id": "663fc581-bc65-4e28-9916-2d2fddf08707",
+			"uniqueId": 3471,
+			"type": "Mesh",
+			"position": [
+				21.222328186035156,
+				0,
+				23.418432235717773
+			],
+			"rotation": [
+				1.5651116793433058,
+				3.811178863490155e-7,
+				-0.0999996177564866
+			],
+			"scaling": [
+				1.0000000116472552,
+				0.9999999738897546,
+				0.9999999832220949
+			],
+			"localMatrix": {
+				"0": 1,
+				"1": 0,
+				"2": 0,
+				"3": 0,
+				"4": 0,
+				"5": 1,
+				"6": 0,
+				"7": 0,
+				"8": 0,
+				"9": 0,
+				"10": 1,
+				"11": 0,
+				"12": 0,
+				"13": 0,
+				"14": 0,
+				"15": 1
+			},
+			"isEnabled": true,
+			"isVisible": true,
+			"infiniteDistance": false,
+			"pickable": true,
+			"receiveShadows": true,
+			"billboardMode": 0,
+			"visibility": 1,
+			"checkCollisions": false,
+			"isBlocker": false,
+			"overrideMaterialSideOrientation": null,
+			"parentId": "6326c232-77f8-4370-afcc-be49aa782312",
+			"isUnIndexed": false,
+			"geometryUniqueId": 264,
+			"geometryId": "4eeb4957-96b4-4a53-a575-0195fc468eb4",
+			"subMeshes": null,
+			"materialUniqueId": 1623,
+			"materialId": "1ac40e75-f1fd-4207-9ffc-5d2483a04d2a",
+			"metadata": {
+				"isDecal": true,
+				"isPickable": true,
+				"script": {
+					"name": "None"
+				},
+				"renderingGroupId": 0
+			},
+			"instances": [],
+			"animations": [],
+			"ranges": [],
+			"layerMask": 268435455,
+			"alphaIndex": 1.7976931348623157e+308,
+			"hasVertexAlpha": false,
+			"overlayAlpha": 0.3,
+			"overlayColor": [
+				1,
+				0,
+				0
+			],
+			"applyFog": true,
+			"delayLoadingFile": "geometries/4eeb4957-96b4-4a53-a575-0195fc468eb4.babylonbinarymeshdata",
+			"boundingBoxMaximum": [
+				3.125,
+				3.125,
+				0.019436534494161606
+			],
+			"boundingBoxMinimum": [
+				-3.125,
+				-3.125,
+				-0.01943654753267765
+			],
+			"_binaryInfo": {
+				"positionsAttrDesc": {
+					"count": 72,
+					"stride": 3,
+					"offset": 0,
+					"dataType": 1
+				},
+				"normalsAttrDesc": {
+					"count": 72,
+					"stride": 3,
+					"offset": 288,
+					"dataType": 1
+				},
+				"uvsAttrDesc": {
+					"count": 48,
+					"stride": 2,
+					"offset": 576,
+					"dataType": 1
+				},
+				"indicesAttrDesc": {
+					"count": 24,
+					"stride": 1,
+					"offset": 768,
+					"dataType": 0
+				},
+				"subMeshesAttrDesc": {
+					"count": 1,
+					"stride": 5,
+					"offset": 864,
+					"dataType": 0
+				}
+			},
+			"positions": null,
+			"normals": null,
+			"uvs": null,
+			"hasUVs": true,
+			"indices": null
+		}
+	],
+	"multiMaterials": [],
+	"lods": []
+}

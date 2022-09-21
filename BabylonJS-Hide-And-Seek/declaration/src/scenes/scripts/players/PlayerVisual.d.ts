@@ -10,6 +10,8 @@ export default class PlayerVisual extends Mesh {
     private _captured;
     rescueMesh: Mesh;
     private _capturedTrigger;
+    private _mudPrint;
+    private _mudPrints;
     /**
      * Override constructor.
      * @warn do not fill.
@@ -36,6 +38,7 @@ export default class PlayerVisual extends Mesh {
     setVisibility(visible: boolean): void;
     setCaptured(captured: boolean): void;
     registerPlayerMeshForIntersection(mesh: Mesh): void;
+    toggleMudPrints(enabled: boolean, runTime?: number): void;
     /**
      * Called each frame.
      */

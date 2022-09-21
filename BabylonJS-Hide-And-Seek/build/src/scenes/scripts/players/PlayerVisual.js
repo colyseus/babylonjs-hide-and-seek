@@ -25,6 +25,7 @@ var core_1 = require("@babylonjs/core");
 var decorators_1 = require("../../decorators");
 var utility_1 = require("../../utility");
 var gameManager_1 = require("../managers/gameManager");
+var mudPrints_1 = require("./mudPrints");
 var PlayerVisual = /** @class */ (function (_super) {
     __extends(PlayerVisual, _super);
     /**
@@ -50,6 +51,7 @@ var PlayerVisual = /** @class */ (function (_super) {
      */
     PlayerVisual.prototype.onInitialized = function () {
         // ...
+        this._mudPrints = new mudPrints_1.MudPrints(this, this._mudPrint);
     };
     /**
      * Called on the scene starts.
@@ -99,6 +101,10 @@ var PlayerVisual = /** @class */ (function (_super) {
     PlayerVisual.prototype.registerPlayerMeshForIntersection = function (mesh) {
         this._capturedTrigger.registerMeshForIntersection(mesh);
     };
+    PlayerVisual.prototype.toggleMudPrints = function (enabled, runTime) {
+        if (runTime === void 0) { runTime = -1; }
+        enabled ? this._mudPrints.start(runTime) : this._mudPrints.stop();
+    };
     /**
      * Called each frame.
      */
@@ -111,6 +117,7 @@ var PlayerVisual = /** @class */ (function (_super) {
         if (this._targetLookDirection) {
             this.rotateToTargetDirection();
         }
+        this._mudPrints.update();
     };
     PlayerVisual.prototype.rotateToTargetDirection = function () {
         // this.setDirection(this._targetLookDirection);
@@ -161,6 +168,9 @@ var PlayerVisual = /** @class */ (function (_super) {
     __decorate([
         (0, decorators_1.fromChildren)('CapturedTrigger')
     ], PlayerVisual.prototype, "_capturedTrigger", void 0);
+    __decorate([
+        (0, decorators_1.fromChildren)('MudPrint')
+    ], PlayerVisual.prototype, "_mudPrint", void 0);
     return PlayerVisual;
 }(core_1.Mesh));
 exports.default = PlayerVisual;

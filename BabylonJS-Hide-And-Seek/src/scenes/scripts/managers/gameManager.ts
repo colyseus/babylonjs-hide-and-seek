@@ -9,6 +9,7 @@ import Player from '../players/player';
 import { SpawnPoints } from '../spawnPoints';
 import NetworkManager, { NetworkEvent } from './networkManager';
 import { PlayerInputMessage } from '../../../../../Server/hide-and-seek/src/models/PlayerInputMessage';
+import InteractableTrigger from '../interactables/interactableTrigger';
 
 export default class GameManager extends Node {
 	private static _instance: GameManager = null;
@@ -59,6 +60,8 @@ export default class GameManager extends Node {
 	private _playerState: PlayerState = null;
 
 	private _eventEmitter: EventEmitter = new EventEmitter();
+
+	private _cachedInteractables: InteractableTrigger[];
 
 	public static get PlayerState(): PlayerState {
 		return GameManager.Instance._playerState;
@@ -115,10 +118,11 @@ export default class GameManager extends Node {
 		// ...
 		GameManager._instance = this;
 
-		this._availableRemotePlayerObjects = [];
 		this._spawnedRemotes = new Map<string, Player>();
 		this._players = new Map<string, PlayerState>();
 		this._foundHiders = new Map<string, Player>();
+		this._availableRemotePlayerObjects = [];
+		this._cachedInteractables = [];
 
 		this._halfSeekerFOV = this._seekerFOV / 2;
 
@@ -138,20 +142,7 @@ export default class GameManager extends Node {
 
 		this.initializeSpawnPoints();
 
-		// Add remote player references to the array
-		this._availableRemotePlayerObjects.push(this._remotePlayer1);
-		this._availableRemotePlayerObjects.push(this._remotePlayer2);
-		this._availableRemotePlayerObjects.push(this._remotePlayer3);
-		this._availableRemotePlayerObjects.push(this._remotePlayer4);
-		this._availableRemotePlayerObjects.push(this._remotePlayer5);
-		this._availableRemotePlayerObjects.push(this._remotePlayer6);
-		this._availableRemotePlayerObjects.push(this._remotePlayer7);
-
-		this._availableRemotePlayerObjects.forEach((player: Player) => {
-			player.registerPlayerMeshForIntersection(this._player.visual.rescueMesh);
-		});
-
-		this._player.setParent(null);
+		this.initializePlayers();
 
 		NetworkManager.Instance.addOnEvent(NetworkEvent.JOINED_ROOM, this.onJoinedRoom);
 		NetworkManager.Instance.addOnEvent(NetworkEvent.LEFT_ROOM, this.onLeftRoom);
@@ -171,6 +162,31 @@ export default class GameManager extends Node {
 			mesh.layerMask = meshLayermask;
 		});
 		//================================================
+	}
+
+	private initializePlayers() {
+		// Add remote player references to the array
+		this._availableRemotePlayerObjects.push(this._remotePlayer1);
+		this._availableRemotePlayerObjects.push(this._remotePlayer2);
+		this._availableRemotePlayerObjects.push(this._remotePlayer3);
+		this._availableRemotePlayerObjects.push(this._remotePlayer4);
+		this._availableRemotePlayerObjects.push(this._remotePlayer5);
+		this._availableRemotePlayerObjects.push(this._remotePlayer6);
+		this._availableRemotePlayerObjects.push(this._remotePlayer7);
+
+		this._availableRemotePlayerObjects.forEach((player: Player) => {
+			player.registerPlayerMeshForIntersection(this._player.visual.rescueMesh);
+		});
+
+		this._player.setParent(null);
+
+		// Register any cached interactables
+		if (this._cachedInteractables.length > 0) {
+			console.log(`Registering ${this._cachedInteractables.length} interactables`);
+			this._cachedInteractables.forEach((interactable: InteractableTrigger) => {
+				this.registerInteractable(interactable);
+			});
+		}
 	}
 
 	public PlayerIsSeeker(): boolean {
@@ -195,6 +211,21 @@ export default class GameManager extends Node {
 		} catch (error: any) {
 			this._joiningRoom = false;
 			throw new Error(error.message);
+		}
+	}
+
+	public registerInteractable(interactable: InteractableTrigger) {
+		if (this._availableRemotePlayerObjects.length <= 0) {
+			// Cache the interactable until the remote players have been initialized
+			this._cachedInteractables.push(interactable);
+		} else {
+			// Register each remote player object with the interactable
+			this._availableRemotePlayerObjects.forEach((player: Player) => {
+				interactable.registerMeshForIntersection(player.visual);
+			});
+
+			// Register the local player object with the interactable
+			interactable.registerMeshForIntersection(this._player.visual);
 		}
 	}
 

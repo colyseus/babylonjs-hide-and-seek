@@ -1,9 +1,10 @@
-import { AbstractMesh, Axis, Mesh, Quaternion, Space, TransformNode, Vector3 } from '@babylonjs/core';
-import { fromChildren } from '../../decorators';
+import { AbstractMesh, Axis, Mesh, ParticleSystem, Quaternion, Space, TransformNode, Vector3 } from '@babylonjs/core';
+import { fromChildren, fromParticleSystems } from '../../decorators';
 import { Quat, random, Vec3 } from '../../utility';
 import GameManager from '../managers/gameManager';
 import NetworkManager from '../managers/networkManager';
 import CapturedTrigger from './capturedTrigger';
+import { MudPrints } from './mudPrints';
 import Player from './player';
 
 export default class PlayerVisual extends Mesh {
@@ -22,6 +23,10 @@ export default class PlayerVisual extends Mesh {
 	public rescueMesh: Mesh;
 	@fromChildren('CapturedTrigger')
 	private _capturedTrigger: CapturedTrigger;
+	@fromChildren('MudPrint')
+	private _mudPrint: Mesh;
+
+	private _mudPrints: MudPrints;
 
 	/**
 	 * Override constructor.
@@ -43,6 +48,8 @@ export default class PlayerVisual extends Mesh {
 	 */
 	public onInitialized(): void {
 		// ...
+
+		this._mudPrints = new MudPrints(this, this._mudPrint);
 	}
 
 	/**
@@ -104,6 +111,10 @@ export default class PlayerVisual extends Mesh {
 		this._capturedTrigger.registerMeshForIntersection(mesh);
 	}
 
+	public toggleMudPrints(enabled: boolean, runTime: number = -1) {
+		enabled ? this._mudPrints.start(runTime) : this._mudPrints.stop();
+	}
+
 	/**
 	 * Called each frame.
 	 */
@@ -117,6 +128,8 @@ export default class PlayerVisual extends Mesh {
 		if (this._targetLookDirection) {
 			this.rotateToTargetDirection();
 		}
+
+		this._mudPrints.update();
 	}
 
 	private rotateToTargetDirection() {

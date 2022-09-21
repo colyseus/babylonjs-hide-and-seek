@@ -5,6 +5,11 @@ import { ScriptMap } from "./tools";
 export interface ISceneScriptMap {
     "src/scenes/scripts/colyseusSettings.ts": ScriptMap;
     "src/scenes/scripts/GameState.ts": ScriptMap;
+    "src/scenes/scripts/interactables/batsTrigger.ts": ScriptMap;
+    "src/scenes/scripts/interactables/ghostsTrigger.ts": ScriptMap;
+    "src/scenes/scripts/interactables/interactableTrigger.ts": ScriptMap;
+    "src/scenes/scripts/interactables/mudTrigger.ts": ScriptMap;
+    "src/scenes/scripts/interactables/particlesTrigger.ts": ScriptMap;
     "src/scenes/scripts/managers/gameManager.ts": ScriptMap;
     "src/scenes/scripts/managers/inputManager.ts": ScriptMap;
     "src/scenes/scripts/managers/networkManager.ts": ScriptMap;
@@ -12,6 +17,7 @@ export interface ISceneScriptMap {
     "src/scenes/scripts/meshMerger.ts": ScriptMap;
     "src/scenes/scripts/players/cameraHolder.ts": ScriptMap;
     "src/scenes/scripts/players/capturedTrigger.ts": ScriptMap;
+    "src/scenes/scripts/players/mudPrints.ts": ScriptMap;
     "src/scenes/scripts/players/player.ts": ScriptMap;
     "src/scenes/scripts/players/playerVisual.ts": ScriptMap;
     "src/scenes/scripts/spawnPoint.ts": ScriptMap;

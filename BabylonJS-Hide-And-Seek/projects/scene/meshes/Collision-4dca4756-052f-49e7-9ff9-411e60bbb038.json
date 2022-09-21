@@ -3,23 +3,23 @@
 	"meshes": [
 		{
 			"name": "Collision",
-			"id": "3ba8d366-4e2f-407f-b8a4-93165ebb0145",
-			"uniqueId": 1636,
+			"id": "4dca4756-052f-49e7-9ff9-411e60bbb038",
+			"uniqueId": 1823,
 			"type": "Mesh",
 			"position": [
-				-2.777444839477539,
+				0.12315940856933594,
 				0.5,
-				0.43939876556396484
+				0.059136390686035156
 			],
 			"rotation": [
 				0,
-				-0.1491389129342731,
+				0,
 				0
 			],
 			"scaling": [
-				4.9999967787568576,
+				4.999996662139893,
 				1,
-				5.110814117802116
+				5.110814094543457
 			],
 			"pivotMatrix": {
 				"0": 1,
@@ -49,9 +49,9 @@
 			"checkCollisions": false,
 			"isBlocker": false,
 			"overrideMaterialSideOrientation": null,
-			"parentId": "068752d2-4225-41f8-91aa-df16d163b07c",
+			"parentId": "119ffff5-df15-4a19-846f-ad495bc708f3",
 			"isUnIndexed": false,
-			"geometryUniqueId": 1326,
+			"geometryUniqueId": 1350,
 			"geometryId": "bd29c7a5-94a7-4167-9b27-a5e8b7e71bda",
 			"subMeshes": null,
 			"materialUniqueId": 2024,
@@ -63,7 +63,7 @@
 				},
 				"isPickable": true,
 				"script": {
-					"name": "src/scenes/scripts/interactables/batsTrigger.ts"
+					"name": "src/scenes/scripts/interactables/ghostsTrigger.ts"
 				},
 				"renderingGroupId": 0,
 				"doNotExport": false

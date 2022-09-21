@@ -62,13 +62,14 @@ export default class GameManager extends Node {
 	private _eventEmitter: EventEmitter = new EventEmitter();
 
 	private _cachedInteractables: InteractableTrigger[];
+	private _countdown: number = 0;
 
 	public static get PlayerState(): PlayerState {
 		return GameManager.Instance._playerState;
 	}
 
 	public get Countdown(): number {
-		return NetworkManager.Instance.Room.state.gameState.countdown;
+		return this._countdown;
 	}
 
 	public get CurrentGameState(): GameState {
@@ -306,6 +307,7 @@ export default class GameManager extends Node {
 		// console.log(`Game Manager - On Game State Change: %o`, changes);
 
 		let change: any = null;
+		let stateChange: GameState = null;
 		for (let i = 0; i < changes.length; i++) {
 			change = changes[i];
 
@@ -315,17 +317,21 @@ export default class GameManager extends Node {
 
 			switch (change.field) {
 				case 'currentState':
-					this.handleGameStateChange(change.value);
+					stateChange = change.value;
 					break;
 				case 'countdown':
-					this.handleCountdownChange(change.value);
+					this.handleCountdownChange(Number(change.value));
 					break;
 			}
+		}
+
+		if (stateChange) {
+			this.handleGameStateChange(stateChange);
 		}
 	}
 
 	private handleGameStateChange(gameState: GameState) {
-		console.log(`Game Manager - Game State Changed: ${gameState}`);
+		// console.log(`Game Manager - Game State Changed: ${gameState}`);
 
 		this.CurrentGameState = gameState;
 
@@ -368,8 +374,9 @@ export default class GameManager extends Node {
 	}
 
 	private handleCountdownChange(countdown: number) {
-		// console.log(`Countdown: ${countdown}`);
-		this.broadcastEvent('updateCountdown', countdown);
+		this._countdown = countdown;
+
+		this.broadcastEvent('updateCountdown', this._countdown);
 	}
 
 	private spawnPlayers() {

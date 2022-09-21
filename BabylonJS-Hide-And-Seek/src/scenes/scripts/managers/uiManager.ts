@@ -176,6 +176,13 @@ export default class UIManager extends Node {
 
 		this._titleUI.setJoinUIEnabled(true);
 		this._overlayUI.setVisible(false);
+
+		while (!GameManager.Instance.Countdown) {
+			await delay(100);
+		}
+
+		console.log(`UI Manager - Handle Join Room - update countdown: ${GameManager.Instance.Countdown}`);
+		this._lobbyUI.updateCountdown(GameManager.Instance.Countdown);
 	}
 
 	private handleLeftRoom() {
@@ -230,6 +237,8 @@ export default class UIManager extends Node {
 
 				setTimeout(() => {
 					this._lobbyUI.setVisible(true);
+					console.log(`UI Manager - Game Over - Delayed update countdown: ${GameManager.Instance.Countdown}`);
+					this._lobbyUI.updateCountdown(GameManager.Instance.Countdown);
 				}, this._gameOverDelay);
 				break;
 			default:

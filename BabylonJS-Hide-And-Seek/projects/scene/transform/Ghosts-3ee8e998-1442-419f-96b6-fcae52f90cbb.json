@@ -1,9 +1,9 @@
 {
 	"tags": null,
 	"position": [
-		18.894813537597656,
+		-0.016533739864826202,
 		0,
-		-15.898943901062012
+		18.306310653686523
 	],
 	"rotation": [
 		0,
@@ -20,8 +20,8 @@
 	"infiniteDistance": false,
 	"ignoreNonUniformScaling": false,
 	"reIntegrateRotationIntoRotationQuaternion": false,
-	"name": "Bats",
-	"id": "068752d2-4225-41f8-91aa-df16d163b07c",
+	"name": "Ghosts",
+	"id": "3ee8e998-1442-419f-96b6-fcae52f90cbb",
 	"state": "",
 	"metadata": {
 		"script": {
@@ -30,7 +30,7 @@
 		"doNotExport": false
 	},
 	"type": "TransformNode",
-	"uniqueId": 1635,
+	"uniqueId": 1740,
 	"parentId": "6326c232-77f8-4370-afcc-be49aa782312",
 	"localMatrix": {
 		"0": 1,

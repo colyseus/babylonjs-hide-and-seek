@@ -268,6 +268,16 @@ var UIManager = /** @class */ (function (_super) {
                     case 7:
                         this._titleUI.setJoinUIEnabled(true);
                         this._overlayUI.setVisible(false);
+                        _a.label = 8;
+                    case 8:
+                        if (!!gameManager_1.default.Instance.Countdown) return [3 /*break*/, 10];
+                        return [4 /*yield*/, (0, utility_1.delay)(100)];
+                    case 9:
+                        _a.sent();
+                        return [3 /*break*/, 8];
+                    case 10:
+                        console.log("UI Manager - Handle Join Room - update countdown: ".concat(gameManager_1.default.Instance.Countdown));
+                        this._lobbyUI.updateCountdown(gameManager_1.default.Instance.Countdown);
                         return [2 /*return*/];
                 }
             });
@@ -319,6 +329,8 @@ var UIManager = /** @class */ (function (_super) {
                 this._gameplayUI.setVisible(false);
                 setTimeout(function () {
                     _this._lobbyUI.setVisible(true);
+                    console.log("UI Manager - Game Over - Delayed update countdown: ".concat(gameManager_1.default.Instance.Countdown));
+                    _this._lobbyUI.updateCountdown(gameManager_1.default.Instance.Countdown);
                 }, this._gameOverDelay);
                 break;
             default:

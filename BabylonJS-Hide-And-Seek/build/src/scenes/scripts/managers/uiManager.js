@@ -255,6 +255,7 @@ var UIManager = /** @class */ (function (_super) {
                         _a.sent();
                         return [3 /*break*/, 3];
                     case 5:
+                        console.log("Config: %o", networkManager_1.default.Config); //
                         this._titleUI.setVisible(false);
                         this._lobbyUI.setVisible(true);
                         return [3 /*break*/, 7];
@@ -304,7 +305,9 @@ var UIManager = /** @class */ (function (_super) {
             case GameState_1.GameState.NONE:
                 break;
             case GameState_1.GameState.WAIT_FOR_MINIMUM:
-                this._lobbyUI.setVisible(true);
+                if (networkManager_1.default.Ready()) {
+                    this._lobbyUI.setVisible(true);
+                }
                 break;
             case GameState_1.GameState.CLOSE_COUNTDOWN:
                 break;
@@ -329,8 +332,6 @@ var UIManager = /** @class */ (function (_super) {
                 this._gameplayUI.setVisible(false);
                 setTimeout(function () {
                     _this._lobbyUI.setVisible(true);
-                    console.log("UI Manager - Game Over - Delayed update countdown: ".concat(gameManager_1.default.Instance.Countdown));
-                    _this._lobbyUI.updateCountdown(gameManager_1.default.Instance.Countdown);
                 }, this._gameOverDelay);
                 break;
             default:

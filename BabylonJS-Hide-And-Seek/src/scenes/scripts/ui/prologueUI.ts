@@ -1,5 +1,6 @@
 import { Scene } from '@babylonjs/core';
 import { Control, TextBlock } from '@babylonjs/gui';
+import { clamp } from '../../utility';
 import GameManager from '../managers/gameManager';
 import NetworkManager from '../managers/networkManager';
 import { UIController } from './uiController';
@@ -23,6 +24,8 @@ export class PrologueUI extends UIController {
 	protected async initialize(): Promise<void> {
 		await super.initialize();
 
+		GameManager.Instance.addOnEvent('updateCountdown', this.updateCountdown);
+
 		this.setUpControls();
 	}
 
@@ -42,10 +45,6 @@ export class PrologueUI extends UIController {
 			this.showInfo(true);
 
 			this.updateTexts();
-
-			GameManager.Instance.addOnEvent('updateCountdown', this.updateCountdown);
-		} else {
-			GameManager.Instance.removeOnEvent('updateCountdown', this.updateCountdown);
 		}
 	}
 
@@ -58,8 +57,14 @@ export class PrologueUI extends UIController {
 	}
 
 	private updateCountdown(countdown: number) {
-		if (!this.shouldUpdatedCountdown) {
+		if (!GameManager.Instance.CurrentGameState || !this.shouldUpdatedCountdown) {
 			return;
+		}
+
+		const before: number = countdown;
+
+		if (!GameManager.Instance.PlayerIsSeeker()) {
+			countdown = clamp(countdown - NetworkManager.Config.PlayStartCountdown / 1000, 0, Number.POSITIVE_INFINITY);
 		}
 
 		this.setCountdownText(`${GameManager.Instance.PlayerIsSeeker() ? `Hunt` : `Evade`} in ${countdown}`);

@@ -374,6 +374,10 @@ export default class GameManager extends Node {
 	}
 
 	private handleCountdownChange(countdown: number) {
+		if (!this.CurrentGameState) {
+			return;
+		}
+
 		this._countdown = countdown;
 
 		this.broadcastEvent('updateCountdown', this._countdown);

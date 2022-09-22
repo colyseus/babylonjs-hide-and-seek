@@ -136,7 +136,7 @@ export class HASGameState extends Schema {
 				// Randomly pick which player will be Seeker
 				const players: PlayerState[] = Array.from(this._room.state.players.values());
 
-				const index: number = random(0, players.length - 1);
+				const index: number = random(0, players.length);
 
 				// Remove the seeker from the array; we don't need to assign a spawn point to it
 				const player: PlayerState = players.splice(index, 1)[0];

@@ -77,7 +77,7 @@ export class LobbyUI extends UIController {
 			let countdown: number = GameManager.Instance.Countdown;
 
 			if (!countdown) {
-				if (GameManager.Instance.CurrentGameState === GameState.CLOSE_COUNTDOWN) {
+				if (GameManager.Instance.CurrentGameState === GameState.CLOSE_COUNTDOWN || GameManager.Instance.CurrentGameState === GameState.NONE) {
 					countdown = NetworkManager.Config.PreRoundCountdown / 1000;
 				} else if (GameManager.Instance.CurrentGameState === GameState.GAME_OVER) {
 					countdown = NetworkManager.Config.GameOverCountdown / 1000;
@@ -85,7 +85,7 @@ export class LobbyUI extends UIController {
 			}
 
 			if (!countdown) {
-				console.trace(`Invalid Countdown`);
+				console.trace(`Invalid Countdown in Game State ${GameManager.Instance.CurrentGameState}`);
 			}
 
 			this.updateHeader(countdown);

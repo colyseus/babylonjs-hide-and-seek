@@ -112,7 +112,7 @@ var LobbyUI = /** @class */ (function (_super) {
         if (visible) {
             var countdown = gameManager_1.default.Instance.Countdown;
             if (!countdown) {
-                if (gameManager_1.default.Instance.CurrentGameState === GameState_1.GameState.CLOSE_COUNTDOWN) {
+                if (gameManager_1.default.Instance.CurrentGameState === GameState_1.GameState.CLOSE_COUNTDOWN || gameManager_1.default.Instance.CurrentGameState === GameState_1.GameState.NONE) {
                     countdown = networkManager_1.default.Config.PreRoundCountdown / 1000;
                 }
                 else if (gameManager_1.default.Instance.CurrentGameState === GameState_1.GameState.GAME_OVER) {
@@ -120,7 +120,7 @@ var LobbyUI = /** @class */ (function (_super) {
                 }
             }
             if (!countdown) {
-                console.trace("Invalid Countdown");
+                console.trace("Invalid Countdown in Game State ".concat(gameManager_1.default.Instance.CurrentGameState));
             }
             this.updateHeader(countdown);
             this.updatePlayerCount();

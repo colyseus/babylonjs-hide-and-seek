@@ -52,6 +52,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PrologueUI = void 0;
+var utility_1 = require("../../utility");
 var gameManager_1 = require("../managers/gameManager");
 var networkManager_1 = require("../managers/networkManager");
 var uiController_1 = require("./uiController");
@@ -71,6 +72,7 @@ var PrologueUI = /** @class */ (function (_super) {
                     case 0: return [4 /*yield*/, _super.prototype.initialize.call(this)];
                     case 1:
                         _a.sent();
+                        gameManager_1.default.Instance.addOnEvent('updateCountdown', this.updateCountdown);
                         this.setUpControls();
                         return [2 /*return*/];
                 }
@@ -89,10 +91,6 @@ var PrologueUI = /** @class */ (function (_super) {
             this.shouldUpdatedCountdown = true;
             this.showInfo(true);
             this.updateTexts();
-            gameManager_1.default.Instance.addOnEvent('updateCountdown', this.updateCountdown);
-        }
-        else {
-            gameManager_1.default.Instance.removeOnEvent('updateCountdown', this.updateCountdown);
         }
     };
     PrologueUI.prototype.showInfo = function (show) {
@@ -102,8 +100,12 @@ var PrologueUI = /** @class */ (function (_super) {
         this._countdown.text = text;
     };
     PrologueUI.prototype.updateCountdown = function (countdown) {
-        if (!this.shouldUpdatedCountdown) {
+        if (!gameManager_1.default.Instance.CurrentGameState || !this.shouldUpdatedCountdown) {
             return;
+        }
+        var before = countdown;
+        if (!gameManager_1.default.Instance.PlayerIsSeeker()) {
+            countdown = (0, utility_1.clamp)(countdown - networkManager_1.default.Config.PlayStartCountdown / 1000, 0, Number.POSITIVE_INFINITY);
         }
         this.setCountdownText("".concat(gameManager_1.default.Instance.PlayerIsSeeker() ? "Hunt" : "Evade", " in ").concat(countdown));
     };

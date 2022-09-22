@@ -52,10 +52,10 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "fd7a4725-539b-4020-9b6f-3032264f3ad4",
 			"isUnIndexed": false,
-			"geometryUniqueId": 1397,
+			"geometryUniqueId": 1400,
 			"geometryId": "1d916d74-511b-480f-9a49-fe94c8f0dce6",
 			"subMeshes": null,
-			"materialUniqueId": 603,
+			"materialUniqueId": 327,
 			"materialId": "default material",
 			"metadata": {
 				"editorGeometry": {

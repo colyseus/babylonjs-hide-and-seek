@@ -374,6 +374,9 @@ var GameManager = /** @class */ (function (_super) {
         this.broadcastEvent('gameStateChanged', gameState);
     };
     GameManager.prototype.handleCountdownChange = function (countdown) {
+        if (!this.CurrentGameState) {
+            return;
+        }
         this._countdown = countdown;
         this.broadcastEvent('updateCountdown', this._countdown);
     };

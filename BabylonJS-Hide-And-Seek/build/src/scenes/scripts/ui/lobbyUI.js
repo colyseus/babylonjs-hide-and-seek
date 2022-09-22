@@ -82,6 +82,7 @@ var LobbyUI = /** @class */ (function (_super) {
                         networkManager_1.default.Instance.addOnEvent(networkManager_1.NetworkEvent.PLAYER_ADDED, this.onPlayerAdded);
                         networkManager_1.default.Instance.addOnEvent(networkManager_1.NetworkEvent.PLAYER_REMOVED, this.onPlayerRemoved);
                         gameManager_1.default.Instance.addOnEvent('playerPlayAgain', this.onPlayerPlayAgain);
+                        gameManager_1.default.Instance.addOnEvent('updateCountdown', this.updateCountdown);
                         return [2 /*return*/];
                 }
             });
@@ -96,7 +97,7 @@ var LobbyUI = /** @class */ (function (_super) {
         this._gameOverCountdown = this.getControl('GameOverCountdown');
         this._playAgainBtn = this.getControl('PlayAgainBtn');
         this._leaveBtn = this.getControl('LeaveBtn');
-        this.updateHeader();
+        this.updateHeader(gameManager_1.default.Instance.Countdown);
         this.updatePlayerCount();
         this.registerControlHandlers();
         // Hide the template
@@ -109,16 +110,28 @@ var LobbyUI = /** @class */ (function (_super) {
     LobbyUI.prototype.setVisible = function (visible) {
         _super.prototype.setVisible.call(this, visible);
         if (visible) {
-            this.updateHeader(gameManager_1.default.Instance.Countdown);
+            var countdown = gameManager_1.default.Instance.Countdown;
+            if (!countdown) {
+                if (gameManager_1.default.Instance.CurrentGameState === GameState_1.GameState.CLOSE_COUNTDOWN || gameManager_1.default.Instance.CurrentGameState === GameState_1.GameState.NONE) {
+                    countdown = networkManager_1.default.Config.PreRoundCountdown / 1000;
+                }
+                else if (gameManager_1.default.Instance.CurrentGameState === GameState_1.GameState.GAME_OVER) {
+                    countdown = networkManager_1.default.Config.GameOverCountdown / 1000;
+                }
+            }
+            if (!countdown) {
+                console.trace("Invalid Countdown in Game State ".concat(gameManager_1.default.Instance.CurrentGameState));
+            }
+            this.updateHeader(countdown);
             this.updatePlayerCount();
             this._roomCode.text = "Room: ".concat(networkManager_1.default.Instance.Room.id);
             this._playAgainBtn.isVisible = gameManager_1.default.Instance.CurrentGameState === GameState_1.GameState.GAME_OVER;
             this._gameOverCountdown.isVisible = gameManager_1.default.Instance.CurrentGameState === GameState_1.GameState.GAME_OVER;
             this._playerCount.isVisible = gameManager_1.default.Instance.CurrentGameState !== GameState_1.GameState.GAME_OVER;
-            gameManager_1.default.Instance.addOnEvent('updateCountdown', this.updateCountdown);
+            // GameManager.Instance.addOnEvent('updateCountdown', this.updateCountdown);
         }
         else {
-            gameManager_1.default.Instance.removeOnEvent('updateCountdown', this.updateCountdown);
+            // GameManager.Instance.removeOnEvent('updateCountdown', this.updateCountdown);
             this._gameOverCountdown.isVisible = false;
         }
     };
@@ -130,14 +143,16 @@ var LobbyUI = /** @class */ (function (_super) {
         this._playerEntries.clear();
     };
     LobbyUI.prototype.updateCountdown = function (countdown) {
-        if (countdown === void 0) { countdown = 0; }
-        this._gameOverCountdown.text = "".concat(countdown);
-        if (gameManager_1.default.Instance.CurrentGameState !== GameState_1.GameState.GAME_OVER) {
-            this.updateHeader(countdown);
+        if (gameManager_1.default.Instance.CurrentGameState !== GameState_1.GameState.CLOSE_COUNTDOWN && gameManager_1.default.Instance.CurrentGameState !== GameState_1.GameState.GAME_OVER) {
+            return;
         }
+        // console.trace(`Lobby UI - Countdown: ${countdown}`);
+        this._gameOverCountdown.text = "".concat(countdown);
+        //if (GameManager.Instance.CurrentGameState !== GameState.GAME_OVER) {
+        this.updateHeader(countdown);
+        //}
     };
     LobbyUI.prototype.updateHeader = function (countdown) {
-        if (countdown === void 0) { countdown = 0; }
         if (!networkManager_1.default.Config) {
             return;
         }
@@ -165,7 +180,7 @@ var LobbyUI = /** @class */ (function (_super) {
         }
         this._playerEntries.delete(player.id);
         this.updatePlayerCount();
-        this.updateHeader();
+        this.updateHeader(gameManager_1.default.Instance.Countdown);
     };
     LobbyUI.prototype.onPlayerPlayAgain = function (player) {
         var sessionId = player.sessionId;

@@ -3,13 +3,13 @@
 	"meshes": [
 		{
 			"name": "emitter",
-			"id": "09681eb8-8b0f-4e8c-ba35-ef8cb4273902",
-			"uniqueId": 1637,
+			"id": "f4c14b0c-d477-4a54-8846-592b487458df",
+			"uniqueId": 1742,
 			"type": "Mesh",
 			"position": [
-				0.8101508617401123,
-				0.872978687286377,
-				0.41425415873527527
+				0.5062975883483887,
+				-0.2263510525226593,
+				0.2837073504924774
 			],
 			"rotation": [
 				0,
@@ -17,7 +17,7 @@
 				0
 			],
 			"scaling": [
-				0.9999998807907106,
+				0.9999999403953552,
 				1,
 				1
 			],
@@ -49,9 +49,9 @@
 			"checkCollisions": false,
 			"isBlocker": false,
 			"overrideMaterialSideOrientation": null,
-			"parentId": "3ba8d366-4e2f-407f-b8a4-93165ebb0145",
+			"parentId": "592d6716-c040-4b16-b298-0f2989166b0c",
 			"isUnIndexed": false,
-			"geometryUniqueId": 1388,
+			"geometryUniqueId": 1412,
 			"geometryId": "49c8764b-f7aa-4cdb-b5ec-dece4110c58b",
 			"subMeshes": null,
 			"materialUniqueId": 2024,

@@ -43,6 +43,7 @@ export class LobbyUI extends UIController {
 		NetworkManager.Instance.addOnEvent(NetworkEvent.PLAYER_ADDED, this.onPlayerAdded);
 		NetworkManager.Instance.addOnEvent(NetworkEvent.PLAYER_REMOVED, this.onPlayerRemoved);
 		GameManager.Instance.addOnEvent('playerPlayAgain', this.onPlayerPlayAgain);
+		GameManager.Instance.addOnEvent('updateCountdown', this.updateCountdown);
 	}
 
 	private setUpControls() {
@@ -55,7 +56,7 @@ export class LobbyUI extends UIController {
 		this._playAgainBtn = this.getControl('PlayAgainBtn');
 		this._leaveBtn = this.getControl('LeaveBtn');
 
-		this.updateHeader();
+		this.updateHeader(GameManager.Instance.Countdown);
 		this.updatePlayerCount();
 
 		this.registerControlHandlers();
@@ -73,7 +74,21 @@ export class LobbyUI extends UIController {
 		super.setVisible(visible);
 
 		if (visible) {
-			this.updateHeader(GameManager.Instance.Countdown);
+			let countdown: number = GameManager.Instance.Countdown;
+
+			if (!countdown) {
+				if (GameManager.Instance.CurrentGameState === GameState.CLOSE_COUNTDOWN || GameManager.Instance.CurrentGameState === GameState.NONE) {
+					countdown = NetworkManager.Config.PreRoundCountdown / 1000;
+				} else if (GameManager.Instance.CurrentGameState === GameState.GAME_OVER) {
+					countdown = NetworkManager.Config.GameOverCountdown / 1000;
+				}
+			}
+
+			if (!countdown) {
+				console.trace(`Invalid Countdown in Game State ${GameManager.Instance.CurrentGameState}`);
+			}
+
+			this.updateHeader(countdown);
 			this.updatePlayerCount();
 
 			this._roomCode.text = `Room: ${NetworkManager.Instance.Room.id}`;
@@ -82,9 +97,9 @@ export class LobbyUI extends UIController {
 			this._gameOverCountdown.isVisible = GameManager.Instance.CurrentGameState === GameState.GAME_OVER;
 			this._playerCount.isVisible = GameManager.Instance.CurrentGameState !== GameState.GAME_OVER;
 
-			GameManager.Instance.addOnEvent('updateCountdown', this.updateCountdown);
+			// GameManager.Instance.addOnEvent('updateCountdown', this.updateCountdown);
 		} else {
-			GameManager.Instance.removeOnEvent('updateCountdown', this.updateCountdown);
+			// GameManager.Instance.removeOnEvent('updateCountdown', this.updateCountdown);
 
 			this._gameOverCountdown.isVisible = false;
 		}
@@ -98,15 +113,20 @@ export class LobbyUI extends UIController {
 		this._playerEntries.clear();
 	}
 
-	private updateCountdown(countdown: number = 0) {
+	public updateCountdown(countdown: number) {
+		if (GameManager.Instance.CurrentGameState !== GameState.CLOSE_COUNTDOWN && GameManager.Instance.CurrentGameState !== GameState.GAME_OVER) {
+			return;
+		}
+
+		// console.trace(`Lobby UI - Countdown: ${countdown}`);
 		this._gameOverCountdown.text = `${countdown}`;
 
-		if (GameManager.Instance.CurrentGameState !== GameState.GAME_OVER) {
-			this.updateHeader(countdown);
-		}
+		//if (GameManager.Instance.CurrentGameState !== GameState.GAME_OVER) {
+		this.updateHeader(countdown);
+		//}
 	}
 
-	private updateHeader(countdown: number = 0) {
+	private updateHeader(countdown: number) {
 		if (!NetworkManager.Config) {
 			return;
 		}
@@ -140,7 +160,7 @@ export class LobbyUI extends UIController {
 
 		this._playerEntries.delete(player.id);
 		this.updatePlayerCount();
-		this.updateHeader();
+		this.updateHeader(GameManager.Instance.Countdown);
 	}
 
 	private onPlayerPlayAgain(player: any) {

@@ -5,7 +5,6 @@ import { PlayerState } from './PlayerState';
 import { distanceBetweenPlayers, random } from '../../helpers/Utility';
 import { HASGameState } from '../schema/HASGameState';
 import { GameConfig } from '../../models/GameConfig';
-import { GameState } from '../schema/HASGameState';
 import { RescueOperation } from '../../models/RescueOperation';
 
 export class HASRoomState extends Schema {

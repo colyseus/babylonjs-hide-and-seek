@@ -164,6 +164,8 @@ export default class UIManager extends Node {
 				await delay(100);
 			}
 
+			console.log(`Config: %o`, NetworkManager.Config); //
+
 			this._titleUI.setVisible(false);
 			this._lobbyUI.setVisible(true);
 		} catch (error: any) {
@@ -176,6 +178,13 @@ export default class UIManager extends Node {
 
 		this._titleUI.setJoinUIEnabled(true);
 		this._overlayUI.setVisible(false);
+
+		while (!GameManager.Instance.Countdown) {
+			await delay(100);
+		}
+
+		console.log(`UI Manager - Handle Join Room - update countdown: ${GameManager.Instance.Countdown}`);
+		this._lobbyUI.updateCountdown(GameManager.Instance.Countdown);
 	}
 
 	private handleLeftRoom() {
@@ -203,7 +212,9 @@ export default class UIManager extends Node {
 			case GameState.NONE:
 				break;
 			case GameState.WAIT_FOR_MINIMUM:
-				this._lobbyUI.setVisible(true);
+				if (NetworkManager.Ready()) {
+					this._lobbyUI.setVisible(true);
+				}
 				break;
 			case GameState.CLOSE_COUNTDOWN:
 				break;

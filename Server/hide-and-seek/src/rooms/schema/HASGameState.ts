@@ -101,11 +101,11 @@ export class HASGameState extends Schema {
 	}
 
 	private moveToState(state: GameState) {
-		this._lastState = this.currentState;
+		// this._lastState = this.currentState;
 
-		this.currentState = state;
+		// this.currentState = state;
 
-		logger.info(`Move state from "${this._lastState}" to "${state}"`);
+		// logger.info(`Move state from "${this._lastState}" to "${state}"`);
 
 		// Anything that needs doing at the beginning of the state entry do here
 		switch (state) {
@@ -123,6 +123,8 @@ export class HASGameState extends Schema {
 			case GameState.CLOSE_COUNTDOWN:
 				// Reset the timestamp for the duration of the countdown to lock the room and begin a round of play
 				this._stateTimestamp = Date.now();
+				this.countdown = this._config.PreRoundCountdown / 1000;
+				logger.debug(`Close Countdown - Countdown: ${this.countdown}`);
 				break;
 			case GameState.INITIALIZE:
 				// Reset the timestamp for the duration of the countdown to lock the room and begin a round of play
@@ -134,7 +136,7 @@ export class HASGameState extends Schema {
 				// Randomly pick which player will be Seeker
 				const players: PlayerState[] = Array.from(this._room.state.players.values());
 
-				const index: number = random(0, players.length - 1);
+				const index: number = random(0, players.length);
 
 				// Remove the seeker from the array; we don't need to assign a spawn point to it
 				const player: PlayerState = players.splice(index, 1)[0];
@@ -180,8 +182,6 @@ export class HASGameState extends Schema {
 
 				break;
 			case GameState.GAME_OVER:
-				logger.debug(`Game Over - Seeker Won: ${this.seekerWon}`);
-
 				// Disable player movement
 				this._room.state.players.forEach((player: PlayerState) => {
 					player.canMove = false;
@@ -189,8 +189,18 @@ export class HASGameState extends Schema {
 
 				// Reset the timestamp for the duration of the game over stage
 				this._stateTimestamp = Date.now();
+
+				this.countdown = this._config.GameOverCountdown / 1000;
+
+				logger.debug(`Game Over - Countdown: ${this.countdown}`);
 				break;
 		}
+
+		this._lastState = this.currentState;
+
+		this.currentState = state;
+
+		logger.info(`Move state from "${this._lastState}" to "${state}"`);
 	}
 
 	/** Waits for the minimum number of players to join the room */

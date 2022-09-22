@@ -2,24 +2,24 @@
 	"materials": [],
 	"meshes": [
 		{
-			"name": "Collision",
-			"id": "3ba8d366-4e2f-407f-b8a4-93165ebb0145",
-			"uniqueId": 1636,
+			"name": "emitter",
+			"id": "caa5b202-7054-48aa-b5dc-666aafc03427",
+			"uniqueId": 1824,
 			"type": "Mesh",
 			"position": [
-				-2.777444839477539,
-				0.5,
-				0.43939876556396484
+				-0.41125383973121643,
+				-0.2263510525226593,
+				-0.6236996650695801
 			],
 			"rotation": [
 				0,
-				-0.1491389129342731,
+				-9.834897340965654e-10,
 				0
 			],
 			"scaling": [
-				4.9999967787568576,
+				0.9999999403953552,
 				1,
-				5.110814117802116
+				1
 			],
 			"pivotMatrix": {
 				"0": 1,
@@ -49,21 +49,24 @@
 			"checkCollisions": false,
 			"isBlocker": false,
 			"overrideMaterialSideOrientation": null,
-			"parentId": "068752d2-4225-41f8-91aa-df16d163b07c",
+			"parentId": "4dca4756-052f-49e7-9ff9-411e60bbb038",
 			"isUnIndexed": false,
-			"geometryUniqueId": 1326,
-			"geometryId": "bd29c7a5-94a7-4167-9b27-a5e8b7e71bda",
+			"geometryUniqueId": 1418,
+			"geometryId": "49c8764b-f7aa-4cdb-b5ec-dece4110c58b",
 			"subMeshes": null,
 			"materialUniqueId": 2024,
 			"materialId": "62cb76cb-a4dc-4a46-bf10-02a67f9b07d4",
 			"metadata": {
 				"editorGeometry": {
-					"type": "Cube",
-					"size": 1
+					"type": "Sphere",
+					"segments": 32,
+					"diameter": 1,
+					"arc": 1,
+					"slice": 1
 				},
 				"isPickable": true,
 				"script": {
-					"name": "src/scenes/scripts/interactables/batsTrigger.ts"
+					"name": "None"
 				},
 				"renderingGroupId": 0,
 				"doNotExport": false
@@ -74,14 +77,14 @@
 			"layerMask": 268435455,
 			"alphaIndex": 1.7976931348623157e+308,
 			"hasVertexAlpha": false,
-			"overlayAlpha": 0.3,
+			"overlayAlpha": 0.5,
 			"overlayColor": [
 				1,
 				0,
 				0
 			],
 			"applyFog": true,
-			"delayLoadingFile": "geometries/bd29c7a5-94a7-4167-9b27-a5e8b7e71bda.babylonbinarymeshdata",
+			"delayLoadingFile": "geometries/49c8764b-f7aa-4cdb-b5ec-dece4110c58b.babylonbinarymeshdata",
 			"boundingBoxMaximum": [
 				0.5,
 				0.5,
@@ -94,33 +97,33 @@
 			],
 			"_binaryInfo": {
 				"positionsAttrDesc": {
-					"count": 72,
+					"count": 7245,
 					"stride": 3,
 					"offset": 0,
 					"dataType": 1
 				},
 				"normalsAttrDesc": {
-					"count": 72,
+					"count": 7245,
 					"stride": 3,
-					"offset": 288,
+					"offset": 28980,
 					"dataType": 1
 				},
 				"uvsAttrDesc": {
-					"count": 48,
+					"count": 4830,
 					"stride": 2,
-					"offset": 576,
+					"offset": 57960,
 					"dataType": 1
 				},
 				"indicesAttrDesc": {
-					"count": 36,
+					"count": 13872,
 					"stride": 1,
-					"offset": 768,
+					"offset": 77280,
 					"dataType": 0
 				},
 				"subMeshesAttrDesc": {
 					"count": 1,
 					"stride": 5,
-					"offset": 912,
+					"offset": 132768,
 					"dataType": 0
 				}
 			},

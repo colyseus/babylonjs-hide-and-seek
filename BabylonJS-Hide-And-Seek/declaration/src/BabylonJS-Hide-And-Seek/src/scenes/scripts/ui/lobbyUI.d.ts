@@ -16,7 +16,7 @@ export declare class LobbyUI extends UIController {
     private registerControlHandlers;
     setVisible(visible: boolean): void;
     clearPlayerList(): void;
-    private updateCountdown;
+    updateCountdown(countdown: number): void;
     private updateHeader;
     private updatePlayerCount;
     private onPlayerAdded;

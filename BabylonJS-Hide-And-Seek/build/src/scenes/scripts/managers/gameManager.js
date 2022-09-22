@@ -91,6 +91,7 @@ var GameManager = /** @class */ (function (_super) {
         _this._halfSeekerFOV = 0;
         _this._playerState = null;
         _this._eventEmitter = new EventEmitter();
+        _this._countdown = 0;
         return _this;
     }
     Object.defineProperty(GameManager, "PlayerState", {
@@ -102,7 +103,7 @@ var GameManager = /** @class */ (function (_super) {
     });
     Object.defineProperty(GameManager.prototype, "Countdown", {
         get: function () {
-            return networkManager_1.default.Instance.Room.state.gameState.countdown;
+            return this._countdown;
         },
         enumerable: false,
         configurable: true
@@ -317,6 +318,7 @@ var GameManager = /** @class */ (function (_super) {
     GameManager.prototype.onGameStateChange = function (changes) {
         // console.log(`Game Manager - On Game State Change: %o`, changes);
         var change = null;
+        var stateChange = null;
         for (var i = 0; i < changes.length; i++) {
             change = changes[i];
             if (!change) {
@@ -324,16 +326,19 @@ var GameManager = /** @class */ (function (_super) {
             }
             switch (change.field) {
                 case 'currentState':
-                    this.handleGameStateChange(change.value);
+                    stateChange = change.value;
                     break;
                 case 'countdown':
-                    this.handleCountdownChange(change.value);
+                    this.handleCountdownChange(Number(change.value));
                     break;
             }
         }
+        if (stateChange) {
+            this.handleGameStateChange(stateChange);
+        }
     };
     GameManager.prototype.handleGameStateChange = function (gameState) {
-        console.log("Game Manager - Game State Changed: ".concat(gameState));
+        // console.log(`Game Manager - Game State Changed: ${gameState}`);
         this.CurrentGameState = gameState;
         switch (gameState) {
             case GameState_1.GameState.NONE:
@@ -369,8 +374,11 @@ var GameManager = /** @class */ (function (_super) {
         this.broadcastEvent('gameStateChanged', gameState);
     };
     GameManager.prototype.handleCountdownChange = function (countdown) {
-        // console.log(`Countdown: ${countdown}`);
-        this.broadcastEvent('updateCountdown', countdown);
+        if (!this.CurrentGameState) {
+            return;
+        }
+        this._countdown = countdown;
+        this.broadcastEvent('updateCountdown', this._countdown);
     };
     GameManager.prototype.spawnPlayers = function () {
         var _this = this;

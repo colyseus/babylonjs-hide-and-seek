@@ -33,6 +33,7 @@ export default class GameManager extends Node {
     private _playerState;
     private _eventEmitter;
     private _cachedInteractables;
+    private _countdown;
     static get PlayerState(): PlayerState;
     get Countdown(): number;
     get CurrentGameState(): GameState;

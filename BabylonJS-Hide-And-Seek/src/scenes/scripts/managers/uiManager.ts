@@ -217,6 +217,9 @@ export default class UIManager extends Node {
 				}
 				break;
 			case GameState.CLOSE_COUNTDOWN:
+				if (NetworkManager.Ready()) {
+					this._lobbyUI.setVisible(true);
+				}
 				break;
 			case GameState.INITIALIZE:
 				break;

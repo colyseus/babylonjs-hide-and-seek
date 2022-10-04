@@ -100,7 +100,7 @@ var PrologueUI = /** @class */ (function (_super) {
         this._countdown.text = text;
     };
     PrologueUI.prototype.updateCountdown = function (countdown) {
-        if (!gameManager_1.default.Instance.CurrentGameState || !this.shouldUpdatedCountdown) {
+        if (!gameManager_1.default.Instance.CurrentGameState || !this.shouldUpdatedCountdown || !networkManager_1.default.Ready()) {
             return;
         }
         var before = countdown;

@@ -9,6 +9,10 @@ export declare class LobbyUI extends UIController {
     private _gameOverCountdown;
     private _playAgainBtn;
     private _leaveBtn;
+    private _waitingBG;
+    private _startingBG;
+    private _seekerWinBG;
+    private _hidersWinBG;
     private _playerEntries;
     constructor(scene: Scene, layer: number);
     protected initialize(): Promise<void>;
@@ -18,6 +22,7 @@ export declare class LobbyUI extends UIController {
     clearPlayerList(): void;
     updateCountdown(countdown: number): void;
     private updateHeader;
+    private updateBackground;
     private updatePlayerCount;
     private onPlayerAdded;
     private onPlayerRemoved;

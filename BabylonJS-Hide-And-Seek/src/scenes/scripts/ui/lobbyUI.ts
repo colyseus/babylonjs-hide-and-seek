@@ -1,5 +1,5 @@
 import { GUID, Scene } from '@babylonjs/core';
-import { Control, Grid, StackPanel, TextBlock } from '@babylonjs/gui';
+import { Control, Grid, Image, StackPanel, TextBlock } from '@babylonjs/gui';
 import { UIController } from './uiController';
 import NetworkManager, { NetworkEvent } from '../managers/networkManager';
 import type { PlayerState } from '../../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
@@ -12,10 +12,17 @@ export class LobbyUI extends UIController {
 	private _header: TextBlock;
 	private _playerCount: TextBlock;
 	private _roomCode: TextBlock;
+
 	// Game Over UI
 	private _gameOverCountdown: TextBlock;
 	private _playAgainBtn: Control;
 	private _leaveBtn: Control;
+
+	// Backgrounds
+	private _waitingBG: Image;
+	private _startingBG: Image;
+	private _seekerWinBG: Control;
+	private _hidersWinBG: Image;
 
 	private _playerEntries: Map<string, Control>;
 
@@ -55,6 +62,10 @@ export class LobbyUI extends UIController {
 		this._gameOverCountdown = this.getControl('GameOverCountdown') as TextBlock;
 		this._playAgainBtn = this.getControl('PlayAgainBtn');
 		this._leaveBtn = this.getControl('LeaveBtn');
+		this._waitingBG = this.getControl('WaitingBG') as Image;
+		this._startingBG = this.getControl('StartingBG') as Image;
+		this._seekerWinBG = this.getControl('SeekerWBG');
+		this._hidersWinBG = this.getControl('HidersWBG') as Image;
 
 		this.updateHeader(GameManager.Instance.Countdown);
 		this.updatePlayerCount();
@@ -76,6 +87,10 @@ export class LobbyUI extends UIController {
 		if (visible) {
 			let countdown: number = GameManager.Instance.Countdown;
 
+			if (!NetworkManager.Config) {
+				console.trace(`*** Config is Null! ***`);
+			}
+
 			if (!countdown) {
 				if (GameManager.Instance.CurrentGameState === GameState.CLOSE_COUNTDOWN || GameManager.Instance.CurrentGameState === GameState.NONE) {
 					countdown = NetworkManager.Config.PreRoundCountdown / 1000;
@@ -88,6 +103,7 @@ export class LobbyUI extends UIController {
 				console.trace(`Invalid Countdown in Game State ${GameManager.Instance.CurrentGameState}`);
 			}
 
+			this.updateBackground();
 			this.updateHeader(countdown);
 			this.updatePlayerCount();
 
@@ -136,6 +152,17 @@ export class LobbyUI extends UIController {
 		} else {
 			this._header.text = GameManager.Instance.SeekerWon() ? `Seeker Wins!` : `Hiders Win!`;
 		}
+	}
+
+	private updateBackground() {
+		const gameState: GameState = GameManager.Instance.CurrentGameState;
+
+		this._waitingBG.isVisible = gameState === GameState.NONE || gameState === GameState.WAIT_FOR_MINIMUM;
+		this._startingBG.isVisible = gameState === GameState.CLOSE_COUNTDOWN;
+		this._seekerWinBG.isVisible = gameState === GameState.GAME_OVER && GameManager.Instance.SeekerWon();
+		this._hidersWinBG.isVisible = gameState === GameState.GAME_OVER && !GameManager.Instance.SeekerWon();
+
+		console.log(`*** Lobby UI - updateBackground() - ${gameState} ***`);
 	}
 
 	private updatePlayerCount() {

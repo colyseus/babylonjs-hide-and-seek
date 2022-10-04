@@ -57,7 +57,7 @@ export class PrologueUI extends UIController {
 	}
 
 	private updateCountdown(countdown: number) {
-		if (!GameManager.Instance.CurrentGameState || !this.shouldUpdatedCountdown) {
+		if (!GameManager.Instance.CurrentGameState || !this.shouldUpdatedCountdown || !NetworkManager.Ready()) {
 			return;
 		}
 

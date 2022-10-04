@@ -310,6 +310,9 @@ var UIManager = /** @class */ (function (_super) {
                 }
                 break;
             case GameState_1.GameState.CLOSE_COUNTDOWN:
+                if (networkManager_1.default.Ready()) {
+                    this._lobbyUI.setVisible(true);
+                }
                 break;
             case GameState_1.GameState.INITIALIZE:
                 break;

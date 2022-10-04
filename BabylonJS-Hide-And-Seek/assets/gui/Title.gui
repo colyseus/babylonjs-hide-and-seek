@@ -448,9 +448,9 @@
 										"shadowColor": "black",
 										"hoverCursor": "",
 										"fontOffset": {
-											"ascent": 34,
-											"height": 43,
-											"descent": 9
+											"ascent": 13,
+											"height": 18,
+											"descent": 5
 										},
 										"alpha": 1,
 										"scaleX": 1,
@@ -481,7 +481,7 @@
 										"disabledColorItem": "#6a6a6a",
 										"name": "Button_button",
 										"className": "TextBlock",
-										"fontFamily": "Arial",
+										"fontFamily": "./assets/fonts/GROBOLD.ttf",
 										"fontSize": "65.47%",
 										"fontWeight": "",
 										"fontStyle": ""
@@ -530,7 +530,7 @@
 								"paddingTop": "0px",
 								"paddingBottom": "0px",
 								"left": "0px",
-								"top": "-13px",
+								"top": "-42px",
 								"linkOffsetX": "0px",
 								"linkOffsetY": "0px",
 								"isEnabled": true,
@@ -564,9 +564,9 @@
 										"shadowColor": "black",
 										"hoverCursor": "",
 										"fontOffset": {
-											"ascent": 30,
-											"height": 38,
-											"descent": 8
+											"ascent": 13,
+											"height": 18,
+											"descent": 5
 										},
 										"alpha": 1,
 										"scaleX": 1,
@@ -597,7 +597,7 @@
 										"disabledColorItem": "#6a6a6a",
 										"name": "JoinErrorText",
 										"className": "TextBlock",
-										"fontFamily": "Arial",
+										"fontFamily": "./assets/fonts/GROBOLD.ttf",
 										"fontSize": "50%",
 										"fontWeight": "",
 										"fontStyle": ""
@@ -679,9 +679,9 @@
 										"shadowColor": "black",
 										"hoverCursor": "",
 										"fontOffset": {
-											"ascent": 33,
-											"height": 42,
-											"descent": 9
+											"ascent": 13,
+											"height": 18,
+											"descent": 5
 										},
 										"alpha": 1,
 										"scaleX": 1,
@@ -712,7 +712,7 @@
 										"disabledColorItem": "#6a6a6a",
 										"name": "Header",
 										"className": "TextBlock",
-										"fontFamily": "Arial",
+										"fontFamily": "./assets/fonts/GROBOLD.ttf",
 										"fontSize": "33.36%",
 										"fontWeight": "600",
 										"fontStyle": ""
@@ -1241,9 +1241,9 @@
 										"shadowColor": "black",
 										"hoverCursor": "",
 										"fontOffset": {
-											"ascent": 24,
-											"height": 31,
-											"descent": 7
+											"ascent": 16,
+											"height": 21,
+											"descent": 5
 										},
 										"alpha": 1,
 										"scaleX": 1,
@@ -1274,7 +1274,7 @@
 										"disabledColorItem": "#6a6a6a",
 										"name": "Button_button",
 										"className": "TextBlock",
-										"fontFamily": "Arial",
+										"fontFamily": "./assets/fonts/GROBOLD.ttf",
 										"fontSize": "26px",
 										"fontWeight": "",
 										"fontStyle": ""

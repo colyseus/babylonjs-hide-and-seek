@@ -449,8 +449,8 @@
 										"hoverCursor": "",
 										"fontOffset": {
 											"ascent": 13,
-											"height": 18,
-											"descent": 5
+											"height": 17,
+											"descent": 4
 										},
 										"alpha": 1,
 										"scaleX": 1,
@@ -565,8 +565,8 @@
 										"hoverCursor": "",
 										"fontOffset": {
 											"ascent": 13,
-											"height": 18,
-											"descent": 5
+											"height": 17,
+											"descent": 4
 										},
 										"alpha": 1,
 										"scaleX": 1,
@@ -680,8 +680,8 @@
 										"hoverCursor": "",
 										"fontOffset": {
 											"ascent": 13,
-											"height": 18,
-											"descent": 5
+											"height": 17,
+											"descent": 4
 										},
 										"alpha": 1,
 										"scaleX": 1,
@@ -1294,7 +1294,7 @@
 						"sourceHeight": 0,
 						"populateNinePatchSlicesFromImage": false,
 						"autoScale": false,
-						"stretch": 1,
+						"stretch": 2,
 						"source": "./assets/textures/UI/Title/Title_Text.png",
 						"cellWidth": 0,
 						"cellHeight": 0,
@@ -1319,8 +1319,8 @@
 						"horizontalAlignment": 2,
 						"verticalAlignment": 0,
 						"fixedRatio": 0,
-						"width": "830px",
-						"height": "226.45px",
+						"width": "100%",
+						"height": "24%",
 						"color": "transparent",
 						"zIndex": 0,
 						"notRenderable": false,

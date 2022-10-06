@@ -54,8 +54,8 @@
 			"geometryUniqueId": 1386,
 			"geometryId": "e37e5c88-8ee1-43af-9377-61ee3fc53c88",
 			"subMeshes": null,
-			"materialUniqueId": 2024,
-			"materialId": "62cb76cb-a4dc-4a46-bf10-02a67f9b07d4",
+			"materialUniqueId": 402,
+			"materialId": "default material",
 			"metadata": {
 				"gltf": {
 					"pointers": [

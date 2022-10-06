@@ -101,6 +101,7 @@ var LobbyUI = /** @class */ (function (_super) {
         this._startingBG = this.getControl('StartingBG');
         this._seekerWinBG = this.getControl('SeekerWBG');
         this._hidersWinBG = this.getControl('HidersWBG');
+        // this._hidersWinBG.wi
         this.updateHeader(gameManager_1.default.Instance.Countdown);
         this.updatePlayerCount();
         this.registerControlHandlers();
@@ -168,7 +169,7 @@ var LobbyUI = /** @class */ (function (_super) {
             this._header.text = networkManager_1.default.PlayerCount < networkManager_1.default.Config.MinPlayers ? "Waiting for Players" : "Game Starting in ".concat(countdown);
         }
         else {
-            this._header.text = gameManager_1.default.Instance.SeekerWon() ? "Seeker Wins!" : "Hiders Win!";
+            this._header.text = ''; // GameManager.Instance.SeekerWon() ? `Seeker Wins!` : `Hiders Win!`;
         }
     };
     LobbyUI.prototype.updateBackground = function () {

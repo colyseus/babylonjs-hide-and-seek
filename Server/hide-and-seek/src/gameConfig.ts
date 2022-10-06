@@ -4,7 +4,7 @@ export default {
 	preRoundCountdown: 10000,
 	initializeCountdown: 500,
 	prologueCountdown: 10000,
-	huntCountdown: 300000,
+	huntCountdown: 30000,
 	gameOverCountdown: 25000,
 	rescueTime: 1000,
 	rescueDistance: 2,

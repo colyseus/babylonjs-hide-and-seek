@@ -67,6 +67,8 @@ export class LobbyUI extends UIController {
 		this._seekerWinBG = this.getControl('SeekerWBG');
 		this._hidersWinBG = this.getControl('HidersWBG') as Image;
 
+		// this._hidersWinBG.wi
+
 		this.updateHeader(GameManager.Instance.Countdown);
 		this.updatePlayerCount();
 
@@ -150,7 +152,7 @@ export class LobbyUI extends UIController {
 		if (GameManager.Instance.CurrentGameState !== GameState.GAME_OVER) {
 			this._header.text = NetworkManager.PlayerCount < NetworkManager.Config.MinPlayers ? `Waiting for Players` : `Game Starting in ${countdown}`;
 		} else {
-			this._header.text = GameManager.Instance.SeekerWon() ? `Seeker Wins!` : `Hiders Win!`;
+			this._header.text = ''; // GameManager.Instance.SeekerWon() ? `Seeker Wins!` : `Hiders Win!`;
 		}
 	}
 

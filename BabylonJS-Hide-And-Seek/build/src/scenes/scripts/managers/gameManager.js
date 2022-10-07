@@ -171,11 +171,6 @@ var GameManager = /** @class */ (function (_super) {
         // ...
         this.initializeSpawnPoints();
         this.initializePlayers();
-        networkManager_1.default.Instance.addOnEvent(networkManager_1.NetworkEvent.JOINED_ROOM, this.onJoinedRoom);
-        networkManager_1.default.Instance.addOnEvent(networkManager_1.NetworkEvent.LEFT_ROOM, this.onLeftRoom);
-        networkManager_1.default.Instance.addOnEvent(networkManager_1.NetworkEvent.PLAYER_ADDED, this.onPlayerAdded);
-        networkManager_1.default.Instance.addOnEvent(networkManager_1.NetworkEvent.PLAYER_REMOVED, this.onPlayerRemoved);
-        networkManager_1.default.Instance.addOnEvent(networkManager_1.NetworkEvent.GAME_STATE_CHANGED, this.onGameStateChange);
         this._cameraHolder.setTarget(this._cameraStartPos, this._startChaseSpeed);
         // Set the layermask of all scene meshes so they aren't visible in the UI camera
         //================================================
@@ -186,6 +181,11 @@ var GameManager = /** @class */ (function (_super) {
             mesh.layerMask = meshLayermask;
         });
         //================================================
+        networkManager_1.default.Instance.addOnEvent(networkManager_1.NetworkEvent.JOINED_ROOM, this.onJoinedRoom);
+        networkManager_1.default.Instance.addOnEvent(networkManager_1.NetworkEvent.LEFT_ROOM, this.onLeftRoom);
+        networkManager_1.default.Instance.addOnEvent(networkManager_1.NetworkEvent.PLAYER_ADDED, this.onPlayerAdded);
+        networkManager_1.default.Instance.addOnEvent(networkManager_1.NetworkEvent.PLAYER_REMOVED, this.onPlayerRemoved);
+        networkManager_1.default.Instance.addOnEvent(networkManager_1.NetworkEvent.GAME_STATE_CHANGED, this.onGameStateChange);
     };
     GameManager.prototype.initializePlayers = function () {
         var _this = this;

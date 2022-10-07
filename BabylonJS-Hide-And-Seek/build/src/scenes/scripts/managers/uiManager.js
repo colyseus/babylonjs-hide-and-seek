@@ -97,6 +97,7 @@ var UIManager = /** @class */ (function (_super) {
         this.handleGameStateChanged = this.handleGameStateChanged.bind(this);
         this.handleLeftRoom = this.handleLeftRoom.bind(this);
         this.handlePlayAgain = this.handlePlayAgain.bind(this);
+        this.onWindowResize = this.onWindowResize.bind(this);
         this._engine = this.getEngine();
     };
     /**
@@ -104,6 +105,7 @@ var UIManager = /** @class */ (function (_super) {
      */
     UIManager.prototype.onInitialized = function () {
         // ...
+        window.onresize = this.onWindowResize;
     };
     /**
      * Called on the scene starts.
@@ -310,6 +312,9 @@ var UIManager = /** @class */ (function (_super) {
                 }
                 break;
             case GameState_1.GameState.CLOSE_COUNTDOWN:
+                if (networkManager_1.default.Ready()) {
+                    this._lobbyUI.setVisible(true);
+                }
                 break;
             case GameState_1.GameState.INITIALIZE:
                 break;
@@ -318,11 +323,13 @@ var UIManager = /** @class */ (function (_super) {
                 this._prologueUI.setVisible(true);
                 break;
             case GameState_1.GameState.SCATTER:
-                if (!gameManager_1.default.PlayerState.isSeeker) {
+                if (!gameManager_1.default.Instance.PlayerIsSeeker()) {
+                    this._prologueUI.setVisible(true);
                     this._prologueUI.shouldUpdatedCountdown = false;
-                    this._prologueUI.setCountdownText('Scatter!');
+                    // this._prologueUI.setCountdownText('Scatter!');
                 }
                 this._prologueUI.showInfo(false);
+                this._prologueUI.showCountdown(gameManager_1.default.Instance.PlayerIsSeeker());
                 break;
             case GameState_1.GameState.HUNT:
                 this._prologueUI.setVisible(false);
@@ -337,6 +344,9 @@ var UIManager = /** @class */ (function (_super) {
             default:
                 break;
         }
+    };
+    UIManager.prototype.onWindowResize = function () {
+        console.log("Window Resized!");
     };
     /**
      * Called each frame.

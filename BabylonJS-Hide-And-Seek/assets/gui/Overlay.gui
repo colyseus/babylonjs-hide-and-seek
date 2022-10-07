@@ -122,8 +122,8 @@
 						"shadowColor": "black",
 						"hoverCursor": "",
 						"fontOffset": {
-							"ascent": 51,
-							"height": 64,
+							"ascent": 50,
+							"height": 63,
 							"descent": 13
 						},
 						"alpha": 1,
@@ -135,9 +135,9 @@
 						"horizontalAlignment": 2,
 						"verticalAlignment": 2,
 						"fixedRatio": 0,
-						"width": "220px",
-						"height": "64px",
-						"color": "#FFFFFFFF",
+						"width": "203px",
+						"height": "63px",
+						"color": "#FFF000FF",
 						"zIndex": 0,
 						"notRenderable": false,
 						"isVisible": true,
@@ -155,7 +155,7 @@
 						"disabledColorItem": "#6a6a6a",
 						"name": "Textblock",
 						"className": "TextBlock",
-						"fontFamily": "Arial",
+						"fontFamily": "Grobold",
 						"fontSize": "56px",
 						"fontWeight": "",
 						"fontStyle": ""

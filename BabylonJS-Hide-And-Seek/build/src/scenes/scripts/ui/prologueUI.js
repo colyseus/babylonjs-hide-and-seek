@@ -53,6 +53,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PrologueUI = void 0;
 var utility_1 = require("../../utility");
+var GameState_1 = require("../GameState");
 var gameManager_1 = require("../managers/gameManager");
 var networkManager_1 = require("../managers/networkManager");
 var uiController_1 = require("./uiController");
@@ -84,23 +85,32 @@ var PrologueUI = /** @class */ (function (_super) {
         this._infoRoot = this.getControl('Info');
         this._header = this.getControl('Header');
         this._goal = this.getControl('Goal');
+        this._hiderBG = this.getControl('HiderBG');
+        this._seekerBG = this.getControl('SeekerBG');
+        this._scatter = this.getControl('Scatter');
     };
     PrologueUI.prototype.setVisible = function (visible) {
         _super.prototype.setVisible.call(this, visible);
         if (visible) {
             this.shouldUpdatedCountdown = true;
             this.showInfo(true);
+            this.showCountdown(true);
             this.updateTexts();
+            this.updateBackground();
+            this._scatter.isVisible = !gameManager_1.default.Instance.PlayerIsSeeker() && gameManager_1.default.Instance.CurrentGameState === GameState_1.GameState.SCATTER;
         }
     };
     PrologueUI.prototype.showInfo = function (show) {
         this._infoRoot.isVisible = show;
     };
+    PrologueUI.prototype.showCountdown = function (show) {
+        this._countdown.isVisible = show;
+    };
     PrologueUI.prototype.setCountdownText = function (text) {
         this._countdown.text = text;
     };
     PrologueUI.prototype.updateCountdown = function (countdown) {
-        if (!gameManager_1.default.Instance.CurrentGameState || !this.shouldUpdatedCountdown) {
+        if (!gameManager_1.default.Instance.CurrentGameState || !this.shouldUpdatedCountdown || !networkManager_1.default.Ready()) {
             return;
         }
         var before = countdown;
@@ -112,6 +122,10 @@ var PrologueUI = /** @class */ (function (_super) {
     PrologueUI.prototype.updateTexts = function () {
         this._header.text = "".concat(gameManager_1.default.Instance.PlayerIsSeeker() ? "Seeker" : "Hider");
         this._goal.text = "".concat(gameManager_1.default.Instance.PlayerIsSeeker() ? networkManager_1.default.Config.SeekerGoal : networkManager_1.default.Config.HiderGoal);
+    };
+    PrologueUI.prototype.updateBackground = function () {
+        this._hiderBG.isVisible = !gameManager_1.default.Instance.PlayerIsSeeker();
+        this._seekerBG.isVisible = gameManager_1.default.Instance.PlayerIsSeeker();
     };
     return PrologueUI;
 }(uiController_1.UIController));

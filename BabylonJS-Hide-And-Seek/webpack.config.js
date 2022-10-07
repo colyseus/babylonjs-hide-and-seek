@@ -35,6 +35,10 @@ module.exports = (_, argv) => {
 					test: /\.fx?$/,
 					loader: "raw-loader",
 				},
+				{
+					test: /\.(woff|woff2|eot|ttf|otf)$/i,
+					type: 'asset/resource',
+				  }
 			],
 		},
 		resolve: {

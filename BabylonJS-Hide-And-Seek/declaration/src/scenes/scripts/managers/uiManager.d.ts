@@ -41,6 +41,7 @@ export default class UIManager extends Node {
     private handleReturnToTitle;
     private handlePlayAgain;
     private handleGameStateChanged;
+    private onWindowResize;
     /**
      * Called each frame.
      */

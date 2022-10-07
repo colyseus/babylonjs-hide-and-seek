@@ -10,6 +10,7 @@ import { SpawnPoints } from '../spawnPoints';
 import NetworkManager, { NetworkEvent } from './networkManager';
 import { PlayerInputMessage } from '../../../../../Server/hide-and-seek/src/models/PlayerInputMessage';
 import InteractableTrigger from '../interactables/interactableTrigger';
+import { delay } from '../../utility';
 
 export default class GameManager extends Node {
 	private static _instance: GameManager = null;
@@ -145,12 +146,6 @@ export default class GameManager extends Node {
 
 		this.initializePlayers();
 
-		NetworkManager.Instance.addOnEvent(NetworkEvent.JOINED_ROOM, this.onJoinedRoom);
-		NetworkManager.Instance.addOnEvent(NetworkEvent.LEFT_ROOM, this.onLeftRoom);
-		NetworkManager.Instance.addOnEvent(NetworkEvent.PLAYER_ADDED, this.onPlayerAdded);
-		NetworkManager.Instance.addOnEvent(NetworkEvent.PLAYER_REMOVED, this.onPlayerRemoved);
-		NetworkManager.Instance.addOnEvent(NetworkEvent.GAME_STATE_CHANGED, this.onGameStateChange);
-
 		this._cameraHolder.setTarget(this._cameraStartPos, this._startChaseSpeed);
 
 		// Set the layermask of all scene meshes so they aren't visible in the UI camera
@@ -163,6 +158,12 @@ export default class GameManager extends Node {
 			mesh.layerMask = meshLayermask;
 		});
 		//================================================
+
+		NetworkManager.Instance.addOnEvent(NetworkEvent.JOINED_ROOM, this.onJoinedRoom);
+		NetworkManager.Instance.addOnEvent(NetworkEvent.LEFT_ROOM, this.onLeftRoom);
+		NetworkManager.Instance.addOnEvent(NetworkEvent.PLAYER_ADDED, this.onPlayerAdded);
+		NetworkManager.Instance.addOnEvent(NetworkEvent.PLAYER_REMOVED, this.onPlayerRemoved);
+		NetworkManager.Instance.addOnEvent(NetworkEvent.GAME_STATE_CHANGED, this.onGameStateChange);
 	}
 
 	private initializePlayers() {

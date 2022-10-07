@@ -1,6 +1,7 @@
 import { Scene } from '@babylonjs/core';
-import { Control, TextBlock } from '@babylonjs/gui';
+import { Control, Image, TextBlock } from '@babylonjs/gui';
 import { clamp } from '../../utility';
+import { GameState } from '../GameState';
 import GameManager from '../managers/gameManager';
 import NetworkManager from '../managers/networkManager';
 import { UIController } from './uiController';
@@ -10,6 +11,12 @@ export class PrologueUI extends UIController {
 	private _infoRoot: Control;
 	private _header: TextBlock;
 	private _goal: TextBlock;
+
+	private _scatter: Image;
+
+	//Backgrounds
+	private _hiderBG: Image;
+	private _seekerBG: Image;
 
 	public shouldUpdatedCountdown: boolean = true;
 
@@ -34,6 +41,9 @@ export class PrologueUI extends UIController {
 		this._infoRoot = this.getControl('Info');
 		this._header = this.getControl('Header') as TextBlock;
 		this._goal = this.getControl('Goal') as TextBlock;
+		this._hiderBG = this.getControl('HiderBG') as Image;
+		this._seekerBG = this.getControl('SeekerBG') as Image;
+		this._scatter = this.getControl('Scatter') as Image;
 	}
 
 	public setVisible(visible: boolean) {
@@ -43,8 +53,13 @@ export class PrologueUI extends UIController {
 			this.shouldUpdatedCountdown = true;
 
 			this.showInfo(true);
+			this.showCountdown(true);
 
 			this.updateTexts();
+
+			this.updateBackground();
+
+			this._scatter.isVisible = !GameManager.Instance.PlayerIsSeeker() && GameManager.Instance.CurrentGameState === GameState.SCATTER;
 		}
 	}
 
@@ -52,12 +67,16 @@ export class PrologueUI extends UIController {
 		this._infoRoot.isVisible = show;
 	}
 
+	public showCountdown(show: boolean) {
+		this._countdown.isVisible = show;
+	}
+
 	public setCountdownText(text: string) {
 		this._countdown.text = text;
 	}
 
 	private updateCountdown(countdown: number) {
-		if (!GameManager.Instance.CurrentGameState || !this.shouldUpdatedCountdown) {
+		if (!GameManager.Instance.CurrentGameState || !this.shouldUpdatedCountdown || !NetworkManager.Ready()) {
 			return;
 		}
 
@@ -73,5 +92,10 @@ export class PrologueUI extends UIController {
 	private updateTexts() {
 		this._header.text = `${GameManager.Instance.PlayerIsSeeker() ? `Seeker` : `Hider`}`;
 		this._goal.text = `${GameManager.Instance.PlayerIsSeeker() ? NetworkManager.Config.SeekerGoal : NetworkManager.Config.HiderGoal}`;
+	}
+
+	private updateBackground() {
+		this._hiderBG.isVisible = !GameManager.Instance.PlayerIsSeeker();
+		this._seekerBG.isVisible = GameManager.Instance.PlayerIsSeeker();
 	}
 }

@@ -50,6 +50,7 @@ export default class UIManager extends Node {
 		this.handleGameStateChanged = this.handleGameStateChanged.bind(this);
 		this.handleLeftRoom = this.handleLeftRoom.bind(this);
 		this.handlePlayAgain = this.handlePlayAgain.bind(this);
+		this.onWindowResize = this.onWindowResize.bind(this);
 
 		this._engine = this.getEngine();
 	}
@@ -59,6 +60,7 @@ export default class UIManager extends Node {
 	 */
 	public onInitialized(): void {
 		// ...
+		window.onresize = this.onWindowResize;
 	}
 
 	/**
@@ -217,6 +219,9 @@ export default class UIManager extends Node {
 				}
 				break;
 			case GameState.CLOSE_COUNTDOWN:
+				if (NetworkManager.Ready()) {
+					this._lobbyUI.setVisible(true);
+				}
 				break;
 			case GameState.INITIALIZE:
 				break;
@@ -225,12 +230,15 @@ export default class UIManager extends Node {
 				this._prologueUI.setVisible(true);
 				break;
 			case GameState.SCATTER:
-				if (!GameManager.PlayerState.isSeeker) {
+				if (!GameManager.Instance.PlayerIsSeeker()) {
+					this._prologueUI.setVisible(true);
+
 					this._prologueUI.shouldUpdatedCountdown = false;
-					this._prologueUI.setCountdownText('Scatter!');
+					// this._prologueUI.setCountdownText('Scatter!');
 				}
 
 				this._prologueUI.showInfo(false);
+				this._prologueUI.showCountdown(GameManager.Instance.PlayerIsSeeker());
 				break;
 			case GameState.HUNT:
 				this._prologueUI.setVisible(false);
@@ -246,6 +254,10 @@ export default class UIManager extends Node {
 			default:
 				break;
 		}
+	}
+
+	private onWindowResize() {
+		console.log(`Window Resized!`);
 	}
 
 	/**

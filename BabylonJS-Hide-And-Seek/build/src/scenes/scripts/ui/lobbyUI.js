@@ -97,6 +97,11 @@ var LobbyUI = /** @class */ (function (_super) {
         this._gameOverCountdown = this.getControl('GameOverCountdown');
         this._playAgainBtn = this.getControl('PlayAgainBtn');
         this._leaveBtn = this.getControl('LeaveBtn');
+        this._waitingBG = this.getControl('WaitingBG');
+        this._startingBG = this.getControl('StartingBG');
+        this._seekerWinBG = this.getControl('SeekerWBG');
+        this._hidersWinBG = this.getControl('HidersWBG');
+        // this._hidersWinBG.wi
         this.updateHeader(gameManager_1.default.Instance.Countdown);
         this.updatePlayerCount();
         this.registerControlHandlers();
@@ -111,6 +116,9 @@ var LobbyUI = /** @class */ (function (_super) {
         _super.prototype.setVisible.call(this, visible);
         if (visible) {
             var countdown = gameManager_1.default.Instance.Countdown;
+            if (!networkManager_1.default.Config) {
+                console.trace("*** Config is Null! ***");
+            }
             if (!countdown) {
                 if (gameManager_1.default.Instance.CurrentGameState === GameState_1.GameState.CLOSE_COUNTDOWN || gameManager_1.default.Instance.CurrentGameState === GameState_1.GameState.NONE) {
                     countdown = networkManager_1.default.Config.PreRoundCountdown / 1000;
@@ -122,6 +130,7 @@ var LobbyUI = /** @class */ (function (_super) {
             if (!countdown) {
                 console.trace("Invalid Countdown in Game State ".concat(gameManager_1.default.Instance.CurrentGameState));
             }
+            this.updateBackground();
             this.updateHeader(countdown);
             this.updatePlayerCount();
             this._roomCode.text = "Room: ".concat(networkManager_1.default.Instance.Room.id);
@@ -160,8 +169,16 @@ var LobbyUI = /** @class */ (function (_super) {
             this._header.text = networkManager_1.default.PlayerCount < networkManager_1.default.Config.MinPlayers ? "Waiting for Players" : "Game Starting in ".concat(countdown);
         }
         else {
-            this._header.text = gameManager_1.default.Instance.SeekerWon() ? "Seeker Wins!" : "Hiders Win!";
+            this._header.text = ''; // GameManager.Instance.SeekerWon() ? `Seeker Wins!` : `Hiders Win!`;
         }
+    };
+    LobbyUI.prototype.updateBackground = function () {
+        var gameState = gameManager_1.default.Instance.CurrentGameState;
+        this._waitingBG.isVisible = gameState === GameState_1.GameState.NONE || gameState === GameState_1.GameState.WAIT_FOR_MINIMUM;
+        this._startingBG.isVisible = gameState === GameState_1.GameState.CLOSE_COUNTDOWN;
+        this._seekerWinBG.isVisible = gameState === GameState_1.GameState.GAME_OVER && gameManager_1.default.Instance.SeekerWon();
+        this._hidersWinBG.isVisible = gameState === GameState_1.GameState.GAME_OVER && !gameManager_1.default.Instance.SeekerWon();
+        // console.log(`*** Lobby UI - updateBackground() - ${gameState} ***`
     };
     LobbyUI.prototype.updatePlayerCount = function () {
         if (!networkManager_1.default.Config) {

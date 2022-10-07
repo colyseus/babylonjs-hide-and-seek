@@ -258,7 +258,7 @@
 								"disabledColorItem": "#6a6a6a",
 								"name": "Countdown",
 								"className": "TextBlock",
-								"fontFamily": "Arial",
+								"fontFamily": "Grobold",
 								"fontSize": "50%",
 								"fontWeight": "",
 								"fontStyle": ""

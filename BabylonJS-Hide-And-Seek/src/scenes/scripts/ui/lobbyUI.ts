@@ -164,7 +164,7 @@ export class LobbyUI extends UIController {
 		this._seekerWinBG.isVisible = gameState === GameState.GAME_OVER && GameManager.Instance.SeekerWon();
 		this._hidersWinBG.isVisible = gameState === GameState.GAME_OVER && !GameManager.Instance.SeekerWon();
 
-		console.log(`*** Lobby UI - updateBackground() - ${gameState} ***`);
+		// console.log(`*** Lobby UI - updateBackground() - ${gameState} ***`
 	}
 
 	private updatePlayerCount() {

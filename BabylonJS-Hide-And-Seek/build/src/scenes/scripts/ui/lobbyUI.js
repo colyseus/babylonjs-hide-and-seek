@@ -178,7 +178,7 @@ var LobbyUI = /** @class */ (function (_super) {
         this._startingBG.isVisible = gameState === GameState_1.GameState.CLOSE_COUNTDOWN;
         this._seekerWinBG.isVisible = gameState === GameState_1.GameState.GAME_OVER && gameManager_1.default.Instance.SeekerWon();
         this._hidersWinBG.isVisible = gameState === GameState_1.GameState.GAME_OVER && !gameManager_1.default.Instance.SeekerWon();
-        console.log("*** Lobby UI - updateBackground() - ".concat(gameState, " ***"));
+        // console.log(`*** Lobby UI - updateBackground() - ${gameState} ***`
     };
     LobbyUI.prototype.updatePlayerCount = function () {
         if (!networkManager_1.default.Config) {

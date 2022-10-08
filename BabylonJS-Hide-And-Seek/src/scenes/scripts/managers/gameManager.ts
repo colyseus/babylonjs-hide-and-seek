@@ -65,6 +65,8 @@ export default class GameManager extends Node {
 	private _cachedInteractables: InteractableTrigger[];
 	private _countdown: number = 0;
 
+	private _characterVisuals: TransformNode[];
+
 	public static get PlayerState(): PlayerState {
 		return GameManager.Instance._playerState;
 	}
@@ -125,6 +127,7 @@ export default class GameManager extends Node {
 		this._foundHiders = new Map<string, Player>();
 		this._availableRemotePlayerObjects = [];
 		this._cachedInteractables = [];
+		this._characterVisuals = [];
 
 		this._halfSeekerFOV = this._seekerFOV / 2;
 
@@ -145,6 +148,7 @@ export default class GameManager extends Node {
 		this.initializeSpawnPoints();
 
 		this.initializePlayers();
+		this.collectCharacterVisuals();
 
 		this._cameraHolder.setTarget(this._cameraStartPos, this._startChaseSpeed);
 
@@ -188,6 +192,26 @@ export default class GameManager extends Node {
 			this._cachedInteractables.forEach((interactable: InteractableTrigger) => {
 				this.registerInteractable(interactable);
 			});
+		}
+	}
+
+	private collectCharacterVisuals() {
+		for (let i = 0; i < 7; i++) {
+			this._characterVisuals.push(this._scene.getTransformNodeByName(`V-ghost ${i + 1}`));
+		}
+
+		// Add the seeker visual last; we will always assume the seeker visual is last
+		this._characterVisuals.push(this._scene.getTransformNodeByName('V-seeker'));
+
+		// console.log(`Character Visuals: %o`, this._characterVisuals);
+
+		this.reparentCharacterVisuals();
+	}
+
+	private reparentCharacterVisuals() {
+		for (let i = 0; i < this._characterVisuals.length; i++) {
+			this._characterVisuals[i].setParent(this);
+			this._characterVisuals[i].setEnabled(false);
 		}
 	}
 
@@ -338,6 +362,7 @@ export default class GameManager extends Node {
 
 		switch (gameState) {
 			case GameState.NONE:
+				this.reparentCharacterVisuals();
 				break;
 			case GameState.WAIT_FOR_MINIMUM:
 				this.reset();
@@ -411,6 +436,15 @@ export default class GameManager extends Node {
 			// Add the player to the map of remote players
 			this._spawnedRemotes.set(sessionId, player);
 		}
+
+		// Assign character visual
+		//============================
+		const visualIndex: number = playerState.spawnPoint > -1 ? playerState.spawnPoint + 1 : this._characterVisuals.length - 1;
+
+		const visual: TransformNode = this._characterVisuals[visualIndex];
+
+		player.setVisual(visual);
+		//============================
 
 		const point: TransformNode = this._spawnPoints.getSpawnPoint(playerState);
 

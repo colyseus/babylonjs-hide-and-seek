@@ -1,4 +1,4 @@
-import { Mesh, Vector3 } from '@babylonjs/core';
+import { Mesh, TransformNode, Vector3 } from '@babylonjs/core';
 import Player from './player';
 export default class PlayerVisual extends Mesh {
     player: Player;
@@ -12,6 +12,7 @@ export default class PlayerVisual extends Mesh {
     private _capturedTrigger;
     private _mudPrint;
     private _mudPrints;
+    private _visualMeshes;
     /**
      * Override constructor.
      * @warn do not fill.
@@ -31,12 +32,14 @@ export default class PlayerVisual extends Mesh {
      */
     onStart(): void;
     setPlayerReference(player: Player): void;
+    setVisual(visual: TransformNode): void;
     setTriggerSize(size: number): void;
     setTarget(player: Player): void;
     setLookTargetDirection(direction: Vector3): void;
     setPickable(isPickable: boolean): void;
     setVisibility(visible: boolean): void;
     setCaptured(captured: boolean): void;
+    private updateVisibilityForCaptureState;
     registerPlayerMeshForIntersection(mesh: Mesh): void;
     toggleMudPrints(enabled: boolean, runTime?: number): void;
     /**

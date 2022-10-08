@@ -1,10 +1,10 @@
 export default {
-	minPlayers: 2,
+	minPlayers: 3,
 	maxPlayers: 8,
 	preRoundCountdown: 10000,
 	initializeCountdown: 500,
 	prologueCountdown: 10000,
-	huntCountdown: 30000,
+	huntCountdown: 180000,
 	gameOverCountdown: 25000,
 	rescueTime: 1000,
 	rescueDistance: 2,

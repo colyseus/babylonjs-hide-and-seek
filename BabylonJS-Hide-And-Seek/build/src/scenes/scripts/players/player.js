@@ -90,15 +90,16 @@ var Player = /** @class */ (function (_super) {
         (_a = this.visual) === null || _a === void 0 ? void 0 : _a.setEnabled(enabled);
     };
     Player.prototype.setPlayerState = function (state) {
-        console.log("Player - Set Player State");
         this._state = state;
     };
     Player.prototype.setCapturedTriggerSize = function (size) {
-        console.log("Player - set captured trigger size: ".concat(size));
         this.visual.setTriggerSize(size);
     };
     Player.prototype.setVisualVisibility = function (visible) {
         this.visual.setVisibility(visible);
+    };
+    Player.prototype.setVisual = function (visual) {
+        this.visual.setVisual(visual);
     };
     Player.prototype.showCaptured = function (captured) {
         // Only alter the visibility of the player if the local player is the Seeker

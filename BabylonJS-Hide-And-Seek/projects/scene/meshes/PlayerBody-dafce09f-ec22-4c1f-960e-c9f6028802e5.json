@@ -40,7 +40,7 @@
 				"15": 1
 			},
 			"isEnabled": true,
-			"isVisible": true,
+			"isVisible": false,
 			"infiniteDistance": false,
 			"pickable": true,
 			"receiveShadows": false,
@@ -51,11 +51,11 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "27f5dcb0-6992-409b-835e-abbaed318811",
 			"isUnIndexed": false,
-			"geometryUniqueId": 1399,
+			"geometryUniqueId": 1400,
 			"geometryId": "f0a84ea6-2166-499c-b192-a3a1e08add33",
 			"subMeshes": null,
-			"materialUniqueId": 402,
-			"materialId": "default material",
+			"materialUniqueId": 3749,
+			"materialId": "8a3de192-0762-4d80-b0dc-dd2c6e62c138",
 			"metadata": {
 				"editorGeometry": {
 					"type": "Sphere",

@@ -18,6 +18,10 @@ export function delay(delay: number): Promise<void> {
 	});
 }
 
+export function lerpNumber(from: number, to: number, t: number): number {
+	return (1 - t) * from + t * to;
+}
+
 export class Easing {
 	public static easeOutExpo(x: number): number {
 		return x === 1 ? 1 : 1 - Math.pow(2, -10 * x);
@@ -25,6 +29,39 @@ export class Easing {
 
 	public static easeInExpo(x: number): number {
 		return x === 0 ? 0 : Math.pow(2, 10 * x - 10);
+	}
+
+	public static easeInSine(x: number): number {
+		return 1 - Math.cos((x * Math.PI) / 2);
+	}
+
+	public static easeInCirc(x: number): number {
+		return 1 - Math.sqrt(1 - Math.pow(x, 2));
+	}
+
+	public static easeOutCirc(x: number): number {
+		return Math.sqrt(1 - Math.pow(x - 1, 2));
+	}
+
+	public static easeOutElastic(x: number): number {
+		const c4 = (2 * Math.PI) / 3;
+
+		return x === 0 ? 0 : x === 1 ? 1 : Math.pow(2, -10 * x) * Math.sin((x * 10 - 0.75) * c4) + 1;
+	}
+
+	public static easeOutBounce(x: number): number {
+		const n1 = 7.5625;
+		const d1 = 2.75;
+
+		if (x < 1 / d1) {
+			return n1 * x * x;
+		} else if (x < 2 / d1) {
+			return n1 * (x -= 1.5 / d1) * x + 0.75;
+		} else if (x < 2.5 / d1) {
+			return n1 * (x -= 2.25 / d1) * x + 0.9375;
+		} else {
+			return n1 * (x -= 2.625 / d1) * x + 0.984375;
+		}
 	}
 }
 

@@ -156,6 +156,7 @@ var GameManager = /** @class */ (function (_super) {
         this._foundHiders = new Map();
         this._availableRemotePlayerObjects = [];
         this._cachedInteractables = [];
+        this._characterVisuals = [];
         this._halfSeekerFOV = this._seekerFOV / 2;
         this.onJoinedRoom = this.onJoinedRoom.bind(this);
         this.onLeftRoom = this.onLeftRoom.bind(this);
@@ -171,6 +172,7 @@ var GameManager = /** @class */ (function (_super) {
         // ...
         this.initializeSpawnPoints();
         this.initializePlayers();
+        this.collectCharacterVisuals();
         this._cameraHolder.setTarget(this._cameraStartPos, this._startChaseSpeed);
         // Set the layermask of all scene meshes so they aren't visible in the UI camera
         //================================================
@@ -207,6 +209,21 @@ var GameManager = /** @class */ (function (_super) {
             this._cachedInteractables.forEach(function (interactable) {
                 _this.registerInteractable(interactable);
             });
+        }
+    };
+    GameManager.prototype.collectCharacterVisuals = function () {
+        for (var i = 0; i < 7; i++) {
+            this._characterVisuals.push(this._scene.getTransformNodeByName("V-ghost ".concat(i + 1)));
+        }
+        // Add the seeker visual last; we will always assume the seeker visual is last
+        this._characterVisuals.push(this._scene.getTransformNodeByName('V-seeker'));
+        // console.log(`Character Visuals: %o`, this._characterVisuals);
+        this.reparentCharacterVisuals();
+    };
+    GameManager.prototype.reparentCharacterVisuals = function () {
+        for (var i = 0; i < this._characterVisuals.length; i++) {
+            this._characterVisuals[i].setParent(this);
+            this._characterVisuals[i].setEnabled(false);
         }
     };
     GameManager.prototype.PlayerIsSeeker = function () {
@@ -342,6 +359,7 @@ var GameManager = /** @class */ (function (_super) {
         this.CurrentGameState = gameState;
         switch (gameState) {
             case GameState_1.GameState.NONE:
+                this.reparentCharacterVisuals();
                 break;
             case GameState_1.GameState.WAIT_FOR_MINIMUM:
                 this.reset();
@@ -404,6 +422,12 @@ var GameManager = /** @class */ (function (_super) {
             // Add the player to the map of remote players
             this._spawnedRemotes.set(sessionId, player);
         }
+        // Assign character visual
+        //============================
+        var visualIndex = playerState.spawnPoint > -1 ? playerState.spawnPoint + 1 : this._characterVisuals.length - 1;
+        var visual = this._characterVisuals[visualIndex];
+        player.setVisual(visual);
+        //============================
         var point = this._spawnPoints.getSpawnPoint(playerState);
         player.setParent(null);
         player.position.copyFrom(point.position);

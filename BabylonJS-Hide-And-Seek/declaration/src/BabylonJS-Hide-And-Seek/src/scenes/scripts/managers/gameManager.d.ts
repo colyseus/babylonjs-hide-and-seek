@@ -34,6 +34,7 @@ export default class GameManager extends Node {
     private _eventEmitter;
     private _cachedInteractables;
     private _countdown;
+    private _characterVisuals;
     static get PlayerState(): PlayerState;
     get Countdown(): number;
     get CurrentGameState(): GameState;
@@ -59,6 +60,8 @@ export default class GameManager extends Node {
      */
     onStart(): void;
     private initializePlayers;
+    private collectCharacterVisuals;
+    private reparentCharacterVisuals;
     PlayerIsSeeker(): boolean;
     joinRoom(roomId?: string): Promise<void>;
     registerInteractable(interactable: InteractableTrigger): void;

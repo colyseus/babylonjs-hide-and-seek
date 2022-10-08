@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Quat = exports.Vec3 = exports.Easing = exports.delay = exports.random = exports.clamp = void 0;
+exports.Quat = exports.Vec3 = exports.Easing = exports.lerpNumber = exports.delay = exports.random = exports.clamp = void 0;
 var core_1 = require("@babylonjs/core");
 var deg2Rad = 360 / (Math.PI * 2);
 var kEpsilonNormalSqrt = 1e-15;
@@ -19,6 +19,10 @@ function delay(delay) {
     });
 }
 exports.delay = delay;
+function lerpNumber(from, to, t) {
+    return (1 - t) * from + t * to;
+}
+exports.lerpNumber = lerpNumber;
 var Easing = /** @class */ (function () {
     function Easing() {
     }
@@ -27,6 +31,35 @@ var Easing = /** @class */ (function () {
     };
     Easing.easeInExpo = function (x) {
         return x === 0 ? 0 : Math.pow(2, 10 * x - 10);
+    };
+    Easing.easeInSine = function (x) {
+        return 1 - Math.cos((x * Math.PI) / 2);
+    };
+    Easing.easeInCirc = function (x) {
+        return 1 - Math.sqrt(1 - Math.pow(x, 2));
+    };
+    Easing.easeOutCirc = function (x) {
+        return Math.sqrt(1 - Math.pow(x - 1, 2));
+    };
+    Easing.easeOutElastic = function (x) {
+        var c4 = (2 * Math.PI) / 3;
+        return x === 0 ? 0 : x === 1 ? 1 : Math.pow(2, -10 * x) * Math.sin((x * 10 - 0.75) * c4) + 1;
+    };
+    Easing.easeOutBounce = function (x) {
+        var n1 = 7.5625;
+        var d1 = 2.75;
+        if (x < 1 / d1) {
+            return n1 * x * x;
+        }
+        else if (x < 2 / d1) {
+            return n1 * (x -= 1.5 / d1) * x + 0.75;
+        }
+        else if (x < 2.5 / d1) {
+            return n1 * (x -= 2.25 / d1) * x + 0.9375;
+        }
+        else {
+            return n1 * (x -= 2.625 / d1) * x + 0.984375;
+        }
     };
     return Easing;
 }());

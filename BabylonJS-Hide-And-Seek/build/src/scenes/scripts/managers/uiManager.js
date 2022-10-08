@@ -97,7 +97,7 @@ var UIManager = /** @class */ (function (_super) {
         this.handleGameStateChanged = this.handleGameStateChanged.bind(this);
         this.handleLeftRoom = this.handleLeftRoom.bind(this);
         this.handlePlayAgain = this.handlePlayAgain.bind(this);
-        this.onWindowResize = this.onWindowResize.bind(this);
+        // this.onWindowResize = this.onWindowResize.bind(this);
         this._engine = this.getEngine();
     };
     /**
@@ -105,7 +105,7 @@ var UIManager = /** @class */ (function (_super) {
      */
     UIManager.prototype.onInitialized = function () {
         // ...
-        window.onresize = this.onWindowResize;
+        // window.onresize = this.onWindowResize;
     };
     /**
      * Called on the scene starts.
@@ -345,9 +345,9 @@ var UIManager = /** @class */ (function (_super) {
                 break;
         }
     };
-    UIManager.prototype.onWindowResize = function () {
-        console.log("Window Resized!");
-    };
+    // private onWindowResize() {
+    // 	console.log(`Window Resized!`);
+    // }
     /**
      * Called each frame.
      */

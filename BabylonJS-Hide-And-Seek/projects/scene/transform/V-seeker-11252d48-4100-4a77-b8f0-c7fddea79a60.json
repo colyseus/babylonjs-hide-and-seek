@@ -1,0 +1,54 @@
+{
+	"tags": null,
+	"position": [
+		-0.14257372915744781,
+		4.973799150320701e-14,
+		-5.733210563659668
+	],
+	"rotation": [
+		0,
+		-3.1320950544607755,
+		0
+	],
+	"scaling": [
+		1.0000005176013136,
+		1,
+		1.0000005176013136
+	],
+	"billboardMode": 0,
+	"scalingDeterminant": 1,
+	"infiniteDistance": false,
+	"ignoreNonUniformScaling": false,
+	"reIntegrateRotationIntoRotationQuaternion": false,
+	"name": "V-seeker",
+	"id": "11252d48-4100-4a77-b8f0-c7fddea79a60",
+	"state": "",
+	"metadata": {
+		"script": {
+			"name": "None"
+		},
+		"doNotExport": false
+	},
+	"type": "TransformNode",
+	"uniqueId": 2784,
+	"parentId": "b2b8fbab-5cf1-430c-bafa-bf6d4a6998ab",
+	"localMatrix": {
+		"0": 1,
+		"1": 0,
+		"2": 0,
+		"3": 0,
+		"4": 0,
+		"5": 1,
+		"6": 0,
+		"7": 0,
+		"8": 0,
+		"9": 0,
+		"10": 1,
+		"11": 0,
+		"12": 0,
+		"13": 0,
+		"14": 0,
+		"15": 1
+	},
+	"isEnabled": true
+}

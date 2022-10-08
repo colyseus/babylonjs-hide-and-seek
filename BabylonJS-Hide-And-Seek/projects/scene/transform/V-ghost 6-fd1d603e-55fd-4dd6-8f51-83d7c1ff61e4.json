@@ -1,0 +1,54 @@
+{
+	"tags": null,
+	"position": [
+		3.5693984031677246,
+		6.217248937900877e-14,
+		-7.247099876403809
+	],
+	"rotation": [
+		0,
+		-2.4935013402559676,
+		0
+	],
+	"scaling": [
+		1.0000005453950682,
+		1,
+		1.0000005453950682
+	],
+	"billboardMode": 0,
+	"scalingDeterminant": 1,
+	"infiniteDistance": false,
+	"ignoreNonUniformScaling": false,
+	"reIntegrateRotationIntoRotationQuaternion": false,
+	"name": "V-ghost 6",
+	"id": "fd1d603e-55fd-4dd6-8f51-83d7c1ff61e4",
+	"state": "",
+	"metadata": {
+		"script": {
+			"name": "None"
+		},
+		"doNotExport": false
+	},
+	"type": "TransformNode",
+	"uniqueId": 2436,
+	"parentId": "b2b8fbab-5cf1-430c-bafa-bf6d4a6998ab",
+	"localMatrix": {
+		"0": 1,
+		"1": 0,
+		"2": 0,
+		"3": 0,
+		"4": 0,
+		"5": 1,
+		"6": 0,
+		"7": 0,
+		"8": 0,
+		"9": 0,
+		"10": 1,
+		"11": 0,
+		"12": 0,
+		"13": 0,
+		"14": 0,
+		"15": 1
+	},
+	"isEnabled": true
+}

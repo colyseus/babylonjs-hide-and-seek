@@ -151,7 +151,7 @@ export default class CapturedVFX extends Mesh {
 			return;
 		}
 
-		console.log(`Play Rescure FX`);
+		console.log(`Play Rescue FX`);
 		this.fixMeshes();
 
 		this._playerRescued = true;
@@ -176,6 +176,7 @@ export default class CapturedVFX extends Mesh {
 	}
 
 	public stop() {
+		console.log(`Capture FX STOP`);
 		this.resetFX();
 		this._particles.stop();
 

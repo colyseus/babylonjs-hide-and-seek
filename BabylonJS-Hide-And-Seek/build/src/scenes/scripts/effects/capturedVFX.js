@@ -177,7 +177,7 @@ var CapturedVFX = /** @class */ (function (_super) {
                         if (this.playingFX()) {
                             return [2 /*return*/];
                         }
-                        console.log("Play Rescure FX");
+                        console.log("Play Rescue FX");
                         this.fixMeshes();
                         this._playerRescued = true;
                         this.punchFXOut(this._rescuePunchTime);
@@ -202,6 +202,7 @@ var CapturedVFX = /** @class */ (function (_super) {
         });
     };
     CapturedVFX.prototype.stop = function () {
+        console.log("Capture FX STOP");
         this.resetFX();
         this._particles.stop();
         this._play = false;

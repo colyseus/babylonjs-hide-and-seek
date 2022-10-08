@@ -52,7 +52,7 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "6094c91f-4087-430f-b34f-bd2060a20099",
 			"isUnIndexed": false,
-			"geometryUniqueId": 2390,
+			"geometryUniqueId": 1310,
 			"geometryId": "08a637a5-09f2-40a9-a1d7-4252dc0f5297",
 			"subMeshes": null,
 			"materialUniqueId": 2259,
@@ -103,12 +103,12 @@
 			"delayLoadingFile": "geometries/08a637a5-09f2-40a9-a1d7-4252dc0f5297.babylonbinarymeshdata",
 			"boundingBoxMaximum": [
 				27.933942794799805,
-				21.108782210717777,
+				21.108781814575195,
 				67.46372985839844
 			],
 			"boundingBoxMinimum": [
 				-27.933942794799805,
-				-22.09798963986816,
+				-22.097990036010742,
 				0.3202400207519531
 			],
 			"_binaryInfo": {

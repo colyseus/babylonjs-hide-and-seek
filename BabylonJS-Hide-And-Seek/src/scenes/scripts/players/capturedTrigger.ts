@@ -52,8 +52,8 @@ export default class CapturedTrigger extends Mesh {
 				// console.log(`Captured Trigger - Mesh intersection ENTER %o`, event);
 				const localPlayerVisual: PlayerVisual = event.additionalData.parent as PlayerVisual;
 
-				console.log(`Captured Trigger - Player is captured?: ${this._player.isCaptured()}`);
-				if (this._player.isCaptured() && localPlayerVisual.player.isLocalPlayer) {
+				// console.log(`Captured Trigger - Player is captured?: ${this._player.isCaptured()}`);
+				if (this._player.isCaptured() && !this._player.visual.playingCapturedVFX() && localPlayerVisual.player.isLocalPlayer) {
 					GameManager.Instance.rescueCapturedHider(this._player);
 				}
 			}

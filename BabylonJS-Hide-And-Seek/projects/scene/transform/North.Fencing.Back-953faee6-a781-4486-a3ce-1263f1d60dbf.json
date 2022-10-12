@@ -26,7 +26,8 @@
 	"metadata": {
 		"script": {
 			"name": "None"
-		}
+		},
+		"doNotExport": false
 	},
 	"type": "TransformNode",
 	"uniqueId": 2228,

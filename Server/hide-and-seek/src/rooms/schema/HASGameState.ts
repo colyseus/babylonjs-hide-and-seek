@@ -63,6 +63,7 @@ export class HASGameState extends Schema {
 
 		hider.isCaptured = false;
 		hider.canMove = true;
+		hider.rescueCount++;
 
 		this._capturedPlayers.delete(hider.id);
 	}

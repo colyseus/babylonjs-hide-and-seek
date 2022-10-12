@@ -45,6 +45,12 @@ export default class InteractableTrigger extends Mesh {
 	public onInitialized(): void {
 		// ...
 		this.actionManager = new ActionManager(this.getScene());
+
+		this.isPickable = false;
+
+		this.getChildMeshes().forEach((mesh: Mesh) => {
+			mesh.isPickable = false;
+		});
 	}
 
 	/**

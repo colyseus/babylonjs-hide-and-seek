@@ -61,8 +61,8 @@ var CapturedTrigger = /** @class */ (function (_super) {
         }, function (event) {
             // console.log(`Captured Trigger - Mesh intersection ENTER %o`, event);
             var localPlayerVisual = event.additionalData.parent;
-            console.log("Captured Trigger - Player is captured?: ".concat(_this._player.isCaptured()));
-            if (_this._player.isCaptured() && localPlayerVisual.player.isLocalPlayer) {
+            // console.log(`Captured Trigger - Player is captured?: ${this._player.isCaptured()}`);
+            if (_this._player.isCaptured() && !_this._player.visual.playingCapturedVFX() && localPlayerVisual.player.isLocalPlayer) {
                 gameManager_1.default.Instance.rescueCapturedHider(_this._player);
             }
         });

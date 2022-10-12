@@ -1,0 +1,54 @@
+{
+	"tags": null,
+	"position": [
+		-2.872845411300659,
+		0,
+		-3.4389541149139404
+	],
+	"rotation": [
+		0,
+		-0.7319169159416412,
+		0
+	],
+	"scaling": [
+		0.8241180748105416,
+		1,
+		1.0000005645337784
+	],
+	"billboardMode": 0,
+	"scalingDeterminant": 1,
+	"infiniteDistance": false,
+	"ignoreNonUniformScaling": false,
+	"reIntegrateRotationIntoRotationQuaternion": false,
+	"name": "North.Fencing.Back",
+	"id": "95cbf768-038e-4a39-af01-4e0cfa40439e",
+	"state": "",
+	"metadata": {
+		"script": {
+			"name": "None"
+		},
+		"doNotExport": false
+	},
+	"type": "TransformNode",
+	"uniqueId": 2388,
+	"parentId": "8cc43371-c89d-4761-9470-a7e93d4ad83a",
+	"localMatrix": {
+		"0": 1,
+		"1": 0,
+		"2": 0,
+		"3": 0,
+		"4": 0,
+		"5": 1,
+		"6": 0,
+		"7": 0,
+		"8": 0,
+		"9": 0,
+		"10": 1,
+		"11": 0,
+		"12": 0,
+		"13": 0,
+		"14": 0,
+		"15": 1
+	},
+	"isEnabled": true
+}

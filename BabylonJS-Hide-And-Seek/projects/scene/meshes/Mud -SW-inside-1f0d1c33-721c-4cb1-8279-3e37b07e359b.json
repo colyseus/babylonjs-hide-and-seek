@@ -13,12 +13,12 @@
 			],
 			"rotation": [
 				1.5707963267948966,
-				0.8418559466733024,
+				0.8418559199891353,
 				0
 			],
 			"scaling": [
-				1.5719609724806196,
-				1.8625636588891983,
+				1.7791239176272386,
+				1.862563649376186,
 				1
 			],
 			"pivotMatrix": {
@@ -51,7 +51,7 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "6326c232-77f8-4370-afcc-be49aa782312",
 			"isUnIndexed": false,
-			"geometryUniqueId": 336,
+			"geometryUniqueId": 643,
 			"geometryId": "f0e4bbd5-2d4e-4c26-b40d-5301d60ad1c5",
 			"subMeshes": null,
 			"materialUniqueId": 1623,

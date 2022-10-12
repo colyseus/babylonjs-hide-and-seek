@@ -40,6 +40,10 @@ var MudTrigger = /** @class */ (function (_super) {
     MudTrigger.prototype.onInitialized = function () {
         // ...
         _super.prototype.onInitialized.call(this);
+        this.isPickable = false;
+        this.getChildMeshes().forEach(function (mesh) {
+            mesh.isPickable = false;
+        });
     };
     /**
      * Called on the scene starts.

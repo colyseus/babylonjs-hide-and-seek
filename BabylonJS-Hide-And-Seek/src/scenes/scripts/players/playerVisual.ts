@@ -69,6 +69,10 @@ export default class PlayerVisual extends Mesh {
 		this._captured.setEnabled(true);
 	}
 
+	public playingCapturedVFX(): boolean {
+		return this._captured.playingFX();
+	}
+
 	public setPlayerReference(player: Player) {
 		this.player = player;
 

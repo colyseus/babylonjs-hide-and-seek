@@ -25,6 +25,12 @@ export default class MudTrigger extends InteractableTrigger {
 	public onInitialized(): void {
 		// ...
 		super.onInitialized();
+
+		this.isPickable = false;
+
+		this.getChildMeshes().forEach((mesh: Mesh) => {
+			mesh.isPickable = false;
+		});
 	}
 
 	/**

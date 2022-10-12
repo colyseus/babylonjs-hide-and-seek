@@ -52,7 +52,7 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "fe68f8ac-e4c9-4f95-83c2-2a4b4a627b1d",
 			"isUnIndexed": false,
-			"materialUniqueId": 335,
+			"materialUniqueId": 657,
 			"materialId": "default material",
 			"metadata": {
 				"basePoseMatrix": {
@@ -80,7 +80,7 @@
 				},
 				"isPickable": true,
 				"script": {
-					"name": "None"
+					"name": "src/scenes/scripts/meshMerger.ts"
 				},
 				"renderingGroupId": 0,
 				"doNotExport": false

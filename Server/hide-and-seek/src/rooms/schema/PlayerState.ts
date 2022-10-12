@@ -14,6 +14,7 @@ export class PlayerState extends Schema {
 	/** The index of the spawn point on the client */
 	@type('number') spawnPoint: number = -1;
 	@type('boolean') playAgain: boolean = false;
+	@type('number') rescueCount: number = 0; // The number of times the player has been rescued
 
 	// Player Position
 	@type('number') xPos: number = 0.0;
@@ -45,6 +46,7 @@ export class PlayerState extends Schema {
 		this.isSeeker = false;
 		this.spawnPoint = -1;
 		this.positionTimestamp = 0;
+		this.rescueCount = 0;
 	}
 
 	public update(deltaTime: number) {

@@ -131,7 +131,6 @@ export class HASGameState extends Schema {
 				// Reset the timestamp for the duration of the countdown to lock the room and begin a round of play
 				this._stateTimestamp = Date.now();
 				this.countdown = this._config.PreRoundCountdown / 1000;
-				logger.debug(`Close Countdown - Countdown: ${this.countdown}`);
 				break;
 			case GameState.INITIALIZE:
 				// Reset the timestamp for the duration of the countdown to lock the room and begin a round of play
@@ -143,24 +142,17 @@ export class HASGameState extends Schema {
 				// Randomly pick which player will be Seeker
 				const players: PlayerState[] = Array.from(this._room.state.players.values());
 
-				logger.warn(`DEBUG FORCE FIRST PLAYER TO BE SEEKER`);
-				const index: number = 0; // random(0, players.length);
+				const index: number = random(0, players.length);
 
 				// Remove the seeker from the array; we don't need to assign a spawn point to it
 				const player: PlayerState = players.splice(index, 1)[0];
 				player.spawnPoint = -1;
 				player.isSeeker = true;
 
-				logger.debug(`Seeker: ${player.id}`);
-
-				logger.debug(`Remaining Players: ${players.length}`);
-
 				// Assign remaining players spawn point indices
 				for (let i = 0; i < players.length; i++) {
 					players[i].spawnPoint = this._room.state.getSpawnPointIndex();
 					players[i].isSeeker = false;
-
-					logger.debug(`\tHider ${players[i].id} Spawnpoint: ${players[i].spawnPoint}`);
 				}
 
 				this._capturedPlayers.clear();

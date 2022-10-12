@@ -2,23 +2,23 @@
 	"materials": [],
 	"meshes": [
 		{
-			"name": "Mud4",
-			"id": "e109e68e-91e8-4681-be8a-bb7db320db25",
-			"uniqueId": 3141,
+			"name": "Mud -SW-o",
+			"id": "e1b2f0a5-e959-4729-8965-2581e2a2ec39",
+			"uniqueId": 1647,
 			"type": "Mesh",
 			"position": [
-				-22.019079208374023,
-				0,
-				-22.626981735229492
+				-21.916227340698242,
+				0.020000001415610313,
+				-22.55706787109375
 			],
 			"rotation": [
 				1.5707963267948966,
-				0.7292036991049928,
+				0.6171028492596692,
 				0
 			],
 			"scaling": [
-				0.9999999924004648,
-				0.9999999924004648,
+				0.9999998570959083,
+				1.000000286729138,
 				1
 			],
 			"localMatrix": {
@@ -43,7 +43,7 @@
 			"isVisible": true,
 			"infiniteDistance": false,
 			"pickable": true,
-			"receiveShadows": true,
+			"receiveShadows": false,
 			"billboardMode": 0,
 			"visibility": 1,
 			"checkCollisions": false,
@@ -51,13 +51,17 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "6326c232-77f8-4370-afcc-be49aa782312",
 			"isUnIndexed": false,
-			"geometryUniqueId": 776,
-			"geometryId": "f35cc385-65c0-4651-8f11-cbdecbfe0972",
+			"geometryUniqueId": 814,
+			"geometryId": "f0e4bbd5-2d4e-4c26-b40d-5301d60ad1c5",
 			"subMeshes": null,
 			"materialUniqueId": 1623,
 			"materialId": "1ac40e75-f1fd-4207-9ffc-5d2483a04d2a",
 			"metadata": {
-				"isDecal": true,
+				"editorGeometry": {
+					"type": "Plane",
+					"width": 6,
+					"height": 5
+				},
 				"isPickable": true,
 				"script": {
 					"name": "None"
@@ -78,46 +82,46 @@
 				0
 			],
 			"applyFog": true,
-			"delayLoadingFile": "geometries/f35cc385-65c0-4651-8f11-cbdecbfe0972.babylonbinarymeshdata",
+			"delayLoadingFile": "geometries/f0e4bbd5-2d4e-4c26-b40d-5301d60ad1c5.babylonbinarymeshdata",
 			"boundingBoxMaximum": [
-				2.4200000762939453,
-				2.4200000762939453,
-				1.0746959217184694e-15
+				3,
+				2.5,
+				0
 			],
 			"boundingBoxMinimum": [
-				-2.4200000762939453,
-				-2.4200000762939453,
-				-1.074695815839351e-15
+				-3,
+				-2.5,
+				0
 			],
 			"_binaryInfo": {
 				"positionsAttrDesc": {
-					"count": 45,
+					"count": 12,
 					"stride": 3,
 					"offset": 0,
 					"dataType": 1
 				},
 				"normalsAttrDesc": {
-					"count": 45,
+					"count": 12,
 					"stride": 3,
-					"offset": 180,
+					"offset": 48,
 					"dataType": 1
 				},
 				"uvsAttrDesc": {
-					"count": 30,
+					"count": 8,
 					"stride": 2,
-					"offset": 360,
+					"offset": 96,
 					"dataType": 1
 				},
 				"indicesAttrDesc": {
-					"count": 15,
+					"count": 6,
 					"stride": 1,
-					"offset": 480,
+					"offset": 128,
 					"dataType": 0
 				},
 				"subMeshesAttrDesc": {
 					"count": 1,
 					"stride": 5,
-					"offset": 540,
+					"offset": 152,
 					"dataType": 0
 				}
 			},

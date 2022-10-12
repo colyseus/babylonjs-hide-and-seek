@@ -173,6 +173,7 @@ export class HASGameState extends Schema {
 					})[0];
 
 					seeker.canMove = true;
+					// @ts-ignore
 				} catch (error: any) {
 					logger.error(`Error allowing Seeker to move: ${error.stack}`);
 				}

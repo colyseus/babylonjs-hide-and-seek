@@ -1,13 +1,21 @@
 const path = require("path");
 const webpack = require("webpack");
 const editor = require("babylonjs-editor-webpack-progress");
+const Dotenv = require('dotenv-webpack');
 
-module.exports = (_, argv) => {
+module.exports = (env, argv) => {
 	const entryPath = path.join(__dirname, "src/index.ts");
 	const package = require("./package.json");
 
-	
 	console.log(`********* WEBPACK Dir Path: "${__dirname}" *********`);
+
+	let configPath = './configs/dev.env';
+
+	if(env.production) {
+		configPath = './configs/prod.env';
+	}
+
+	console.log(`*** Config Path: ${configPath} ***`);
 
 	return {
 		// we output both a minified version & a non minified version on production build
@@ -45,6 +53,9 @@ module.exports = (_, argv) => {
 			extensions: [".ts", ".js"],
 		},
 		plugins: [
+			new Dotenv({
+				path: configPath
+			}),
 			new webpack.BannerPlugin({
 				banner: `${package.name} ${package.version} ${new Date().toString()}`,
 			}),

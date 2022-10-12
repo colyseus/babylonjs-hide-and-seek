@@ -85,14 +85,16 @@ var UIController = /** @class */ (function (_super) {
     };
     UIController.prototype.loadGUI = function (guiName) {
         return __awaiter(this, void 0, void 0, function () {
-            var uiTex, error_1;
+            var uiTex, path, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        uiTex = gui_1.AdvancedDynamicTexture.CreateFullscreenUI('UI', true, this._scene, core_1.Texture.TRILINEAR_SAMPLINGMODE, true);
+                        uiTex = gui_1.AdvancedDynamicTexture.CreateFullscreenUI("".concat(this._uiName, "-UI"), true, this._scene, core_1.Texture.TRILINEAR_SAMPLINGMODE, true);
                         uiTex.layer.layerMask = this._uiLayer;
-                        return [4 /*yield*/, uiTex.parseFromURLAsync("assets/gui/".concat(guiName, ".gui"))];
+                        path = "".concat(process.env.GUI_PATH).concat(guiName, ".gui");
+                        console.log("Load GUI at: ".concat(path)); //
+                        return [4 /*yield*/, uiTex.parseFromURLAsync(path)];
                     case 1:
                         _a.sent();
                         // Get UI root component

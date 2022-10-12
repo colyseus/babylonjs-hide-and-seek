@@ -40,7 +40,7 @@ export default class CapturedVFX extends Mesh {
      * Called on the scene starts.
      */
     onStart(): void;
-    private fixMeshes;
+    private resetMeshes;
     playCaptured(): Promise<void>;
     playRescued(): Promise<void>;
     stop(): void;

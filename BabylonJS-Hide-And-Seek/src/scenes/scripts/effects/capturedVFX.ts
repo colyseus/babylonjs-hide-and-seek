@@ -101,7 +101,7 @@ export default class CapturedVFX extends Mesh {
 	// 	}
 	// }
 
-	private fixMeshes() {
+	private resetMeshes() {
 		for (let i = 0; i < this._meshes.length; i++) {
 			this._meshes[i].setEnabled(true);
 			this._meshes[i].isVisible = true;
@@ -117,7 +117,9 @@ export default class CapturedVFX extends Mesh {
 		}
 
 		console.log(`Play Captured FX`);
-		this.fixMeshes();
+
+		this.setScale(Vector3.One());
+		this.resetMeshes();
 
 		this.setEnabled(true);
 
@@ -152,7 +154,7 @@ export default class CapturedVFX extends Mesh {
 		}
 
 		console.log(`Play Rescue FX`);
-		this.fixMeshes();
+		this.resetMeshes();
 
 		this._playerRescued = true;
 
@@ -176,7 +178,7 @@ export default class CapturedVFX extends Mesh {
 	}
 
 	public stop() {
-		console.log(`Capture FX STOP`);
+		// console.log(`Capture FX STOP`);
 		this.resetFX();
 		this._particles.stop();
 

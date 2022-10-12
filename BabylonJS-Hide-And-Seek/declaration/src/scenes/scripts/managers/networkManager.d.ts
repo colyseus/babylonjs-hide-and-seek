@@ -25,11 +25,8 @@ export default class NetworkManager extends Node {
     static get Instance(): NetworkManager;
     static get Config(): GameConfig;
     getColyseusServerAddress(): string;
-    setColyseusServerAddress(value: string): void;
     getColyseusServerPort(): number;
-    setColyseusServerPort(value: number): void;
-    get ColyseusUseSecure(): boolean;
-    set ColyseusUseSecure(value: boolean);
+    getColyseusUseSecure(): boolean;
     private WebSocketEndPoint;
     private WebRequestEndPoint;
     static Ready(): boolean;
@@ -45,6 +42,7 @@ export default class NetworkManager extends Node {
      * This function is called immediatly after the constructor has been called.
      */
     onInitialize(): void;
+    private createColyseusSettings;
     private bindHandlers;
     /**
      * Called on the scene starts.

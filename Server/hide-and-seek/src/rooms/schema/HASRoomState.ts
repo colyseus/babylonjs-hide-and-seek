@@ -157,6 +157,7 @@ export class HASRoomState extends Schema {
 			const op: RescueOperation = new RescueOperation(rescuer, hider, this._config.RescueTime, this._config.RescueDistance);
 
 			this._rescueOperations.set(op.Key, op);
+			// @ts-ignore
 		} catch (error: any) {
 			logger.error(error.stack);
 		}

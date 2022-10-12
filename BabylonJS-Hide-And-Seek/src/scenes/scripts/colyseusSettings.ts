@@ -1,11 +1,11 @@
-import { Node } from '@babylonjs/core/node';
-import { visibleInInspector } from '../decorators';
+export class ColyseusSettings {
+	public readonly colyseusServerAddress: string = 'localhost';
+	public readonly colyseusServerPort: number = 2567;
+	public readonly useSecureProtocol: boolean = false;
 
-export default class ColyseusSettings extends Node {
-	@visibleInInspector('string', 'Colyseus Server Address', 'localhost')
-	public colyseusServerAddress: string = 'localhost';
-	@visibleInInspector('number', 'Colyseus Server Port', 2567)
-	public colyseusServerPort: number = 2567;
-	@visibleInInspector('boolean', 'Use Secure Protocol', false)
-	public useSecureProtocol: boolean = false;
+	constructor(address: string, port: number, secure: boolean) {
+		this.colyseusServerAddress = address;
+		this.colyseusServerPort = port;
+		this.useSecureProtocol = secure;
+	}
 }

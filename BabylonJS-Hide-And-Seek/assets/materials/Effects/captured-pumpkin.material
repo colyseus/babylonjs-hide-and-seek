@@ -2,7 +2,7 @@
 	"tags": null,
 	"diffuseTexture": {
 		"tags": null,
-		"url": "textures/Effects/pumpkin.png",
+		"url": "textures/Effects/captured-pumpkin.png",
 		"uOffset": 0,
 		"vOffset": 0,
 		"uScale": 1,
@@ -15,10 +15,10 @@
 		"wRotationCenter": 0.5,
 		"homogeneousRotationInUVTransform": false,
 		"isBlocking": true,
-		"name": "textures/Effects/pumpkin.png",
+		"name": "textures/Effects/captured-pumpkin.png",
 		"metadata": {
-			"editorName": "pumpkin.png",
-			"editorId": "c0f6d1fd-9c40-4d5a-a62f-7f876224a8c4",
+			"editorName": "captured-pumpkin.png",
+			"editorId": "0b2af6ef-1ed7-4142-9810-a27da3d1a17e",
 			"ktx2CompressedTextures": {
 				"isUsingCompressedTexture": false
 			}
@@ -49,7 +49,7 @@
 	},
 	"opacityTexture": {
 		"tags": null,
-		"url": "textures/Effects/pumpkin.png",
+		"url": "textures/Effects/captured-pumpkin.png",
 		"uOffset": 0,
 		"vOffset": 0,
 		"uScale": 1,
@@ -62,10 +62,10 @@
 		"wRotationCenter": 0.5,
 		"homogeneousRotationInUVTransform": false,
 		"isBlocking": true,
-		"name": "textures/Effects/pumpkin.png",
+		"name": "textures/Effects/captured-pumpkin.png",
 		"metadata": {
-			"editorName": "pumpkin.png",
-			"editorId": "c0f6d1fd-9c40-4d5a-a62f-7f876224a8c4",
+			"editorName": "captured-pumpkin.png",
+			"editorId": "0b2af6ef-1ed7-4142-9810-a27da3d1a17e",
 			"ktx2CompressedTextures": {
 				"isUsingCompressedTexture": false
 			}

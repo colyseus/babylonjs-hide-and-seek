@@ -2,23 +2,23 @@
 	"materials": [],
 	"meshes": [
 		{
-			"name": "Collision",
-			"id": "f9c3ef5c-109a-458a-8098-0e68ba162349",
-			"uniqueId": 4541,
+			"name": "captured-pumpkin",
+			"id": "299a5b55-646d-4e29-9c41-ed7739e63893",
+			"uniqueId": 2139,
 			"type": "Mesh",
 			"position": [
-				0.00007091307634254918,
-				0.00007799213926773518,
-				-0.5
+				0,
+				0,
+				0
 			],
 			"rotation": [
-				2.366274852729496e-22,
-				1.759006025952503e-23,
-				2.0299999192729887e-7
+				1.5707963267948966,
+				0,
+				0
 			],
 			"scaling": [
-				7.57168292999281,
-				4.684046745300404,
+				1,
+				1,
 				1
 			],
 			"localMatrix": {
@@ -40,7 +40,7 @@
 				"15": 1
 			},
 			"isEnabled": true,
-			"isVisible": false,
+			"isVisible": true,
 			"infiniteDistance": false,
 			"pickable": true,
 			"receiveShadows": false,
@@ -49,24 +49,24 @@
 			"checkCollisions": false,
 			"isBlocker": false,
 			"overrideMaterialSideOrientation": null,
-			"parentId": "08c09c44-9687-4e9d-b314-6b63a169cf7e",
+			"parentId": "6861bcc8-f62a-4533-b96a-0c808ffefb3a",
 			"isUnIndexed": false,
-			"geometryUniqueId": 779,
-			"geometryId": "bd29c7a5-94a7-4167-9b27-a5e8b7e71bda",
+			"geometryUniqueId": 2140,
+			"geometryId": "b2ab7d45-0613-4f4c-a425-0b7655027580",
 			"subMeshes": null,
-			"materialUniqueId": 2024,
-			"materialId": "62cb76cb-a4dc-4a46-bf10-02a67f9b07d4",
+			"materialUniqueId": 4865,
+			"materialId": "07d4a532-797f-47e1-aa1b-76f48acf68aa",
 			"metadata": {
 				"editorGeometry": {
-					"type": "Cube",
-					"size": 1
+					"type": "Plane",
+					"width": 1,
+					"height": 1
 				},
 				"isPickable": true,
 				"script": {
-					"name": "src/scenes/scripts/interactables/mudTrigger.ts"
+					"name": "None"
 				},
-				"renderingGroupId": 0,
-				"doNotExport": false
+				"renderingGroupId": 0
 			},
 			"instances": [],
 			"animations": [],
@@ -74,53 +74,53 @@
 			"layerMask": 268435455,
 			"alphaIndex": 1.7976931348623157e+308,
 			"hasVertexAlpha": false,
-			"overlayAlpha": 0.3,
+			"overlayAlpha": 0.5,
 			"overlayColor": [
 				1,
 				0,
 				0
 			],
 			"applyFog": true,
-			"delayLoadingFile": "geometries/bd29c7a5-94a7-4167-9b27-a5e8b7e71bda.babylonbinarymeshdata",
+			"delayLoadingFile": "geometries/b2ab7d45-0613-4f4c-a425-0b7655027580.babylonbinarymeshdata",
 			"boundingBoxMaximum": [
 				0.5,
 				0.5,
-				0.5
+				0
 			],
 			"boundingBoxMinimum": [
 				-0.5,
 				-0.5,
-				-0.5
+				0
 			],
 			"_binaryInfo": {
 				"positionsAttrDesc": {
-					"count": 72,
+					"count": 12,
 					"stride": 3,
 					"offset": 0,
 					"dataType": 1
 				},
 				"normalsAttrDesc": {
-					"count": 72,
+					"count": 12,
 					"stride": 3,
-					"offset": 288,
+					"offset": 48,
 					"dataType": 1
 				},
 				"uvsAttrDesc": {
-					"count": 48,
+					"count": 8,
 					"stride": 2,
-					"offset": 576,
+					"offset": 96,
 					"dataType": 1
 				},
 				"indicesAttrDesc": {
-					"count": 36,
+					"count": 6,
 					"stride": 1,
-					"offset": 768,
+					"offset": 128,
 					"dataType": 0
 				},
 				"subMeshesAttrDesc": {
 					"count": 1,
 					"stride": 5,
-					"offset": 912,
+					"offset": 152,
 					"dataType": 0
 				}
 			},

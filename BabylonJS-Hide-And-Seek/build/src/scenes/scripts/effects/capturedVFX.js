@@ -125,7 +125,7 @@ var CapturedVFX = /** @class */ (function (_super) {
     // 		this.stop();
     // 	}
     // }
-    CapturedVFX.prototype.fixMeshes = function () {
+    CapturedVFX.prototype.resetMeshes = function () {
         for (var i = 0; i < this._meshes.length; i++) {
             this._meshes[i].setEnabled(true);
             this._meshes[i].isVisible = true;
@@ -143,7 +143,8 @@ var CapturedVFX = /** @class */ (function (_super) {
                             return [2 /*return*/];
                         }
                         console.log("Play Captured FX");
-                        this.fixMeshes();
+                        this.setScale(core_1.Vector3.One());
+                        this.resetMeshes();
                         this.setEnabled(true);
                         this._play = true;
                         this._playingCaptured = true;
@@ -178,7 +179,7 @@ var CapturedVFX = /** @class */ (function (_super) {
                             return [2 /*return*/];
                         }
                         console.log("Play Rescue FX");
-                        this.fixMeshes();
+                        this.resetMeshes();
                         this._playerRescued = true;
                         this.punchFXOut(this._rescuePunchTime);
                         return [4 /*yield*/, (0, utility_1.delay)(this._rescuePunchTime / 2)];
@@ -202,7 +203,7 @@ var CapturedVFX = /** @class */ (function (_super) {
         });
     };
     CapturedVFX.prototype.stop = function () {
-        console.log("Capture FX STOP");
+        // console.log(`Capture FX STOP`);
         this.resetFX();
         this._particles.stop();
         this._play = false;

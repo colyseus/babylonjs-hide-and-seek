@@ -93,7 +93,6 @@ var UIController = /** @class */ (function (_super) {
                         uiTex = gui_1.AdvancedDynamicTexture.CreateFullscreenUI("".concat(this._uiName, "-UI"), true, this._scene, core_1.Texture.TRILINEAR_SAMPLINGMODE, true);
                         uiTex.layer.layerMask = this._uiLayer;
                         path = "".concat(process.env.GUI_PATH).concat(guiName, ".gui");
-                        console.log("Load GUI at: ".concat(path)); //
                         return [4 /*yield*/, uiTex.parseFromURLAsync(path)];
                     case 1:
                         _a.sent();

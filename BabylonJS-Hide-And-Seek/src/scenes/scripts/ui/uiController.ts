@@ -33,8 +33,6 @@ export class UIController extends EventEmitter {
 
 			let path: string = `${process.env.GUI_PATH}${guiName}.gui`;
 
-			console.log(`Load GUI at: ${path}`); //
-
 			await uiTex.parseFromURLAsync(path);
 
 			// Get UI root component

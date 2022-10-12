@@ -7,8 +7,6 @@ import gameConfig from '../gameConfig';
 import { GameConfig } from '../models/GameConfig';
 
 export class HASRoom extends Room<HASRoomState> {
-	public movementSpeed: number = 600;
-
 	private _config: GameConfig;
 
 	constructor(presence?: Presence) {
@@ -76,14 +74,19 @@ export class HASRoom extends Room<HASRoomState> {
 			logger.info("let's wait for reconnection for client: " + client.sessionId);
 			const newClient: Client = await this.allowReconnection(client, 3);
 			logger.info('reconnected! client: ' + newClient.sessionId);
-
-			// TODO: Replace the client in the players map on reconnect?
 		} catch (e) {
 			logger.info('disconnected! client: ' + client.sessionId);
 			logger.silly(`*** Removing player ${client.sessionId} ***`);
 
+			const playerState: PlayerState = this.state.players.get(client.sessionId);
+
+			// If the Seeker left the game then end the round
+			if (playerState && playerState.isSeeker) {
+				this.state.seekerLeft();
+			}
+
 			// Make the spawn point index available again
-			this.state.freeUpSpawnPointIndex(this.state.players.get(client.sessionId));
+			this.state.freeUpSpawnPointIndex(playerState);
 
 			//remove user
 			this.state.players.delete(client.sessionId);

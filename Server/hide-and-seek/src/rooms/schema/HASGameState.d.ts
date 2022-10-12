@@ -25,6 +25,7 @@ export declare class HASGameState extends Schema {
     private get WinCondition();
     seekerCapturedHider(hider: PlayerState): void;
     capturedHiderRescued(hider: PlayerState): void;
+    seekerLeft(): void;
     /** Update the game loop */
     update(deltaTime: number): void;
     private moveToState;

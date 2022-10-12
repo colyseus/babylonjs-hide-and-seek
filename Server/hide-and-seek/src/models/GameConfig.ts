@@ -51,6 +51,18 @@ export class GameConfig {
 		return this._data.gameOverCountdown || 10000;
 	}
 
+	public get PlayerMovementSpeed(): number {
+		return this._data.playerMovementSpeed || 1;
+	}
+
+	public get SeekerMovementBoost(): number {
+		return this._data.seekerMovementBoost || 0.1;
+	}
+
+	public get RescueCount(): number {
+		return this._data.rescueCount || 1;
+	}
+
 	public get SeekerCheckDistance(): number {
 		return this._data.seekerCheckDistance || 7;
 	}

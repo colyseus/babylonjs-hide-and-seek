@@ -45,6 +45,7 @@ export default class Player extends Mesh {
     setVisualLookDirection(dir: Vector3): void;
     registerPlayerMeshForIntersection(mesh: Mesh): void;
     private updatePlayerMovement;
+    private getMovementSpeed;
     private updatePositionFromState;
     private sendPositionUpdateToServer;
     private checkForHiders;

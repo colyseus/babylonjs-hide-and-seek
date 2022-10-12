@@ -9,6 +9,9 @@ declare const _default: {
     rescueTime: number;
     rescueDistance: number;
     seekerCheckDistance: number;
+    playerMovementSpeed: number;
+    seekerMovementBoost: number;
+    rescueCount: number;
     seekerGoal: string;
     hiderGoal: string;
 };

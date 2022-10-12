@@ -439,7 +439,16 @@ export default class GameManager extends Node {
 
 		// Assign character visual
 		//============================
-		const visualIndex: number = playerState.spawnPoint > -1 ? playerState.spawnPoint + 1 : this._characterVisuals.length - 1;
+		let visualIndex: number;
+
+		if (playerState.isSeeker && playerState.spawnPoint === -1) {
+			visualIndex = this._characterVisuals.length - 1;
+		} else if (playerState.spawnPoint >= 0) {
+			visualIndex = playerState.spawnPoint;
+		} else {
+			console.error(`Error assigning visual index! - spawn point: ${playerState.spawnPoint}`);
+			return;
+		}
 
 		const visual: TransformNode = this._characterVisuals[visualIndex];
 

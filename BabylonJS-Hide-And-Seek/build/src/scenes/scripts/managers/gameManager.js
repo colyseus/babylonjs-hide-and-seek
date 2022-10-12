@@ -424,7 +424,17 @@ var GameManager = /** @class */ (function (_super) {
         }
         // Assign character visual
         //============================
-        var visualIndex = playerState.spawnPoint > -1 ? playerState.spawnPoint + 1 : this._characterVisuals.length - 1;
+        var visualIndex;
+        if (playerState.isSeeker && playerState.spawnPoint === -1) {
+            visualIndex = this._characterVisuals.length - 1;
+        }
+        else if (playerState.spawnPoint >= 0) {
+            visualIndex = playerState.spawnPoint;
+        }
+        else {
+            console.error("Error assigning visual index! - spawn point: ".concat(playerState.spawnPoint));
+            return;
+        }
         var visual = this._characterVisuals[visualIndex];
         player.setVisual(visual);
         //============================

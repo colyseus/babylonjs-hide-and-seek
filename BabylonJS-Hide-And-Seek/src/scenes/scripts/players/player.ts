@@ -105,7 +105,7 @@ export default class Player extends Mesh {
 	}
 
 	public showCaptured(captured: boolean) {
-		// Only alter the visibility of the player if the local player is the Seeker
+		// Only change the visibility of the player if the local player is the Seeker
 		if (GameManager.Instance.PlayerIsSeeker()) {
 			this.setVisualVisibility(captured);
 		}
@@ -191,8 +191,8 @@ export default class Player extends Mesh {
 		velocity.x = this._xDirection;
 		velocity.z = this._zDirection;
 
-		velocity.x *= this._movementSpeed * GameManager.DeltaTime;
-		velocity.z *= this._movementSpeed * GameManager.DeltaTime;
+		velocity.x *= this.getMovementSpeed() * GameManager.DeltaTime;
+		velocity.z *= this.getMovementSpeed() * GameManager.DeltaTime;
 
 		this.setVelocity(velocity);
 		this._rigidbody.setAngularVelocity(Vector3.Zero());
@@ -206,6 +206,10 @@ export default class Player extends Mesh {
 		}
 
 		this.setVisualLookDirection(velocity);
+	}
+
+	private getMovementSpeed(): number {
+		return NetworkManager.Config.PlayerMovementSpeed * (GameManager.Instance.PlayerIsSeeker() ? NetworkManager.Config.SeekerMovementBoost : 1);
 	}
 
 	private updatePositionFromState() {

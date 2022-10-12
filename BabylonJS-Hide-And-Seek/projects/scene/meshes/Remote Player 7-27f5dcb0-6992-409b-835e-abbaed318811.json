@@ -7,9 +7,9 @@
 			"uniqueId": 262,
 			"type": "Mesh",
 			"position": [
-				2.790640115737915,
+				-0.10367070138454437,
 				0.5,
-				-9.114859580993652
+				-10.684699058532715
 			],
 			"rotationQuaternion": [
 				0,
@@ -52,11 +52,11 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "fd7a4725-539b-4020-9b6f-3032264f3ad4",
 			"isUnIndexed": false,
-			"geometryUniqueId": 1388,
+			"geometryUniqueId": 1357,
 			"geometryId": "1d916d74-511b-480f-9a49-fe94c8f0dce6",
 			"subMeshes": null,
-			"materialUniqueId": 402,
-			"materialId": "default material",
+			"materialUniqueId": 3749,
+			"materialId": "8a3de192-0762-4d80-b0dc-dd2c6e62c138",
 			"metadata": {
 				"editorGeometry": {
 					"type": "Sphere",

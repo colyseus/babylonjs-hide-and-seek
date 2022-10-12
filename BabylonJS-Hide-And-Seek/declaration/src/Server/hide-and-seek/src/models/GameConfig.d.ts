@@ -11,6 +11,9 @@ export declare class GameConfig {
     get HuntCountdown(): number;
     get SeekerWinCondition(): number;
     get GameOverCountdown(): number;
+    get PlayerMovementSpeed(): number;
+    get SeekerMovementBoost(): number;
+    get RescueCount(): number;
     get SeekerCheckDistance(): number;
     get RescueTime(): number;
     get RescueDistance(): number;

@@ -61,7 +61,7 @@ export class HASRoomState extends Schema {
 	}
 
 	/**
-	 * Get a number representing the inces of the spawn point client-side
+	 * Get a number representing the index of the spawn point client-side
 	 * @param isRandom should the spawn point be chosen randomly? Default is true
 	 * @returns Number representing the index of the spawn point client-side
 	 */
@@ -95,6 +95,10 @@ export class HASRoomState extends Schema {
 		playerState.spawnPoint = -1;
 
 		this._availableSpawnPoints.push(spawnPoint);
+	}
+
+	public seekerLeft() {
+		this.gameState.seekerLeft();
 	}
 
 	public update(deltaTime: number) {
@@ -157,6 +161,7 @@ export class HASRoomState extends Schema {
 			const op: RescueOperation = new RescueOperation(rescuer, hider, this._config.RescueTime, this._config.RescueDistance);
 
 			this._rescueOperations.set(op.Key, op);
+			// @ts-ignore
 		} catch (error: any) {
 			logger.error(error.stack);
 		}

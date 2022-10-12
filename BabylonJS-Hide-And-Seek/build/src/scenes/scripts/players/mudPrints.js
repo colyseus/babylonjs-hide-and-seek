@@ -88,23 +88,26 @@ var MudPrints = /** @class */ (function () {
         return print;
     };
     MudPrints.prototype.spawnMudPrint = function () {
-        var print = this.getPrint();
-        // Set print position to that of the visual then set it just above the ground
-        print.position.copyFrom(this._playerVisual.position);
-        print.position.y = 0.1;
-        // Copy the rotation of the visual
-        print.rotationQuaternion.copyFrom(this._playerVisual.rotationQuaternion);
-        // Rotate the print so it's facing upward
-        print.rotate(core_1.Vector3.Right(), 1.570796);
-        // Offset the print to alternate the foot position left/right
-        print.position = print.position.add(print.right.scale(this._foot * 0.2));
-        // Invert the foot value for the next print
-        this._foot *= -1;
-        // Ensure print starts with full visibility
-        print.visibility = 1;
-        print.setEnabled(true);
-        // Add the print to the map of live prints to be updated
-        this._livePrints.set(Date.now(), print);
+        try {
+            var print_1 = this.getPrint();
+            // Set print position to that of the visual then set it just above the ground
+            print_1.position.copyFrom(this._playerVisual.position);
+            print_1.position.y = 0.1;
+            // Copy the rotation of the visual
+            print_1.rotationQuaternion.copyFrom(this._playerVisual.rotationQuaternion);
+            // Rotate the print so it's facing upward
+            print_1.rotate(core_1.Vector3.Right(), 1.570796);
+            // Offset the print to alternate the foot position left/right
+            print_1.position = print_1.position.add(print_1.right.scale(this._foot * 0.2));
+            // Invert the foot value for the next print
+            this._foot *= -1;
+            // Ensure print starts with full visibility
+            print_1.visibility = 1;
+            print_1.setEnabled(true);
+            // Add the print to the map of live prints to be updated
+            this._livePrints.set(Date.now(), print_1);
+        }
+        catch (error) { }
     };
     MudPrints.prototype.despawnMudPrint = function (print) {
         print.setEnabled(false);

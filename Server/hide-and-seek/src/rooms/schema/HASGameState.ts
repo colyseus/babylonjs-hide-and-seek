@@ -67,6 +67,13 @@ export class HASGameState extends Schema {
 		this._capturedPlayers.delete(hider.id);
 	}
 
+	public seekerLeft() {
+		if (this.currentState === GameState.HUNT) {
+			this.seekerWon = false;
+			this.moveToState(GameState.GAME_OVER);
+		}
+	}
+
 	/** Update the game loop */
 	public update(deltaTime: number) {
 		//
@@ -136,17 +143,24 @@ export class HASGameState extends Schema {
 				// Randomly pick which player will be Seeker
 				const players: PlayerState[] = Array.from(this._room.state.players.values());
 
-				const index: number = random(0, players.length);
+				logger.warn(`DEBUG FORCE FIRST PLAYER TO BE SEEKER`);
+				const index: number = 0; // random(0, players.length);
 
 				// Remove the seeker from the array; we don't need to assign a spawn point to it
 				const player: PlayerState = players.splice(index, 1)[0];
 				player.spawnPoint = -1;
 				player.isSeeker = true;
 
+				logger.debug(`Seeker: ${player.id}`);
+
+				logger.debug(`Remaining Players: ${players.length}`);
+
 				// Assign remaining players spawn point indices
 				for (let i = 0; i < players.length; i++) {
 					players[i].spawnPoint = this._room.state.getSpawnPointIndex();
 					players[i].isSeeker = false;
+
+					logger.debug(`\tHider ${players[i].id} Spawnpoint: ${players[i].spawnPoint}`);
 				}
 
 				this._capturedPlayers.clear();
@@ -173,6 +187,7 @@ export class HASGameState extends Schema {
 					})[0];
 
 					seeker.canMove = true;
+					// @ts-ignore
 				} catch (error: any) {
 					logger.error(`Error allowing Seeker to move: ${error.stack}`);
 				}

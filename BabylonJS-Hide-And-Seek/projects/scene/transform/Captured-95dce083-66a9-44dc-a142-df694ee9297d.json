@@ -1,0 +1,54 @@
+{
+	"tags": null,
+	"position": [
+		0,
+		-0.4,
+		0
+	],
+	"rotation": [
+		0,
+		0,
+		0
+	],
+	"scaling": [
+		1,
+		1,
+		1
+	],
+	"billboardMode": 0,
+	"scalingDeterminant": 1,
+	"infiniteDistance": false,
+	"ignoreNonUniformScaling": false,
+	"reIntegrateRotationIntoRotationQuaternion": false,
+	"name": "Captured",
+	"id": "95dce083-66a9-44dc-a142-df694ee9297d",
+	"state": "",
+	"metadata": {
+		"script": {
+			"name": "src/scenes/scripts/effects/capturedVFX.ts"
+		},
+		"doNotExport": false
+	},
+	"type": "TransformNode",
+	"uniqueId": 4856,
+	"parentId": "bf688328-7958-47e3-953e-8d3737fc1da6",
+	"localMatrix": {
+		"0": 1,
+		"1": 0,
+		"2": 0,
+		"3": 0,
+		"4": 0,
+		"5": 1,
+		"6": 0,
+		"7": 0,
+		"8": 0,
+		"9": 0,
+		"10": 1,
+		"11": 0,
+		"12": 0,
+		"13": 0,
+		"14": 0,
+		"15": 1
+	},
+	"isEnabled": false
+}

@@ -51,14 +51,18 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "6326c232-77f8-4370-afcc-be49aa782312",
 			"isUnIndexed": false,
-			"geometryUniqueId": 1280,
+			"geometryUniqueId": 1238,
 			"geometryId": "a991dff6-01e4-49f0-ac86-037961cc3a49",
 			"subMeshes": null,
 			"materialUniqueId": 1623,
 			"materialId": "1ac40e75-f1fd-4207-9ffc-5d2483a04d2a",
 			"metadata": {
 				"isDecal": true,
-				"isPickable": true
+				"isPickable": true,
+				"script": {
+					"name": "None"
+				},
+				"renderingGroupId": 0
 			},
 			"instances": [],
 			"animations": [],

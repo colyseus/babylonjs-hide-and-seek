@@ -4,6 +4,7 @@ import { ScriptMap } from "./tools";
  */
 export interface ISceneScriptMap {
     "src/scenes/scripts/colyseusSettings.ts": ScriptMap;
+    "src/scenes/scripts/effects/capturedVFX.ts": ScriptMap;
     "src/scenes/scripts/GameState.ts": ScriptMap;
     "src/scenes/scripts/interactables/batsTrigger.ts": ScriptMap;
     "src/scenes/scripts/interactables/ghostsTrigger.ts": ScriptMap;

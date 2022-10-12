@@ -27,11 +27,13 @@ export class UIController extends EventEmitter {
 
 	protected async loadGUI(guiName: string): Promise<AdvancedDynamicTexture> {
 		try {
-			let uiTex: AdvancedDynamicTexture = AdvancedDynamicTexture.CreateFullscreenUI('UI', true, this._scene, Texture.TRILINEAR_SAMPLINGMODE, true);
+			let uiTex: AdvancedDynamicTexture = AdvancedDynamicTexture.CreateFullscreenUI(`${this._uiName}-UI`, true, this._scene, Texture.TRILINEAR_SAMPLINGMODE, true);
 
 			uiTex.layer.layerMask = this._uiLayer;
 
-			await uiTex.parseFromURLAsync(`assets/gui/${guiName}.gui`);
+			let path: string = `${process.env.GUI_PATH}${guiName}.gui`;
+
+			await uiTex.parseFromURLAsync(path);
 
 			// Get UI root component
 			this._root = uiTex.getControlByName('Root');

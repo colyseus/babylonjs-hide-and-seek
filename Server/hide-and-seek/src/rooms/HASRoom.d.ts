@@ -1,7 +1,6 @@
 import { Room, Client, Presence } from 'colyseus';
 import { HASRoomState } from './schema/HASRoomState';
 export declare class HASRoom extends Room<HASRoomState> {
-    movementSpeed: number;
     private _config;
     constructor(presence?: Presence);
     private bindHandlers;

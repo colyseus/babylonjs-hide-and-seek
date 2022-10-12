@@ -1,5 +1,6 @@
 import Arena from '@colyseus/arena';
 import { monitor } from '@colyseus/monitor';
+import { WebSocketTransport } from '@colyseus/ws-transport';
 
 /**
  * Import your Room files
@@ -8,7 +9,11 @@ import { HASRoom } from './rooms/HASRoom';
 
 export default Arena({
 	getId: () => 'Your Colyseus App',
-
+	initializeTransport: function () {
+		return new WebSocketTransport({
+			/* ...options */
+		});
+	},
 	initializeGameServer: (gameServer) => {
 		/**
 		 * Define your room handlers:

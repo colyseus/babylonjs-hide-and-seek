@@ -54,6 +54,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.NetworkEvent = void 0;
 var node_1 = require("@babylonjs/core/node");
 var Colyseus = require("colyseus.js");
+var colyseusSettings_1 = require("../colyseusSettings");
 var GameState_1 = require("../GameState");
 var GameConfig_1 = require("../../../../../Server/hide-and-seek/src/models/GameConfig");
 var EventEmitter = require("events");
@@ -100,32 +101,28 @@ var NetworkManager = /** @class */ (function (_super) {
         var _a;
         return ((_a = this._serverSettings) === null || _a === void 0 ? void 0 : _a.colyseusServerAddress) || 'localhost';
     };
-    NetworkManager.prototype.setColyseusServerAddress = function (value) {
-        this._serverSettings.colyseusServerAddress = value;
-    };
+    // public setColyseusServerAddress(value: string) {
+    // 	this._serverSettings.colyseusServerAddress = value;
+    // }
     NetworkManager.prototype.getColyseusServerPort = function () {
         var _a;
         return ((_a = this._serverSettings) === null || _a === void 0 ? void 0 : _a.colyseusServerPort) || 2567;
     };
-    NetworkManager.prototype.setColyseusServerPort = function (value) {
-        this._serverSettings.colyseusServerPort = value;
+    // public setColyseusServerPort(value: number) {
+    // 	this._serverSettings.colyseusServerPort = value;
+    // }
+    NetworkManager.prototype.getColyseusUseSecure = function () {
+        var _a;
+        return ((_a = this._serverSettings) === null || _a === void 0 ? void 0 : _a.useSecureProtocol) || false;
     };
-    Object.defineProperty(NetworkManager.prototype, "ColyseusUseSecure", {
-        get: function () {
-            var _a;
-            return ((_a = this._serverSettings) === null || _a === void 0 ? void 0 : _a.useSecureProtocol) || false;
-        },
-        set: function (value) {
-            this._serverSettings.useSecureProtocol = value;
-        },
-        enumerable: false,
-        configurable: true
-    });
+    // public set ColyseusUseSecure(value: boolean) {
+    // 	this._serverSettings.useSecureProtocol = value;
+    // }
     NetworkManager.prototype.WebSocketEndPoint = function () {
-        return "".concat(this.ColyseusUseSecure ? 'wss' : 'ws', "://").concat(this.getColyseusServerAddress(), ":").concat(this.getColyseusServerPort());
+        return "".concat(this.getColyseusUseSecure() ? 'wss' : 'ws', "://").concat(this.getColyseusServerAddress(), ":").concat(this.getColyseusServerPort());
     };
     NetworkManager.prototype.WebRequestEndPoint = function () {
-        return "".concat(this.ColyseusUseSecure ? 'https' : 'http', "://").concat(this.getColyseusServerAddress(), ":").concat(this.getColyseusServerPort());
+        return "".concat(this.getColyseusUseSecure() ? 'https' : 'http', "://").concat(this.getColyseusServerAddress(), ":").concat(this.getColyseusServerPort());
     };
     NetworkManager.Ready = function () {
         return this.Instance.Room !== null && this.Config !== null;
@@ -170,9 +167,14 @@ var NetworkManager = /** @class */ (function (_super) {
     NetworkManager.prototype.onInitialize = function () {
         // ...
         NetworkManager._instance = this;
+        this.createColyseusSettings();
+        console.log("Server Settings: %o", this._serverSettings);
         console.log("Network Manager - On Initialize - Create Colyseus Client with URL: ".concat(this.WebSocketEndPoint()));
         this._client = new Colyseus.Client(this.WebSocketEndPoint());
         this.bindHandlers();
+    };
+    NetworkManager.prototype.createColyseusSettings = function () {
+        this._serverSettings = new colyseusSettings_1.ColyseusSettings(process.env.COLYSEUS_SERVER_ADDRESS, Number(process.env.COLYSEUS_SERVER_PORT), JSON.parse(process.env.COLYSEUS_USE_SECURE));
     };
     NetworkManager.prototype.bindHandlers = function () {
         this.handleMessages = this.handleMessages.bind(this);

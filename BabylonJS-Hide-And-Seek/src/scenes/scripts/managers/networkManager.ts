@@ -2,7 +2,7 @@ import { Node } from '@babylonjs/core/node';
 import * as Colyseus from 'colyseus.js';
 import type { HASRoomState } from '../../../../../Server/hide-and-seek/src/rooms/schema/HASRoomState';
 import type { PlayerInputMessage } from '../../../../../Server/hide-and-seek/src/models/PlayerInputMessage';
-import ColyseusSettings from '../colyseusSettings';
+import { ColyseusSettings } from '../colyseusSettings';
 import type { PlayerState } from '../../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
 import { GameState } from '../GameState';
 import { GameConfig } from '../../../../../Server/hide-and-seek/src/models/GameConfig';
@@ -45,32 +45,32 @@ export default class NetworkManager extends Node {
 		return this._serverSettings?.colyseusServerAddress || 'localhost';
 	}
 
-	public setColyseusServerAddress(value: string) {
-		this._serverSettings.colyseusServerAddress = value;
-	}
+	// public setColyseusServerAddress(value: string) {
+	// 	this._serverSettings.colyseusServerAddress = value;
+	// }
 
 	public getColyseusServerPort(): number {
 		return this._serverSettings?.colyseusServerPort || 2567;
 	}
 
-	public setColyseusServerPort(value: number) {
-		this._serverSettings.colyseusServerPort = value;
-	}
+	// public setColyseusServerPort(value: number) {
+	// 	this._serverSettings.colyseusServerPort = value;
+	// }
 
-	public get ColyseusUseSecure(): boolean {
+	public getColyseusUseSecure(): boolean {
 		return this._serverSettings?.useSecureProtocol || false;
 	}
 
-	public set ColyseusUseSecure(value: boolean) {
-		this._serverSettings.useSecureProtocol = value;
-	}
+	// public set ColyseusUseSecure(value: boolean) {
+	// 	this._serverSettings.useSecureProtocol = value;
+	// }
 
 	private WebSocketEndPoint(): string {
-		return `${this.ColyseusUseSecure ? 'wss' : 'ws'}://${this.getColyseusServerAddress()}:${this.getColyseusServerPort()}`;
+		return `${this.getColyseusUseSecure() ? 'wss' : 'ws'}://${this.getColyseusServerAddress()}:${this.getColyseusServerPort()}`;
 	}
 
 	private WebRequestEndPoint(): string {
-		return `${this.ColyseusUseSecure ? 'https' : 'http'}://${this.getColyseusServerAddress()}:${this.getColyseusServerPort()}`;
+		return `${this.getColyseusUseSecure() ? 'https' : 'http'}://${this.getColyseusServerAddress()}:${this.getColyseusServerPort()}`;
 	}
 
 	public static Ready(): boolean {
@@ -113,10 +113,18 @@ export default class NetworkManager extends Node {
 		// ...
 		NetworkManager._instance = this;
 
+		this.createColyseusSettings();
+
+		console.log(`Server Settings: %o`, this._serverSettings);
+
 		console.log(`Network Manager - On Initialize - Create Colyseus Client with URL: ${this.WebSocketEndPoint()}`);
 		this._client = new Colyseus.Client(this.WebSocketEndPoint());
 
 		this.bindHandlers();
+	}
+
+	private createColyseusSettings() {
+		this._serverSettings = new ColyseusSettings(process.env.COLYSEUS_SERVER_ADDRESS, Number(process.env.COLYSEUS_SERVER_PORT), JSON.parse(process.env.COLYSEUS_USE_SECURE));
 	}
 
 	private bindHandlers() {

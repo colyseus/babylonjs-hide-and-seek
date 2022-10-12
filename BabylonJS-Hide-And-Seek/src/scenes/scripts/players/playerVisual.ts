@@ -1,6 +1,7 @@
 import { AbstractMesh, Axis, Mesh, ParticleSystem, Quaternion, Space, TransformNode, Vector3 } from '@babylonjs/core';
 import { fromChildren, fromParticleSystems } from '../../decorators';
 import { Quat, random, Vec3 } from '../../utility';
+import CapturedVFX from '../effects/capturedVFX';
 import GameManager from '../managers/gameManager';
 import NetworkManager from '../managers/networkManager';
 import CapturedTrigger from './capturedTrigger';
@@ -18,7 +19,7 @@ export default class PlayerVisual extends Mesh {
 	private _currentDir: Vector3;
 
 	@fromChildren('Captured')
-	private _captured: TransformNode;
+	private _captured: CapturedVFX;
 	@fromChildren('RescueMesh')
 	public rescueMesh: Mesh;
 	@fromChildren('CapturedTrigger')
@@ -27,6 +28,7 @@ export default class PlayerVisual extends Mesh {
 	private _mudPrint: Mesh;
 
 	private _mudPrints: MudPrints;
+	private _visualMeshes: Mesh[];
 
 	/**
 	 * Override constructor.
@@ -50,6 +52,7 @@ export default class PlayerVisual extends Mesh {
 		// ...
 
 		this._mudPrints = new MudPrints(this, this._mudPrint);
+		this._visualMeshes = [];
 	}
 
 	/**
@@ -58,10 +61,12 @@ export default class PlayerVisual extends Mesh {
 	public onStart(): void {
 		// ...
 		this.setEnabled(false);
-		this.setCaptured(false);
+		// this.setCaptured(false);
 
 		this._prevDir = this.forward;
 		this._currentDir = this.forward;
+
+		this._captured.setEnabled(true);
 	}
 
 	public setPlayerReference(player: Player) {
@@ -70,8 +75,16 @@ export default class PlayerVisual extends Mesh {
 		this._capturedTrigger?.setPlayerReference(player);
 	}
 
+	public setVisual(visual: TransformNode) {
+		visual.setParent(this);
+		visual.position = Vector3.Zero();
+		visual.rotation = Vector3.Zero();
+		visual.setEnabled(true);
+
+		this._visualMeshes = visual.getChildMeshes() as Mesh[];
+	}
+
 	public setTriggerSize(size: number) {
-		console.log(`Player Visual - Set trigger size: ${size}`);
 		this._capturedTrigger?.setTriggerSize(size);
 	}
 
@@ -104,7 +117,19 @@ export default class PlayerVisual extends Mesh {
 	}
 
 	public setCaptured(captured: boolean) {
-		this._captured.setEnabled(captured);
+		if (captured) {
+			this._captured.playCaptured();
+		} else {
+			this._captured.playRescued();
+		}
+
+		this.updateVisibilityForCaptureState(captured);
+	}
+
+	private async updateVisibilityForCaptureState(captured: boolean) {
+		for (let i = 0; i < this._visualMeshes.length; i++) {
+			this._visualMeshes[i].visibility = captured ? 0.6 : 1;
+		}
 	}
 
 	public registerPlayerMeshForIntersection(mesh: Mesh) {

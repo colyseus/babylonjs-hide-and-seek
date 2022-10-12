@@ -1,0 +1,9 @@
+- Look under "scenes/_assets/fonts" and ensure that the GROBOLD.ttf font file is there
+	- add font to the folder if it's missing
+
+- From the babylonjs workspace
+	- npm run build
+	- from the root level copy "scenes", "dist", and "index.html" to another folder that will be used to upload the build to the server.
+
+- add new "assets" folder at root level with the expected path for UI textures "assets/textures/UI" and move the UI textures to it from "scenes/_assets/textures/UI
+	- idea is to move the textures to the location the GUI loader will be looking for them

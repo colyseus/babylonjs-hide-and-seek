@@ -13,12 +13,13 @@ export declare class HASRoomState extends Schema {
     private initializeSpawnPoints;
     private playerRemoved;
     /**
-     * Get a number representing the inces of the spawn point client-side
+     * Get a number representing the index of the spawn point client-side
      * @param isRandom should the spawn point be chosen randomly? Default is true
      * @returns Number representing the index of the spawn point client-side
      */
     getSpawnPointIndex(isRandom?: boolean): number;
     freeUpSpawnPointIndex(playerState: PlayerState): void;
+    seekerLeft(): void;
     update(deltaTime: number): void;
     resetForPlay(): void;
     seekerFoundHider(seekerId: string, hiderId: string): void;

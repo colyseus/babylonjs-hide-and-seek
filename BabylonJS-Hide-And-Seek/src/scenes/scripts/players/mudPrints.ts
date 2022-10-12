@@ -122,31 +122,33 @@ export class MudPrints {
 	}
 
 	private spawnMudPrint() {
-		const print: Mesh = this.getPrint();
+		try {
+			const print: Mesh = this.getPrint();
 
-		// Set print position to that of the visual then set it just above the ground
-		print.position.copyFrom(this._playerVisual.position);
-		print.position.y = 0.1;
+			// Set print position to that of the visual then set it just above the ground
+			print.position.copyFrom(this._playerVisual.position);
+			print.position.y = 0.1;
 
-		// Copy the rotation of the visual
-		print.rotationQuaternion.copyFrom(this._playerVisual.rotationQuaternion);
+			// Copy the rotation of the visual
+			print.rotationQuaternion.copyFrom(this._playerVisual.rotationQuaternion);
 
-		// Rotate the print so it's facing upward
-		print.rotate(Vector3.Right(), 1.570796);
+			// Rotate the print so it's facing upward
+			print.rotate(Vector3.Right(), 1.570796);
 
-		// Offset the print to alternate the foot position left/right
-		print.position = print.position.add(print.right.scale(this._foot * 0.2));
+			// Offset the print to alternate the foot position left/right
+			print.position = print.position.add(print.right.scale(this._foot * 0.2));
 
-		// Invert the foot value for the next print
-		this._foot *= -1;
+			// Invert the foot value for the next print
+			this._foot *= -1;
 
-		// Ensure print starts with full visibility
-		print.visibility = 1;
+			// Ensure print starts with full visibility
+			print.visibility = 1;
 
-		print.setEnabled(true);
+			print.setEnabled(true);
 
-		// Add the print to the map of live prints to be updated
-		this._livePrints.set(Date.now(), print);
+			// Add the print to the map of live prints to be updated
+			this._livePrints.set(Date.now(), print);
+		} catch (error) {}
 	}
 
 	private despawnMudPrint(print: Mesh) {

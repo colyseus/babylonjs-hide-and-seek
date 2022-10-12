@@ -501,9 +501,9 @@
 										"shadowColor": "black",
 										"hoverCursor": "",
 										"fontOffset": {
-											"ascent": 13,
-											"height": 17,
-											"descent": 4
+											"ascent": 16,
+											"height": 21,
+											"descent": 5
 										},
 										"alpha": 1,
 										"scaleX": 1,
@@ -967,9 +967,9 @@
 										"shadowColor": "black",
 										"hoverCursor": "",
 										"fontOffset": {
-											"ascent": 13,
-											"height": 17,
-											"descent": 4
+											"ascent": 16,
+											"height": 21,
+											"descent": 5
 										},
 										"alpha": 1,
 										"scaleX": 1,
@@ -1198,9 +1198,9 @@
 										"shadowColor": "black",
 										"hoverCursor": "",
 										"fontOffset": {
-											"ascent": 13,
-											"height": 17,
-											"descent": 4
+											"ascent": 16,
+											"height": 21,
+											"descent": 5
 										},
 										"alpha": 1,
 										"scaleX": 1,

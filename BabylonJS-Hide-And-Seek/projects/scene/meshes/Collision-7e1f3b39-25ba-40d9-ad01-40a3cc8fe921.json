@@ -17,7 +17,7 @@
 				2.135273717840383e-7
 			],
 			"scaling": [
-				3.315783739090022,
+				3.77578373909002,
 				2.906990289688196,
 				1
 			],
@@ -49,9 +49,9 @@
 			"checkCollisions": false,
 			"isBlocker": false,
 			"overrideMaterialSideOrientation": null,
-			"parentId": "e109e68e-91e8-4681-be8a-bb7db320db25",
+			"parentId": "e1b2f0a5-e959-4729-8965-2581e2a2ec39",
 			"isUnIndexed": false,
-			"geometryUniqueId": 1245,
+			"geometryUniqueId": 1215,
 			"geometryId": "bd29c7a5-94a7-4167-9b27-a5e8b7e71bda",
 			"subMeshes": null,
 			"materialUniqueId": 2024,

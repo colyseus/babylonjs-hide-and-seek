@@ -90,18 +90,19 @@ var Player = /** @class */ (function (_super) {
         (_a = this.visual) === null || _a === void 0 ? void 0 : _a.setEnabled(enabled);
     };
     Player.prototype.setPlayerState = function (state) {
-        console.log("Player - Set Player State");
         this._state = state;
     };
     Player.prototype.setCapturedTriggerSize = function (size) {
-        console.log("Player - set captured trigger size: ".concat(size));
         this.visual.setTriggerSize(size);
     };
     Player.prototype.setVisualVisibility = function (visible) {
         this.visual.setVisibility(visible);
     };
+    Player.prototype.setVisual = function (visual) {
+        this.visual.setVisual(visual);
+    };
     Player.prototype.showCaptured = function (captured) {
-        // Only alter the visibility of the player if the local player is the Seeker
+        // Only change the visibility of the player if the local player is the Seeker
         if (gameManager_1.default.Instance.PlayerIsSeeker()) {
             this.setVisualVisibility(captured);
         }
@@ -169,8 +170,8 @@ var Player = /** @class */ (function (_super) {
         }
         velocity.x = this._xDirection;
         velocity.z = this._zDirection;
-        velocity.x *= this._movementSpeed * gameManager_1.default.DeltaTime;
-        velocity.z *= this._movementSpeed * gameManager_1.default.DeltaTime;
+        velocity.x *= this.getMovementSpeed() * gameManager_1.default.DeltaTime;
+        velocity.z *= this.getMovementSpeed() * gameManager_1.default.DeltaTime;
         this.setVelocity(velocity);
         this._rigidbody.setAngularVelocity(core_1.Vector3.Zero());
         this.position.y = 0.5;
@@ -180,6 +181,9 @@ var Player = /** @class */ (function (_super) {
             this.sendPositionUpdateToServer();
         }
         this.setVisualLookDirection(velocity);
+    };
+    Player.prototype.getMovementSpeed = function () {
+        return networkManager_1.default.Config.PlayerMovementSpeed * (gameManager_1.default.Instance.PlayerIsSeeker() ? networkManager_1.default.Config.SeekerMovementBoost : 1);
     };
     Player.prototype.updatePositionFromState = function () {
         if (!this._state) {

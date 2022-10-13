@@ -25,3 +25,5 @@ Server/hide-and-seek/src/rooms/schema/PlayerState.js.map
 Server/hide-and-seek/src/models/RescueOperation.js
 Server/hide-and-seek/src/models/RescueOperation.js.map
 Server/hide-and-seek/lib/
+Server/hide-and-seek/src/helpers/logger.js
+Server/hide-and-seek/src/helpers/logger.js.map

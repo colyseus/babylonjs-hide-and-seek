@@ -16,7 +16,7 @@ module.exports = (env, argv) => {
 	}
 
 	console.log(`*** Config Path: ${configPath} ***`);
-
+	
 	return {
 		// we output both a minified version & a non minified version on production build
 		entry: { "bundle": entryPath },
@@ -36,7 +36,7 @@ module.exports = (env, argv) => {
 						path.join(__dirname, "dist"),
 						path.join(__dirname, "projects"),
 						path.join(__dirname, "scenes"),
-						// path.join(__dirname)
+						// path.join(__dirname, '../Server')
 					],
 				},
 				{

@@ -1,4 +1,4 @@
-import { AbstractMesh, TransformNode, Vector3 } from '@babylonjs/core';
+import { AbstractMesh, TransformNode, Vector3, Vector2 } from '@babylonjs/core';
 import EventEmitter = require('events');
 import { Node } from '@babylonjs/core/node';
 import { GameState } from '../GameState';
@@ -10,19 +10,21 @@ import { SpawnPoints } from '../spawnPoints';
 import NetworkManager, { NetworkEvent } from './networkManager';
 import { PlayerInputMessage } from '../../../../../Server/hide-and-seek/src/models/PlayerInputMessage';
 import InteractableTrigger from '../interactables/interactableTrigger';
-import { delay } from '../../utility';
 
 export default class GameManager extends Node {
 	private static _instance: GameManager = null;
 
 	// Magic Numbers
 	//==========================================
+	// Camera chase speeds
+	//===========
 	private _playerChaseSpeed: number = 25;
 	private _startChaseSpeed: number = 3;
-	private _seekerFOV: number = 60;
-	public seekerCheckDistance: number = 6;
+	//===========
 	/** In ms, the time between messages sent to the server for each Hider discovered by the Seeker */
 	private _foundHiderMsgRate: number = 1000;
+	/** The positional values that mark the boundaries of the arena */
+	private _arenaBoundaries: Vector2 = new Vector2(24.3, 26);
 	//==========================================
 
 	@fromScene('Camera Holder')
@@ -34,20 +36,6 @@ export default class GameManager extends Node {
 
 	@fromChildren('Player')
 	private _player: Player;
-	@fromChildren('Remote Player 1')
-	private _remotePlayer1: Player;
-	@fromChildren('Remote Player 2')
-	private _remotePlayer2: Player;
-	@fromChildren('Remote Player 3')
-	private _remotePlayer3: Player;
-	@fromChildren('Remote Player 4')
-	private _remotePlayer4: Player;
-	@fromChildren('Remote Player 5')
-	private _remotePlayer5: Player;
-	@fromChildren('Remote Player 6')
-	private _remotePlayer6: Player;
-	@fromChildren('Remote Player 7')
-	private _remotePlayer7: Player;
 
 	private _availableRemotePlayerObjects: Player[] = null;
 	private _spawnPoints: SpawnPoints = null;
@@ -56,7 +44,7 @@ export default class GameManager extends Node {
 	private _currentGameState: GameState = GameState.NONE;
 	private _joiningRoom: boolean = false;
 
-	private _halfSeekerFOV: number = 0;
+	private _halfSeekerFOV: number = null;
 	private _foundHiders: Map<string, Player>;
 	private _playerState: PlayerState = null;
 
@@ -89,6 +77,14 @@ export default class GameManager extends Node {
 
 	public static get DeltaTime(): number {
 		return this._instance._scene.deltaTime / 1000;
+	}
+
+	public ArenaWidthBoundary(): number {
+		return this._arenaBoundaries.x;
+	}
+
+	public ArenaDepthBoundary(): number {
+		return this._arenaBoundaries.y;
 	}
 
 	public SeekerWon(): boolean {
@@ -129,7 +125,7 @@ export default class GameManager extends Node {
 		this._cachedInteractables = [];
 		this._characterVisuals = [];
 
-		this._halfSeekerFOV = this._seekerFOV / 2;
+		// this._halfSeekerFOV = NetworkManager.Config.SeekerFOV / 2;
 
 		this.onJoinedRoom = this.onJoinedRoom.bind(this);
 		this.onLeftRoom = this.onLeftRoom.bind(this);
@@ -158,7 +154,6 @@ export default class GameManager extends Node {
 
 		const meshLayermask: number = 1;
 		meshes.forEach((mesh: AbstractMesh) => {
-			// console.log(`Setting ${mesh.name} Layermask to ${meshLayermask}`);
 			mesh.layerMask = meshLayermask;
 		});
 		//================================================
@@ -171,14 +166,9 @@ export default class GameManager extends Node {
 	}
 
 	private initializePlayers() {
-		// Add remote player references to the array
-		this._availableRemotePlayerObjects.push(this._remotePlayer1);
-		this._availableRemotePlayerObjects.push(this._remotePlayer2);
-		this._availableRemotePlayerObjects.push(this._remotePlayer3);
-		this._availableRemotePlayerObjects.push(this._remotePlayer4);
-		this._availableRemotePlayerObjects.push(this._remotePlayer5);
-		this._availableRemotePlayerObjects.push(this._remotePlayer6);
-		this._availableRemotePlayerObjects.push(this._remotePlayer7);
+		for (let i = 0; i < 7; i++) {
+			this._availableRemotePlayerObjects.push(this._scene.getMeshByName(`Remote Player ${i + 1}`) as Player);
+		}
 
 		this._availableRemotePlayerObjects.forEach((player: Player) => {
 			player.registerPlayerMeshForIntersection(this._player.visual.rescueMesh);
@@ -188,7 +178,6 @@ export default class GameManager extends Node {
 
 		// Register any cached interactables
 		if (this._cachedInteractables.length > 0) {
-			console.log(`Registering ${this._cachedInteractables.length} interactables`);
 			this._cachedInteractables.forEach((interactable: InteractableTrigger) => {
 				this.registerInteractable(interactable);
 			});
@@ -202,8 +191,6 @@ export default class GameManager extends Node {
 
 		// Add the seeker visual last; we will always assume the seeker visual is last
 		this._characterVisuals.push(this._scene.getTransformNodeByName('V-seeker'));
-
-		// console.log(`Character Visuals: %o`, this._characterVisuals);
 
 		this.reparentCharacterVisuals();
 	}
@@ -470,16 +457,10 @@ export default class GameManager extends Node {
 
 		player.setPlayerState(playerState);
 
-		console.log(`Game Manager - Spawn Player - set captured trigger size`);
 		player.setCapturedTriggerSize(NetworkManager.Config.RescueDistance);
 	}
 
 	private despawnPlayers() {
-		// if (NetworkManager.Instance.Room) {
-		// 	NetworkManager.Instance.Room.state.players.forEach((player: PlayerState, sessionId: string) => {
-		// 		this.despawnPlayer(player);
-		// 	});
-		// } else {
 		this.resetPlayerObject(this._player);
 
 		this._spawnedRemotes.forEach((playerObject: Player) => {
@@ -487,14 +468,11 @@ export default class GameManager extends Node {
 		});
 
 		this._spawnedRemotes.clear();
-		// }
 	}
 
 	private despawnPlayer(player: PlayerState) {
 		// Reset the player object if it has been spawned
 		let playerObject: Player;
-
-		console.log(`Despawn Player: %o`, player);
 
 		if (player.id === NetworkManager.Instance.Room.sessionId) {
 			playerObject = this._player;
@@ -532,6 +510,10 @@ export default class GameManager extends Node {
 	 * player objects within distance to the Seeker player.
 	 */
 	public getOverlappingHiders(): Player[] {
+		if (!this._halfSeekerFOV) {
+			this._halfSeekerFOV = NetworkManager.Config.SeekerFOV / 2;
+		}
+
 		const overlappingHiders: Player[] = [];
 
 		this._spawnedRemotes.forEach((hider: Player) => {
@@ -545,12 +527,10 @@ export default class GameManager extends Node {
 			// Convert angle to degrees
 			angle *= 180 / Math.PI;
 
-			// console.log(`Forward: (${forward.x}, ${forward.y}, ${forward.z})\nDir: (${dir.x}, ${dir.y}, ${dir.z})\nAngle: ${angle}`);
-
 			// If angle falls within the Seekers FOV check if the hider is close enough.
 			// If within the check distance the hider is a possible candiate for capture as
 			// as they are overlapping with the Seeker capture area.
-			if (angle <= this._halfSeekerFOV && Vector3.Distance(this._player.position, hider.position) <= this.seekerCheckDistance) {
+			if (angle <= this._halfSeekerFOV && Vector3.Distance(this._player.position, hider.position) <= NetworkManager.Config.SeekerCheckDistance) {
 				// console.log(`Overlapping Hider: %o`, hider);
 				overlappingHiders.push(hider);
 			}
@@ -601,6 +581,7 @@ export default class GameManager extends Node {
 		this.despawnPlayers();
 		this.initializeSpawnPoints();
 
+		this._halfSeekerFOV = null;
 		this.CurrentGameState = GameState.NONE;
 		this._foundHiders.clear();
 	}

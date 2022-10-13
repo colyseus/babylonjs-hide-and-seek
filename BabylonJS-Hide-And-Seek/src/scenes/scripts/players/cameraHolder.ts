@@ -30,8 +30,6 @@ export default class CameraHolder extends Mesh {
 	 */
 	public onStart(): void {
 		// ...
-		console.log(`Player Camera: %o`, this._camera);
-
 		this._camera.layerMask = 1;
 	}
 
@@ -74,8 +72,6 @@ export default class CameraHolder extends Mesh {
 	}
 
 	public setTarget(transform: TransformNode, chaseSpeed: number) {
-		console.log(`Camera Holder - Set Target to %o`, transform);
-
 		this._target = transform;
 		this._chaseSpeed = chaseSpeed;
 		this._targetPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z);

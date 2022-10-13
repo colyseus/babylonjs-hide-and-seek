@@ -1,6 +1,5 @@
 import { ActionEvent, ActionManager, ExecuteCodeAction, Mesh, Vector3 } from '@babylonjs/core';
 import GameManager from '../managers/gameManager';
-import NetworkManager from '../managers/networkManager';
 import Player from './player';
 import PlayerVisual from './playerVisual';
 
@@ -68,12 +67,8 @@ export default class CapturedTrigger extends Mesh {
 
 	/** Size is the radius of the trigger so actual scale of the trigger will be double the size */
 	public setTriggerSize(size: number) {
-		console.log(`Set Trigger Size: ${size} - Current Scale: ${this.scaling.x}`);
-
 		const scale: number = size * 2;
 		this.scaling = new Vector3(scale, scale, scale);
-
-		console.log(`Set Trigger Size: ${size} - New Scale: ${this.scaling.x}`);
 	}
 
 	/**

@@ -73,10 +73,8 @@ var CapturedTrigger = /** @class */ (function (_super) {
     };
     /** Size is the radius of the trigger so actual scale of the trigger will be double the size */
     CapturedTrigger.prototype.setTriggerSize = function (size) {
-        console.log("Set Trigger Size: ".concat(size, " - Current Scale: ").concat(this.scaling.x));
         var scale = size * 2;
         this.scaling = new core_1.Vector3(scale, scale, scale);
-        console.log("Set Trigger Size: ".concat(size, " - New Scale: ").concat(this.scaling.x));
     };
     /**
      * Called each frame.

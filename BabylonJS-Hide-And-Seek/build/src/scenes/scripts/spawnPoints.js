@@ -31,7 +31,6 @@ var SpawnPoints = /** @class */ (function () {
     SpawnPoints.prototype.getSpawnPoint = function (playerState) {
         var point = null;
         var index = playerState.spawnPoint;
-        console.log("*** Get Spawn Pt - ".concat(playerState.id, " is Seeker: ").concat(playerState.isSeeker, " ***"));
         if (playerState.isSeeker) {
             if (!this._seekerPoint) {
                 console.error("Seeker spawn point has already been used!");
@@ -53,7 +52,6 @@ var SpawnPoints = /** @class */ (function () {
         return point;
     };
     SpawnPoints.prototype.freeUpSpawnPoint = function (playerState) {
-        console.log("Free Spawn Point: %o", playerState);
         var spawnPointIndex = playerState.spawnPoint;
         var spawnPoint = null;
         if (playerState.isSeeker) {

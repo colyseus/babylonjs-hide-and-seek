@@ -115,6 +115,7 @@ var PlayerVisual = /** @class */ (function (_super) {
         visual.rotation = core_1.Vector3.Zero();
         visual.setEnabled(true);
         this._visualMeshes = visual.getChildMeshes();
+        this._captured.stop();
     };
     PlayerVisual.prototype.setTriggerSize = function (size) {
         var _a;

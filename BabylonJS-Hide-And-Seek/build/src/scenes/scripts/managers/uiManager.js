@@ -257,7 +257,6 @@ var UIManager = /** @class */ (function (_super) {
                         _a.sent();
                         return [3 /*break*/, 3];
                     case 5:
-                        console.log("Config: %o", networkManager_1.default.Config); //
                         this._titleUI.setVisible(false);
                         this._lobbyUI.setVisible(true);
                         return [3 /*break*/, 7];

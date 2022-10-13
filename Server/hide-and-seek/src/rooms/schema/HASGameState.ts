@@ -50,8 +50,6 @@ export class HASGameState extends Schema {
 			return;
 		}
 
-		logger.debug(`Game State - Seeker captured player: ${hider.id}`);
-
 		hider.isCaptured = true;
 		hider.canMove = false;
 
@@ -59,8 +57,6 @@ export class HASGameState extends Schema {
 	}
 
 	public capturedHiderRescued(hider: PlayerState) {
-		logger.debug(`Game State - Captured Hider rescued: ${hider.id}`);
-
 		hider.isCaptured = false;
 		hider.canMove = true;
 		hider.rescueCount++;

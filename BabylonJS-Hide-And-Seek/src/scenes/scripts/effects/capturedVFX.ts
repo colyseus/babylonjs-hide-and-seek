@@ -1,6 +1,5 @@
 import { Mesh, Vector3, ParticleSystem } from '@babylonjs/core';
-import { MeshButton3D } from '@babylonjs/gui';
-import { fromChildren, fromParticleSystems, visibleInInspector } from '../../decorators';
+import { fromChildren, fromParticleSystems } from '../../decorators';
 import { clamp, delay, Easing, lerpNumber } from '../../utility';
 import GameManager from '../managers/gameManager';
 import InputManager from '../managers/inputManager';
@@ -61,7 +60,6 @@ export default class CapturedVFX extends Mesh {
 	 */
 	public onInitialize(): void {
 		// ...
-		// this.onEnabledStateChange = this.onEnabledStateChange.bind(this);
 	}
 
 	/**
@@ -76,8 +74,6 @@ export default class CapturedVFX extends Mesh {
 	 * Called on the scene starts.
 	 */
 	public onStart(): void {
-		// this.onEnabledStateChangedObservable.add(this.onEnabledStateChange);
-
 		this._meshes = this.getChildMeshes() as Mesh[];
 
 		this._emitter.isPickable = false;
@@ -93,14 +89,6 @@ export default class CapturedVFX extends Mesh {
 		this.stop();
 	}
 
-	// private onEnabledStateChange(enabled: boolean) {
-	// 	if (enabled) {
-	// 		this.playCaptured();
-	// 	} else {
-	// 		this.stop();
-	// 	}
-	// }
-
 	private resetMeshes() {
 		for (let i = 0; i < this._meshes.length; i++) {
 			this._meshes[i].setEnabled(true);
@@ -115,8 +103,6 @@ export default class CapturedVFX extends Mesh {
 			console.warn(`Can't player captured FX - already playing`);
 			return;
 		}
-
-		console.log(`Play Captured FX`);
 
 		this.setScale(Vector3.One());
 		this.resetMeshes();
@@ -153,7 +139,6 @@ export default class CapturedVFX extends Mesh {
 			return;
 		}
 
-		console.log(`Play Rescue FX`);
 		this.resetMeshes();
 
 		this._playerRescued = true;

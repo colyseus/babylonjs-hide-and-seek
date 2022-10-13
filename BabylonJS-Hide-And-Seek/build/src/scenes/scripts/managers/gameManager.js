@@ -76,19 +76,22 @@ var GameManager = /** @class */ (function (_super) {
         var _this = this;
         // Magic Numbers
         //==========================================
+        // Camera chase speeds
+        //===========
         _this._playerChaseSpeed = 25;
         _this._startChaseSpeed = 3;
-        _this._seekerFOV = 60;
-        _this.seekerCheckDistance = 6;
+        //===========
         /** In ms, the time between messages sent to the server for each Hider discovered by the Seeker */
         _this._foundHiderMsgRate = 1000;
+        /** The positional values that mark the boundaries of the arena */
+        _this._arenaBoundaries = new core_1.Vector2(24.3, 26);
         _this._availableRemotePlayerObjects = null;
         _this._spawnPoints = null;
         _this._spawnedRemotes = null;
         _this._players = null;
         _this._currentGameState = GameState_1.GameState.NONE;
         _this._joiningRoom = false;
-        _this._halfSeekerFOV = 0;
+        _this._halfSeekerFOV = null;
         _this._playerState = null;
         _this._eventEmitter = new EventEmitter();
         _this._countdown = 0;
@@ -132,6 +135,12 @@ var GameManager = /** @class */ (function (_super) {
         enumerable: false,
         configurable: true
     });
+    GameManager.prototype.ArenaWidthBoundary = function () {
+        return this._arenaBoundaries.x;
+    };
+    GameManager.prototype.ArenaDepthBoundary = function () {
+        return this._arenaBoundaries.y;
+    };
     GameManager.prototype.SeekerWon = function () {
         return networkManager_1.default.Instance.Room.state.gameState.seekerWon;
     };
@@ -157,7 +166,7 @@ var GameManager = /** @class */ (function (_super) {
         this._availableRemotePlayerObjects = [];
         this._cachedInteractables = [];
         this._characterVisuals = [];
-        this._halfSeekerFOV = this._seekerFOV / 2;
+        // this._halfSeekerFOV = NetworkManager.Config.SeekerFOV / 2;
         this.onJoinedRoom = this.onJoinedRoom.bind(this);
         this.onLeftRoom = this.onLeftRoom.bind(this);
         this.onPlayerAdded = this.onPlayerAdded.bind(this);
@@ -179,7 +188,6 @@ var GameManager = /** @class */ (function (_super) {
         var meshes = this._scene.meshes;
         var meshLayermask = 1;
         meshes.forEach(function (mesh) {
-            // console.log(`Setting ${mesh.name} Layermask to ${meshLayermask}`);
             mesh.layerMask = meshLayermask;
         });
         //================================================
@@ -191,21 +199,15 @@ var GameManager = /** @class */ (function (_super) {
     };
     GameManager.prototype.initializePlayers = function () {
         var _this = this;
-        // Add remote player references to the array
-        this._availableRemotePlayerObjects.push(this._remotePlayer1);
-        this._availableRemotePlayerObjects.push(this._remotePlayer2);
-        this._availableRemotePlayerObjects.push(this._remotePlayer3);
-        this._availableRemotePlayerObjects.push(this._remotePlayer4);
-        this._availableRemotePlayerObjects.push(this._remotePlayer5);
-        this._availableRemotePlayerObjects.push(this._remotePlayer6);
-        this._availableRemotePlayerObjects.push(this._remotePlayer7);
+        for (var i = 0; i < 7; i++) {
+            this._availableRemotePlayerObjects.push(this._scene.getMeshByName("Remote Player ".concat(i + 1)));
+        }
         this._availableRemotePlayerObjects.forEach(function (player) {
             player.registerPlayerMeshForIntersection(_this._player.visual.rescueMesh);
         });
         this._player.setParent(null);
         // Register any cached interactables
         if (this._cachedInteractables.length > 0) {
-            console.log("Registering ".concat(this._cachedInteractables.length, " interactables"));
             this._cachedInteractables.forEach(function (interactable) {
                 _this.registerInteractable(interactable);
             });
@@ -217,7 +219,6 @@ var GameManager = /** @class */ (function (_super) {
         }
         // Add the seeker visual last; we will always assume the seeker visual is last
         this._characterVisuals.push(this._scene.getTransformNodeByName('V-seeker'));
-        // console.log(`Character Visuals: %o`, this._characterVisuals);
         this.reparentCharacterVisuals();
     };
     GameManager.prototype.reparentCharacterVisuals = function () {
@@ -447,27 +448,19 @@ var GameManager = /** @class */ (function (_super) {
             player.toggleEnabled(true);
         }, 100);
         player.setPlayerState(playerState);
-        console.log("Game Manager - Spawn Player - set captured trigger size");
         player.setCapturedTriggerSize(networkManager_1.default.Config.RescueDistance);
     };
     GameManager.prototype.despawnPlayers = function () {
         var _this = this;
-        // if (NetworkManager.Instance.Room) {
-        // 	NetworkManager.Instance.Room.state.players.forEach((player: PlayerState, sessionId: string) => {
-        // 		this.despawnPlayer(player);
-        // 	});
-        // } else {
         this.resetPlayerObject(this._player);
         this._spawnedRemotes.forEach(function (playerObject) {
             _this.resetPlayerObject(playerObject);
         });
         this._spawnedRemotes.clear();
-        // }
     };
     GameManager.prototype.despawnPlayer = function (player) {
         // Reset the player object if it has been spawned
         var playerObject;
-        console.log("Despawn Player: %o", player);
         if (player.id === networkManager_1.default.Instance.Room.sessionId) {
             playerObject = this._player;
         }
@@ -500,6 +493,9 @@ var GameManager = /** @class */ (function (_super) {
      */
     GameManager.prototype.getOverlappingHiders = function () {
         var _this = this;
+        if (!this._halfSeekerFOV) {
+            this._halfSeekerFOV = networkManager_1.default.Config.SeekerFOV / 2;
+        }
         var overlappingHiders = [];
         this._spawnedRemotes.forEach(function (hider) {
             var forward = _this._player.visualForward();
@@ -509,11 +505,10 @@ var GameManager = /** @class */ (function (_super) {
             var angle = Math.abs(core_1.Vector3.GetAngleBetweenVectors(forward, dir, core_1.Vector3.Forward()));
             // Convert angle to degrees
             angle *= 180 / Math.PI;
-            // console.log(`Forward: (${forward.x}, ${forward.y}, ${forward.z})\nDir: (${dir.x}, ${dir.y}, ${dir.z})\nAngle: ${angle}`);
             // If angle falls within the Seekers FOV check if the hider is close enough.
             // If within the check distance the hider is a possible candiate for capture as
             // as they are overlapping with the Seeker capture area.
-            if (angle <= _this._halfSeekerFOV && core_1.Vector3.Distance(_this._player.position, hider.position) <= _this.seekerCheckDistance) {
+            if (angle <= _this._halfSeekerFOV && core_1.Vector3.Distance(_this._player.position, hider.position) <= networkManager_1.default.Config.SeekerCheckDistance) {
                 // console.log(`Overlapping Hider: %o`, hider);
                 overlappingHiders.push(hider);
             }
@@ -554,6 +549,7 @@ var GameManager = /** @class */ (function (_super) {
     GameManager.prototype.reset = function () {
         this.despawnPlayers();
         this.initializeSpawnPoints();
+        this._halfSeekerFOV = null;
         this.CurrentGameState = GameState_1.GameState.NONE;
         this._foundHiders.clear();
     };
@@ -596,27 +592,6 @@ var GameManager = /** @class */ (function (_super) {
     __decorate([
         (0, decorators_1.fromChildren)('Player')
     ], GameManager.prototype, "_player", void 0);
-    __decorate([
-        (0, decorators_1.fromChildren)('Remote Player 1')
-    ], GameManager.prototype, "_remotePlayer1", void 0);
-    __decorate([
-        (0, decorators_1.fromChildren)('Remote Player 2')
-    ], GameManager.prototype, "_remotePlayer2", void 0);
-    __decorate([
-        (0, decorators_1.fromChildren)('Remote Player 3')
-    ], GameManager.prototype, "_remotePlayer3", void 0);
-    __decorate([
-        (0, decorators_1.fromChildren)('Remote Player 4')
-    ], GameManager.prototype, "_remotePlayer4", void 0);
-    __decorate([
-        (0, decorators_1.fromChildren)('Remote Player 5')
-    ], GameManager.prototype, "_remotePlayer5", void 0);
-    __decorate([
-        (0, decorators_1.fromChildren)('Remote Player 6')
-    ], GameManager.prototype, "_remotePlayer6", void 0);
-    __decorate([
-        (0, decorators_1.fromChildren)('Remote Player 7')
-    ], GameManager.prototype, "_remotePlayer7", void 0);
     return GameManager;
 }(node_1.Node));
 exports.default = GameManager;

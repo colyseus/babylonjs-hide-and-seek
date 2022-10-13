@@ -41,7 +41,7 @@
 				"15": 1
 			},
 			"isEnabled": true,
-			"isVisible": false,
+			"isVisible": true,
 			"infiniteDistance": false,
 			"pickable": true,
 			"receiveShadows": false,
@@ -50,13 +50,13 @@
 			"checkCollisions": false,
 			"isBlocker": false,
 			"overrideMaterialSideOrientation": null,
-			"parentId": "423c55f0-bbbf-4722-a36a-d6c295a5a734",
+			"parentId": "a2a17ad5-8907-4f37-8ee1-62eba6baae43",
 			"isUnIndexed": false,
-			"geometryUniqueId": 629,
+			"geometryUniqueId": 433,
 			"geometryId": "db7ab581-266b-46ad-8d40-2f2edbb538bc",
 			"subMeshes": null,
-			"materialUniqueId": 657,
-			"materialId": "default material",
+			"materialUniqueId": 280,
+			"materialId": "bff3cbf9-346d-4541-b2f1-498ffddc4323",
 			"physicsMass": 0,
 			"physicsFriction": 0.2,
 			"physicsRestitution": 0.2,
@@ -87,18 +87,18 @@
 			"maxX": 256,
 			"minZ": -256,
 			"maxZ": 256,
-			"width": 55,
-			"height": 55,
+			"width": 150,
+			"height": 150,
 			"delayLoadingFile": "geometries/db7ab581-266b-46ad-8d40-2f2edbb538bc.babylonbinarymeshdata",
 			"boundingBoxMaximum": [
-				27.5,
+				75,
 				0,
-				27.5
+				75
 			],
 			"boundingBoxMinimum": [
-				-27.5,
+				-75,
 				0,
-				-27.5
+				-75
 			],
 			"_binaryInfo": {
 				"positionsAttrDesc": {

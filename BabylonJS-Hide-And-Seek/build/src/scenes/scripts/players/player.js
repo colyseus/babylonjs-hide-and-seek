@@ -36,7 +36,6 @@ var Player = /** @class */ (function (_super) {
     // @ts-ignore ignoring the super call as we don't want to re-init
     function Player() {
         var _this = this;
-        _this._movementSpeed = 1;
         _this.isLocalPlayer = false;
         _this._rigidbody = null;
         _this._xDirection = 0;
@@ -71,7 +70,6 @@ var Player = /** @class */ (function (_super) {
         this._originalPosition = this.position;
         this._lastPosition = this._originalPosition;
         if (this.isLocalPlayer) {
-            console.log("Player Visual: %o", this.visual);
             this.isPickable = false;
         }
         if (this.visual) {
@@ -158,6 +156,10 @@ var Player = /** @class */ (function (_super) {
             }
             return;
         }
+        // Check if the player is outside the arena
+        //============================
+        this.correctPositionForArenaBoundary();
+        //============================
         var velocity = new core_1.Vector3();
         // W + -S (1/0 + -1/0)
         this._zDirection = (inputManager_1.default.getKey(87) ? 1 : 0) + (inputManager_1.default.getKey(83) ? -1 : 0);
@@ -182,6 +184,28 @@ var Player = /** @class */ (function (_super) {
         }
         this.setVisualLookDirection(velocity);
     };
+    Player.prototype.correctPositionForArenaBoundary = function () {
+        if (Math.abs(this.position.x) >= gameManager_1.default.Instance.ArenaWidthBoundary()) {
+            // Correct the x position
+            if (this.position.x < 0) {
+                this.position.x = -gameManager_1.default.Instance.ArenaWidthBoundary() + 1.5;
+            }
+            else {
+                this.position.x = gameManager_1.default.Instance.ArenaWidthBoundary() - 1.5;
+            }
+            this.sendPositionUpdateToServer();
+        }
+        if (Math.abs(this.position.z) >= gameManager_1.default.Instance.ArenaDepthBoundary()) {
+            // Correct the z position
+            if (this.position.z < 0) {
+                this.position.z = -gameManager_1.default.Instance.ArenaDepthBoundary() + 1.5;
+            }
+            else {
+                this.position.z = gameManager_1.default.Instance.ArenaDepthBoundary() - 1.5;
+            }
+            this.sendPositionUpdateToServer();
+        }
+    };
     Player.prototype.getMovementSpeed = function () {
         return networkManager_1.default.Config.PlayerMovementSpeed * (gameManager_1.default.Instance.PlayerIsSeeker() ? networkManager_1.default.Config.SeekerMovementBoost : 1);
     };
@@ -201,6 +225,7 @@ var Player = /** @class */ (function (_super) {
             if (this._previousMovements.length === 0) {
                 this.position.copyFrom(new core_1.Vector3(this._state.xPos, 0.5, this._state.zPos));
             }
+            this.correctPositionForArenaBoundary();
         }
         else {
             // Lerp the remote player object to their position
@@ -223,7 +248,7 @@ var Player = /** @class */ (function (_super) {
             // Raycast to each hider to determine if an obstacle is between them and the Seeker
             hiders.forEach(function (hider) {
                 distanceToHider_1 = core_1.Vector3.Distance(_this.position, hider.position);
-                var ray = new core_1.Ray(_this.position, hider.position.subtract(_this.position).normalize(), gameManager_1.default.Instance.seekerCheckDistance + 1);
+                var ray = new core_1.Ray(_this.position, hider.position.subtract(_this.position).normalize(), networkManager_1.default.Config.SeekerCheckDistance + 1);
                 // Draw debug ray visual
                 //============================================
                 // if (this._rayHelper) {
@@ -274,9 +299,6 @@ var Player = /** @class */ (function (_super) {
                 break;
         }
     };
-    __decorate([
-        (0, decorators_1.visibleInInspector)('number', 'Movement Speed', 1)
-    ], Player.prototype, "_movementSpeed", void 0);
     __decorate([
         (0, decorators_1.fromChildren)('PlayerBody')
     ], Player.prototype, "visual", void 0);

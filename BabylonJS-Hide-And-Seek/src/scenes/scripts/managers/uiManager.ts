@@ -166,8 +166,6 @@ export default class UIManager extends Node {
 				await delay(100);
 			}
 
-			console.log(`Config: %o`, NetworkManager.Config); //
-
 			this._titleUI.setVisible(false);
 			this._lobbyUI.setVisible(true);
 		} catch (error: any) {

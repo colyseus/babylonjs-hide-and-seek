@@ -168,7 +168,6 @@ var NetworkManager = /** @class */ (function (_super) {
         // ...
         NetworkManager._instance = this;
         this.createColyseusSettings();
-        console.log("Server Settings: %o", this._serverSettings);
         console.log("Network Manager - On Initialize - Create Colyseus Client with URL: ".concat(this.WebSocketEndPoint()));
         this._client = new Colyseus.Client(this.WebSocketEndPoint());
         this.bindHandlers();
@@ -313,7 +312,6 @@ var NetworkManager = /** @class */ (function (_super) {
         if (!this.Room || this.Room.state.gameState.currentState !== GameState_1.GameState.HUNT) {
             return;
         }
-        console.log("Network Manager - Start Rescue of captured Hider ".concat(hiderId));
         this.Room.send('rescueHider', hiderId);
     };
     NetworkManager.prototype.sendPlayAgain = function () {

@@ -93,7 +93,7 @@ export default class UIManager extends Node {
 		// Load overaly last so it will be rendered on top of everything else
 		this.loadOverlayUI();
 
-		this.loadStatsUI();
+		// this.loadStatsUI();
 	}
 
 	private loadTitleUI() {
@@ -165,8 +165,6 @@ export default class UIManager extends Node {
 			while (!NetworkManager.Ready()) {
 				await delay(100);
 			}
-
-			console.log(`Config: %o`, NetworkManager.Config); //
 
 			this._titleUI.setVisible(false);
 			this._lobbyUI.setVisible(true);

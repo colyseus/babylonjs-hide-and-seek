@@ -2,7 +2,6 @@ import { Mesh, TransformNode, Vector3 } from '@babylonjs/core';
 import type { PlayerState } from '../../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
 import PlayerVisual from './playerVisual';
 export default class Player extends Mesh {
-    private _movementSpeed;
     visual: PlayerVisual;
     isLocalPlayer: boolean;
     private _rigidbody;
@@ -45,6 +44,7 @@ export default class Player extends Mesh {
     setVisualLookDirection(dir: Vector3): void;
     registerPlayerMeshForIntersection(mesh: Mesh): void;
     private updatePlayerMovement;
+    private correctPositionForArenaBoundary;
     private getMovementSpeed;
     private updatePositionFromState;
     private sendPositionUpdateToServer;

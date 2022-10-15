@@ -136,7 +136,7 @@ var UIManager = /** @class */ (function (_super) {
         this.loadGameplayUI();
         // Load overaly last so it will be rendered on top of everything else
         this.loadOverlayUI();
-        this.loadStatsUI();
+        // this.loadStatsUI();
     };
     UIManager.prototype.loadTitleUI = function () {
         this._titleUI = new titleUI_1.TitleUI(this._scene, this._uiLayer);
@@ -257,7 +257,6 @@ var UIManager = /** @class */ (function (_super) {
                         _a.sent();
                         return [3 /*break*/, 3];
                     case 5:
-                        console.log("Config: %o", networkManager_1.default.Config); //
                         this._titleUI.setVisible(false);
                         this._lobbyUI.setVisible(true);
                         return [3 /*break*/, 7];

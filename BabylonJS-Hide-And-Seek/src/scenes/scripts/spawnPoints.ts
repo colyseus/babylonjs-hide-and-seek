@@ -1,4 +1,4 @@
-import { AbstractMesh, Node, TransformNode, Vector3 } from '@babylonjs/core';
+import { AbstractMesh, TransformNode } from '@babylonjs/core';
 import type { PlayerState } from '../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
 
 export class SpawnPoints {
@@ -39,8 +39,6 @@ export class SpawnPoints {
 		let point: TransformNode = null;
 		const index: number = playerState.spawnPoint;
 
-		console.log(`*** Get Spawn Pt - ${playerState.id} is Seeker: ${playerState.isSeeker} ***`);
-
 		if (playerState.isSeeker) {
 			if (!this._seekerPoint) {
 				console.error(`Seeker spawn point has already been used!`);
@@ -68,8 +66,6 @@ export class SpawnPoints {
 	}
 
 	public freeUpSpawnPoint(playerState: PlayerState) {
-		console.log(`Free Spawn Point: %o`, playerState);
-
 		const spawnPointIndex: number = playerState.spawnPoint;
 		let spawnPoint: TransformNode = null;
 

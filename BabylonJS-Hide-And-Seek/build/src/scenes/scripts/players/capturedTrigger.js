@@ -61,8 +61,8 @@ var CapturedTrigger = /** @class */ (function (_super) {
         }, function (event) {
             // console.log(`Captured Trigger - Mesh intersection ENTER %o`, event);
             var localPlayerVisual = event.additionalData.parent;
-            console.log("Captured Trigger - Player is captured?: ".concat(_this._player.isCaptured()));
-            if (_this._player.isCaptured() && localPlayerVisual.player.isLocalPlayer) {
+            // console.log(`Captured Trigger - Player is captured?: ${this._player.isCaptured()}`);
+            if (_this._player.isCaptured() && !_this._player.visual.playingCapturedVFX() && localPlayerVisual.player.isLocalPlayer) {
                 gameManager_1.default.Instance.rescueCapturedHider(_this._player);
             }
         });
@@ -73,10 +73,8 @@ var CapturedTrigger = /** @class */ (function (_super) {
     };
     /** Size is the radius of the trigger so actual scale of the trigger will be double the size */
     CapturedTrigger.prototype.setTriggerSize = function (size) {
-        console.log("Set Trigger Size: ".concat(size, " - Current Scale: ").concat(this.scaling.x));
         var scale = size * 2;
         this.scaling = new core_1.Vector3(scale, scale, scale);
-        console.log("Set Trigger Size: ".concat(size, " - New Scale: ").concat(this.scaling.x));
     };
     /**
      * Called each frame.

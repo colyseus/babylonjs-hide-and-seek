@@ -17,6 +17,7 @@ export declare class GameConfig {
     get SeekerCheckDistance(): number;
     get RescueTime(): number;
     get RescueDistance(): number;
+    get SeekerFOV(): number;
     get SeekerGoal(): string;
     get HiderGoal(): string;
 }

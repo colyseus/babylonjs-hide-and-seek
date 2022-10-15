@@ -101,6 +101,9 @@ var PlayerVisual = /** @class */ (function (_super) {
         this._currentDir = this.forward;
         this._captured.setEnabled(true);
     };
+    PlayerVisual.prototype.playingCapturedVFX = function () {
+        return this._captured.playingFX();
+    };
     PlayerVisual.prototype.setPlayerReference = function (player) {
         var _a;
         this.player = player;
@@ -112,6 +115,7 @@ var PlayerVisual = /** @class */ (function (_super) {
         visual.rotation = core_1.Vector3.Zero();
         visual.setEnabled(true);
         this._visualMeshes = visual.getChildMeshes();
+        this._captured.stop();
     };
     PlayerVisual.prototype.setTriggerSize = function (size) {
         var _a;

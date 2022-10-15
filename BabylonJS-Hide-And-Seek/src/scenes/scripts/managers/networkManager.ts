@@ -115,8 +115,6 @@ export default class NetworkManager extends Node {
 
 		this.createColyseusSettings();
 
-		console.log(`Server Settings: %o`, this._serverSettings);
-
 		console.log(`Network Manager - On Initialize - Create Colyseus Client with URL: ${this.WebSocketEndPoint()}`);
 		this._client = new Colyseus.Client(this.WebSocketEndPoint());
 
@@ -255,8 +253,6 @@ export default class NetworkManager extends Node {
 		if (!this.Room || this.Room.state.gameState.currentState !== GameState.HUNT) {
 			return;
 		}
-
-		console.log(`Network Manager - Start Rescue of captured Hider ${hiderId}`);
 
 		this.Room.send('rescueHider', hiderId);
 	}

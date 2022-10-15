@@ -141,6 +141,12 @@ export class HASRoomState extends Schema {
 				return;
 			}
 
+			// Check if Hider has reached their max rescue count
+			if (hider.rescueCount >= this._config.RescueCount) {
+				logger.debug(`Hider ${hiderId} has already be rescued the max number of times`);
+				return;
+			}
+
 			let rescueAlreadyInProgress: boolean = false;
 
 			// Check if a rescue operation is already underway by another player; if so don't start another one

@@ -13,11 +13,11 @@
 			],
 			"rotation": [
 				1.5707963267948966,
-				0.5460183789213676,
+				0.5460183789213678,
 				0
 			],
 			"scaling": [
-				0.9999999784225364,
+				1.2017681840979024,
 				0.9999999784225364,
 				1
 			],
@@ -51,14 +51,18 @@
 			"overrideMaterialSideOrientation": null,
 			"parentId": "6326c232-77f8-4370-afcc-be49aa782312",
 			"isUnIndexed": false,
-			"geometryUniqueId": 1183,
+			"geometryUniqueId": 1136,
 			"geometryId": "99b7491e-2ed2-4c69-9ca0-a0c01b74973e",
 			"subMeshes": null,
 			"materialUniqueId": 1623,
 			"materialId": "1ac40e75-f1fd-4207-9ffc-5d2483a04d2a",
 			"metadata": {
 				"isDecal": true,
-				"isPickable": true
+				"isPickable": true,
+				"script": {
+					"name": "None"
+				},
+				"renderingGroupId": 0
 			},
 			"instances": [],
 			"animations": [],

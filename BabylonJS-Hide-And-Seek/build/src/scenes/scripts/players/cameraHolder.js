@@ -50,7 +50,6 @@ var CameraHolder = /** @class */ (function (_super) {
      */
     CameraHolder.prototype.onStart = function () {
         // ...
-        console.log("Player Camera: %o", this._camera);
         this._camera.layerMask = 1;
     };
     /**
@@ -87,7 +86,6 @@ var CameraHolder = /** @class */ (function (_super) {
         }
     };
     CameraHolder.prototype.setTarget = function (transform, chaseSpeed) {
-        console.log("Camera Holder - Set Target to %o", transform);
         this._target = transform;
         this._chaseSpeed = chaseSpeed;
         this._targetPosition = new core_1.Vector3(transform.position.x, transform.position.y, transform.position.z);

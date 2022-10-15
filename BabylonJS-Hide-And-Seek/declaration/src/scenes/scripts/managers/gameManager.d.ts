@@ -7,21 +7,14 @@ export default class GameManager extends Node {
     private static _instance;
     private _playerChaseSpeed;
     private _startChaseSpeed;
-    private _seekerFOV;
-    seekerCheckDistance: number;
     /** In ms, the time between messages sent to the server for each Hider discovered by the Seeker */
     private _foundHiderMsgRate;
+    /** The positional values that mark the boundaries of the arena */
+    private _arenaBoundaries;
     private _cameraHolder;
     private _cameraStartPos;
     private _spawnPointsRoot;
     private _player;
-    private _remotePlayer1;
-    private _remotePlayer2;
-    private _remotePlayer3;
-    private _remotePlayer4;
-    private _remotePlayer5;
-    private _remotePlayer6;
-    private _remotePlayer7;
     private _availableRemotePlayerObjects;
     private _spawnPoints;
     private _spawnedRemotes;
@@ -41,6 +34,8 @@ export default class GameManager extends Node {
     private set CurrentGameState(value);
     static get Instance(): GameManager;
     static get DeltaTime(): number;
+    ArenaWidthBoundary(): number;
+    ArenaDepthBoundary(): number;
     SeekerWon(): boolean;
     addOnEvent(eventName: string, callback: (data?: any) => void): void;
     removeOnEvent(eventName: string, callback: (data?: any) => void): void;

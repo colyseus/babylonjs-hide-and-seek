@@ -13,7 +13,7 @@
 			],
 			"rotationQuaternion": [
 				0,
-				4.779160400758542e-11,
+				4.809059817034722e-9,
 				0,
 				1
 			],
@@ -52,7 +52,7 @@
 			"overrideMaterialSideOrientation": 0,
 			"parentId": "8cc43371-c89d-4761-9470-a7e93d4ad83a",
 			"isUnIndexed": false,
-			"geometryUniqueId": 1371,
+			"geometryUniqueId": 1401,
 			"geometryId": "d9151cc9-71ef-484e-b968-090491d2c83f",
 			"subMeshes": null,
 			"materialUniqueId": 296,

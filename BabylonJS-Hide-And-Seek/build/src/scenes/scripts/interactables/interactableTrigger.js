@@ -61,6 +61,10 @@ var InteractableTrigger = /** @class */ (function (_super) {
     InteractableTrigger.prototype.onInitialized = function () {
         // ...
         this.actionManager = new core_1.ActionManager(this.getScene());
+        this.isPickable = false;
+        this.getChildMeshes().forEach(function (mesh) {
+            mesh.isPickable = false;
+        });
     };
     /**
      * Called on the scene starts.

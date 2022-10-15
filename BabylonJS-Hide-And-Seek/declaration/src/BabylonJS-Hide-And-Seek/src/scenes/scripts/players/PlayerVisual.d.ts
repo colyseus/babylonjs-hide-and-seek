@@ -31,6 +31,7 @@ export default class PlayerVisual extends Mesh {
      * Called on the scene starts.
      */
     onStart(): void;
+    playingCapturedVFX(): boolean;
     setPlayerReference(player: Player): void;
     setVisual(visual: TransformNode): void;
     setTriggerSize(size: number): void;

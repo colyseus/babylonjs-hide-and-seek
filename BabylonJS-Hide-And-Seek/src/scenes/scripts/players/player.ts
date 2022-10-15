@@ -1,17 +1,13 @@
-import { AbstractMesh, AxesViewer, Axis, Color3, Color4, Gizmo, IPhysicsEngine, LinesMesh, Mesh, MeshBuilder, PhysicsEngine, PhysicsImpostor, PickingInfo, Quaternion, Ray, RayHelper, Space, TransformNode, UtilityLayerRenderer, Vector3 } from '@babylonjs/core';
-import { fromChildren, visibleInInspector } from '../../decorators';
+import { AbstractMesh, Mesh, PhysicsImpostor, PickingInfo, Ray, RayHelper, TransformNode, Vector3 } from '@babylonjs/core';
+import { fromChildren } from '../../decorators';
 import GameManager from '../managers/gameManager';
 import InputManager from '../managers/inputManager';
 import NetworkManager from '../managers/networkManager';
 import type { PlayerState } from '../../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
 import { PlayerInputMessage } from '../../../../../Server/hide-and-seek/src/models/PlayerInputMessage';
 import PlayerVisual from './playerVisual';
-import { PhysicsRaycastResult } from '@babylonjs/core/Physics/physicsRaycastResult';
 
 export default class Player extends Mesh {
-	@visibleInInspector('number', 'Movement Speed', 1)
-	private _movementSpeed: number = 1;
-
 	@fromChildren('PlayerBody')
 	public visual: PlayerVisual;
 
@@ -66,8 +62,6 @@ export default class Player extends Mesh {
 		this._lastPosition = this._originalPosition;
 
 		if (this.isLocalPlayer) {
-			console.log(`Player Visual: %o`, this.visual);
-
 			this.isPickable = false;
 		}
 
@@ -175,6 +169,11 @@ export default class Player extends Mesh {
 			return;
 		}
 
+		// Check if the player is outside the arena
+		//============================
+		this.correctPositionForArenaBoundary();
+		//============================
+
 		let velocity: Vector3 = new Vector3();
 
 		// W + -S (1/0 + -1/0)
@@ -208,6 +207,30 @@ export default class Player extends Mesh {
 		this.setVisualLookDirection(velocity);
 	}
 
+	private correctPositionForArenaBoundary() {
+		if (Math.abs(this.position.x) >= GameManager.Instance.ArenaWidthBoundary()) {
+			// Correct the x position
+			if (this.position.x < 0) {
+				this.position.x = -GameManager.Instance.ArenaWidthBoundary() + 1.5;
+			} else {
+				this.position.x = GameManager.Instance.ArenaWidthBoundary() - 1.5;
+			}
+
+			this.sendPositionUpdateToServer();
+		}
+
+		if (Math.abs(this.position.z) >= GameManager.Instance.ArenaDepthBoundary()) {
+			// Correct the z position
+			if (this.position.z < 0) {
+				this.position.z = -GameManager.Instance.ArenaDepthBoundary() + 1.5;
+			} else {
+				this.position.z = GameManager.Instance.ArenaDepthBoundary() - 1.5;
+			}
+
+			this.sendPositionUpdateToServer();
+		}
+	}
+
 	private getMovementSpeed(): number {
 		return NetworkManager.Config.PlayerMovementSpeed * (GameManager.Instance.PlayerIsSeeker() ? NetworkManager.Config.SeekerMovementBoost : 1);
 	}
@@ -230,6 +253,8 @@ export default class Player extends Mesh {
 			if (this._previousMovements.length === 0) {
 				this.position.copyFrom(new Vector3(this._state.xPos, 0.5, this._state.zPos));
 			}
+
+			this.correctPositionForArenaBoundary();
 		} else {
 			// Lerp the remote player object to their position
 			this.position.copyFrom(Vector3.Lerp(this.position, new Vector3(this._state.xPos, 0.5, this._state.zPos), GameManager.DeltaTime * 35));
@@ -258,7 +283,7 @@ export default class Player extends Mesh {
 			hiders.forEach((hider: Player) => {
 				distanceToHider = Vector3.Distance(this.position, hider.position);
 
-				let ray: Ray = new Ray(this.position, hider.position.subtract(this.position).normalize(), GameManager.Instance.seekerCheckDistance + 1);
+				let ray: Ray = new Ray(this.position, hider.position.subtract(this.position).normalize(), NetworkManager.Config.SeekerCheckDistance + 1);
 
 				// Draw debug ray visual
 				//============================================

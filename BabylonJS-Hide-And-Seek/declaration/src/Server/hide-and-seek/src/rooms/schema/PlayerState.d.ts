@@ -9,6 +9,7 @@ export declare class PlayerState extends Schema {
     /** The index of the spawn point on the client */
     spawnPoint: number;
     playAgain: boolean;
+    rescueCount: number;
     xPos: number;
     yPos: number;
     zPos: number;

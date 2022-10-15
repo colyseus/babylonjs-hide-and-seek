@@ -69,6 +69,10 @@ export default class PlayerVisual extends Mesh {
 		this._captured.setEnabled(true);
 	}
 
+	public playingCapturedVFX(): boolean {
+		return this._captured.playingFX();
+	}
+
 	public setPlayerReference(player: Player) {
 		this.player = player;
 
@@ -82,6 +86,7 @@ export default class PlayerVisual extends Mesh {
 		visual.setEnabled(true);
 
 		this._visualMeshes = visual.getChildMeshes() as Mesh[];
+		this._captured.stop();
 	}
 
 	public setTriggerSize(size: number) {

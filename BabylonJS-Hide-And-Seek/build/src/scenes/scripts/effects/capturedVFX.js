@@ -95,7 +95,6 @@ var CapturedVFX = /** @class */ (function (_super) {
      */
     CapturedVFX.prototype.onInitialize = function () {
         // ...
-        // this.onEnabledStateChange = this.onEnabledStateChange.bind(this);
     };
     /**
      * Called on the node has been fully initialized and is ready.
@@ -108,7 +107,6 @@ var CapturedVFX = /** @class */ (function (_super) {
      * Called on the scene starts.
      */
     CapturedVFX.prototype.onStart = function () {
-        // this.onEnabledStateChangedObservable.add(this.onEnabledStateChange);
         this._meshes = this.getChildMeshes();
         this._emitter.isPickable = false;
         this._particlesPrefab.stop();
@@ -118,13 +116,6 @@ var CapturedVFX = /** @class */ (function (_super) {
         this._particles.reset();
         this.stop();
     };
-    // private onEnabledStateChange(enabled: boolean) {
-    // 	if (enabled) {
-    // 		this.playCaptured();
-    // 	} else {
-    // 		this.stop();
-    // 	}
-    // }
     CapturedVFX.prototype.resetMeshes = function () {
         for (var i = 0; i < this._meshes.length; i++) {
             this._meshes[i].setEnabled(true);
@@ -142,7 +133,6 @@ var CapturedVFX = /** @class */ (function (_super) {
                             console.warn("Can't player captured FX - already playing");
                             return [2 /*return*/];
                         }
-                        console.log("Play Captured FX");
                         this.setScale(core_1.Vector3.One());
                         this.resetMeshes();
                         this.setEnabled(true);
@@ -178,7 +168,6 @@ var CapturedVFX = /** @class */ (function (_super) {
                         if (this.playingFX()) {
                             return [2 /*return*/];
                         }
-                        console.log("Play Rescue FX");
                         this.resetMeshes();
                         this._playerRescued = true;
                         this.punchFXOut(this._rescuePunchTime);

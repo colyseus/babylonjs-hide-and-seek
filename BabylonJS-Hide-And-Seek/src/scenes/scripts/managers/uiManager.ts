@@ -93,7 +93,7 @@ export default class UIManager extends Node {
 		// Load overaly last so it will be rendered on top of everything else
 		this.loadOverlayUI();
 
-		this.loadStatsUI();
+		// this.loadStatsUI();
 	}
 
 	private loadTitleUI() {

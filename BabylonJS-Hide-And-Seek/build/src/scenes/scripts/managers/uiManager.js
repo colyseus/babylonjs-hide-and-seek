@@ -136,7 +136,7 @@ var UIManager = /** @class */ (function (_super) {
         this.loadGameplayUI();
         // Load overaly last so it will be rendered on top of everything else
         this.loadOverlayUI();
-        this.loadStatsUI();
+        // this.loadStatsUI();
     };
     UIManager.prototype.loadTitleUI = function () {
         this._titleUI = new titleUI_1.TitleUI(this._scene, this._uiLayer);

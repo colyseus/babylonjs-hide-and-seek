@@ -9,13 +9,13 @@ module.exports = (env, argv) => {
 
 	console.log(`********* WEBPACK Dir Path: "${__dirname}" *********`);
 
-	let configPath = './configs/local.env';
+	let serverSettings = './server-settings/local.env';
 
 	if(env.production) {
-		configPath = './configs/remote.env';
+		serverSettings = './server-settings/remote.env';
 	}
 
-	console.log(`*** Config Path: ${configPath} ***`);
+	console.log(`*** Server Settings Path: ${serverSettings} ***`);
 	
 	return {
 		// we output both a minified version & a non minified version on production build
@@ -53,7 +53,7 @@ module.exports = (env, argv) => {
 		},
 		plugins: [
 			new Dotenv({
-				path: configPath
+				path: serverSettings
 			}),
 			new webpack.BannerPlugin({
 				banner: `${package.name} ${package.version} ${new Date().toString()}`,

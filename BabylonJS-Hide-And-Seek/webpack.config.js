@@ -9,10 +9,10 @@ module.exports = (env, argv) => {
 
 	console.log(`********* WEBPACK Dir Path: "${__dirname}" *********`);
 
-	let configPath = './configs/dev.env';
+	let configPath = './configs/local.env';
 
 	if(env.production) {
-		configPath = './configs/prod.env';
+		configPath = './configs/remote.env';
 	}
 
 	console.log(`*** Config Path: ${configPath} ***`);
@@ -36,7 +36,6 @@ module.exports = (env, argv) => {
 						path.join(__dirname, "dist"),
 						path.join(__dirname, "projects"),
 						path.join(__dirname, "scenes"),
-						// path.join(__dirname, '../Server')
 					],
 				},
 				{

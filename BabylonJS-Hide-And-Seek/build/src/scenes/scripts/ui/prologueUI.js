@@ -115,7 +115,7 @@ var PrologueUI = /** @class */ (function (_super) {
         }
         var before = countdown;
         if (!gameManager_1.default.Instance.PlayerIsSeeker()) {
-            countdown = (0, utility_1.clamp)(countdown - networkManager_1.default.Config.PlayStartCountdown / 1000, 0, Number.POSITIVE_INFINITY);
+            countdown = (0, utility_1.clamp)(countdown - networkManager_1.default.Config.ScatterCountdown / 1000, 0, Number.POSITIVE_INFINITY);
         }
         this.setCountdownText("".concat(gameManager_1.default.Instance.PlayerIsSeeker() ? "Hunt" : "Evade", " in ").concat(countdown));
     };

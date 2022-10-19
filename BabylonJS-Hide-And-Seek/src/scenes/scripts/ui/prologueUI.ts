@@ -83,7 +83,7 @@ export class PrologueUI extends UIController {
 		const before: number = countdown;
 
 		if (!GameManager.Instance.PlayerIsSeeker()) {
-			countdown = clamp(countdown - NetworkManager.Config.PlayStartCountdown / 1000, 0, Number.POSITIVE_INFINITY);
+			countdown = clamp(countdown - NetworkManager.Config.ScatterCountdown / 1000, 0, Number.POSITIVE_INFINITY);
 		}
 
 		this.setCountdownText(`${GameManager.Instance.PlayerIsSeeker() ? `Hunt` : `Evade`} in ${countdown}`);

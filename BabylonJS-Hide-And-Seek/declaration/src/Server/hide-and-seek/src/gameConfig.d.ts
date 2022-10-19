@@ -1,18 +1,18 @@
 declare const _default: {
     minPlayers: number;
     maxPlayers: number;
+    playerMovementSpeed: number;
+    seekerMovementBoost: number;
+    seekerCheckDistance: number;
+    seekerFOV: number;
+    rescueTime: number;
+    rescueDistance: number;
+    rescueCount: number;
     preRoundCountdown: number;
     initializeCountdown: number;
     prologueCountdown: number;
+    scatterCountdown: number;
     huntCountdown: number;
     gameOverCountdown: number;
-    rescueTime: number;
-    rescueDistance: number;
-    seekerCheckDistance: number;
-    playerMovementSpeed: number;
-    seekerMovementBoost: number;
-    rescueCount: number;
-    seekerGoal: string;
-    hiderGoal: string;
 };
 export default _default;

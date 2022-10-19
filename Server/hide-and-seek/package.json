@@ -7,7 +7,7 @@
   "scripts": {
     "start": "npm run cleanjs && ts-node-dev --respawn --transpile-only src/index.ts",
     "cleanjs" : "trash src/*.js src/helpers/*.js src/models/*.js src/rooms/*.js src/rooms/schema/*.js",
-    "loadtest": "colyseus-loadtest loadtest/example.ts --room my_room --numClients 2",
+    "loadtest": "colyseus-loadtest src/loadtest/example.ts --room HAS_room --numClients 2",
     "build": "npm run clean && tsc && node node_modules/copyfiles/copyfiles package.json ./lib && node node_modules/copyfiles/copyfiles arena.env ./lib",
     "clean": "npm run cleanjs && node node_modules/rimraf/bin lib",
     "test": "mocha --require ts-node/register test/**_test.ts --exit --timeout 15000"

@@ -7,7 +7,7 @@ export declare class GameConfig {
     get CountdownJump(): number;
     get PrologueCountdown(): number;
     get InitializeCountdown(): number;
-    get PlayStartCountdown(): number;
+    get ScatterCountdown(): number;
     get HuntCountdown(): number;
     get SeekerWinCondition(): number;
     get GameOverCountdown(): number;

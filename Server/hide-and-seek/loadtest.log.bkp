@@ -1,11 +1,11 @@
-[10/13/2022, 3:40:28 PM] @colyseus/loadtest
+[10/19/2022, 1:25:21 PM] @colyseus/loadtest
 endpoint: ws://localhost:2567
 roomName: HAS_room
-numClients: 1
+numClients: 2
 scriptFile: F:\Remote-Repos\Colyseus-Repos\BabylonJS-hide-and-seek\Server\hide-and-seek\src\loadtest\example.ts
 logLevel: all
 output: F:\Remote-Repos\Colyseus-Repos\BabylonJS-hide-and-seek\Server\hide-and-seek\loadtest.log
-[10/13/2022, 3:42:25 PM] Finished. Summary:
-Successful connections: 1
+[10/19/2022, 1:27:00 PM] Finished. Summary:
+Successful connections: 2
 Failed connections: 0
 Total errors: 0

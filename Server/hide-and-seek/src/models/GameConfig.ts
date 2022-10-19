@@ -31,8 +31,8 @@ export class GameConfig {
 		return this._data.initializeCountdown || 1000;
 	}
 
-	public get PlayStartCountdown(): number {
-		return this._data.playStartCountdown || 3000;
+	public get ScatterCountdown(): number {
+		return this._data.scatterCountdown || 3000;
 	}
 
 	public get HuntCountdown(): number {

@@ -263,7 +263,7 @@ export class HASGameState extends Schema {
 		let elapsedTime: number = Date.now() - this._stateTimestamp;
 		const countdown: number = this._config.PrologueCountdown;
 
-		if (elapsedTime < countdown - this._config.PlayStartCountdown) {
+		if (elapsedTime < countdown - this._config.ScatterCountdown) {
 			this.setCountdown(countdown - elapsedTime, countdown);
 
 			return;

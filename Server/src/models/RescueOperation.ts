@@ -1,4 +1,3 @@
-import logger from '../helpers/logger';
 import { distanceBetweenPlayers } from '../helpers/Utility';
 import { PlayerState } from '../rooms/schema/PlayerState';
 

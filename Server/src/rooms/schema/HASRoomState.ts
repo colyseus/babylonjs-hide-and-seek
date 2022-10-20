@@ -1,5 +1,4 @@
 import { Schema, MapSchema, Context, type } from '@colyseus/schema';
-import logger from '../../helpers/logger';
 import { HASRoom } from '../HASRoom';
 import { PlayerState } from './PlayerState';
 import { distanceBetweenPlayers, random } from '../../helpers/Utility';
@@ -38,7 +37,7 @@ export class HASRoomState extends Schema {
 		this._availableSpawnPoints = [];
 
 		if (!Number.isFinite(this._room.maxClients)) {
-			logger.error(`Room State - Invalid value received for max clients`);
+			console.error(`Room State - Invalid value received for max clients`);
 			return;
 		}
 
@@ -47,7 +46,7 @@ export class HASRoomState extends Schema {
 			this._availableSpawnPoints.push(i);
 		}
 
-		// //logger.info(`Spawn Points: %o`, this._availableSpawnPoints);
+		// //console.log(`Spawn Points: %o`, this._availableSpawnPoints);
 	}
 
 	private playerRemoved(player: PlayerState, sessionId: string) {
@@ -67,7 +66,7 @@ export class HASRoomState extends Schema {
 	 */
 	public getSpawnPointIndex(isRandom: boolean = true): number {
 		if (this._availableSpawnPoints.length === 0) {
-			logger.error(`No more available spawn point indexes!`);
+			console.error(`No more available spawn point indexes!`);
 			return -1;
 		}
 
@@ -119,7 +118,7 @@ export class HASRoomState extends Schema {
 		const hider: PlayerState = this.players.get(hiderId);
 
 		if (!seeker || !hider) {
-			logger.error(`Failed to get ${seeker ? '' : `Seeker ${seekerId} `}${hider ? '' : `Hider ${hiderId}`}`);
+			console.error(`Failed to get ${seeker ? '' : `Seeker ${seekerId} `}${hider ? '' : `Hider ${hiderId}`}`);
 			return;
 		}
 
@@ -137,13 +136,13 @@ export class HASRoomState extends Schema {
 			const hider: PlayerState = this.players.get(hiderId);
 
 			if (!rescuer || !hider) {
-				logger.error(`Failed to get ${rescuer ? '' : `Rescuer ${rescuerId} `}${hider ? '' : `Hider ${hiderId}`}`);
+				console.error(`Failed to get ${rescuer ? '' : `Rescuer ${rescuerId} `}${hider ? '' : `Hider ${hiderId}`}`);
 				return;
 			}
 
 			// Check if Hider has reached their max rescue count
 			if (hider.rescueCount >= this._config.RescueCount) {
-				logger.debug(`Hider ${hiderId} has already be rescued the max number of times`);
+				// console.log(`Hider ${hiderId} has already be rescued the max number of times`);
 				return;
 			}
 
@@ -169,7 +168,7 @@ export class HASRoomState extends Schema {
 			this._rescueOperations.set(op.Key, op);
 			// @ts-ignore
 		} catch (error: any) {
-			logger.error(error.stack);
+			console.error(error.stack);
 		}
 	}
 

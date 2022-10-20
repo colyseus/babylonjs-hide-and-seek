@@ -2,7 +2,6 @@ import { Room, Client, Presence } from 'colyseus';
 import { PlayerInputMessage } from '../models/PlayerInputMessage';
 import { HASRoomState } from './schema/HASRoomState';
 import { PlayerState } from './schema/PlayerState';
-import logger from '../helpers/logger';
 import gameConfig from '../gameConfig';
 import { GameConfig } from '../models/GameConfig';
 
@@ -28,9 +27,9 @@ export class HASRoom extends Room<HASRoomState> {
 
 		this.setState(new HASRoomState(this, this._config));
 
-		logger.info(`*********************** HIDE AND SEEK ROOM (${this.roomId}) CREATED ***********************`);
-		logger.info(`Options: %o`, options);
-		logger.info('**************************************************************************');
+		console.log(`*********************** HIDE AND SEEK ROOM (${this.roomId}) CREATED ***********************`);
+		console.log(`Options: %o`, options);
+		console.log('**************************************************************************');
 
 		this.registerMessageHandlers();
 
@@ -44,9 +43,9 @@ export class HASRoom extends Room<HASRoomState> {
 	}
 
 	onJoin(client: Client, options: any) {
-		logger.silly(`*** On Client Join - ${client.sessionId} ***`);
+		console.log(`*** On Client Join - ${client.sessionId} ***`);
 
-		//logger.info(`${client.sessionId} spawn index: ${spawnIndex}`);
+		//console.log(`${client.sessionId} spawn index: ${spawnIndex}`);
 
 		// Create a new instance of NetworkedEntityState for this client and assign initial state values
 		const player = new PlayerState(client).assign({
@@ -71,12 +70,12 @@ export class HASRoom extends Room<HASRoomState> {
 
 			throw new Error('DEBUG force no reconnection check');
 
-			logger.info("let's wait for reconnection for client: " + client.sessionId);
+			console.log("let's wait for reconnection for client: " + client.sessionId);
 			const newClient: Client = await this.allowReconnection(client, 3);
-			logger.info('reconnected! client: ' + newClient.sessionId);
+			console.log('reconnected! client: ' + newClient.sessionId);
 		} catch (e) {
-			logger.info('disconnected! client: ' + client.sessionId);
-			logger.silly(`*** Removing player ${client.sessionId} ***`);
+			console.log('disconnected! client: ' + client.sessionId);
+			console.log(`*** Removing player ${client.sessionId} ***`);
 
 			const playerState: PlayerState = this.state.players.get(client.sessionId);
 
@@ -111,7 +110,7 @@ export class HASRoom extends Room<HASRoomState> {
 			playerState.setPosition(playerInput.position, playerInput.timestamp);
 			playerState.setDirection(playerInput.direction);
 		} else {
-			logger.error(`Failed to retrieve Player State for ${client.sessionId}`);
+			console.error(`Failed to retrieve Player State for ${client.sessionId}`);
 		}
 	}
 

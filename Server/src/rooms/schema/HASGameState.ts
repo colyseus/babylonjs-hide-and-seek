@@ -1,5 +1,4 @@
 import { Schema, MapSchema, Context, type } from '@colyseus/schema';
-import logger from '../../helpers/logger';
 import { clamp, random } from '../../helpers/Utility';
 import { GameConfig } from '../../models/GameConfig';
 import { HASRoom } from '../HASRoom';
@@ -109,7 +108,7 @@ export class HASGameState extends Schema {
 
 		// this.currentState = state;
 
-		// logger.info(`Move state from "${this._lastState}" to "${state}"`);
+		// console.log(`Move state from "${this._lastState}" to "${state}"`);
 
 		// Anything that needs doing at the beginning of the state entry do here
 		switch (state) {
@@ -178,7 +177,7 @@ export class HASGameState extends Schema {
 					seeker.canMove = true;
 					// @ts-ignore
 				} catch (error: any) {
-					logger.error(`Error allowing Seeker to move: ${error.stack}`);
+					console.error(`Error allowing Seeker to move: ${error.stack}`);
 				}
 
 				// Reset the timestamp for the duration of the hunt stage
@@ -196,7 +195,6 @@ export class HASGameState extends Schema {
 
 				this.countdown = this._config.GameOverCountdown / 1000;
 
-				logger.debug(`Game Over - Countdown: ${this.countdown}`);
 				break;
 		}
 
@@ -204,7 +202,7 @@ export class HASGameState extends Schema {
 
 		this.currentState = state;
 
-		logger.info(`Move state from "${this._lastState}" to "${state}"`);
+		console.log(`Move state from "${this._lastState}" to "${state}"`);
 	}
 
 	/** Waits for the minimum number of players to join the room */

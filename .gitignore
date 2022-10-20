@@ -8,8 +8,8 @@ Server/**/*.js
 Server/**/*.js.map
 Server/**/*.d.ts
 Server/lib
+Server/loadtest.log.bkp
 
 BabylonJS-Hide-And-Seek/dist
 BabylonJS-Hide-And-Seek/build
 BabylonJS-Hide-And-Seek/declaration
-Server/loadtest.log.bkp

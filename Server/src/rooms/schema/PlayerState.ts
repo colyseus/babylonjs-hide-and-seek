@@ -1,6 +1,5 @@
 import { Schema, type, MapSchema, ArraySchema } from '@colyseus/schema';
 import { Client } from 'colyseus';
-// import logger from '../../helpers/logger';
 import { clamp } from '../../helpers/Utility';
 import { HASRoom } from '../HASRoom';
 import { HASRoomState } from './HASRoomState';

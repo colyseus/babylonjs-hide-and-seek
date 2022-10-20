@@ -1,6 +1,6 @@
 import { Node } from '@babylonjs/core/node';
 import { GameState } from '../GameState';
-import type { PlayerState } from '../../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
+import type { PlayerState } from '../../../../../Server/src/rooms/schema/PlayerState';
 import Player from '../players/player';
 import InteractableTrigger from '../interactables/interactableTrigger';
 export default class GameManager extends Node {

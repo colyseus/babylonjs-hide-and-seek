@@ -1,5 +1,5 @@
 import { Mesh, TransformNode, Vector3 } from '@babylonjs/core';
-import type { PlayerState } from '../../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
+import type { PlayerState } from '../../../../../Server/src/rooms/schema/PlayerState';
 import PlayerVisual from './playerVisual';
 export default class Player extends Mesh {
     visual: PlayerVisual;

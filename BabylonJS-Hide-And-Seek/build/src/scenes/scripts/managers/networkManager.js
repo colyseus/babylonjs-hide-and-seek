@@ -56,7 +56,7 @@ var node_1 = require("@babylonjs/core/node");
 var Colyseus = require("colyseus.js");
 var colyseusSettings_1 = require("../colyseusSettings");
 var GameState_1 = require("../GameState");
-var GameConfig_1 = require("../../../../../Server/hide-and-seek/src/models/GameConfig");
+var GameConfig_1 = require("../../../../../Server/src/models/GameConfig");
 var EventEmitter = require("events");
 var utility_1 = require("../../utility");
 var NetworkEvent;

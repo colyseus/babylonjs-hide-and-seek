@@ -2,13 +2,13 @@ import { AbstractMesh, TransformNode, Vector3, Vector2 } from '@babylonjs/core';
 import EventEmitter = require('events');
 import { Node } from '@babylonjs/core/node';
 import { GameState } from '../GameState';
-import type { PlayerState } from '../../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
+import type { PlayerState } from '../../../../../Server/src/rooms/schema/PlayerState';
 import { fromChildren, fromScene } from '../../decorators';
 import CameraHolder from '../players/cameraHolder';
 import Player from '../players/player';
 import { SpawnPoints } from '../spawnPoints';
 import NetworkManager, { NetworkEvent } from './networkManager';
-import { PlayerInputMessage } from '../../../../../Server/hide-and-seek/src/models/PlayerInputMessage';
+import { PlayerInputMessage } from '../../../../../Server/src/models/PlayerInputMessage';
 import InteractableTrigger from '../interactables/interactableTrigger';
 
 export default class GameManager extends Node {

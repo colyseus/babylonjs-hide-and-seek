@@ -1,0 +1,1 @@
+{"version":3,"file":"PlayerInputMessage.js","sourceRoot":"","sources":["PlayerInputMessage.ts"],"names":[],"mappings":";;;AAAA;IAKC,4BAAY,SAAmB,EAAE,QAAkB;QAClD,IAAI,CAAC,SAAS,GAAG,SAAS,CAAC;QAC3B,IAAI,CAAC,QAAQ,GAAG,QAAQ,CAAC;QACzB,IAAI,CAAC,SAAS,GAAG,IAAI,CAAC,GAAG,EAAE,CAAC;IAC7B,CAAC;IACF,yBAAC;AAAD,CAAC,AAVD,IAUC;AAVY,gDAAkB"}

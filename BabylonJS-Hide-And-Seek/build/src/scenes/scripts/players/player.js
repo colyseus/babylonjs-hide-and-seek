@@ -26,7 +26,7 @@ var decorators_1 = require("../../decorators");
 var gameManager_1 = require("../managers/gameManager");
 var inputManager_1 = require("../managers/inputManager");
 var networkManager_1 = require("../managers/networkManager");
-var PlayerInputMessage_1 = require("../../../../../Server/hide-and-seek/src/models/PlayerInputMessage");
+var PlayerInputMessage_1 = require("../../../../../Server/src/models/PlayerInputMessage");
 var Player = /** @class */ (function (_super) {
     __extends(Player, _super);
     /**

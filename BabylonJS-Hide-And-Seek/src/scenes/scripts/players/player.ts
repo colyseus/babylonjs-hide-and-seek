@@ -3,8 +3,8 @@ import { fromChildren } from '../../decorators';
 import GameManager from '../managers/gameManager';
 import InputManager from '../managers/inputManager';
 import NetworkManager from '../managers/networkManager';
-import type { PlayerState } from '../../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
-import { PlayerInputMessage } from '../../../../../Server/hide-and-seek/src/models/PlayerInputMessage';
+import type { PlayerState } from '../../../../../Server/src/rooms/schema/PlayerState';
+import { PlayerInputMessage } from '../../../../../Server/src/models/PlayerInputMessage';
 import PlayerVisual from './playerVisual';
 
 export default class Player extends Mesh {

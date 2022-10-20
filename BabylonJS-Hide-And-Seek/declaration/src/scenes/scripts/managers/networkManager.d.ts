@@ -1,8 +1,8 @@
 import { Node } from '@babylonjs/core/node';
 import * as Colyseus from 'colyseus.js';
-import type { HASRoomState } from '../../../../../Server/hide-and-seek/src/rooms/schema/HASRoomState';
-import type { PlayerInputMessage } from '../../../../../Server/hide-and-seek/src/models/PlayerInputMessage';
-import { GameConfig } from '../../../../../Server/hide-and-seek/src/models/GameConfig';
+import type { HASRoomState } from '../../../../../Server/src/rooms/schema/HASRoomState';
+import type { PlayerInputMessage } from '../../../../../Server/src/models/PlayerInputMessage';
+import { GameConfig } from '../../../../../Server/src/models/GameConfig';
 export declare enum NetworkEvent {
     JOINED_ROOM = "joinedRoom",
     LEFT_ROOM = "leftRoom",

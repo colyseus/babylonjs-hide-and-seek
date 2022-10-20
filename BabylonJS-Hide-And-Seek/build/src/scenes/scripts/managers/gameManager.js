@@ -64,7 +64,7 @@ var GameState_1 = require("../GameState");
 var decorators_1 = require("../../decorators");
 var spawnPoints_1 = require("../spawnPoints");
 var networkManager_1 = require("./networkManager");
-var PlayerInputMessage_1 = require("../../../../../Server/hide-and-seek/src/models/PlayerInputMessage");
+var PlayerInputMessage_1 = require("../../../../../Server/src/models/PlayerInputMessage");
 var GameManager = /** @class */ (function (_super) {
     __extends(GameManager, _super);
     /**

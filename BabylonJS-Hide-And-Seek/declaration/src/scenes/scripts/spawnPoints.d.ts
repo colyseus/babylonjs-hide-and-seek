@@ -1,5 +1,5 @@
 import { TransformNode } from '@babylonjs/core';
-import type { PlayerState } from '../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
+import type { PlayerState } from '../../../../Server/src/rooms/schema/PlayerState';
 export declare class SpawnPoints {
     private _spawnPoints;
     private _seekerPoint;

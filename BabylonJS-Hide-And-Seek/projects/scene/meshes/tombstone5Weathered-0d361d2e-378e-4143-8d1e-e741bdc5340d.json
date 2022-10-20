@@ -2,14 +2,14 @@
 	"materials": [],
 	"meshes": [
 		{
-			"name": "North.Details.tombstone 5 weathered.tombstone 5 weathered.tombstone5Weathered",
-			"id": "c93d5d48-12f5-43dc-bea5-481c31780a8f",
-			"uniqueId": 2212,
+			"name": ".tombstone5Weathered",
+			"id": "0d361d2e-378e-4143-8d1e-e741bdc5340d",
+			"uniqueId": 2343,
 			"type": "Mesh",
 			"position": [
-				5.028583526611328,
-				2.6959147593017137e-16,
-				-0.20103073120117188
+				3.6940536499023438,
+				3.0227737225141645e-17,
+				-2.1555728912353516
 			],
 			"rotation": [
 				0,
@@ -49,9 +49,9 @@
 			"checkCollisions": false,
 			"isBlocker": false,
 			"overrideMaterialSideOrientation": 0,
-			"parentId": "3b00e81b-3dbc-42d7-98b6-1bb064d41510",
+			"parentId": "14526131-f1cf-480e-9737-171f10efb269",
 			"isUnIndexed": false,
-			"geometryUniqueId": 973,
+			"geometryUniqueId": 490,
 			"geometryId": "3017a8f9-87ba-4367-a9b5-f12839d159ff",
 			"subMeshes": null,
 			"materialUniqueId": 2024,

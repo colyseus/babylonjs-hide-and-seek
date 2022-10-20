@@ -1,11 +1,11 @@
 import { Node } from '@babylonjs/core/node';
 import * as Colyseus from 'colyseus.js';
-import type { HASRoomState } from '../../../../../Server/hide-and-seek/src/rooms/schema/HASRoomState';
-import type { PlayerInputMessage } from '../../../../../Server/hide-and-seek/src/models/PlayerInputMessage';
+import type { HASRoomState } from '../../../../../Server/src/rooms/schema/HASRoomState';
+import type { PlayerInputMessage } from '../../../../../Server/src/models/PlayerInputMessage';
 import { ColyseusSettings } from '../colyseusSettings';
-import type { PlayerState } from '../../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
+import type { PlayerState } from '../../../../../Server/src/rooms/schema/PlayerState';
 import { GameState } from '../GameState';
-import { GameConfig } from '../../../../../Server/hide-and-seek/src/models/GameConfig';
+import { GameConfig } from '../../../../../Server/src/models/GameConfig';
 import EventEmitter = require('events');
 import { delay } from '../../utility';
 

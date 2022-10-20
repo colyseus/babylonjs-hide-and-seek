@@ -1,0 +1,17 @@
+export default {
+	minPlayers: 3,
+	maxPlayers: 8,
+	playerMovementSpeed: 600,
+	seekerMovementBoost: 1.2,
+	seekerCheckDistance: 7,
+	seekerFOV: 60,
+	rescueTime: 1000,
+	rescueDistance: 2,
+	rescueCount: 1,
+	preRoundCountdown: 10000,
+	initializeCountdown: 500,
+	prologueCountdown: 10000,
+	scatterCountdown: 3000,
+	huntCountdown: 60000,
+	gameOverCountdown: 25000,
+};

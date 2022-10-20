@@ -2,7 +2,7 @@ import { GUID, Scene } from '@babylonjs/core';
 import { Control, Grid, Image, StackPanel, TextBlock } from '@babylonjs/gui';
 import { UIController } from './uiController';
 import NetworkManager, { NetworkEvent } from '../managers/networkManager';
-import type { PlayerState } from '../../../../../Server/hide-and-seek/src/rooms/schema/PlayerState';
+import type { PlayerState } from '../../../../../Server/src/rooms/schema/PlayerState';
 import GameManager from '../managers/gameManager';
 import { GameState } from '../GameState';
 

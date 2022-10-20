@@ -349,7 +349,6 @@ export default class GameManager extends Node {
 
 		switch (gameState) {
 			case GameState.NONE:
-				this.reparentCharacterVisuals();
 				break;
 			case GameState.WAIT_FOR_MINIMUM:
 				this.reset();
@@ -579,6 +578,7 @@ export default class GameManager extends Node {
 
 	private reset() {
 		this.despawnPlayers();
+		this.reparentCharacterVisuals();
 		this.initializeSpawnPoints();
 
 		this._halfSeekerFOV = null;

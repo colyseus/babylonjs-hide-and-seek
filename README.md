@@ -6,3 +6,5 @@ The demo is designed to work with Colyseus version 0.14.20 and Babylon.js Editor
 In order for the Hiders to win they need to evade the Seeker until time runs out.
 
 [See demo documentation here](https://docs.colyseus.io/colyseus/demo/babylonjs-editor/hide-and-seek/)
+
+The demo source files are MIT license while the [BabylonJS Assets](https://github.com/BabylonJS/Assets) are used under the [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/)
